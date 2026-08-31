@@ -2,9 +2,9 @@
    Serve a una cosa sola: far funzionare il gioco senza rete.
    Non salva mai risposte fallite (è l'errore che aveva rotto la prima
    versione del Pokédex) e in caso di dubbio lascia passare la rete. */
-var CACHE = 'amanome-v1';
+var CACHE = 'amanome-v2';
 var FILE = [
-  './', './index.html', './ie-dati.js', './ie-storia.js', './ie-partita.js',
+  './', './index.html', './ie-volti.js', './ie-dati.js', './ie-storia.js', './ie-partita.js',
   './ie-gioco.js', './manifest.json', './icona-192.png', './icona-512.png'
 ];
 

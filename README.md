@@ -171,6 +171,28 @@ alla scuola.
 - **Finita la storia** si continua: allenamenti liberi e amichevoli contro
   chiunque tu abbia incontrato.
 
+### Il Football Frontier visto da Amanome
+
+Mentre giochi in valle, dall'altra parte del Giappone succede tutto il resto.
+Lo segui dal quaderno di Kenta e dalla radio sopra il banco frigo degli
+alimentari, con due giorni di ritardo e il segnale che salta quando piove:
+
+- maggio — a Inazuma una scuola con **sette giocatori**, che stava per sciogliere
+  il club, sfida la Royal Academy invece di chiudere;
+- giugno — la Raimon ha un attaccante nuovo, uno che aveva smesso di giocare
+  «per motivi personali»; e il loro portiere si allena da solo all'argine del
+  fiume, tutte le mattine, contro un muro di cemento;
+- agosto — comincia il Football Frontier, e nel girone della Raimon ci sono le
+  stesse tre squadre del tuo;
+- ottobre — la **semifinale**: la Royal Academy, cinque titoli su sei, perde
+  contro l'Istituto Zeus. Tre giorni dopo **Jude Sharp si trasferisce alla
+  Raimon**, e sul giornale c'è solo una foto sgranata senza spiegazioni;
+- novembre — la Raimon vince la finale. Poi un pullman con la loro scritta
+  sulla fiancata si ferma davanti alla tua scuola.
+
+Se glielo chiedi, Jude ti dice lui perché ha cambiato maglia. È una scena
+facoltativa e vale la pena di farla.
+
 ### Come si gioca
 
 - **La partita** è una catena di duelli. Chi ha la palla sceglie *dribbling*,
@@ -191,6 +213,38 @@ alla scuola.
   ordini per tempo (pressing, tutti dietro, ci mettiamo il cuore).
 - Quanto vuoi decidere in partita lo scegli tu, da Opzioni: *rapida* (solo i
   tiri in area), *normale*, *completa* (ogni singolo duello).
+- **Sul campo si vedono tutti e ventidue**: le pedine si muovono a ogni azione,
+  chi ha la palla è cerchiato d'oro, chi sta per essere contrastato di rosso.
+
+### I volti
+
+Ogni personaggio ha un **ritratto disegnato dal gioco stesso**: nessuna immagine
+da scaricare, nessun disegno di altri: sono forme vettoriali generate al volo da
+taglio, colore dei capelli, incarnato, sguardo, bocca e un dettaglio (fascia,
+occhiali, visiera, cerotto, berretto). Compaiono nella chat accanto a chi parla,
+nella rosa e in partita.
+
+Il tuo volto lo componi tu alla creazione — dodici tagli, tredici colori, sei
+incarnati, e un pulsante «Sorteggia» se non hai voglia di scegliere. Gli
+avversari ricevono un volto generato dal loro nome, quindi lo stesso giocatore
+ha sempre la stessa faccia.
+
+### Installarlo sul telefono
+
+Non c'è niente da scaricare da uno store: è una pagina che il telefono salva
+come app, e da lì funziona anche senza rete.
+
+- **iPhone/iPad**: apri il gioco con **Safari** (su iOS solo Safari può
+  installare) → pulsante **Condividi** → **Aggiungi a schermata Home**.
+- **Android**: apri il gioco con **Chrome** → **tre puntini** in alto a destra →
+  **Installa app** (o *Aggiungi a schermata Home*).
+
+Poi aprilo dall'icona almeno una volta con la rete accesa: serve a salvare tutto
+sul dispositivo. Le stesse istruzioni sono dentro il gioco, in
+*Opzioni → Installare sul telefono*.
+
+Il salvataggio resta nel browser di quel telefono: per spostarlo, *Esporta su
+file* da una parte e *Importa* dall'altra.
 
 Gioco di fan, non ufficiale. I nomi delle squadre e dei personaggi canonici
 seguono l'adattamento italiano; tutto il resto — Amanome, i suoi tredici

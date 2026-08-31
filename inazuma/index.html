@@ -96,6 +96,9 @@ button{font-family:inherit;font-size:15px;color:var(--testo);cursor:pointer}
 .mini{font-size:13px;padding:7px 10px;border-radius:9px;background:var(--pannello2);
   border:1px solid var(--bordo);width:auto;display:inline-block;margin:0}
 .mini.on{background:var(--accento);color:#20160a;border-color:var(--accento);font-weight:bold}
+.chip-riga{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pastiglia{width:26px;height:26px;border-radius:50%;border:2px solid var(--bordo);cursor:pointer;padding:0}
+.pastiglia.on{border-color:var(--accento);box-shadow:0 0 0 2px rgba(255,210,63,.35)}
 
 input[type=text]{width:100%;padding:11px 12px;border-radius:11px;
   background:#0b1327;border:1px solid var(--bordo);color:var(--testo);font-size:16px;font-family:inherit}
@@ -109,7 +112,13 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 .ritratto.pc{width:30px;height:30px;font-size:11px;border-radius:9px}
 .ritratto .el{position:absolute;right:-4px;bottom:-4px;font-size:11px;background:var(--sfondo);
   border-radius:999px;width:17px;height:17px;display:grid;place-items:center;
-  border:1px solid var(--bordo)}
+  border:1px solid var(--bordo);z-index:2}
+.ritratto .volto{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:inherit}
+.ritratto.pc{width:40px;height:40px;border-radius:12px}
+.ritratto.pc .el{width:15px;height:15px;font-size:9px;right:-3px;bottom:-3px}
+.volto-grande{width:132px;height:132px;border-radius:26px;overflow:hidden;position:relative;
+  background:linear-gradient(150deg,#2a3a60,#141d33);box-shadow:0 0 0 1px rgba(255,255,255,.12) inset;flex:none}
+.volto-grande svg{width:100%;height:100%;display:block}
 
 /* ---------- chat storia ---------- */
 #chat{padding-bottom:118px}
@@ -159,25 +168,37 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 
 /* ---------- partita ---------- */
 #campo{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--bordo);
-  background:linear-gradient(180deg,#134a2b 0%, #0e3a22 100%);height:112px;margin-bottom:10px}
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.028) 0 26px, rgba(0,0,0,.028) 26px 52px),
+    linear-gradient(180deg,#15522f 0%, #0d3520 100%);
+  height:168px;margin-bottom:10px}
+.pedina{position:absolute;width:19px;height:19px;margin:-9.5px 0 0 -9.5px;border-radius:50%;
+  display:grid;place-items:center;font-size:9px;font-weight:bold;color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.85);box-shadow:0 1px 4px rgba(0,0,0,.5), 0 0 0 1.5px rgba(255,255,255,.45) inset;
+  transition:left .42s cubic-bezier(.35,.9,.35,1), top .42s cubic-bezier(.35,.9,.35,1);z-index:2}
+.pedina.pt{border-radius:6px}
+.pedina.avv{box-shadow:0 1px 4px rgba(0,0,0,.55), 0 0 0 2px rgba(4,10,6,.55);filter:saturate(.9)}
+.pedina.avv.pt{border-radius:6px}
+.pedina.palla{box-shadow:0 1px 4px rgba(0,0,0,.5), 0 0 0 2px #ffd23f, 0 0 12px rgba(255,210,63,.75);
+  width:22px;height:22px;margin:-11px 0 0 -11px;z-index:4}
+.pedina.marca{box-shadow:0 1px 4px rgba(0,0,0,.5), 0 0 0 2px #ff5468, 0 0 10px rgba(255,84,104,.6);z-index:3}
 #campo .linea{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.18)}
 #campo .cerchio{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;
   border:2px solid rgba(255,255,255,.18);border-radius:50%}
 #campo .area{position:absolute;top:22px;bottom:22px;width:34px;border:2px solid rgba(255,255,255,.18)}
 #campo .zone{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr)}
 #campo .zona{border-right:1px dashed rgba(255,255,255,.08);display:grid;place-items:center}
-#palla{position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;
+#palla{position:absolute;width:16px;height:16px;z-index:5;border-radius:50%;background:#fff;
   box-shadow:0 2px 10px rgba(0,0,0,.6), 0 0 0 2px rgba(0,0,0,.25);
   display:grid;place-items:center;font-size:12px;color:#111;
-  transition:left .35s cubic-bezier(.4,1.4,.5,1), top .35s ease;transform:translate(-50%,-50%)}
+  transition:left .42s cubic-bezier(.35,.9,.35,1), top .42s ease;transform:translate(-50%,-50%);font-size:10px}
 #tabellone{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px}
 #tabellone .sq{flex:1;text-align:center;font-size:13px;font-weight:bold;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap}
 #tabellone .pt{font-size:30px;font-weight:bold;letter-spacing:2px;font-variant-numeric:tabular-nums}
 #tabellone .tempo{font-size:12px;color:var(--tenue);text-align:center}
 #log{max-height:210px;overflow-y:auto;background:#0a1226;
-  border:1px solid var(--bordo);border-radius:12px;padding:10px;font-size:14px;margin-bottom:10px;
-  scroll-behavior:smooth}
+  border:1px solid var(--bordo);border-radius:12px;padding:10px;font-size:14px;margin-bottom:10px}
 #log .l{margin-bottom:6px;animation:entra .2s ease}
 #log .l:last-child{margin-bottom:0}
 #log .ev{color:var(--accento);font-weight:bold}
@@ -222,7 +243,8 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
   </header>
   <main id="schermo"></main>
 </div>
-<script src="./ie-dati.js"></script>
+<script src="./ie-volti.js"></script>
+  <script src="./ie-dati.js"></script>
 <script src="./ie-storia.js"></script>
 <script src="./ie-partita.js"></script>
 <script src="./ie-gioco.js"></script>

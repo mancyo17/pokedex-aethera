@@ -1155,7 +1155,12 @@ sc({ id: 'c6_1', luogo: 'Il campo dietro la palestra — novembre',
     n("« SCUOLA MEDIA RAIMON — CLUB DI CALCIO »"),
     d('nao', "Non li ho invitati io."),
     d('kenta', "Raimon. Raimon di Inazuma."),
-    d('kenta', "Sono quelli che hanno battuto la Royal Academy. E poi la Zeus. Quelli che hanno vinto il Football Frontier quest'anno."),
+    d('kenta', "Domenica hanno giocato la finale del Football Frontier contro l'Istituto Zeus. Quella squadra che non aveva mai subito un gol in tutto il torneo."),
+    d('nao', "E?"),
+    d('kenta', "E la Zeus i gol li ha subiti."),
+    d('kenta', "Hanno vinto loro. Hanno vinto il Football Frontier. Una scuola che a marzo aveva sette giocatori e stava per essere sciolta."),
+    d('rei', "…sette."),
+    d('kenta', "Sette."),
     n("Dal pullman scende per primo un ragazzo con la fascia arancione in testa e un pallone sotto il braccio, che guarda il campo dietro la palestra come se fosse un posto importante."),
     d('mark', "È QUESTO! È questo il campo!"),
     d('nelly', "Mark, calmati."),
@@ -1177,6 +1182,15 @@ sc({ id: 'c6_2', luogo: 'Il campo dietro la palestra',
     d('jude', "Chi le ha tracciate?"),
     tu("Noi. A mano. Con il gesso della scuola."),
     d('jude', "Si vede. Sono precise."),
+    n("Poi si accorge che lo stai guardando: la maglia arancione addosso a uno che a ottobre giocava per un'altra squadra.")
+  ],
+  scelte: [
+    { t: "«Perché sei in arancione? A ottobre eri alla Royal Academy.»", vai: 'c6_jude' },
+    { t: "Non chiedere niente. Portarli in campo.", vai: 'c6_2b' }
+  ] });
+
+sc({ id: 'c6_2b', luogo: 'Il campo dietro la palestra',
+  righe: [
     n("Dall'altra parte, appoggiato al palo della porta che nessuno ha ancora raddrizzato, c'è un ragazzo che non ha ancora detto una parola."),
     d('axel', "Perché qui?"),
     tu("In che senso?"),
@@ -1299,6 +1313,152 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
   ],
   eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }, { giorni: 9999 }], poi: { hub: true } });
 
+
+/* ============================================================
+   IL FOOTBALL FRONTIER VISTO DA AMANOME
+   Quello che succede a Inazuma mentre voi giocate in valle.
+   ============================================================ */
+
+sc({ id: 'n_c2', luogo: 'Aula di scienze — il quaderno di Kenta',
+  righe: [
+    d('kenta', "Devo farvi vedere una cosa. È di due settimane fa e non l\'ho detto a nessuno perché sembrava una presa in giro."),
+    n("Kenta gira il quaderno. Una pagina scritta a matita, con sopra l\'ora della trasmissione: Radio Valle, notiziario sportivo, 21:40."),
+    d('kenta', "«Scuola media Raimon, prefettura di Inazuma. Club di calcio in via di scioglimento per numero insufficiente di iscritti.»"),
+    d('rei', "…"),
+    d('kenta', "«Sette giocatori.»"),
+    d('rei', "Sette."),
+    d('kenta', "Sette. E la Royal Academy li ha sfidati lo stesso."),
+    d('shinobu', "La Royal Academy quella vera? Quella dei cinque titoli nazionali?"),
+    d('kenta', "Quella. E la Raimon è scesa in campo."),
+    tu("Com\'è finita?"),
+    d('kenta', "Il notiziario è saltato. Radio Valle va via quando piove e quella sera pioveva."),
+    d('kenta', "So solo che il club non è stato sciolto. Il mese dopo li ho ritrovati iscritti al torneo di distretto."),
+    n("Nessuno dice niente per un po\'."),
+    d('hina', "Fammi capire. Da qualche parte, a trecento chilometri da qui, c\'è una scuola con sette persone che stava per chiudere il club."),
+    d('kenta', "Sì."),
+    d('hina', "E invece di chiudere hanno chiamato la squadra più forte del Giappone."),
+    d('kenta', "Sì."),
+    d('goro', "…mi piacciono."),
+    d('kenta', "Il portiere è il nipote di Dave Evans."),
+    tu("Dave Evans il portiere?"),
+    d('kenta', "Dave Evans il portiere. Quello del 1963."),
+    n("Kenta apre una pagina nuova, in fondo al quaderno, e ci scrive un titolo che non c\'era: «RAIMON»."),
+    d('kenta', "Da adesso li seguo. Se il segnale regge.")
+  ],
+  eff: [{ flag: 'segue_raimon' }], poi: { hub: true } });
+
+sc({ id: 'n_c3', luogo: 'Dietro la palestra — dopo l\'allenamento',
+  righe: [
+    d('kenta', "Aggiornamento sulla Raimon. Due cose."),
+    d('kenta', "La prima: hanno un attaccante nuovo. Si chiama Axel Blaze."),
+    d('kenta', "Aveva smesso. Da più di un anno. Il giornale della prefettura scrive «per motivi personali», che è il modo in cui si scrive che è successo qualcosa e non lo dicono."),
+    n("Zero, che stava raccogliendo i palloni in fondo al campo, si è fermato."),
+    d('kenta', "Ha ricominciato a giocare a marzo. Adesso è il loro attaccante titolare."),
+    d('zero', "…perché ha ricominciato?"),
+    d('kenta', "Questo il giornale non lo scrive."),
+    d('zero', "…"),
+    d('kenta', "La seconda cosa è più strana. È un trafiletto di colore, di quelli che mettono per riempire."),
+    d('kenta', "«Il portiere della Raimon si allena tutte le mattine da solo, all\'argine del fiume, tirando contro il muro di cemento. Alle sei.»"),
+    d('shinobu', "Alle sei?"),
+    d('kenta', "Alle sei."),
+    d('amagai', "Alle sei e mezza."),
+    n("Il vecchio custode non alza nemmeno la testa dal secchio."),
+    d('amagai', "Noi alle sei e mezza. Non fatevi venire idee.")
+  ],
+  poi: { hub: true } });
+
+sc({ id: 'n_c4', luogo: 'Alimentari Kirishima — la radio sopra il banco frigo',
+  righe: [
+    n("Il Football Frontier è il campionato nazionale delle scuole medie. Ci si iscrivono milleduecento squadre. Ne resta una."),
+    n("Nel negozio di Nao c\'è l\'unica radio del paese che prenda decentemente, sopra il banco frigo, tenuta ferma con due elastici."),
+    d('cronista', "…gironi nazionali del Football Frontier. Nel girone della Raimon: Occult, Wild, Shuriken."),
+    d('kenta', "Aspetta."),
+    d('kenta', "Aspetta aspetta aspetta."),
+    d('nao', "Che c\'è?"),
+    d('kenta', "Sono le stesse tre squadre del nostro girone di qualificazione."),
+    d('shinobu', "Cioè quelle che dobbiamo giocarci noi a ottobre?"),
+    d('kenta', "Quelle."),
+    n("Silenzio. Poi Rei dice la cosa che stanno pensando tutti e che nessuno ha il coraggio di dire."),
+    d('rei', "Quindi se passiamo il girone… facciamo la stessa strada che stanno facendo loro."),
+    d('kenta', "Statisticamente—"),
+    d('hina', "Kenta."),
+    d('kenta', "…sì. Facciamo la stessa strada."),
+    d('cronista', "…e nell\'altro raggruppamento la sorpresa dell\'anno: l\'Istituto Zeus, scuola privata di Tokyo, iscritta per la prima volta. Quattro partite, quattordici gol fatti."),
+    d('cronista', "E zero subiti. Zero. Il loro capitano, Byron Love, non ha ancora dovuto raccogliere un pallone dalla propria rete."),
+    d('zero', "…zero subiti."),
+    d('daichi', "Zero, non ti ci mettere anche tu."),
+    d('zero', "Non mi ci sto mettendo. Sto solo dicendo che è una bella cosa da leggere.")
+  ],
+  poi: { hub: true } });
+
+sc({ id: 'n_c5', luogo: 'Alimentari Kirishima — sabato sera',
+  righe: [
+    n("La semifinale nazionale del Football Frontier si gioca a Tokyo il primo sabato di ottobre."),
+    n("Ad Amanome sono le otto di sera, il negozio è chiuso da un\'ora e dentro ci sono nove persone in piedi davanti a una radio tenuta ferma con due elastici."),
+    d('cronista', "…Royal Academy contro Istituto Zeus. Il quarantatreesimo minuto del secondo tempo."),
+    d('kenta', "Non è possibile."),
+    d('nao', "Kenta."),
+    d('kenta', "Non è statisticamente possibile. La Royal Academy ha vinto cinque Football Frontier su sei. Non ha mai perso una semifinale. Mai."),
+    d('cronista', "…e finisce qui. L\'Istituto Zeus è in finale. La Royal Academy è fuori."),
+    n("Nessuno parla. Nao spegne la radio, poi ci ripensa e la riaccende, come se potessero dire che si erano sbagliati."),
+    d('shinobu', "Mi dispiace per loro."),
+    d('hina', "Erano i più forti del Giappone."),
+    d('shinobu', "Appunto. Mi dispiace per loro."),
+    n("Passano tre giorni. Poi arriva il giornale della prefettura, con due giorni di ritardo come sempre, e Kenta lo apre in mezzo al cortile e si mette a ridere in un modo che non gli avevamo mai sentito."),
+    d('kenta', "Jude Sharp."),
+    tu("Chi?"),
+    d('kenta', "Il numero 10 della Royal Academy. Il loro stratega. Quello che vede tre passaggi avanti a tutti."),
+    d('kenta', "Si è trasferito."),
+    d('rei', "Dove?"),
+    d('kenta', "Alla Raimon."),
+    n("Kenta gira il giornale. C\'è una fotografia piccola, sgranata, in bianco e nero: un ragazzo con gli occhiali a visiera che entra in un campo di allenamento indossando una maglia arancione."),
+    d('daichi', "…passa alla squadra che ha battuto la sua vecchia squadra?"),
+    d('kenta', "No. La Raimon la Royal Academy non l\'ha battuta. È stata la Zeus."),
+    d('daichi', "E allora perché?"),
+    d('kenta', "Il giornale non lo dice."),
+    d('hina', "Perché nessuno gliel\'ha chiesto."),
+    n("Hina Kurosawa guarda la fotografia per un tempo più lungo del necessario."),
+    d('hina', "Quello lì non è uno che scappa da una sconfitta. Guardagli la faccia."),
+    d('hina', "Quello lì ha capito una cosa. E ha cambiato squadra perché aveva capito una cosa."),
+    tu("Cosa?"),
+    d('hina', "Boh. Non lo so io."),
+    d('hina', "Ma se un giorno lo incontri, chiediglielo.")
+  ],
+  eff: [{ flag: 'jude_trasferito' }], poi: { hub: true } });
+
+sc({ id: 'c6_jude', luogo: 'Il campo dietro la palestra',
+  righe: [
+    tu("Posso chiederti una cosa?"),
+    d('jude', "Sì."),
+    tu("A ottobre eri alla Royal Academy. Adesso hai la maglia arancione."),
+    d('jude', "…"),
+    tu("Una mia compagna di squadra ha visto la tua foto sul giornale e ha detto che non eri uno che scappa da una sconfitta."),
+    tu("Ha detto che avevi capito qualcosa. E che se ti avessi incontrato, dovevo chiedertelo."),
+    n("Jude Sharp si toglie gli occhiali a visiera. È la prima volta stasera."),
+    d('jude', "La tua compagna di squadra ha ragione. Non è per la sconfitta."),
+    d('jude', "Alla Royal Academy ho passato tre anni a vincere. Ero il capitano. Non ho perso una partita ufficiale in tre anni."),
+    d('jude', "E il nostro allenatore non voleva che vincessimo."),
+    tu("…come?"),
+    d('jude', "Voleva che gli altri perdessero. Sembrano la stessa cosa e non lo sono per niente."),
+    d('jude', "Se vuoi vincere, alleni undici persone. Se vuoi che gli altri perdano, ti servono undici strumenti. E gli strumenti non è necessario che stiano bene."),
+    n("Lo dice piano, senza rancore, come uno che ci ha già pensato abbastanza."),
+    d('jude', "Il giorno che la Zeus ci ha battuti, mi sono accorto di una cosa: mentre perdevamo, non pensavo alla partita."),
+    d('jude', "Pensavo che dopo sarebbe stato tutto uguale. Che avremmo ricominciato lunedì, con lo stesso uomo, a fare la stessa cosa."),
+    d('jude', "E per la prima volta in tre anni ho pensato: non voglio."),
+    d('mark', "E poi è venuto da noi!"),
+    d('jude', "Mark, stavo raccontando."),
+    d('mark', "Sì ma è la parte bella!"),
+    d('jude', "…e poi sono andato da loro."),
+    n("Jude si rimette gli occhiali e guarda il campo: novantuno metri per cinquantatré, tracciato a mano, con una porta ancora piegata."),
+    d('jude', "Posso dirti una cosa io adesso?"),
+    tu("Sì."),
+    d('jude', "Alla Royal Academy il campo lo rifacevano tre giardinieri, di notte, con le macchine."),
+    d('jude', "In tre anni non ho mai saputo come si chiamavano."),
+    d('jude', "Voi il vostro l\'avete falciato a mano."),
+    d('jude', "Ecco: questa è la differenza. E ci ho messo tre anni e una semifinale a capirla.")
+  ],
+  eff: [{ spirito: 6 }], poi: 'c6_2b' });
+
 /* ============================================================
    CAPITOLI: struttura, obiettivi, luoghi disponibili nell'hub
    ============================================================ */
@@ -1323,6 +1483,7 @@ IE.capitoli = [
     apertura: 'c2_1',
     obiettivo: 'Rimettere in piedi il campo e trovare un allenatore.', giorni: 6,
     luoghi: [
+      { id: 'radio', nome: 'Il quaderno di Kenta', icona: '📻', scena: 'n_c2', se: function () { return true; } },
       { id: 'campo', nome: 'Sistemare il campo', icona: '🧹', scena: 'c2_campo', se: function (S) { return !S.flag.campo_pronto; } },
       { id: 'amagai', nome: 'Gabbiotto del custode', icona: '🔑', scena: 'c2_amagai', se: function (S) { return S.flag.campo_pronto && !S.flag.allenatore; }, bloccoTxt: 'Prima il campo.' },
       { id: 'sfida', nome: 'Sala professori', icona: '📋', scena: 'c2_sfida', se: function (S) { return S.flag.allenatore && !S.flag.sfida_kuzuryu; }, eff: [{ flag: 'sfida_kuzuryu' }] },
@@ -1333,6 +1494,7 @@ IE.capitoli = [
     apertura: 'c3_1',
     obiettivo: 'Convincere Zero a tornare in porta, poi la prima partita in casa.', giorni: 7,
     luoghi: [
+      { id: 'radio', nome: 'Il quaderno di Kenta', icona: '📻', scena: 'n_c3', se: function () { return true; } },
       { id: 'zero', nome: 'Via del tempio', icona: '🧤', scena: 'r_zero_1', se: function (S) { return !S.ha('zero'); } },
       { id: 'partita', nome: '⚽ Shirakaba — prima in casa', icona: '🏠', scena: 'c3_partita', se: function (S) { return S.ha('zero'); }, bloccoTxt: 'Non si gioca in casa senza portiere.', principale: true }
     ] },
@@ -1341,6 +1503,7 @@ IE.capitoli = [
     apertura: 'c4_1',
     obiettivo: 'Vincere il torneo estivo della vallata. In palio: il campo.', giorni: 8,
     luoghi: [
+      { id: 'radio', nome: 'La radio degli alimentari', icona: '📻', scena: 'n_c4', se: function () { return true; } },
       { id: 'nao', nome: 'Alimentari Kirishima', icona: '🏪', scena: 'c4_nao', se: function (S) { return S.flag.ultimatum && !S.ha('nao'); } },
       { id: 'semi', nome: '⚽ Semifinale — Tomegawa', icona: '🏆', scena: 'c4_semi', se: function (S) { return S.flag.ultimatum; }, principale: true }
     ] },
@@ -1349,6 +1512,7 @@ IE.capitoli = [
     apertura: 'c5_1',
     obiettivo: 'Superare il girone di qualificazione del Football Frontier.', giorni: 8,
     luoghi: [
+      { id: 'radio', nome: 'La semifinale alla radio', icona: '📻', scena: 'n_c5', se: function () { return true; } },
       { id: 'occult', nome: '⚽ Girone — Occult', icona: '👻', scena: 'c5_occult', se: function (S) { return !S.flag.g_occult; }, eff: [{ flag: 'g_occult' }], principale: true },
       { id: 'wild', nome: '⚽ Girone — Wild', icona: '🐗', scena: 'c5_wild', se: function (S) { return S.flag.g_occult && !S.flag.g_wild; }, eff: [{ flag: 'g_wild' }], principale: true },
       { id: 'shuriken', nome: '⚽ Girone — Shuriken', icona: '🥷', scena: 'c5_shuriken', se: function (S) { return S.flag.g_wild; }, principale: true }

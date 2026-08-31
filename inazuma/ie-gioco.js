@@ -86,7 +86,8 @@ function creaTu(dati) {
   return {
     id: 'tu', nome: dati.nome, corto: dati.nome.split(' ')[0], ruolo: dati.ruolo, el: dati.el,
     col: '#ffd23f', prof: org.profilo, pot: 1.3, base: base, allen: {}, lv: 1, exp: 0,
-    tec: tec, numero: dati.numero, am: 100, origine: dati.origine, capitano: true
+    tec: tec, numero: dati.numero, am: 100, origine: dati.origine, capitano: true,
+    volto: Object.assign({ maglia: '#2f9e63' }, dati.volto || {})
   };
 }
 
@@ -307,15 +308,20 @@ function mostraAiuto() {
 G.crea = { passo: 0 };
 function vistaCreazione() {
   var c = G.crea;
-  c.dati = c.dati || { nome: '', ruolo: 'CC', el: 'aria', origine: 'tribuna', numero: 10, squadra: 'Amanome Eleven' };
-  var passi = ['Chi sei', 'Il ruolo', 'L\'elemento', 'Da dove vieni', 'La prima tecnica', 'La squadra', 'Pronto'];
-  var testa = el('<div class="centro" style="margin-bottom:12px"><div class="etichetta">Passo ' + (c.passo + 1) + ' di ' + passi.length + '</div><h1>' + esc(passi[c.passo]) + '</h1></div>');
-  schermo.appendChild(testa);
+  c.dati = c.dati || {
+    nome: '', ruolo: 'CC', el: 'aria', origine: 'tribuna', numero: 10, squadra: 'Amanome Eleven',
+    volto: { pelle: 'media', capelli: 'castano', taglio: 'punte', occhi: 'decisi', bocca: 'sorriso', extra: 'niente' }
+  };
+  var passi = ['Chi sei', 'Che faccia hai', 'Il ruolo', 'L\'elemento', 'Da dove vieni', 'La prima tecnica', 'La squadra', 'Pronto'];
+  schermo.appendChild(el('<div class="centro" style="margin-bottom:12px">' +
+    '<div class="etichetta">Passo ' + (c.passo + 1) + ' di ' + passi.length + '</div>' +
+    '<h1>' + esc(passi[c.passo]) + '</h1></div>'));
   var box = el('<div class="pannello"></div>');
   schermo.appendChild(box);
 
+  /* ---- 0. nome ---- */
   if (c.passo === 0) {
-    box.appendChild(el('<p class="picc tenue">Aprile, primo lunedì. Sei in seconda media alla scuola di Amanome, quattrocentododici abitanti, tre ore di corriera dalla città.</p>'));
+    box.appendChild(el('<p class="picc tenue">Aprile, primo lunedì. Sei in seconda media alla scuola di Amanome: quattrocentododici abitanti, tre ore di corriera dalla città.</p>'));
     box.appendChild(el('<div class="etichetta">Il tuo nome</div>'));
     var inp = el('<input type="text" maxlength="24" placeholder="Nome e cognome">');
     inp.value = c.dati.nome; box.appendChild(inp);
@@ -328,34 +334,83 @@ function vistaCreazione() {
     }, 'primario'));
   }
 
+  /* ---- 1. aspetto ---- */
   else if (c.passo === 1) {
+    var v = c.dati.volto;
+    box.appendChild(el('<div class="centro" style="margin-bottom:12px">' +
+      '<div class="volto-grande" style="margin:0 auto">' + IE.volto(v, { maglia: '#2f9e63' }) + '</div>' +
+      '<div class="picc tenue" style="margin-top:6px">' + esc(c.dati.nome) + '</div></div>'));
+
+    function chips(etichetta, campo, valori, nomi) {
+      box.appendChild(el('<div class="etichetta">' + etichetta + '</div>'));
+      var r = el('<div class="chip-riga"></div>');
+      valori.forEach(function (val, i) {
+        var b = el('<button class="mini' + (v[campo] === val ? ' on' : '') + '">' + esc((nomi && nomi[i]) || val) + '</button>');
+        b.onclick = function () { v[campo] = val; render(); };
+        r.appendChild(b);
+      });
+      box.appendChild(r);
+    }
+    function colori(etichetta, campo, tavola) {
+      box.appendChild(el('<div class="etichetta">' + etichetta + '</div>'));
+      var r = el('<div class="chip-riga"></div>');
+      Object.keys(tavola).forEach(function (k) {
+        var b = el('<button class="pastiglia' + (v[campo] === k ? ' on' : '') + '" style="background:' + tavola[k] + '" title="' + k + '"></button>');
+        b.onclick = function () { v[campo] = k; render(); };
+        r.appendChild(b);
+      });
+      box.appendChild(r);
+    }
+
+    chips('Taglio', 'taglio', IE.tagli,
+      ['corti', 'a punte', 'caschetto', 'lunghi', 'coda', 'mossi', 'rasati', 'ciuffo', 'raccolti', 'radi', 'treccine', 'ricci']);
+    colori('Colore dei capelli', 'capelli', IE.capelliCol);
+    colori('Incarnato', 'pelle', IE.pelli);
+    chips('Sguardo', 'occhi', IE.occhiTipi);
+    chips('Bocca', 'bocca', IE.bocche);
+    chips('Dettaglio', 'extra', IE.dettagli);
+
+    var fila = el('<div class="btfila" style="margin-top:6px"></div>');
+    fila.appendChild(bt('🎲  Sorteggia', null, function () {
+      var n = IE.voltoCasuale();
+      for (var k in n) v[k] = n[k];
+      render();
+    }, 'piatta'));
+    fila.appendChild(bt('Avanti', null, function () { c.passo++; render(); }, 'primario'));
+    box.appendChild(fila);
+  }
+
+  /* ---- 2. ruolo ---- */
+  else if (c.passo === 2) {
     box.appendChild(el('<p class="picc tenue">Dove ti metti in campo. Cambia come cresci e che tecniche impari.</p>'));
     ['PT', 'DF', 'CC', 'AT'].forEach(function (r) {
-      var b = bt(IE.ruoli[r].nome, IE.ruoli[r].desc, function () { c.dati.ruolo = r; c.passo++; render(); },
-        c.dati.ruolo === r ? 'primario' : '');
-      box.appendChild(b);
+      box.appendChild(bt(IE.ruoli[r].nome, IE.ruoli[r].desc,
+        function () { c.dati.ruolo = r; c.passo++; render(); }, c.dati.ruolo === r ? 'primario' : ''));
     });
   }
 
-  else if (c.passo === 2) {
+  /* ---- 3. elemento ---- */
+  else if (c.passo === 3) {
     box.appendChild(el('<p class="picc tenue">Fuoco batte Bosco, Bosco batte Aria, Aria batte Terra, Terra batte Fuoco.</p>'));
     IE.listaElementi.forEach(function (e) {
-      var d = IE.elementi[e];
-      box.appendChild(bt(d.icona + '  ' + d.nome, 'Batte ' + IE.elementi[d.batte].nome + '. Le tue tecniche partono da qui.',
+      var dd = IE.elementi[e];
+      box.appendChild(bt(dd.icona + '  ' + dd.nome, 'Batte ' + IE.elementi[dd.batte].nome + '. Le tue tecniche partono da qui.',
         function () { c.dati.el = e; c.passo++; render(); }, c.dati.el === e ? 'primario' : ''));
     });
   }
 
-  else if (c.passo === 3) {
+  /* ---- 4. origine ---- */
+  else if (c.passo === 4) {
     box.appendChild(el('<p class="picc tenue">Perché sei ad Amanome, e cosa ti porti dietro.</p>'));
     IE.origini.forEach(function (o) {
       var b = Object.keys(o.bonus).map(function (k) { return IE.stat[k].nome + ' +' + o.bonus[k]; }).join(', ');
-      box.appendChild(bt(o.nome, o.desc + '  ·  ' + b, function () { c.dati.origine = o.id; c.passo++; render(); },
-        c.dati.origine === o.id ? 'primario' : ''));
+      box.appendChild(bt(o.nome, o.desc + '  ·  ' + b,
+        function () { c.dati.origine = o.id; c.passo++; render(); }, c.dati.origine === o.id ? 'primario' : ''));
     });
   }
 
-  else if (c.passo === 4) {
+  /* ---- 5. prima tecnica ---- */
+  else if (c.passo === 5) {
     var lista = IE.tecnicheIniziali[c.dati.ruolo];
     var tipo = c.dati.ruolo === 'PT' ? 'parata' : c.dati.ruolo === 'DF' ? 'blocco' : c.dati.ruolo === 'AT' ? 'tiro' : 'drib';
     var extra = IE.tecnicaElemento[c.dati.el][tipo];
@@ -368,7 +423,8 @@ function vistaCreazione() {
     });
   }
 
-  else if (c.passo === 5) {
+  /* ---- 6. squadra ---- */
+  else if (c.passo === 6) {
     box.appendChild(el('<p class="picc tenue">Il club non esiste ancora. Ma un nome ce l\'ha già, nella tua testa, da un pezzo.</p>'));
     box.appendChild(el('<div class="etichetta">Nome della squadra</div>'));
     var i2 = el('<input type="text" maxlength="28">'); i2.value = c.dati.squadra; box.appendChild(i2);
@@ -383,10 +439,10 @@ function vistaCreazione() {
     }, 'primario'));
   }
 
+  /* ---- 7. riepilogo ---- */
   else {
     var g = creaTu(c.dati);
     var st = IE.tutteStat(g);
-    var box2 = el('<div></div>');
     box.appendChild(el('<div class="riga" style="gap:12px;margin-bottom:12px">' +
       ritrattoHtml(g, 'gr') +
       '<div><div style="font-weight:bold;font-size:19px">' + esc(g.nome) + '</div>' +
@@ -396,7 +452,8 @@ function vistaCreazione() {
     box.appendChild(el('<div class="etichetta" style="margin-top:10px">Tecniche</div>'));
     g.tec.forEach(function (id) {
       var t = IE.tec(id);
-      box.appendChild(el('<div class="picc" style="margin-bottom:4px">' + IE.elementi[t.el].icona + ' <b>' + esc(t.nome) + '</b> <span class="tenue">· ' + esc(t.desc) + '</span></div>'));
+      box.appendChild(el('<div class="picc" style="margin-bottom:4px">' + IE.elementi[t.el].icona + ' <b>' + esc(t.nome) +
+        '</b> <span class="tenue">· ' + esc(t.desc) + '</span></div>'));
     });
     box.appendChild(el('<hr>'));
     box.appendChild(bt('Comincia', 'Primo lunedì di aprile.', function () {
@@ -405,24 +462,21 @@ function vistaCreazione() {
       S.rosa = [g]; aggiornaTitolari();
       iniziaCapitolo(1);
     }, 'primario'));
-    box.appendChild(bt('Torna indietro', null, function () { c.passo = 0; render(); }, 'piatta'));
-    schermo.appendChild(box2);
   }
 
-  if (c.passo > 0 && c.passo < 6) {
-    var ind = bt('◀ Indietro', null, function () { c.passo--; render(); }, 'piatta');
-    schermo.appendChild(ind);
-  }
+  if (c.passo > 0 && c.passo < 7) schermo.appendChild(bt('◀ Indietro', null, function () { c.passo--; render(); }, 'piatta'));
 }
+
 
 /* ============================================================
    PEZZI RIUSABILI
    ============================================================ */
 function ritrattoHtml(g, cls) {
-  var ini = (g.corto || g.nome || '?').slice(0, 2);
   var el2 = g.el ? '<span class="el">' + IE.elementi[g.el].icona + '</span>' : '';
+  var v = IE.voltoDi(g);
+  var faccia = IE.volto(v, { maglia: v.maglia || g.col });
   return '<div class="ritratto ' + (cls || '') + '" style="background:linear-gradient(150deg,' + (g.col || '#888') + ',' +
-    ombra(g.col || '#888') + ')">' + esc(ini) + el2 + '</div>';
+    ombra(g.col || '#888') + ')">' + faccia + el2 + '</div>';
 }
 function ombra(hex) {
   try {
@@ -792,6 +846,7 @@ function avviaPartita(cfg) {
     mia: { nome: S.nomeSquadra, sigla: S.sigla, col: '#2f9e63', stemma: S.stemma, rosa: titolari, panchina: panchina, formazione: S.formazione, spirito: S.spirito },
     avv: { nome: sq.nome, sigla: sq.sigla, col: sq.col, stemma: sq.stemma, rosa: rosaAvv.slice(0, 11).map(clona), panchina: rosaAvv.slice(11).map(clona), formazione: '4-4-2', spirito: 40 }
   });
+  G.posPrec = null;
   P.esiti = { vinto: cfg.vinto, perso: cfg.perso, pari: cfg.pari };
   P.amichevole = !!cfg.amichevole;
   S.partitaPendente = cfg;
@@ -816,18 +871,11 @@ function vistaPartita() {
       : (P.tempo === 1 ? '1º tempo' : '2º tempo') + " · " + min + "'") + '</div></div>' +
     '<div class="sq">' + esc(P.avv.nome) + '</div></div>'));
 
-  /* campo */
-  var mio = P.possesso === P.mia;
-  var x = mio ? (12.5 + (P.zona - 1) * 25) : (87.5 - (P.zona - 1) * 25);
-  schermo.appendChild(el('<div id="campo">' +
-    '<div class="linea" style="left:50%"></div><div class="cerchio"></div>' +
-    '<div class="area" style="left:0"></div><div class="area" style="right:0"></div>' +
-    '<div id="palla" style="left:' + x + '%;top:50%">⚽</div>' +
-    '<div style="position:absolute;left:6px;top:4px;font-size:11px;color:rgba(255,255,255,.6)">' + esc(P.mia.sigla) + '</div>' +
-    '<div style="position:absolute;right:6px;top:4px;font-size:11px;color:rgba(255,255,255,.6)">' + esc(P.avv.sigla) + '</div>' +
-    '</div>'));
+  /* campo con i ventidue in movimento */
+  schermo.appendChild(disegnaCampo());
 
   /* portatore */
+  var mio = P.possesso === P.mia;
   var pt = P.portatore;
   if (pt && !P.finita) {
     schermo.appendChild(el('<div class="duello">' +
@@ -872,6 +920,67 @@ function vistaPartita() {
     pan.appendChild(b);
     schermo.appendChild(pan);
   }
+}
+/* ---------- posizioni dei ventidue ---------- */
+var BASE_X = { PT: 7, DF: 25, CC: 47, AT: 67 };
+function posizioniCampo() {
+  var out = [];
+  [[P.mia, true], [P.avv, false]].forEach(function (par) {
+    var lato = par[0], mio = par[1];
+    var haPalla = P.possesso === lato;
+    /* chi attacca sale, chi difende si abbassa */
+    var spinta = haPalla ? (P.zona - 2) * 13 : -((P.zona - 2) * 8);
+    ['PT', 'DF', 'CC', 'AT'].forEach(function (r) {
+      var linea = lato.rosa.filter(function (g) { return g.ruolo === r; });
+      linea.forEach(function (g, i) {
+        var x = BASE_X[r] + (r === 'PT' ? 0 : spinta);
+        x = Math.max(4, Math.min(94, x));
+        var y = linea.length <= 1 ? 50 : 15 + 70 * i / (linea.length - 1);
+        if (!mio) y = Math.max(9, Math.min(91, y + 8));
+        out.push({
+          k: (mio ? 'a_' : 'b_') + g.id, g: g, mio: mio,
+          x: mio ? x : 100 - x, y: y,
+          col: mio ? (g.ruolo === 'PT' ? '#f2b32e' : '#3fd07a') : (g.ruolo === 'PT' ? '#e0e0e0' : lato.col)
+        });
+      });
+    });
+  });
+  return out;
+}
+function disegnaCampo() {
+  var pos = posizioniCampo();
+  var prec = G.posPrec || {};
+  var portatore = P.portatore, marcato = P.pendente ? P.pendente.dif : null;
+  var finali = {}, palla = null;
+  var punti = pos.map(function (p) {
+    finali[p.k] = { x: p.x, y: p.y };
+    var pr = prec[p.k] || { x: p.x, y: p.y };
+    var cls = 'pedina' + (p.mio ? '' : ' avv') + (p.g.ruolo === 'PT' ? ' pt' : '') +
+      (p.g === portatore ? ' palla' : '') + (marcato && p.g === marcato ? ' marca' : '');
+    if (p.g === portatore) palla = p;
+    return '<div class="' + cls + '" style="left:' + pr.x + '%;top:' + pr.y + '%;background:' + p.col + '"' +
+      ' data-k="' + p.k + '" title="' + esc(p.g.nome) + '">' + (p.g.numero || '') + '</div>';
+  }).join('');
+  var pp = palla ? (prec['palla'] || { x: palla.x, y: palla.y }) : { x: 50, y: 50 };
+  if (palla) finali['palla'] = { x: palla.x + (palla.mio ? 3.5 : -3.5), y: palla.y + 9 };
+  var c = el('<div id="campo">' +
+    '<div class="linea" style="left:50%"></div><div class="cerchio"></div>' +
+    '<div class="area" style="left:0"></div><div class="area" style="right:0"></div>' +
+    punti +
+    '<div id="palla" style="left:' + pp.x + '%;top:' + pp.y + '%">\u26bd</div>' +
+    '<div style="position:absolute;left:6px;top:3px;font-size:10px;font-weight:bold;color:#7bffb0;text-shadow:0 1px 3px rgba(0,0,0,.8)">' + esc(P.mia.sigla) + '</div>' +
+    '<div style="position:absolute;right:6px;top:3px;font-size:10px;font-weight:bold;color:' + P.avv.col + ';text-shadow:0 1px 3px rgba(0,0,0,.8)">' + esc(P.avv.sigla) + '</div>' +
+    '</div>');
+  requestAnimationFrame(function () {
+    c.querySelectorAll('.pedina').forEach(function (d) {
+      var f = finali[d.getAttribute('data-k')];
+      if (f) { d.style.left = f.x + '%'; d.style.top = f.y + '%'; }
+    });
+    var b = c.querySelector('#palla');
+    if (b && finali.palla) { b.style.left = finali.palla.x + '%'; b.style.top = finali.palla.y + '%'; }
+  });
+  G.posPrec = finali;
+  return c;
 }
 function zonaTxt() {
   return ['', 'nella nostra difesa', 'a centrocampo', 'sulla trequarti', 'dentro l\'area'][P.zona];
@@ -1030,8 +1139,31 @@ function vistaOpzioni() {
     localStorage.removeItem(CHIAVE); S = metodi(nuovoStato()); render();
   }, 'rossa'));
   schermo.appendChild(b2);
+  schermo.appendChild(bt('📱  Installare sul telefono', 'Per averlo come app, anche senza rete.', function () { mostraInstalla(); }, 'piatta'));
   schermo.appendChild(bt('Come si gioca', null, function () { mostraAiuto(); }, 'piatta'));
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
+}
+
+function mostraInstalla() {
+  velo('<h2>📱 Installare sul telefono</h2>' +
+    '<p class="picc tenue">Non c\'è niente da scaricare da uno store: è una pagina che il telefono può salvare come app. ' +
+    'Una volta installata funziona anche in aereo, in galleria o senza campo.</p>' +
+    '<div class="etichetta">iPhone e iPad — Safari</div>' +
+    '<p class="picc">1. Apri il gioco con <b>Safari</b> (non Chrome: su iOS solo Safari può installare).<br>' +
+    '2. Tocca il pulsante <b>Condividi</b> in basso — il quadrato con la freccia in su.<br>' +
+    '3. Scorri e tocca <b>Aggiungi a schermata Home</b>.<br>' +
+    '4. Dai un nome e tocca <b>Aggiungi</b>.</p>' +
+    '<div class="etichetta">Android — Chrome</div>' +
+    '<p class="picc">1. Apri il gioco con <b>Chrome</b>.<br>' +
+    '2. Tocca i <b>tre puntini</b> in alto a destra.<br>' +
+    '3. Tocca <b>Installa app</b> (o <b>Aggiungi a schermata Home</b>).<br>' +
+    '4. Conferma.</p>' +
+    '<div class="etichetta">Poi</div>' +
+    '<p class="picc">Apri il gioco dall\'icona almeno una volta con la rete accesa: serve a salvare tutto sul telefono. ' +
+    'Da lì in poi funziona offline.</p>' +
+    '<div class="avviso picc">Il salvataggio sta nel browser di <b>quel</b> telefono. Per portarlo altrove usa ' +
+    '<b>Esporta su file</b> qui in Opzioni, e <b>Importa</b> sull\'altro dispositivo.</div>' +
+    '<button class="bt primario" onclick="this.closest(\'.velo\').remove()">Chiudi</button>');
 }
 
 /* ============================================================

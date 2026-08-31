@@ -135,9 +135,11 @@ Pt.valoreDifesa = function (g, azione, tecnica) {
 /* ---------- tecniche utilizzabili ---------- */
 Pt.tecnicheUtili = function (g, tipo) {
   var lato = g._sq, out = [];
-  (g.tec || []).forEach(function (id) {
+  var elenco = (g.eq && g.eq.length) ? g.eq : (g.tec || []);
+  elenco.forEach(function (id) {
     var t = IE.tec(id);
     if (!t || t.tipo !== tipo) return;
+    if (t.soloDi && t.soloDi !== (g.baseId || g.id)) return;
     if (t.com && t.com.length) {
       var ok = t.com.every(function (cid) {
         return lato.rosa.some(function (x) { return x.id === cid || x.baseId === cid; });
@@ -275,6 +277,16 @@ Pt.turnoAvversario = function () {
   return 'fatto';
 };
 
+/* Le firme non valgono sempre uguale: alcune si accendono quando serve. */
+Pt.bonusFirma = function (g, t) {
+  if (!t) return 0;
+  var lato = g._sq, b = 0;
+  if (t.sePerde && lato.gol < this.altra(lato).gol) b += t.sePerde;
+  if (t.seSubito && lato.gol < this.altra(lato).gol + 1 && this.altra(lato).gol > 0) b += t.seSubito;
+  if (t.seFresco && g._fp / g._fpMax > 0.6) b += t.seFresco;
+  return b;
+};
+
 /* ============================================================
    RISOLUZIONE DEL DUELLO
    ============================================================ */
@@ -287,8 +299,8 @@ Pt.risolvi = function (att, dif, azione, tecAtt, tecDif, mod, extra) {
   if (tecAtt) { att._tp -= tecAtt.tp; }
   if (tecDif) { dif._tp -= tecDif.tp; }
 
-  var A = this.valoreAttacco(att, azione, tecAtt);
-  var D = this.valoreDifesa(dif, perTiro ? 'tiro' : azione, tecDif) * mod;
+  var A = this.valoreAttacco(att, azione, tecAtt) + this.bonusFirma(att, tecAtt);
+  var D = (this.valoreDifesa(dif, perTiro ? 'tiro' : azione, tecDif) + this.bonusFirma(dif, tecDif)) * mod;
 
   /* elementi */
   var elA = tecAtt ? tecAtt.el : att.el, elD = tecDif ? tecDif.el : dif.el;
@@ -426,6 +438,20 @@ Pt.chiudi = function () {
 /* ============================================================
    SIMULAZIONE RAPIDA (per i risultati delle altre squadre)
    ============================================================ */
+/* ============================================================
+   CONDIZIONI DEI RISVEGLI IN PARTITA
+   ============================================================ */
+IE.condizioneFirma = function (P, g, cond) {
+  var mio = P.mia;
+  if (cond === 'sotto') return P.tempo >= 2 && mio.gol <= P.avv.gol - 2;
+  if (cond === 'subito') return P.avv.gol >= 2 && g.ruolo === 'PT';
+  if (cond === 'pubblico') return P.tempo >= 2 && !P.amichevole;
+  if (cond === 'area') return P.possesso === P.avv && P.zona >= 4;
+  if (cond === 'entra') return P.tempo >= 2 && P.mia.rosa.indexOf(g) >= 0;
+  return false;
+};
+
+
 IE.forzaSquadra = function (rosa) {
   var t = 0;
   rosa.slice(0, 11).forEach(function (g) { t += IE.valutazione(g); });

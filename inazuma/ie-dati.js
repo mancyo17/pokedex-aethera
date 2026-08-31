@@ -94,6 +94,53 @@ IE.tecniche = {};
   T('valanga',       'Valanga di Amanome',     'tiro', 'terra',  66, 32, 'Tre che partono insieme dalla stessa collina e non si fermano più.', { com: ['goro', 'rikuto'] }),
   T('undici_nomi',   'Undici Nomi',            'tiro', 'neutro', 88, 46, 'Il pallone passa fra tutti e undici prima di entrare. È il tiro del club, non di un giocatore.', { com: ['rei', 'hina', 'goro'] }),
 
+  /* --- tiri comuni, per avere di che scegliere --- */
+  T('tiro_al_volo',  'Tiro al Volo',           'tiro', 'neutro', 28, 11, 'Non la fa nemmeno rimbalzare.'),
+  T('colpo_testa',   'Colpo di Testa',         'tiro', 'neutro', 30, 12, 'Chiude gli occhi un istante prima. Tutti lo fanno.'),
+  T('punizione',     'Punizione a Foglia',     'tiro', 'aria',   36, 15, 'Sale sopra la barriera e poi cade di colpo.'),
+  T('tiro_teso',     'Tiro Teso',              'tiro', 'fuoco',  38, 16, 'Basso, dritto, cattivo. Non fa scena e fa gol.'),
+  T('siluro',        'Siluro',                 'tiro', 'terra',  42, 18, 'Rasoterra così forte che alza la polvere per venti metri.'),
+  T('foglia_morta',  'Foglia Morta',           'tiro', 'bosco',  40, 17, 'Sembra fuori di tre metri finché non scende.'),
+  T('raffica_tiri',  'Raffica',                'tiro', 'aria',   46, 20, 'Tre finte di tiro e il quarto parte davvero.'),
+
+  /* --- dribbling comuni --- */
+  T('doppio_passo',  'Doppio Passo',           'drib', 'neutro', 26, 10, 'Il piede passa sopra il pallone due volte. Funziona una volta su due.'),
+  T('tunnel',        'Tunnel',                 'drib', 'neutro', 32, 13, 'Umiliante per chi lo subisce. Rischioso per chi lo prova.'),
+  T('cambio_passo',  'Cambio di Passo',        'drib', 'aria',   34, 14, 'Rallenta, aspetta che l\'altro rallenti, riparte.'),
+  T('spalla',        'Spalla a Spalla',        'drib', 'terra',  32, 13, 'Niente tecnica: peso contro peso.'),
+  T('zig_zag',       'Zigzag',                 'drib', 'bosco',  36, 15, 'Non in linea retta: mai in linea retta.'),
+  T('sombrero',      'Sombrero',               'drib', 'neutro', 40, 17, 'Se ti riesce ne parlano per un mese. Se sbagli, per due.'),
+
+  /* --- blocchi comuni --- */
+  T('anticipo',      'Anticipo',               'blocco', 'neutro', 22, 9,  'Arrivare mezzo secondo prima. È tutto lì.'),
+  T('scivolata',     'Scivolata',              'blocco', 'terra',  34, 14, 'Terra in bocca e pallone in fallo laterale.'),
+  T('gabbia',        'Gabbia',                 'blocco', 'bosco',  38, 16, 'Non gli togli la palla: gli togli tutte le direzioni.'),
+  T('pressing2',     'Pressing a Due',         'blocco', 'aria',   36, 15, 'Uno davanti e uno alle spalle, nello stesso momento.'),
+
+  /* --- parate comuni --- */
+  T('uscita_bassa',  'Uscita Bassa',           'parata', 'neutro', 26, 10, 'Ai piedi dell\'attaccante. Fa male e serve.'),
+  T('presa_alta',    'Presa Alta',             'parata', 'neutro', 32, 13, 'Sale fra tre teste e la prende con due mani.'),
+  T('volo_laterale', 'Volo Laterale',          'parata', 'aria',   36, 15, 'Un metro più in là di quanto sembrasse possibile.'),
+  T('mani_pietra',   'Mani di Pietra',         'parata', 'terra',  38, 16, 'Non respinge: ferma.'),
+
+  /* --- FIRME: una a testa, e solo loro possono usarla --- */
+  T('firma_rei',     'Ultimo a Mollare',       'blocco', 'neutro', 34, 16, 'Rei non è forte, non è veloce e non molla. Più siete sotto, più diventa un problema.', { soloDi: 'rei', sePerde: 30 }),
+  T('firma_goro',    'Tronco che Cade',        'blocco', 'terra',  58, 26, 'Gorō non si butta e non salta. Arriva addosso, tutto insieme, come una cosa segata alla base.', { soloDi: 'goro' }),
+  T('firma_hina',    'Freccia dei Trentotto',  'tiro',   'aria',   64, 30, 'Hina incocca, e per un secondo il campo è un bersaglio a ventotto metri. Trentotto studenti dietro la recinzione trattengono il fiato.', { soloDi: 'hina' }),
+  T('firma_zero',    'Zero',                   'parata', 'terra',  58, 26, 'Lo chiamavano così per prenderlo in giro. Adesso è il nome di quello che succede quando tirano dalle sue parti.', { soloDi: 'zero', seSubito: 26 }),
+  T('firma_minoru',  'Primo sul Pallone',      'drib',   'aria',   52, 22, 'Minoru non salta nessuno: ci arriva prima, e quindi non c\'è nessuno da saltare.', { soloDi: 'minoru', seFresco: 22 }),
+  T('firma_kenta',   'Il Quaderno',            'blocco', 'bosco',  48, 21, 'Kenta non è veloce. Ma ha sei anni di partite scritte a mano e sa già dove andrà quella palla.', { soloDi: 'kenta' }),
+  T('firma_gemelli', 'Le Cinque del Mattino',  'drib',   'aria',   60, 28, 'Otto chilometri al giorno da quando ne avevano sei. Passano ai due lati e non si guardano nemmeno.', { com: ['yuki', 'aoi'] }),
+  T('firma_shinobu', 'Terzo Atto',             'drib',   'neutro', 56, 24, 'Shinobu cade. Il difensore si ferma. Shinobu si rialza già in corsa: il pubblico applaude una bugia.', { soloDi: 'shinobu' }),
+  T('firma_rikuto',  'Frana',                  'tiro',   'terra',  62, 29, 'Quattrocento metri di dislivello messi dentro un pallone.', { soloDi: 'rikuto' }),
+  T('firma_benkei',  'Il Pranzo è Servito',    'parata', 'terra',  50, 22, 'Benkei apre le braccia e occupa tutto. Da qualche parte, in tasca, c\'è ancora un panino.', { soloDi: 'benkei' }),
+  T('firma_daichi',  'Delibera del 1986',      'blocco', 'fuoco',  60, 27, 'C\'era scritto che quel campo andava rifatto. Non l\'ha revocata nessuno. Daichi si mette lì e non si sposta.', { soloDi: 'daichi' }),
+  T('firma_nao',     'Numero Quattordici',     'drib',   'bosco',  52, 23, 'La casella vuota nel registro del club. Adesso corre.', { soloDi: 'nao' }),
+  T('firma_tu_AT',   'Tuono di Amanome',       'tiro',   'aria',   68, 32, 'Il rimbombo che fa un temporale chiuso fra due montagne, quando non ha da nessuna parte dove andare.', { soloDi: 'tu' }),
+  T('firma_tu_CC',   'Tutta la Valle',         'drib',   'aria',   62, 28, 'Non è dribbling: è sapere dove sono tutti e dieci senza guardarli.', { soloDi: 'tu' }),
+  T('firma_tu_DF',   'La Cresta del Kurogane', 'blocco', 'terra',  62, 28, 'Come la cresta sopra il paese: la vedi da lontano e non la passi.', { soloDi: 'tu' }),
+  T('firma_tu_PT',   'Porta di Amanome',       'parata', 'terra',  62, 28, 'Arrugginita, storta, e da vent\'anni non l\'ha buttata giù nessuno.', { soloDi: 'tu' }),
+
   /* --- tiri degli avversari famosi --- */
   T('tornado_fuoco', 'Tornado di Fuoco',       'tiro', 'fuoco',  62, 30, 'Rovesciata avvolta nelle fiamme. Il tiro di Axel Blaze.'),
   T('pinguino1',     'Pinguino Imperatore n.1','tiro', 'neutro', 68, 34, 'Un esercito di pinguini spinge il pallone in porta.', { com: [] }),
@@ -386,7 +433,7 @@ IE.rosaSquadra = function (sq) {
    base = livello medio delle statistiche di partenza
    ============================================================ */
 IE.squadre = {
-  baseball: { id: 'baseball', nome: 'Club di Baseball di Amanome', sigla: 'BAS', col: '#e0d06f', col2: '#a89a4a',
+  baseball: { id: 'baseball', nome: 'Club di Baseball di Amanome', sigla: 'BAS', lvCons: 2, col: '#e0d06f', col2: '#a89a4a',
     lv: 3, base: 20, stemma: '⚾',
     motto: 'Nove giocatori, sette mazze, zero vittorie. Ma le braccia ce le hanno.',
     chiave: [
@@ -394,7 +441,7 @@ IE.squadre = {
       { id: 'ric', nome: 'Sō Kaneko', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 8, tec: ['presa_sicura'], mod: { par: 1.3 } }
     ] },
 
-  kuzuryu: { id: 'kuzuryu', nome: 'Scuola Media Kuzuryū', sigla: 'KUZ', col: '#4f7fd0', col2: '#2f5090',
+  kuzuryu: { id: 'kuzuryu', nome: 'Scuola Media Kuzuryū', sigla: 'KUZ', lvCons: 7, col: '#4f7fd0', col2: '#2f5090',
     lv: 8, base: 26, stemma: '🐉',
     motto: 'Quattrocento studenti, due campi in erba, un pullman tutto loro. La scuola grande della valle.',
     chiave: [
@@ -403,7 +450,7 @@ IE.squadre = {
       { id: 'dif', nome: 'Take Ōmori', ruolo: 'DF', el: 'terra', prof: 'muro', b: 10, tec: ['contrasto'], mod: { dif: 1.3, fis: 1.3 } }
     ] },
 
-  shirakaba: { id: 'shirakaba', nome: 'Scuola Media Shirakaba', sigla: 'SHI', col: '#7ec89a', col2: '#3f7a58',
+  shirakaba: { id: 'shirakaba', nome: 'Scuola Media Shirakaba', sigla: 'SHI', lvCons: 12, col: '#7ec89a', col2: '#3f7a58',
     lv: 12, base: 31, stemma: '🌿',
     motto: 'Giocano in mezzo alle betulle da vent\'anni e nessuno li ha mai visti perdere in casa.',
     chiave: [
@@ -412,7 +459,7 @@ IE.squadre = {
       { id: 'por', nome: 'Hajime Nozaki', ruolo: 'PT', el: 'bosco', prof: 'portiere', b: 12, tec: ['rete_di_rami'], mod: { par: 1.3 } }
     ] },
 
-  tomegawa: { id: 'tomegawa', nome: 'Scuola Media Tomegawa', sigla: 'TOM', col: '#d06f6f', col2: '#8f3f3f',
+  tomegawa: { id: 'tomegawa', nome: 'Scuola Media Tomegawa', sigla: 'TOM', lvCons: 17, col: '#d06f6f', col2: '#8f3f3f',
     lv: 16, base: 39, stemma: '🔥',
     motto: 'Corrono per novanta minuti e non parlano mai. Il loro allenatore urla per tutti.',
     chiave: [
@@ -421,7 +468,7 @@ IE.squadre = {
       { id: 'por', nome: 'Ken Mabuchi', ruolo: 'PT', el: 'fuoco', prof: 'portiere', b: 14, tec: ['pugno_teso'], mod: { par: 1.35 } }
     ] },
 
-  hakuba: { id: 'hakuba', nome: 'Scuola Media Hakuba', sigla: 'HAK', col: '#cfe4ff', col2: '#6f8fb0',
+  hakuba: { id: 'hakuba', nome: 'Scuola Media Hakuba', sigla: 'HAK', lvCons: 21, col: '#cfe4ff', col2: '#6f8fb0',
     lv: 21, base: 43, stemma: '🏔️',
     motto: 'Campioni di Nagano da sei anni. Si allenano sulla neve perché è più difficile.',
     chiave: [
@@ -430,7 +477,7 @@ IE.squadre = {
       { id: 'por', nome: 'Aki Tsugumi', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 14, tec: ['mani_di_neve'], mod: { par: 1.35 } }
     ] },
 
-  occult: { id: 'occult', nome: 'Scuola Media Occult', sigla: 'OCC', col: '#7a5fc8', col2: '#3f2f70',
+  occult: { id: 'occult', nome: 'Scuola Media Occult', sigla: 'OCC', lvCons: 23, col: '#7a5fc8', col2: '#3f2f70',
     lv: 24, base: 43, stemma: '👻',
     motto: 'Entrano in campo con le bende e le torce. Metà del lavoro lo fanno prima del fischio d\'inizio.',
     chiave: [
@@ -438,7 +485,7 @@ IE.squadre = {
       { id: 'por', nome: 'Rō Gūna', ruolo: 'PT', el: 'bosco', prof: 'portiere', b: 14, tec: ['rete_di_rami'], mod: { par: 1.3 } }
     ] },
 
-  wild: { id: 'wild', nome: 'Scuola Media Wild', sigla: 'WIL', col: '#c8863f', col2: '#7a4a1f',
+  wild: { id: 'wild', nome: 'Scuola Media Wild', sigla: 'WIL', lvCons: 25, col: '#c8863f', col2: '#7a4a1f',
     lv: 27, base: 50, stemma: '🐗',
     motto: 'Si allenano correndo dietro ai cinghiali. Non è un modo di dire.',
     chiave: [
@@ -447,7 +494,7 @@ IE.squadre = {
       { id: 'por', nome: 'Gō Inukai', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 14, tec: ['cancello_chiuso'], mod: { par: 1.3 } }
     ] },
 
-  shuriken: { id: 'shuriken', nome: 'Scuola Media Shuriken', sigla: 'SHU', col: '#5f9a7a', col2: '#2f5a45',
+  shuriken: { id: 'shuriken', nome: 'Scuola Media Shuriken', sigla: 'SHU', lvCons: 27, col: '#5f9a7a', col2: '#2f5a45',
     lv: 30, base: 46, stemma: '🥷',
     motto: 'Sparire, riapparire, e nel frattempo segnare.',
     chiave: [
@@ -455,7 +502,7 @@ IE.squadre = {
       { id: 'por', nome: 'Saburō Kiri', ruolo: 'PT', el: 'bosco', prof: 'portiere', b: 17, tec: ['rete_di_rami', 'pugno_teso'], mod: { par: 1.35 } }
     ] },
 
-  royal: { id: 'royal', nome: 'Royal Academy', sigla: 'ROY', col: '#e8d27a', col2: '#8f7a2f',
+  royal: { id: 'royal', nome: 'Royal Academy', sigla: 'ROY', lvCons: 31, col: '#e8d27a', col2: '#8f7a2f',
     lv: 34, base: 54, stemma: '👑',
     motto: 'La scuola di calcio più forte del Giappone. Non hanno mai perso una finale nazionale.',
     chiave: [
@@ -465,7 +512,7 @@ IE.squadre = {
       { id: 'dif', nome: 'Herman Waldon', ruolo: 'DF', el: 'terra', prof: 'muro', b: 18, tec: ['cancello_pietra'], mod: { dif: 1.4, fis: 1.3 } }
     ] },
 
-  zeus: { id: 'zeus', nome: 'Istituto Zeus', sigla: 'ZEU', col: '#f0e6c8', col2: '#c8a83f',
+  zeus: { id: 'zeus', nome: 'Istituto Zeus', sigla: 'ZEU', lvCons: 33, col: '#f0e6c8', col2: '#c8a83f',
     lv: 38, base: 53, stemma: '⚡',
     motto: 'Dicono di essere figli degli dèi. Per novanta minuti sembra vero.',
     chiave: [
@@ -474,7 +521,7 @@ IE.squadre = {
       { id: 'por', nome: 'Alan Bane', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 22, tec: ['presa_falco'], mod: { par: 1.3 } }
     ] },
 
-  raimon: { id: 'raimon', nome: 'Scuola Media Raimon', sigla: 'RAI', col: '#e8703a', col2: '#8f3f18',
+  raimon: { id: 'raimon', nome: 'Scuola Media Raimon', sigla: 'RAI', lvCons: 29, col: '#e8703a', col2: '#8f3f18',
     lv: 32, base: 43, stemma: '⚡',
     motto: 'Undici che non dovevano arrivare da nessuna parte, e sono arrivati fino in fondo.',
     chiave: [
@@ -499,6 +546,44 @@ IE.squadraDi = function (id) {
   if (!s._rosa) s._rosa = IE.rosaSquadra(s);
   return s;
 };
+
+
+/* ============================================================
+   LE FIRME
+   Ogni ragazzo ha una tecnica sua, che non impara studiando:
+   gli succede addosso, in un momento preciso.
+   dove: 'allenamento' (dopo un certo esercizio) | 'partita' (in gara)
+   ============================================================ */
+IE.firme = {
+  rei:     { tec: 'firma_rei',     dove: 'partita',     lv: 6,  cond: 'sotto',    scena: 'f_rei',
+             nota: 'In una partita in cui siete sotto di due gol.' },
+  goro:    { tec: 'firma_goro',    dove: 'allenamento', lv: 8,  eserc: 'uno',     scena: 'f_goro',
+             nota: 'Nell\'uno contro uno, quando non ha più niente da dimostrare.' },
+  hina:    { tec: 'firma_hina',    dove: 'allenamento', lv: 10, eserc: 'muro',    scena: 'f_hina',
+             nota: 'Ai tiri contro il muro della palestra, dopo il duecentesimo.' },
+  zero:    { tec: 'firma_zero',    dove: 'partita',     lv: 12, cond: 'subito',   scena: 'f_zero',
+             nota: 'In partita, dopo aver già preso dei gol.' },
+  minoru:  { tec: 'firma_minoru',  dove: 'allenamento', lv: 7,  eserc: 'salita',  scena: 'f_minoru',
+             nota: 'In salita, il giorno che smette di avere paura.' },
+  kenta:   { tec: 'firma_kenta',   dove: 'allenamento', lv: 9,  eserc: 'cerchio', scena: 'f_kenta',
+             nota: 'A palla al cerchio, quando i suoi conti cominciano a servire.' },
+  yuki:    { tec: 'firma_gemelli', dove: 'allenamento', lv: 11, eserc: 'salita',  scena: 'f_gemelli',
+             nota: 'Con il fratello, in salita, all\'ora in cui di solito consegnano il latte.' },
+  shinobu: { tec: 'firma_shinobu', dove: 'partita',     lv: 12, cond: 'pubblico', scena: 'f_shinobu',
+             nota: 'In partita, davanti a gente vera.' },
+  rikuto:  { tec: 'firma_rikuto',  dove: 'allenamento', lv: 13, eserc: 'muro',    scena: 'f_rikuto',
+             nota: 'Ai tiri, il giorno che si decide a calciare forte.' },
+  benkei:  { tec: 'firma_benkei',  dove: 'allenamento', lv: 10, eserc: 'porta',   scena: 'f_benkei',
+             nota: 'Ai tiri in porta, all\'ora di merenda.' },
+  daichi:  { tec: 'firma_daichi',  dove: 'partita',     lv: 16, cond: 'area',     scena: 'f_daichi',
+             nota: 'In partita, quando gli arrivano dentro l\'area.' },
+  nao:     { tec: 'firma_nao',     dove: 'partita',     lv: 14, cond: 'entra',    scena: 'f_nao',
+             nota: 'In partita, la prima volta che gioca sul serio.' },
+  tu:      { tec: null,            dove: 'partita',     lv: 15, cond: 'sotto',    scena: 'f_tu',
+             nota: 'Quando serve a te, e non c\'è più nessun altro a cui chiederlo.' }
+};
+/* la firma del capitano dipende dal ruolo scelto */
+IE.firmaTua = function (ruolo) { return 'firma_tu_' + (ruolo || 'CC'); };
 
 /* ---------- formazioni ---------- */
 IE.formazioni = {

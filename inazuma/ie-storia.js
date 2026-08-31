@@ -1311,7 +1311,7 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
     n("— FINE DEL PRIMO ANNO —", 'urlo'),
     n("Il club continua: puoi allenare la squadra e giocare amichevoli contro tutte le squadre che hai incontrato, comprese quelle che ti hanno battuto.")
   ],
-  eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }, { giorni: 9999 }], poi: { hub: true } });
+  eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }], poi: { hub: true } });
 
 
 /* ============================================================
@@ -1459,6 +1459,251 @@ sc({ id: 'c6_jude', luogo: 'Il campo dietro la palestra',
   ],
   eff: [{ spirito: 6 }], poi: 'c6_2b' });
 
+
+/* ============================================================
+   I RISVEGLI
+   Nessuno impara la propria tecnica studiando. Gli succede addosso.
+   Queste scene le mostra il gioco da solo, quando ne ricorrono le
+   condizioni: in allenamento o dentro una partita.
+   ============================================================ */
+
+sc({ id: 'f_rei', firma: 'firma_rei', titolo: 'Rei Tachibana', luogo: 'Secondo tempo — sotto di due',
+  righe: [
+    n("Rei Tachibana ha corso per settanta minuti e non ha fatto una cosa giusta."),
+    n("Ha sbagliato quattro passaggi, si è fatto saltare tre volte, e adesso è l'ultimo rimasto fra il numero 9 avversario e la vostra area."),
+    d('rei', "Ok."),
+    d('rei', "Ok ok ok."),
+    n("Non ha la tecnica per fermarlo. Non ha la velocità. Non ha niente."),
+    d('rei', "Però io non me ne vado."),
+    n("Si mette davanti. Lo saltano. Si rialza. Si rimette davanti. Lo saltano di nuovo."),
+    n("Alla terza si rialza prima ancora di essere caduto del tutto."),
+    d('rei', "SONO ANCORA QUI!"),
+    n("Il numero 9 esita. È un decimo di secondo, ed è tutto quello che serviva."),
+    d('rei', "…l'ho preso?"),
+    tu("L'hai preso."),
+    n("Rei Tachibana ha imparato una cosa che non si insegna: che stare in piedi più a lungo dell'altro è una tecnica.")
+  ] });
+
+sc({ id: 'f_goro', firma: 'firma_goro', titolo: 'Gorō Ishizuka', luogo: 'Uno contro uno — dietro la palestra',
+  righe: [
+    n("Uno contro uno. Gorō contro Rikuto, che pesa venti chili di meno e non ha mai perso un contrasto in salita."),
+    n("Sei volte di fila Rikuto lo salta. Alla settima Gorō si ferma e resta lì, con le mani sulle ginocchia."),
+    d('amagai', "Ishizuka."),
+    d('goro', "…non ci arrivo."),
+    d('amagai', "No. Non ci arrivi."),
+    d('amagai', "Tu quanti tronchi sposti al giorno?"),
+    d('goro', "…quattordici."),
+    d('amagai', "E quando un tronco cade, cosa fa? Insegue?"),
+    d('goro', "…no. Cade e basta."),
+    d('amagai', "E cosa succede a quello che sta sotto?"),
+    n("Silenzio. Gorō si raddrizza molto lentamente, come uno che ha appena capito una cosa che sapeva già da anni."),
+    d('goro', "…ancora."),
+    n("Rikuto riparte. Gorō non lo insegue: aspetta la linea giusta e ci si mette dentro tutto insieme."),
+    n("Il rumore lo sentono dalla strada.")
+  ] });
+
+sc({ id: 'f_hina', firma: 'firma_hina', titolo: 'Hina Kurosawa', luogo: 'Muro della palestra — duecentesimo tiro',
+  righe: [
+    n("Hina tira contro il muro della palestra da un'ora e mezza. Ha segnato con il gesso un quadrato di quaranta centimetri e lo ha centrato centonovantotto volte su duecento."),
+    d('kenta', "Novantanove per cento."),
+    d('hina', "Non basta."),
+    d('kenta', "…è novantanove per cento."),
+    d('hina', "Nel tiro con l'arco novantanove per cento vuol dire che una freccia su cento ammazza qualcuno."),
+    n("Tira di nuovo. Centro. Di nuovo. Centro."),
+    d('hina', "Non è la mira il problema."),
+    tu("E qual è?"),
+    d('hina', "Che quando tiro penso al quadrato."),
+    d('hina', "E in partita il quadrato non c'è. C'è un portiere che si muove, dieci persone che urlano, e quarantatré cretini dietro la recinzione che gridano il mio nome."),
+    n("Si ferma. Guarda il muro. Poi si gira e guarda la recinzione, che adesso è vuota."),
+    d('hina', "…quarantatré."),
+    d('hina', "Devo smettere di togliere il rumore. Devo mirarci dentro."),
+    n("Il duecentesimo tiro non centra il quadrato: passa dodici centimetri più in là, dove Hina aveva deciso un istante prima che sarebbe stato il palo.")
+  ] });
+
+sc({ id: 'f_zero', firma: 'firma_zero', titolo: 'Tsukasa "Zero" Naruse', luogo: 'Dentro la partita — dopo il secondo gol',
+  righe: [
+    n("Secondo gol. Zero resta a terra più a lungo del necessario, con la faccia nell'erba."),
+    n("È esattamente la posizione in cui è rimasto due anni fa, in una finale, davanti a duemila persone, dopo l'ottavo."),
+    d('rei', "Zero—"),
+    d('zero', "Non chiamarmi così."),
+    n("Si alza."),
+    d('zero', "Non chiamarmi così. Non oggi."),
+    d('zero', "Sapete perché mi chiamano Zero? Perché un giornale ha contato i gol e non le parate."),
+    d('zero', "Diciotto tiri. Dieci parate. Otto gol. E hanno scritto zero."),
+    n("Si mette i guanti. Li stringe fino a farsi male ai polsi."),
+    d('zero', "Da adesso conto io."),
+    n("Il terzo tiro glielo tirano da dodici metri, di collo pieno, nell'angolo basso."),
+    n("Zero ci arriva. E quando si rialza, con il pallone stretto al petto, non guarda il pubblico: guarda Kenta."),
+    d('zero', "SEGNALA."),
+    d('kenta', "L'ho già segnata!"),
+    d('zero', "SEGNALA BENE.")
+  ] });
+
+sc({ id: 'f_minoru', firma: 'firma_minoru', titolo: 'Minoru Sasaoka', luogo: 'Corsa in salita — al tornante',
+  righe: [
+    n("La salita fino al tornante è di un chilometro e quattrocento. Minoru arriva sempre primo e aspetta gli altri seduto sul guard-rail."),
+    n("Oggi non si siede. Torna indietro di corsa, incontra Gorō a metà salita, e riparte con lui."),
+    d('goro', "…che fai."),
+    d('minoru', "Ti vengo addosso."),
+    d('goro', "Cosa."),
+    d('minoru', "Devo smettere di chiudere gli occhi. Sei la cosa più grossa che c'è. Comincio da te."),
+    n("Gorō si ferma. Guarda questo primo anno alto un metro e quarantuno che gli sta chiedendo di essere investito."),
+    d('goro', "…mi dispiace in anticipo."),
+    n("Minoru non chiude gli occhi. Vola per tre metri e atterra malissimo, e mentre è ancora per aria sta già ridendo."),
+    d('minoru', "NON LI HO CHIUSI!"),
+    d('minoru', "Ancora! Ancora!"),
+    n("Alla quarta capisce la cosa vera: che se parte mezzo secondo prima, non c'è nessuna collisione da temere."),
+    n("Non deve essere coraggioso. Deve solo arrivare prima. Ed è la cosa che gli riesce meglio al mondo.")
+  ] });
+
+sc({ id: 'f_kenta', firma: 'firma_kenta', titolo: 'Kenta Ubukata', luogo: 'Palla al cerchio — in mezzo, di nuovo',
+  righe: [
+    n("A palla al cerchio, Kenta sta in mezzo. Ci sta sempre. Ci sta da due mesi."),
+    n("Non è un caso: ci finisce perché è il più lento, e non ne esce perché è il più lento."),
+    d('shinobu', "Kenta, muoviti!"),
+    d('kenta', "Mi sto muovendo."),
+    d('shinobu', "Ti stai muovendo verso dove è già passata."),
+    n("Kenta si ferma in mezzo al cerchio. Non insegue più. Guarda."),
+    d('kenta', "Hina passa sempre al secondo compagno a destra quando è sotto pressione. Sempre. Quarantuno volte su quarantatré."),
+    d('hina', "…cosa?"),
+    d('kenta', "Rikuto tocca due volte prima di passare. Shinobu finge di passare corto e passa lungo, ma solo se l'ha già fatto almeno una volta nello stesso giro."),
+    d('kenta', "Rei passa a te."),
+    d('rei', "Io passo a chiunque!"),
+    d('kenta', "No. Tu passi a lui. Sempre a lui. Ventisei su ventotto."),
+    n("Silenzio nel cerchio."),
+    d('kenta', "Ripartite."),
+    n("Kenta intercetta al terzo passaggio. E al quinto. E al sesto."),
+    d('kenta', "Non devo correre più veloce. Devo essere già lì.")
+  ] });
+
+sc({ id: 'f_gemelli', firma: 'firma_gemelli', titolo: 'Yuki e Aoi Sōma', luogo: 'Corsa in salita — le cinque del mattino',
+  righe: [
+    n("Amagai ha spostato l'allenamento alle cinque, una volta sola, per vedere una cosa."),
+    d('amagai', "Voi due. Fate la salita come fate le consegne."),
+    d('yuki', "Con le bici?"),
+    d('amagai', "Senza. Ma con la testa che avete alle cinque."),
+    n("Partono. E succede una cosa che nessuno degli altri nove riesce a spiegare bene nemmeno dopo."),
+    n("Non si guardano. Non si parlano. Yuki accelera e Aoi accelera nello stesso istante, senza mezzo decimo di ritardo."),
+    n("Al tornante Yuki va a sinistra e Aoi a destra senza che nessuno dei due abbia deciso niente."),
+    d('shinobu', "Come fanno?"),
+    d('kenta', "Otto chilometri al giorno da quando ne avevano sei. Fanno circa ventimila chilometri insieme."),
+    d('kenta', "Non si stanno coordinando. Si sono coordinati nel 2015 e non hanno più smesso."),
+    d('amagai', "Sōma."),
+    d('yuki', "Sì?"),
+    d('amagai', "Tutti e due."),
+    d('yuki', "Sì?"),
+    d('aoi', "Sì?"),
+    d('amagai', "Da domani, in partita, non vi separo mai più.")
+  ] });
+
+sc({ id: 'f_shinobu', firma: 'firma_shinobu', titolo: 'Shinobu Katagiri', luogo: 'Secondo tempo — davanti a gente vera',
+  righe: [
+    n("Shinobu Katagiri ha recitato per sette anni davanti a due sedie vuote e a un ritratto dell'imperatore Meiji."),
+    n("Adesso ha centoventi persone dietro una recinzione e un difensore che pesa quindici chili più di lei."),
+    n("Cade. Cade in un modo che non le è mai riuscito in aula di musica: la caviglia gira, la faccia si apre, il braccio va su come nelle tragedie."),
+    n("L'arbitro non fischia. Il difensore però si ferma, perché nessuno resta indifferente davanti a un dolore fatto così bene."),
+    n("Shinobu è già in piedi. È già in corsa. Ha ancora la faccia del dolore addosso per mezzo secondo, poi se la toglie."),
+    d('shinobu', "PRIMO ATTO!"),
+    n("Il secondo lo fa dieci metri più avanti: finge di passare e non passa."),
+    d('shinobu', "SECONDO!"),
+    n("Il terzo non lo annuncia. Il terzo è quello vero."),
+    n("Dopo, sulla panchina, sta zitta per un tempo lunghissimo."),
+    d('shinobu', "Sette anni davanti a due sedie."),
+    d('shinobu', "E la sala era qui.")
+  ] });
+
+sc({ id: 'f_rikuto', firma: 'firma_rikuto', titolo: 'Rikuto Hazama', luogo: 'Tiri contro il muro — pomeriggio',
+  righe: [
+    n("Rikuto tira piano. Lo ha sempre fatto. Colpisce bene, in mezzo, e la palla arriva al muro senza fare rumore."),
+    d('amagai', "Hazama. Perché non calci forte?"),
+    d('rikuto', "…"),
+    d('amagai', "Hazama."),
+    d('rikuto', "Se calcio forte le capre scappano."),
+    n("Nessuno ride, perché è chiaro che non è una battuta."),
+    d('rikuto', "Da noi non si fa rumore. Il rumore le fa scappare, e poi le devi ritrovare, e a volte una la ritrovi che è caduta."),
+    d('rikuto', "Quindi non si fa rumore. Mai."),
+    n("Amagai ci mette un po' a rispondere."),
+    d('amagai', "Quanti anni hai."),
+    d('rikuto', "Tredici."),
+    d('amagai', "E da quanti anni non fai rumore?"),
+    d('rikuto', "…tredici."),
+    n("Il vecchio custode guarda il muro della palestra, poi la montagna dietro."),
+    d('amagai', "Qui non ci sono capre. E questo muro è di cemento armato del 1974."),
+    d('amagai', "Fai rumore, ragazzo. Una volta. Vediamo che succede."),
+    n("Il pallone parte come quattrocento metri di dislivello messi tutti insieme. Dalla scuola escono in sei a vedere cos'è caduto.")
+  ] });
+
+sc({ id: 'f_benkei', firma: 'firma_benkei', titolo: 'Benkei Marui', luogo: 'Tiri in porta — ora di merenda',
+  righe: [
+    n("Benkei ha preso undici tiri su trenta. Non è un buon numero e lo sa."),
+    d('benkei', "Non arrivo con le mani."),
+    d('hina', "Le mani ce le hai."),
+    d('benkei', "Le ho corte."),
+    n("È vero. È largo e ha le braccia corte, ed è la peggior combinazione possibile per un portiere."),
+    d('amagai', "Marui. Togliti i guanti."),
+    d('benkei', "…come?"),
+    d('amagai', "Toglili. Non ti servono. Tu non pari con le mani."),
+    d('amagai', "Tu occupi. È una cosa diversa e nessuno te l'ha mai detto perché nessuno pensa che sia una tecnica."),
+    d('amagai', "Non provare a prenderla. Mettiti dove sta andando e allarga tutto."),
+    n("Il tiro successivo glielo tira Rikuto, che adesso fa rumore."),
+    n("Benkei non salta. Si apre come una porta di stalla e la palla gli arriva in pieno stomaco."),
+    n("Resta in piedi. La palla cade davanti a lui, ferma."),
+    d('benkei', "…ho fame."),
+    d('shinobu', "BENKEI HA PARATO CON LA PANCIA."),
+    d('benkei', "Ho parato con la pancia e ho fame. Sono due cose vere insieme.")
+  ] });
+
+sc({ id: 'f_daichi', firma: 'firma_daichi', titolo: 'Daichi Amano', luogo: 'Dentro la partita — dentro la nostra area',
+  righe: [
+    n("Sono dentro. Tre di loro dentro l'area, uno solo davanti a Daichi Amano."),
+    n("Daichi non arretra. Non è una scelta tecnica: è che dietro di lui c'è la linea di fondo, e dietro la linea di fondo c'è il prato dove a settembre dovevano passare i camion."),
+    d('daichi', "…"),
+    n("In un raccoglitore verde, in un armadio del municipio di Amanome, c'è una delibera del 1986 che dice che quel terreno andava rifatto."),
+    n("Non l'ha revocata nessuno. Non l'ha eseguita nessuno. È rimasta lì trent'anni ad aspettare qualcuno che se ne accorgesse."),
+    d('daichi', "Non si passa."),
+    n("Il numero 10 avversario prova a saltarlo. Daichi si sposta di quaranta centimetri e chiude."),
+    n("Ci riprova dall'altra parte. Quaranta centimetri, e chiude."),
+    d('daichi', "NON SI PASSA!"),
+    n("Dalla recinzione, in fondo, un uomo di cinquantadue anni che non applaude mai fa un passo avanti senza accorgersene.")
+  ] });
+
+sc({ id: 'f_nao', firma: 'firma_nao', titolo: 'Nao Kirishima', luogo: 'Secondo tempo — il quattordici entra',
+  righe: [
+    n("Nao Kirishima si è iscritta al club per riempire una casella vuota nel registro."),
+    n("Ha scelto il quattordici perché era il numero della casella e perché è il giorno del suo compleanno, e ha detto a tutti che lei scrive, non corre."),
+    n("È in campo da undici minuti e ha già toccato il pallone diciannove volte."),
+    d('kenta', "Diciannove."),
+    d('nao', "Stai contando anche me?"),
+    d('kenta', "Conto tutti."),
+    d('nao', "…"),
+    n("Nao Kirishima gestisce un negozio di alimentari con sua madre da quando aveva undici anni."),
+    n("Sa quanto latte serve il martedì. Sa che la signora Kurihara paga il quindici del mese. Sa dove va ogni cosa prima che qualcuno gliela chieda."),
+    n("È esattamente la stessa cosa."),
+    d('nao', "Rei, alla tua sinistra fra due secondi."),
+    d('rei', "Cosa—"),
+    d('nao', "DUE SECONDI."),
+    n("La palla arriva alla sinistra di Rei dopo due secondi."),
+    d('nao', "Io scrivo, non corro."),
+    d('nao', "Ma il quattordici è mio e non lo do a nessuno.")
+  ] });
+
+sc({ id: 'f_tu', firma: null, titolo: 'Il capitano', luogo: 'Secondo tempo — sotto di due',
+  righe: [
+    n("Sotto di due. Venti minuti alla fine."),
+    n("Guardi la panchina e Amagai non dice niente, perché non c'è niente da dire che tu non sappia già."),
+    n("Guardi i tuoi dieci. Rei che ha le mani sulle ginocchia. Gorō che respira come una macchina rotta. Minoru che ha ancora paura. Hina che è arrabbiata con sé stessa."),
+    n("Undici persone che ad aprile non sapevano giocare a calcio, in un campo che avete falciato voi, davanti a un paese che non ha altro."),
+    n("Ad aprile eravate in due."),
+    tu("…"),
+    tu("Ehi."),
+    n("Si girano tutti e dieci insieme, e questa è la cosa che ti fa capire che ce l'hai fatta molto prima del risultato."),
+    tu("Venti minuti."),
+    d('rei', "Venti minuti."),
+    d('goro', "…venti."),
+    d('hina', "Dimmi dove devo tirare."),
+    n("E in quel momento, senza sapere bene come, sai esattamente dove.")
+  ] });
+
 /* ============================================================
    CAPITOLI: struttura, obiettivi, luoghi disponibili nell'hub
    ============================================================ */
@@ -1466,7 +1711,6 @@ IE.capitoli = [
   { n: 1, titolo: 'Undici nomi', periodo: 'Aprile',
     apertura: 'c1_1',
     obiettivo: 'Trovare undici iscritti e un insegnante che firmi.',
-    giorni: 0,
     luoghi: [
       { id: 'goro', nome: 'Segheria Ishizuka', icona: '🪵', scena: 'r_goro', se: function (S) { return !S.ha('goro'); } },
       { id: 'kenta', nome: 'Aula di scienze', icona: '🔬', scena: 'r_kenta', se: function (S) { return !S.ha('kenta'); } },
@@ -1481,7 +1725,7 @@ IE.capitoli = [
 
   { n: 2, titolo: 'Il campo dietro la palestra', periodo: 'Maggio',
     apertura: 'c2_1',
-    obiettivo: 'Rimettere in piedi il campo e trovare un allenatore.', giorni: 6,
+    obiettivo: 'Rimettere in piedi il campo e trovare un allenatore.',
     luoghi: [
       { id: 'radio', nome: 'Il quaderno di Kenta', icona: '📻', scena: 'n_c2', se: function () { return true; } },
       { id: 'campo', nome: 'Sistemare il campo', icona: '🧹', scena: 'c2_campo', se: function (S) { return !S.flag.campo_pronto; } },
@@ -1492,7 +1736,7 @@ IE.capitoli = [
 
   { n: 3, titolo: 'Il portiere che aveva smesso', periodo: 'Giugno',
     apertura: 'c3_1',
-    obiettivo: 'Convincere Zero a tornare in porta, poi la prima partita in casa.', giorni: 7,
+    obiettivo: 'Convincere Zero a tornare in porta, poi la prima partita in casa.',
     luoghi: [
       { id: 'radio', nome: 'Il quaderno di Kenta', icona: '📻', scena: 'n_c3', se: function () { return true; } },
       { id: 'zero', nome: 'Via del tempio', icona: '🧤', scena: 'r_zero_1', se: function (S) { return !S.ha('zero'); } },
@@ -1501,7 +1745,7 @@ IE.capitoli = [
 
   { n: 4, titolo: 'La recinzione', periodo: 'Luglio — Agosto',
     apertura: 'c4_1',
-    obiettivo: 'Vincere il torneo estivo della vallata. In palio: il campo.', giorni: 8,
+    obiettivo: 'Vincere il torneo estivo della vallata. In palio: il campo.',
     luoghi: [
       { id: 'radio', nome: 'La radio degli alimentari', icona: '📻', scena: 'n_c4', se: function () { return true; } },
       { id: 'nao', nome: 'Alimentari Kirishima', icona: '🏪', scena: 'c4_nao', se: function (S) { return S.flag.ultimatum && !S.ha('nao'); } },
@@ -1510,7 +1754,7 @@ IE.capitoli = [
 
   { n: 5, titolo: 'Il posto in più', periodo: 'Settembre — Ottobre',
     apertura: 'c5_1',
-    obiettivo: 'Superare il girone di qualificazione del Football Frontier.', giorni: 8,
+    obiettivo: 'Superare il girone di qualificazione del Football Frontier.',
     luoghi: [
       { id: 'radio', nome: 'La semifinale alla radio', icona: '📻', scena: 'n_c5', se: function () { return true; } },
       { id: 'occult', nome: '⚽ Girone — Occult', icona: '👻', scena: 'c5_occult', se: function (S) { return !S.flag.g_occult; }, eff: [{ flag: 'g_occult' }], principale: true },
@@ -1520,7 +1764,7 @@ IE.capitoli = [
 
   { n: 6, titolo: 'Raimon', periodo: 'Novembre',
     apertura: 'c6_1',
-    obiettivo: 'Una partita che non conta per nessuna classifica.', giorni: 5,
+    obiettivo: 'Una partita che non conta per nessuna classifica.',
     luoghi: [] }
 ];
 
@@ -1529,18 +1773,30 @@ IE.capitoli = [
    ============================================================ */
 IE.allenamenti = [
   { id: 'salita', nome: 'Corsa in salita', icona: '⛰️', desc: 'Fino al tornante e ritorno. Nessuno la ama.',
-    su: ['res', 'vel'], q: 3, tutti: true },
-  { id: 'muro', nome: 'Tiri contro il muro della palestra', icona: '🧱', desc: 'Duecento tiri. Poi altri duecento.',
-    su: ['tir'], q: 4, tutti: false },
+    su: ['res', 'vel'], q: 3, fat: 20, tutti: true },
+  { id: 'muro', nome: 'Tiri contro il muro', icona: '🧱', desc: 'Duecento tiri. Poi altri duecento.',
+    su: ['tir'], q: 4, fat: 22, ruoli: ['AT', 'CC', 'DF'] },
   { id: 'uno', nome: 'Uno contro uno', icona: '🤼', desc: 'A coppie, fino a che uno dei due non molla.',
-    su: ['dif', 'fis'], q: 3, tutti: true },
+    su: ['dif', 'fis'], q: 3, fat: 26, tutti: true },
   { id: 'cerchio', nome: 'Palla al cerchio', icona: '🔵', desc: 'Dieci in cerchio, due in mezzo. Umiliante e utile.',
-    su: ['ctr'], q: 4, tutti: true },
+    su: ['ctr'], q: 4, fat: 18, tutti: true },
   { id: 'porta', nome: 'Tiri in porta', icona: '🥅', desc: 'Il portiere si stanca prima di tutti.',
-    su: ['par', 'tir'], q: 4, tutti: false },
+    su: ['par', 'tir'], q: 4, fat: 24, ruoli: ['PT', 'AT'] },
+  { id: 'navetta', nome: 'Navette', icona: '🏃', desc: 'Venti metri avanti e indietro finché non gira la testa.',
+    su: ['vel', 'gri'], q: 3, fat: 24, tutti: true },
+  { id: 'sacchi', nome: 'Sacchi di segatura', icona: '🪵', desc: 'Li presta il padre di Gorō. Pesano come sembrano.',
+    su: ['fis'], q: 5, fat: 28, tutti: true },
   { id: 'partitella', nome: 'Partitella', icona: '⚽', desc: 'Sette contro sette. Serve a ricordarsi perché.',
-    su: ['gri', 'ctr'], q: 2, tutti: true, spirito: 3, exp: 220 }
+    su: ['gri', 'ctr'], q: 2, fat: 16, tutti: true, spirito: 3, exp: 220 }
 ];
+
+/* Tecniche comuni che si possono imparare allenandosi. */
+IE.imparabili = {
+  tiro:   ['tiro_dritto', 'bordata', 'tiro_al_volo', 'colpo_testa', 'punizione', 'tiro_teso', 'tiro_a_giro', 'siluro', 'foglia_morta', 'raffica_tiri', 'cannonata'],
+  drib:   ['finta_secca', 'passo_di_lato', 'doppio_passo', 'tunnel', 'cambio_passo', 'spalla', 'zig_zag', 'sombrero', 'folata', 'lettura'],
+  blocco: ['contrasto', 'sbarramento', 'anticipo', 'scivolata', 'gabbia', 'pressing2', 'marcatura'],
+  parata: ['presa_sicura', 'pugno_teso', 'uscita_bassa', 'presa_alta', 'volo_laterale', 'mani_pietra']
+};
 
 /* Tecniche che si imparano crescendo in affiatamento. */
 IE.crescitaTecniche = {

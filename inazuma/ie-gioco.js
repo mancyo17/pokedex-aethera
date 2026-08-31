@@ -29,7 +29,7 @@ function nuovoStato() {
     io: null, nomeSquadra: 'Amanome Eleven', sigla: 'AMA', stemma: '⚡',
     rosa: [], titolari: [], formazione: '4-4-2', spirito: 0,
     cap: 1, scena: null, riga: 0, flag: {}, obiettivo: '',
-    giorni: 5, incontrate: [], storico: [], luoghiFatti: {},
+    scout: 0, battute: [], incontrate: [], storico: [], luoghiFatti: {},
     partitaPendente: null, sblocchi: {},
     opz: { interazione: 'normale' }
   };
@@ -38,6 +38,21 @@ function metodi(s) {
   s.ha = function (id) { return s.rosa.some(function (g) { return g.id === id; }); };
   s.gioc = function (id) { return s.rosa.filter(function (g) { return g.id === id; })[0]; };
   return s;
+}
+
+/* Rimette in riga i salvataggi vecchi e i giocatori appena arrivati. */
+function normalizzaRosa() {
+  if (!S || !S.rosa) return;
+  S.risvegli = S.risvegli || {};
+  S.battute = S.battute || [];
+  if (typeof S.scout !== 'number') S.scout = 0;
+  S.rosa.forEach(function (g) {
+    if (typeof g.fat !== 'number') g.fat = 100;
+    if (!g.tec) g.tec = [];
+    if (!g.eq || !g.eq.length) equipaggiaAuto(g);
+    else g.eq = g.eq.filter(function (id) { return IE.tec(id) && g.tec.indexOf(id) >= 0; }).slice(0, SLOT);
+    if (!g.eq.length) equipaggiaAuto(g);
+  });
 }
 function salva() {
   try {
@@ -53,7 +68,9 @@ function carica() {
     if (!s || !s.ver) return null;
     var base = nuovoStato();
     for (var k in base) if (!(k in s)) s[k] = base[k];
-    return metodi(s);
+    metodi(s);
+    var prec = S; S = s; normalizzaRosa(); S = prec;
+    return s;
   } catch (e) { return null; }
 }
 
@@ -87,7 +104,8 @@ function creaTu(dati) {
     id: 'tu', nome: dati.nome, corto: dati.nome.split(' ')[0], ruolo: dati.ruolo, el: dati.el,
     col: '#ffd23f', prof: org.profilo, pot: 1.3, base: base, allen: {}, lv: 1, exp: 0,
     tec: tec, numero: dati.numero, am: 100, origine: dati.origine, capitano: true,
-    volto: Object.assign({ maglia: '#2f9e63' }, dati.volto || {})
+    volto: Object.assign({ maglia: '#2f9e63' }, dati.volto || {}),
+    fat: 100
   };
 }
 
@@ -129,7 +147,6 @@ function applica(effs) {
     if (e.obiettivo) S.obiettivo = e.obiettivo;
     if (e.sblocca) S.sblocchi[e.sblocca] = true;
     if (typeof e.exp === 'number') S.rosa.forEach(function (g) { daiExp(g, e.exp); });
-    if (typeof e.giorni === 'number') S.giorni = e.giorni;
   });
 }
 function reclutaGiocatore(id) {
@@ -137,9 +154,49 @@ function reclutaGiocatore(id) {
   var g = IE.creaGiocatore(id, Math.max(1, mediaLv() - 1));
   if (!g) return;
   g.am = 20;
+  g.fat = 100;
   g.numero = prossimoNumero();
+  equipaggiaAuto(g);
   S.rosa.push(g);
   aggiornaTitolari();
+}
+
+/* ---------- tecniche equipaggiate: quattro slot ---------- */
+var SLOT = 4;
+function equipaggiaAuto(g) {
+  var ordine = { PT: ['parata', 'blocco', 'drib', 'tiro'], DF: ['blocco', 'drib', 'tiro', 'parata'],
+                 CC: ['drib', 'blocco', 'tiro', 'parata'], AT: ['tiro', 'drib', 'blocco', 'parata'] }[g.ruolo] || ['drib', 'tiro', 'blocco', 'parata'];
+  var pool = (g.tec || []).map(IE.tec).filter(Boolean).filter(function (t) {
+    return !t.soloDi || t.soloDi === g.id;
+  });
+  pool.sort(function (a, b) {
+    var pa = ordine.indexOf(a.tipo), pb = ordine.indexOf(b.tipo);
+    if (pa !== pb) return pa - pb;
+    return b.pot - a.pot;
+  });
+  var scelte = [], visti = {};
+  /* prima una per tipo, seguendo la priorità del ruolo */
+  ordine.forEach(function (tp) {
+    var t = pool.filter(function (x) { return x.tipo === tp && !visti[x.id]; })[0];
+    if (t && scelte.length < SLOT) { scelte.push(t.id); visti[t.id] = 1; }
+  });
+  /* poi si riempie con le più potenti che restano */
+  pool.forEach(function (t) { if (scelte.length < SLOT && !visti[t.id]) { scelte.push(t.id); visti[t.id] = 1; } });
+  g.eq = scelte;
+  return scelte;
+}
+function fatica(g) { return typeof g.fat === 'number' ? g.fat : (g.fat = 100); }
+function riposoCompleto() { S.rosa.forEach(function (g) { g.fat = 100; g.parlato = false; }); }
+function faticaMedia() {
+  if (!S.rosa.length) return 100;
+  var t = 0; S.rosa.forEach(function (g) { t += fatica(g); });
+  return Math.round(t / S.rosa.length);
+}
+function livelloMedio() {
+  var tit = S.titolari.map(function (id) { return S.gioc(id); }).filter(Boolean);
+  if (!tit.length) return 1;
+  var t = 0; tit.forEach(function (g) { t += g.lv; });
+  return Math.round(t / tit.length);
 }
 function mediaLv() {
   if (!S.rosa.length) return 1;
@@ -189,7 +246,6 @@ function capitolo() {
 function iniziaCapitolo(n) {
   S.cap = n;
   var c = capitolo();
-  S.giorni = c.giorni != null ? c.giorni : 6;
   S.obiettivo = c.obiettivo || '';
   S.luoghiFatti = {};
   if (c.apertura) apriScena(c.apertura); else G.vai('hub');
@@ -226,7 +282,8 @@ function render() {
     titolo: vistaTitolo, creazione: vistaCreazione, storia: vistaStoria, hub: vistaHub,
     squadra: vistaSquadra, giocatore: vistaGiocatore, formazione: vistaFormazione,
     allenamento: vistaAllenamento, spogliatoio: vistaSpogliatoio, partita: vistaPartita,
-    finepartita: vistaFinePartita, opzioni: vistaOpzioni, amichevoli: vistaAmichevoli
+    finepartita: vistaFinePartita, opzioni: vistaOpzioni, amichevoli: vistaAmichevoli,
+    risveglio: vistaRisveglio, contatti: vistaContatti, prepartita: vistaPrePartita
   })[v] || vistaHub;
   schermo.innerHTML = '';
   f();
@@ -241,7 +298,7 @@ function disegnaBarra() {
   $('#barra-ris').innerHTML =
     '<span class="gettone">👥 <b>' + S.rosa.length + '</b></span>' +
     '<span class="gettone">💚 <b>' + S.spirito + '</b></span>' +
-    (S.sblocchi.allenamento && S.giorni < 900 ? '<span class="gettone">📅 <b>' + S.giorni + '</b></span>' : '');
+    (S.sblocchi.allenamento ? '<span class="gettone">🫱 <b>' + (S.scout || 0) + '</b></span>' : '');
 }
 
 /* ============================================================
@@ -459,7 +516,7 @@ function vistaCreazione() {
     box.appendChild(bt('Comincia', 'Primo lunedì di aprile.', function () {
       S.io = g; S.nomeSquadra = c.dati.squadra;
       S.sigla = (c.dati.squadra.replace(/[^A-Za-zÀ-ÿ]/g, '').slice(0, 3) || 'AMA').toUpperCase();
-      S.rosa = [g]; aggiornaTitolari();
+      S.rosa = [g]; normalizzaRosa(); aggiornaTitolari();
       iniziaCapitolo(1);
     }, 'primario'));
   }
@@ -475,8 +532,10 @@ function ritrattoHtml(g, cls) {
   var el2 = g.el ? '<span class="el">' + IE.elementi[g.el].icona + '</span>' : '';
   var v = IE.voltoDi(g);
   var faccia = IE.volto(v, { maglia: v.maglia || g.col });
-  return '<div class="ritratto ' + (cls || '') + '" style="background:linear-gradient(150deg,' + (g.col || '#888') + ',' +
-    ombra(g.col || '#888') + ')">' + faccia + el2 + '</div>';
+  var anello = g.el && IE.elementi[g.el] ? IE.elementi[g.el].col : 'transparent';
+  return '<div class="ritratto ' + (cls || '') + '" style="--anello:' + anello +
+    ';background:linear-gradient(150deg,' + (g.col || '#888') + ',' + ombra(g.col || '#888') + ')">' +
+    faccia + el2 + '</div>';
 }
 function ombra(hex) {
   try {
@@ -576,6 +635,15 @@ function vistaHub() {
     '<h2>' + esc(c.titolo) + '</h2>' +
     '<div class="picc tenue">' + esc(S.obiettivo || c.obiettivo || '') + '</div></div>'));
 
+  if (S.partitaPendente) {
+    var pp = IE.squadre[S.partitaPendente.avv];
+    var rip = el('<div class="pannello"></div>');
+    rip.appendChild(bt('⚽  Torna alla partita', 'Ti stanno aspettando: ' + esc(pp ? pp.nome : ''), function () {
+      var cfg = S.partitaPendente; S.partitaPendente = null; avviaPartita(cfg);
+    }, 'verde'));
+    schermo.appendChild(rip);
+  }
+
   /* luoghi della storia */
   var luoghi = (c.luoghi || []);
   var vis = luoghi.filter(function (l) { return !S.luoghiFatti[l.id] && (!l.se || l.se(S)); });
@@ -603,14 +671,16 @@ function vistaHub() {
   /* attività */
   var att = el('<div class="pannello"><div class="etichetta">Il club</div></div>');
   if (S.sblocchi.allenamento) {
-    var liberi = S.giorni >= 900;
-    var restano = liberi ? 'Tempo libero: allenati quanto vuoi.'
-      : S.giorni > 0 ? 'Restano ' + S.giorni + ' giorni prima della prossima partita.'
-      : 'Finiti i giorni: ora si gioca.';
-    var ba = bt('🏃  Allenamento', restano, function () { G.vai('allenamento'); });
-    var bs = bt('💬  Spogliatoio', S.giorni > 0 ? 'Parla con la squadra. L\'affiatamento sblocca le tecniche combinate.' : 'Finiti i giorni.', function () { G.vai('spogliatoio'); });
-    if (S.giorni <= 0) { ba.classList.add('disab'); bs.classList.add('disab'); }
+    var fm = faticaMedia();
+    var ba = bt('🏃  Allenamento', fm > 25 ? 'Fiato della squadra: ' + fm + ' su 100.' : 'Sono a pezzi: serve una partita per rifiatare.',
+      function () { G.vai('allenamento'); });
+    var parlabili = S.rosa.filter(function (g) { return g.id !== 'tu' && !g.parlato; }).length;
+    var bs = bt('💬  Spogliatoio', parlabili ? parlabili + ' con cui non hai ancora parlato.' : 'Hai già parlato con tutti.',
+      function () { G.vai('spogliatoio'); });
+    if (!parlabili) bs.classList.add('disab');
     att.appendChild(ba); att.appendChild(bs);
+    if (S.battute.length) att.appendChild(bt('🫱  Contatti', 'Chiama in squadra chi hai già battuto. Hai ' + (S.scout || 0) + ' contatti.',
+      function () { G.vai('contatti'); }));
   }
   att.appendChild(bt('👥  Rosa', S.rosa.length + ' tesserati.', function () { G.vai('squadra'); }));
   att.appendChild(bt('📋  Formazione', S.formazione + ' · ' + (IE.formazioni[S.formazione] || {}).nome, function () { G.vai('formazione'); }));
@@ -637,13 +707,13 @@ function vistaSquadra() {
   var tit = el('<div class="pannello"><div class="etichetta">In campo (' + S.titolari.length + '/11)</div></div>');
   S.titolari.forEach(function (id) {
     var g = S.gioc(id); if (!g) return;
-    tit.appendChild(schedaGiocatore(g, 'Aff. ' + (g.am || 0), function () { S.selez = id; G.vai('giocatore'); }));
+    tit.appendChild(schedaGiocatore(g, 'Lv ' + g.lv + '<br><span class="fioco">fiato ' + fatica(g) + '</span>', function () { S.selez = id; G.vai('giocatore'); }));
   });
   schermo.appendChild(tit);
   var pan = S.rosa.filter(function (g) { return S.titolari.indexOf(g.id) < 0; });
   if (pan.length) {
     var pb = el('<div class="pannello"><div class="etichetta">Panchina</div></div>');
-    pan.forEach(function (g) { pb.appendChild(schedaGiocatore(g, 'Aff. ' + (g.am || 0), function () { S.selez = g.id; G.vai('giocatore'); })); });
+    pan.forEach(function (g) { pb.appendChild(schedaGiocatore(g, 'Lv ' + g.lv + '<br><span class="fioco">fiato ' + fatica(g) + '</span>', function () { S.selez = g.id; G.vai('giocatore'); })); });
     schermo.appendChild(pb);
   }
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
@@ -663,6 +733,9 @@ function vistaGiocatore() {
     '<div class="centro"><div style="font-size:26px;font-weight:bold">' + IE.valutazione(g) + '</div><div class="picc fioco">val.</div></div></div>'));
   box.appendChild(el('<div class="stat"><span class="n">Affiatamento</span><span class="barra"><i style="width:' +
     (g.am || 0) + '%;background:#ff8fb0"></i></span><span class="v">' + (g.am || 0) + '</span></div>'));
+  var fq = fatica(g);
+  box.appendChild(el('<div class="stat"><span class="n">Fiato</span><span class="barra"><i style="width:' + fq +
+    '%;background:' + (fq > 60 ? '#3fd07a' : fq > 30 ? '#ffd23f' : '#ff5468') + '"></i></span><span class="v">' + fq + '</span></div>'));
   box.appendChild(el('<hr>'));
   box.appendChild(el(statHtml(st, g.ruolo)));
   box.appendChild(el('<div class="picc tenue" style="margin-top:8px">PT ' + IE.tpMax(g) + ' · PE ' + IE.fpMax(g) + '</div>'));
@@ -670,20 +743,52 @@ function vistaGiocatore() {
 
   if (m.bio) schermo.appendChild(el('<div class="pannello stretto"><div class="etichetta">Chi è</div><p class="picc" style="margin:0">' + esc(m.bio) + '</p></div>'));
 
-  var tb = el('<div class="pannello"><div class="etichetta">Tecniche</div></div>');
+  if (!g.eq || !g.eq.length) equipaggiaAuto(g);
+  var tipi = { tiro: 'Tiro', drib: 'Dribbling', blocco: 'Blocco', parata: 'Parata' };
+  var tb = el('<div class="pannello"><div class="etichetta">Tecniche in campo — ' + g.eq.length + ' su ' + SLOT + '</div>' +
+    '<div class="picc fioco" style="margin:-4px 0 8px">In partita può usare solo queste quattro. Tocca una tecnica per metterla dentro o toglierla.</div></div>');
   if (!g.tec.length) tb.appendChild(el('<div class="picc tenue">Nessuna. Ancora.</div>'));
-  g.tec.forEach(function (id) {
-    var t = IE.tec(id); if (!t) return;
-    var tipi = { tiro: 'Tiro', drib: 'Dribbling', blocco: 'Blocco', parata: 'Parata' };
-    tb.appendChild(el('<div style="margin-bottom:9px"><div><b>' + IE.elementi[t.el].icona + ' ' + esc(t.nome) + '</b> ' +
-      '<span class="tp">' + t.tp + ' PT</span></div>' +
-      '<div class="picc tenue">' + tipi[t.tipo] + ' · potenza ' + t.pot + (t.com && t.com.length ? ' · combinata con ' + t.com.map(function (c) { return esc((IE.personaggi[c] || {}).corto || c); }).join(' e ') : '') + '</div>' +
-      '<div class="picc fioco">' + esc(t.desc) + '</div></div>'));
+
+  var ordinate = g.tec.map(IE.tec).filter(Boolean).sort(function (a, b) {
+    var ea = g.eq.indexOf(a.id) >= 0, eb = g.eq.indexOf(b.id) >= 0;
+    if (ea !== eb) return ea ? -1 : 1;
+    if (a.tipo !== b.tipo) return a.tipo.localeCompare(b.tipo);
+    return b.pot - a.pot;
+  });
+  ordinate.forEach(function (t) {
+    var dentro = g.eq.indexOf(t.id) >= 0;
+    var firma = !!t.soloDi;
+    var b = document.createElement('button');
+    b.className = 'bt' + (dentro ? ' primario' : '');
+    b.style.textAlign = 'left';
+    b.innerHTML = '<div class="riga tra"><span>' + (dentro ? '● ' : '○ ') + IE.elementi[t.el].icona + ' <b>' + esc(t.nome) + '</b>' +
+      (firma ? ' <span class="picc">— firma</span>' : '') + '</span><span class="picc">' + t.tp + ' PT</span></div>' +
+      '<small>' + tipi[t.tipo] + ' · potenza ' + t.pot +
+      (t.com && t.com.length ? ' · con ' + t.com.map(function (c) { return esc((IE.personaggi[c] || {}).corto || c); }).join(' e ') : '') +
+      (t.sePerde ? ' · +' + t.sePerde + ' se siete sotto' : '') +
+      (t.seSubito ? ' · +' + t.seSubito + ' dopo aver preso gol' : '') +
+      (t.seFresco ? ' · +' + t.seFresco + ' con il fiato pieno' : '') +
+      '<br>' + esc(t.desc) + '</small>';
+    b.onclick = function () {
+      var i = g.eq.indexOf(t.id);
+      if (i >= 0) g.eq.splice(i, 1);
+      else if (g.eq.length >= SLOT) { alert('Quattro sono il massimo: togline una.'); return; }
+      else g.eq.push(t.id);
+      salva(); render();
+    };
+    tb.appendChild(b);
   });
   schermo.appendChild(tb);
 
   var pross = (IE.crescitaTecniche[g.id] || []).filter(function (x) { return x.tec && g.tec.indexOf(x.tec) < 0; })[0];
   if (pross) schermo.appendChild(el('<div class="avviso picc">Con affiatamento ' + pross.am + ' imparerà <b>' + esc(IE.tec(pross.tec).nome) + '</b>.</div>'));
+
+  var fi = IE.firme[g.id];
+  if (fi && !(S.risvegli || {})[g.id]) {
+    var manca = g.lv < fi.lv;
+    schermo.appendChild(el('<div class="avviso picc"><b>Ha una tecnica sua</b> che non ha ancora tirato fuori. ' +
+      esc(fi.nota) + (manca ? ' Gli serve almeno il livello ' + fi.lv + ' (ora ' + g.lv + ').' : ' È pronto: può succedere da un momento all\'altro.') + '</div>'));
+  }
 
   schermo.appendChild(bt('◀ Torna alla rosa', null, function () { G.vai('squadra'); }, 'piatta'));
 }
@@ -738,31 +843,50 @@ function vistaFormazione() {
    ============================================================ */
 function vistaAllenamento() {
   schermo.appendChild(el('<h2>Allenamento</h2>'));
-  schermo.appendChild(el('<div class="picc tenue" style="margin-bottom:10px">Sei e mezza del mattino. ' +
-    (S.giorni >= 900 ? 'Nessuna partita in programma: il tempo è tutto vostro.' : 'Restano <b>' + S.giorni + '</b> giorni prima della prossima partita.') + '</div>'));
+  schermo.appendChild(el('<div class="picc tenue" style="margin-bottom:4px">Sei e mezza del mattino. Non c\'è nessun calendario: ci si allena finché si regge in piedi, e in partita si entra comunque con il fiato pieno.</div>'));
+  schermo.appendChild(barraFatica());
+
   var box = el('<div class="pannello"></div>');
   IE.allenamenti.forEach(function (a) {
-    var chi = a.tutti ? 'tutta la squadra' : 'i più adatti';
-    var b = bt(a.icona + '  ' + a.nome,
-      a.desc + '  ·  ' + a.su.map(function (k) { return IE.stat[k].nome + ' +' + a.q; }).join(', ') + ' a ' + chi,
+    var chi = chiSiAllena(a);
+    var pronti = chi.filter(function (g) { return fatica(g) >= a.fat; });
+    var testo = a.desc + '  ·  ' + a.su.map(function (k) { return IE.stat[k].nome + ' +' + a.q; }).join(', ') +
+      '  ·  costa ' + a.fat + " di fiato a testa";
+    var b = bt(a.icona + '  ' + a.nome, testo + '  ·  ' + pronti.length + ' su ' + chi.length + ' in grado di farlo',
       function () { faiAllenamento(a); });
-    if (S.giorni <= 0) b.classList.add('disab');
+    if (!pronti.length) b.classList.add('disab');
     box.appendChild(b);
   });
   schermo.appendChild(box);
+
+  var stanchi = S.rosa.filter(function (g) { return fatica(g) < 25; });
+  if (stanchi.length) schermo.appendChild(el('<div class="avviso picc">' +
+    (stanchi.length === S.rosa.length ? 'Sono tutti a pezzi.' : '<b>' + stanchi.map(function (g) { return esc(g.corto || g.nome); }).join(', ') + '</b> non reggono un altro esercizio.') +
+    ' Il fiato torna al massimo dopo la prossima partita.</div>'));
+
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
 }
+
+function barraFatica() {
+  var m = faticaMedia();
+  var col = m > 60 ? '#3fd07a' : m > 30 ? '#ffd23f' : '#ff5468';
+  return el('<div class="pannello stretto"><div class="stat" style="margin:0">' +
+    '<span class="n">Fiato</span><span class="barra"><i style="width:' + m + '%;background:' + col + '"></i></span>' +
+    '<span class="v">' + m + '</span></div>' +
+    '<div class="picc fioco" style="margin-top:6px">Ogni esercizio consuma fiato. Si recupera tutto giocando una partita.</div></div>');
+}
+
+function chiSiAllena(a) {
+  if (a.tutti) return S.rosa.slice();
+  return S.rosa.filter(function (g) { return (a.ruoli || []).indexOf(g.ruolo) >= 0; });
+}
+
 function faiAllenamento(a) {
-  if (S.giorni <= 0) return;
-  S.giorni--;
-  var scelti = a.tutti ? S.rosa : S.rosa.filter(function (g) {
-    if (a.su.indexOf('par') >= 0 && g.ruolo === 'PT') return true;
-    if (a.su.indexOf('tir') >= 0 && (g.ruolo === 'AT' || g.ruolo === 'CC')) return true;
-    return false;
-  });
-  if (!scelti.length) scelti = S.rosa;
-  var righe = [];
-  scelti.forEach(function (g) {
+  var chi = chiSiAllena(a).filter(function (g) { return fatica(g) >= a.fat; });
+  if (!chi.length) return;
+  var righe = [], nuoveTec = [];
+  chi.forEach(function (g) {
+    g.fat = Math.max(0, fatica(g) - a.fat);
     g.allen = g.allen || {};
     a.su.forEach(function (k) {
       if (k === 'par' && g.ruolo !== 'PT') return;
@@ -770,16 +894,48 @@ function faiAllenamento(a) {
     });
     var r = daiExp(g, a.exp || 150);
     if (r.salito.length) righe.push(esc(g.nome) + ' sale al livello ' + g.lv + '.');
-    r.imparate.forEach(function (t) { righe.push('<b>' + esc(g.nome) + ' impara ' + esc(IE.tec(t).nome) + '!</b>'); });
+    r.imparate.forEach(function (t) { righe.push('<b>' + esc(g.nome) + ' impara ' + esc(IE.tec(t).nome) + '</b>'); });
   });
+  /* qualcuno, ogni tanto, si porta a casa una tecnica nuova */
+  if (Math.random() < 0.45) {
+    var g2 = chi[Math.floor(Math.random() * chi.length)];
+    var t2 = tecnicaNuovaPer(g2, a);
+    if (t2) { g2.tec.push(t2); nuoveTec.push(esc(g2.nome) + ' ha imparato <b>' + esc(IE.tec(t2).nome) + '</b>'); }
+  }
   if (a.spirito) S.spirito = Math.min(100, S.spirito + a.spirito);
   salva();
+
+  var risveglio = cercaRisveglio('allenamento', a.id);
   velo('<h2>' + a.icona + ' ' + esc(a.nome) + '</h2>' +
     '<p class="picc">' + esc(a.desc) + '</p>' +
-    '<p class="picc tenue">Hanno lavorato in ' + scelti.length + '. ' +
-    a.su.map(function (k) { return IE.stat[k].nome + ' +' + a.q; }).join(', ') + '.</p>' +
+    '<p class="picc tenue">Hanno lavorato in ' + chi.length + '. ' +
+    a.su.map(function (k) { return IE.stat[k].nome + ' +' + a.q; }).join(', ') + '. Fiato −' + a.fat + '.</p>' +
+    (nuoveTec.length ? '<div class="avviso picc">' + nuoveTec.join('<br>') + '</div>' : '') +
     (righe.length ? '<div class="avviso buono picc">' + righe.join('<br>') + '</div>' : '') +
-    '<button class="bt primario" onclick="this.closest(\'.velo\').remove();G.render()">Chiudi</button>');
+    '<button class="bt primario" id="chiudiAll">Chiudi</button>');
+  document.getElementById('chiudiAll').onclick = function () {
+    var v = document.querySelector('.velo'); if (v) v.remove();
+    if (risveglio) mostraRisveglio(risveglio.scena, risveglio.g); else render();
+  };
+}
+
+/* Una tecnica comune che quel giocatore non ha ancora e che c\'entra con l\'esercizio. */
+function tecnicaNuovaPer(g, a) {
+  var tipi = [];
+  if (a.su.indexOf('tir') >= 0) tipi.push('tiro');
+  if (a.su.indexOf('par') >= 0 && g.ruolo === 'PT') tipi.push('parata');
+  if (a.su.indexOf('dif') >= 0 || a.su.indexOf('fis') >= 0) tipi.push('blocco');
+  if (a.su.indexOf('ctr') >= 0 || a.su.indexOf('vel') >= 0) tipi.push('drib');
+  if (!tipi.length) tipi = g.ruolo === 'PT' ? ['parata'] : ['drib'];
+  if (g.ruolo === 'PT') tipi = tipi.filter(function (t) { return t === 'parata' || t === 'blocco'; });
+  if (!tipi.length) return null;
+  var tipo = tipi[Math.floor(Math.random() * tipi.length)];
+  var pool = (IE.imparabili[tipo] || []).filter(function (id) {
+    var t = IE.tec(id);
+    return t && g.tec.indexOf(id) < 0 && t.pot <= 24 + g.lv * 2.2;
+  });
+  if (!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 /* ============================================================
@@ -787,25 +943,29 @@ function faiAllenamento(a) {
    ============================================================ */
 function vistaSpogliatoio() {
   schermo.appendChild(el('<h2>Spogliatoio</h2>'));
-  schermo.appendChild(el('<div class="picc tenue" style="margin-bottom:10px">Una chiacchiera costa un giorno, e un po\' di affiatamento arriva anche a chi ascolta. ' +
-    (S.giorni >= 900 ? 'Nessuna partita in programma.' : 'Restano <b>' + S.giorni + '</b> giorni.') + '</div>'));
+  schermo.appendChild(el('<div class="picc tenue" style="margin-bottom:10px">Una chiacchiera a testa, poi bisogna giocare. ' +
+    'L\'affiatamento sblocca le tecniche combinate.</div>'));
   var box = el('<div class="pannello"></div>');
+  var rimasti = 0;
   S.rosa.forEach(function (g) {
     if (g.id === 'tu') return;
-    var sg = schedaGiocatore(g, 'Aff. ' + (g.am || 0) + ' ▸', function () { parlaCon(g); });
-    if (S.giorni <= 0) sg.classList.add('disab');
+    var fatto = !!g.parlato;
+    if (!fatto) rimasti++;
+    var sg = schedaGiocatore(g, fatto ? '✔' : 'Aff. ' + (g.am || 0) + ' ▸', function () { parlaCon(g); });
+    if (fatto) sg.classList.add('disab');
     box.appendChild(sg);
   });
   schermo.appendChild(box);
+  if (!rimasti) schermo.appendChild(el('<div class="avviso picc">Hai già parlato con tutti. Dopo la prossima partita ci sarà altro da dirsi.</div>'));
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
 }
+
 function parlaCon(g) {
-  if (S.giorni <= 0) { alert('Non ci sono più giorni.'); return; }
-  S.giorni--;
+  if (g.parlato) return;
+  g.parlato = true;
   var frasi = IE.chiacchiere[g.id] || ['...'];
   var f = frasi[Math.floor(Math.random() * frasi.length)];
   var imparate = cresciAffiatamento(g, 12);
-  /* chi ascolta cresce un po' anche lui */
   S.rosa.forEach(function (x) { if (x !== g && x.id !== 'tu') cresciAffiatamento(x, 2); });
   S.spirito = Math.min(100, S.spirito + 1);
   salva();
@@ -817,6 +977,108 @@ function parlaCon(g) {
     '<button class="bt primario" onclick="this.closest(\'.velo\').remove();G.render()">Chiudi</button>');
 }
 
+
+/* ============================================================
+   I RISVEGLI
+   Ogni ragazzo ha una tecnica sua. Non la impara: gli succede.
+   ============================================================ */
+function cercaRisveglio(dove, eserc) {
+  S.risvegli = S.risvegli || {};
+  for (var i = 0; i < S.rosa.length; i++) {
+    var g = S.rosa[i], f = IE.firme[g.id];
+    if (!f || S.risvegli[g.id]) continue;
+    if (f.dove !== dove || g.lv < f.lv) continue;
+    if (dove === 'allenamento' && f.eserc !== eserc) continue;
+    return { g: g, scena: f.scena, f: f };
+  }
+  return null;
+}
+
+function cercaRisveglioPartita() {
+  S.risvegli = S.risvegli || {};
+  for (var i = 0; i < P.mia.rosa.length; i++) {
+    var c = P.mia.rosa[i], g = c._orig;
+    if (!g) continue;
+    var f = IE.firme[g.id];
+    if (!f || S.risvegli[g.id] || f.dove !== 'partita' || g.lv < f.lv) continue;
+    if (!IE.condizioneFirma(P, c, f.cond)) continue;
+    return { g: g, clone: c, scena: f.scena, f: f };
+  }
+  return null;
+}
+
+function concediFirma(g, f, clone) {
+  var tec = f.tec || IE.firmaTua(g.ruolo);
+  if (!IE.tec(tec)) return null;
+  if (g.tec.indexOf(tec) < 0) g.tec.push(tec);
+  if (!g.eq || !g.eq.length) equipaggiaAuto(g);
+  if (g.eq.indexOf(tec) < 0) {
+    if (g.eq.length < SLOT) g.eq.push(tec);
+    else {
+      /* esce la più debole dello stesso tipo, altrimenti la più debole in assoluto */
+      var mio = IE.tec(tec);
+      var cand = g.eq.map(IE.tec).filter(Boolean);
+      var stesso = cand.filter(function (t) { return t.tipo === mio.tipo; });
+      var fuori = (stesso.length ? stesso : cand).sort(function (a, b) { return a.pot - b.pot; })[0];
+      g.eq[g.eq.indexOf(fuori.id)] = tec;
+    }
+  }
+  S.risvegli[g.id] = tec;
+  /* se sta giocando adesso, la può usare subito */
+  if (clone) { clone.tec = g.tec.slice(); clone.eq = g.eq.slice(); }
+  return tec;
+}
+
+function apriRisveglio(r, ritorno) {
+  G.risv = { scena: r.scena, gioc: r.g.id, riga: 0, ritorno: ritorno || 'hub', f: r.f, clone: r.clone || null };
+  S.vista = 'risveglio';
+  salva(); render();
+}
+
+function vistaRisveglio() {
+  var d = G.risv;
+  var sc = IE.storia.scene[d.scena];
+  var g = S.gioc(d.gioc);
+  if (!sc || !g) { S.vista = d.ritorno; render(); return; }
+
+  schermo.appendChild(el('<div class="centro" style="margin:6px 0 10px">' +
+    '<div class="etichetta">Una cosa che non si insegna</div>' +
+    '<div class="volto-grande" style="margin:0 auto 8px">' + IE.volto(IE.voltoDi(g), { maglia: '#2f9e63' }) + '</div>' +
+    '<h1 style="font-size:22px">' + esc(sc.titolo || g.nome) + '</h1>' +
+    '<div class="picc fioco">' + esc(sc.luogo || '') + '</div></div>'));
+
+  var chat = el('<div id="chat"></div>');
+  schermo.appendChild(chat);
+  for (var i = 0; i <= Math.min(d.riga, sc.righe.length - 1); i++) chat.appendChild(battutaHtml(sc.righe[i]));
+
+  var piede = el('<div id="avanti"></div>');
+  schermo.appendChild(piede);
+  if (d.riga < sc.righe.length - 1) {
+    piede.appendChild(bt('Avanti ▸', null, function () { d.riga++; salva(); render(); ancoraGiu(); }, 'primario'));
+  } else {
+    var tec = concediFirma(g, d.f, d.clone);
+    var t = IE.tec(tec);
+    if (t) piede.appendChild(el('<div class="pannello" style="border-color:#ffd23f">' +
+      '<div class="etichetta">Tecnica nuova</div>' +
+      '<div style="font-size:18px;font-weight:bold">' + IE.elementi[t.el].icona + ' ' + esc(t.nome) + '</div>' +
+      '<div class="picc tenue" style="margin:3px 0 6px">' +
+      ({ tiro: 'Tiro', drib: 'Dribbling', blocco: 'Blocco', parata: 'Parata' })[t.tipo] +
+      ' · potenza ' + t.pot + ' · ' + t.tp + ' PT' +
+      (t.sePerde ? ' · +' + t.sePerde + ' quando siete sotto' : '') +
+      (t.seSubito ? ' · +' + t.seSubito + ' dopo aver preso gol' : '') +
+      (t.seFresco ? ' · +' + t.seFresco + ' con il fiato pieno' : '') + '</div>' +
+      '<div class="picc">' + esc(t.desc) + '</div></div>'));
+    piede.appendChild(bt('Continua ▸', null, function () {
+      var r = d.ritorno; G.risv = null; S.vista = r; salva(); render();
+    }, 'primario'));
+  }
+  ancoraGiu();
+}
+
+function mostraRisveglio(scena, g) {
+  apriRisveglio({ scena: scena, g: g, f: IE.firme[g.id] }, 'allenamento');
+}
+
 /* ============================================================
    PARTITA
    ============================================================ */
@@ -824,10 +1086,65 @@ function clona(g) {
   var c = {};
   for (var k in g) if (k.charAt(0) !== '_') c[k] = g[k];
   c.tec = (g.tec || []).slice();
+  c.eq = (g.eq && g.eq.length ? g.eq : equipaggiaAuto(g)).slice();
+  c.tp = IE.tpMax(g);          /* in partita si entra sempre pieni: */
+  c.fp = IE.fpMax(g);          /* il fiato degli allenamenti è un'altra cosa */
+  c.baseId = g.id;
   c._orig = g;
   return c;
 }
 function avviaPartita(cfg) {
+  if (!IE.squadre[cfg.avv]) { G.vai('hub'); return; }
+  S.partitaPendente = cfg;
+  aggiornaTitolari();
+  S.vista = 'prepartita';
+  salva(); render();
+}
+
+/* ---------- scheda di presentazione: quanto sono forti ---------- */
+function vistaPrePartita() {
+  var cfg = S.partitaPendente;
+  if (!cfg) { G.vai('hub'); return; }
+  var sq = IE.squadre[cfg.avv];
+  var cons = sq.lvCons || sq.lv || 1;
+  var mio = livelloMedio();
+  var d = mio - cons;
+  var giudizio, cls, col;
+  if (d >= 4)      { giudizio = 'Siete più avanti di loro. Dovrebbe andare bene.';  cls = 'buono';  col = '#3fd07a'; }
+  else if (d >= 0) { giudizio = 'Siete sul loro livello. Partita vera.';            cls = '';       col = '#ffd23f'; }
+  else if (d >= -3){ giudizio = 'Sono un po\' più avanti. Si può fare, ma soffrendo.'; cls = ''; col = '#ff8a3d'; }
+  else             { giudizio = 'Sono molto più forti di voi. Vi conviene allenarvi ancora.'; cls = 'male'; col = '#ff5468'; }
+
+  schermo.appendChild(el('<div class="centro" style="margin:8px 0 12px">' +
+    '<div class="etichetta">' + esc(cfg.titolo || 'Partita') + '</div>' +
+    '<div style="font-size:42px;line-height:1">' + (sq.stemma || '⚽') + '</div>' +
+    '<h1 style="font-size:23px">' + esc(sq.nome) + '</h1>' +
+    '<div class="picc tenue" style="max-width:340px;margin:6px auto 0">' + esc(sq.motto || '') + '</div></div>'));
+
+  schermo.appendChild(el('<div class="pannello">' +
+    '<div class="riga tra" style="align-items:flex-end;margin-bottom:10px">' +
+    '<div><div class="etichetta" style="margin:0">La tua squadra</div>' +
+    '<div style="font-size:30px;font-weight:bold;line-height:1">Lv ' + mio + '</div>' +
+    '<div class="picc fioco">media degli undici</div></div>' +
+    '<div style="text-align:right"><div class="etichetta" style="margin:0">Consigliato</div>' +
+    '<div style="font-size:30px;font-weight:bold;line-height:1;color:' + col + '">Lv ' + cons + '</div>' +
+    '<div class="picc fioco">per giocarsela</div></div></div>' +
+    '<div class="avviso ' + cls + ' picc" style="margin:0">' + giudizio + '</div></div>'));
+
+  var fm = faticaMedia();
+  if (fm < 55) schermo.appendChild(el('<div class="avviso picc">Fiato della squadra: <b>' + fm + '</b> su 100. ' +
+    'Il fiato torna pieno solo dopo una partita, quindi si scende in campo così. Non è un problema: si stringe i denti.</div>'));
+
+  var box = el('<div class="pannello"></div>');
+  box.appendChild(bt('⚽  Scendere in campo', 'Formazione ' + S.formazione + '.', function () { scendiInCampo(); }, 'verde'));
+  box.appendChild(bt('📋  Cambiare formazione', null, function () { G.vai('formazione'); }));
+  if (S.sblocchi.allenamento) box.appendChild(bt('🏃  Allenarsi ancora', 'La partita ti aspetta: la ritrovi nel piazzale.', function () { G.vai('allenamento'); }));
+  box.appendChild(bt('◀ Torna indietro', null, function () { G.vai('hub'); }, 'piatta'));
+  schermo.appendChild(box);
+}
+
+function scendiInCampo() {
+  var cfg = S.partitaPendente;
   var sq = IE.squadraDi(cfg.avv);
   if (!sq) { G.vai('hub'); return; }
   aggiornaTitolari();
@@ -846,10 +1163,10 @@ function avviaPartita(cfg) {
     mia: { nome: S.nomeSquadra, sigla: S.sigla, col: '#2f9e63', stemma: S.stemma, rosa: titolari, panchina: panchina, formazione: S.formazione, spirito: S.spirito },
     avv: { nome: sq.nome, sigla: sq.sigla, col: sq.col, stemma: sq.stemma, rosa: rosaAvv.slice(0, 11).map(clona), panchina: rosaAvv.slice(11).map(clona), formazione: '4-4-2', spirito: 40 }
   });
-  G.posPrec = null;
+  G.posPrec = null; G.logVisto = 0;
   P.esiti = { vinto: cfg.vinto, perso: cfg.perso, pari: cfg.pari };
   P.amichevole = !!cfg.amichevole;
-  S.partitaPendente = cfg;
+  P.avvId = cfg.avv;
   S.vista = 'partita';
   G.statoP = P.avanza(null);
   salva(); render();
@@ -865,11 +1182,11 @@ function vistaPartita() {
   /* tabellone */
   var min = Math.min(P.minutiTempo * 2, P.min);
   schermo.appendChild(el('<div id="tabellone">' +
-    '<div class="sq">' + esc(P.mia.nome) + '</div>' +
+    '<div class="sq">' + esc(P.mia.nome) + '<div class="fascia" style="background:#3fd07a"></div></div>' +
     '<div><div class="pt">' + P.mia.gol + ' – ' + P.avv.gol + '</div>' +
     '<div class="tempo">' + (P.finita ? 'finita' : P.attesaTempo ? 'intervallo'
       : (P.tempo === 1 ? '1º tempo' : '2º tempo') + " · " + min + "'") + '</div></div>' +
-    '<div class="sq">' + esc(P.avv.nome) + '</div></div>'));
+    '<div class="sq">' + esc(P.avv.nome) + '<div class="fascia" style="background:' + P.avv.col + '"></div></div></div>'));
 
   /* campo con i ventidue in movimento */
   schermo.appendChild(disegnaCampo());
@@ -965,7 +1282,13 @@ function disegnaCampo() {
   if (palla) finali['palla'] = { x: palla.x + (palla.mio ? 3.5 : -3.5), y: palla.y + 9 };
   var c = el('<div id="campo">' +
     '<div class="linea" style="left:50%"></div><div class="cerchio"></div>' +
+    '<div class="dischetto" style="left:50%;top:50%"></div>' +
     '<div class="area" style="left:0"></div><div class="area" style="right:0"></div>' +
+    '<div class="areina" style="left:0"></div><div class="areina" style="right:0"></div>' +
+    '<div class="porta" style="left:-4px"></div><div class="porta" style="right:-4px"></div>' +
+    '<div class="dischetto" style="left:11%;top:50%"></div><div class="dischetto" style="left:89%;top:50%"></div>' +
+    '<div class="angolo" style="left:-6px;top:-6px"></div><div class="angolo" style="right:-6px;top:-6px"></div>' +
+    '<div class="angolo" style="left:-6px;bottom:-6px"></div><div class="angolo" style="right:-6px;bottom:-6px"></div>' +
     punti +
     '<div id="palla" style="left:' + pp.x + '%;top:' + pp.y + '%">\u26bd</div>' +
     '<div style="position:absolute;left:6px;top:3px;font-size:10px;font-weight:bold;color:#7bffb0;text-shadow:0 1px 3px rgba(0,0,0,.8)">' + esc(P.mia.sigla) + '</div>' +
@@ -979,6 +1302,14 @@ function disegnaCampo() {
     var b = c.querySelector('#palla');
     if (b && finali.palla) { b.style.left = finali.palla.x + '%'; b.style.top = finali.palla.y + '%'; }
   });
+  /* se è appena entrata, il campo lampeggia */
+  var ultimo = P.log[P.log.length - 1];
+  if (ultimo && P.log.length !== G.logVisto) {
+    var recenti = P.log.slice(G.logVisto || 0);
+    var gol = recenti.filter(function (l) { return l.cls === 'gol' || l.cls === 'subito'; }).pop();
+    if (gol) c.classList.add(gol.cls === 'gol' ? 'gol-nostro' : 'gol-loro');
+  }
+  G.logVisto = P.log.length;
   G.posPrec = finali;
   return c;
 }
@@ -990,7 +1321,9 @@ function bottoneAzione(o) {
   var b = bt(o.label, sotto, function () {
     if (o.disab) return;
     G.statoP = P.avanza(o);
-    salva(); render();
+    var r = cercaRisveglioPartita();
+    salva();
+    if (r) apriRisveglio(r, 'partita'); else render();
   }, o.tecnica ? '' : (o.id === 'tiro' ? 'verde' : ''));
   if (o.disab) {
     b.classList.add('disab');
@@ -1050,8 +1383,17 @@ function finePartita() {
   S.spirito = Math.min(100, S.spirito + (esito === 'vittoria' ? 4 : esito === 'pareggio' ? 2 : 1));
   S.storico.push({ avv: P.avv.nome, gol: P.mia.gol, sub: P.avv.gol, esito: esito });
   if (S.incontrate.indexOf(P.avv.nome) < 0) S.incontrate.push(P.avv.nome);
-  if (!S.sqIncontrate) S.sqIncontrate = [];
-  G.fine = { esito: esito, righe: righe, mia: P.mia.gol, avv: P.avv.gol, nomeAvv: P.avv.nome,
+
+  /* dopo una partita si rifiata, e si è parlato abbastanza */
+  riposoCompleto();
+
+  /* contatti: chi ti ha visto giocare risponde al telefono */
+  var contatti = esito === 'vittoria' ? 3 : esito === 'pareggio' ? 2 : 1;
+  S.scout = (S.scout || 0) + contatti;
+  var battuta = false;
+  if (esito === 'vittoria' && P.avvId && S.battute.indexOf(P.avvId) < 0) { S.battute.push(P.avvId); battuta = true; }
+  righe.push('Contatti +' + contatti + (battuta ? ' — la rosa della ' + esc(P.avv.nome) + ' è ora richiamabile.' : ''));
+  G.fine = { esito: esito, righe: righe, battuta: battuta, mia: P.mia.gol, avv: P.avv.gol, nomeAvv: P.avv.nome,
     tiri: [P.mia.tiri, P.avv.tiri], duelli: [P.mia.duelliVinti, P.avv.duelliVinti], esiti: P.esiti, amichevole: P.amichevole };
   S.partitaPendente = null;
   S.vista = 'finepartita';
@@ -1070,6 +1412,8 @@ function vistaFinePartita() {
     '<div class="picc">Tiri: <b>' + f.tiri[0] + '</b> – ' + f.tiri[1] + '</div>' +
     '<div class="picc">Duelli vinti: <b>' + f.duelli[0] + '</b> – ' + f.duelli[1] + '</div></div>'));
   if (f.righe.length) schermo.appendChild(el('<div class="avviso ' + cls + ' picc">' + f.righe.join('<br>') + '</div>'));
+  if (f.battuta) schermo.appendChild(el('<div class="avviso buono picc">🫱 Hai battuto la <b>' + esc(f.nomeAvv) +
+    '</b>: i loro giocatori ora si possono chiamare in squadra, da <b>Contatti</b>.</div>'));
   schermo.appendChild(bt('Continua ▸', null, function () {
     if (f.amichevole) { G.vai('hub'); return; }
     var e = f.esiti || {};
@@ -1094,6 +1438,71 @@ function vistaAmichevoli() {
   });
   schermo.appendChild(box);
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
+}
+
+/* ============================================================
+   CONTATTI — chiamare in squadra chi hai battuto
+   ============================================================ */
+var ROSA_MAX = 22;
+function costoDi(g) { return Math.max(2, Math.round(IE.valutazione(g) / 6)); }
+
+function vistaContatti() {
+  schermo.appendChild(el('<h2>Contatti</h2>'));
+  schermo.appendChild(el('<p class="picc tenue">Chi vi ha giocato contro e ha perso, adesso risponde al telefono. ' +
+    'Ogni partita giocata vale contatti: una vittoria tre, un pareggio due, una sconfitta uno.</p>'));
+  schermo.appendChild(el('<div class="pannello stretto"><div class="riga tra">' +
+    '<div><div class="etichetta" style="margin:0">Contatti</div><div style="font-size:26px;font-weight:bold">🫱 ' + (S.scout || 0) + '</div></div>' +
+    '<div style="text-align:right"><div class="etichetta" style="margin:0">Tesserati</div>' +
+    '<div style="font-size:26px;font-weight:bold">' + S.rosa.length + '<span class="tenue" style="font-size:14px"> / ' + ROSA_MAX + '</span></div></div>' +
+    '</div></div>'));
+
+  if (!S.battute.length) {
+    schermo.appendChild(el('<div class="avviso picc">Non hai ancora battuto nessuno. Vinci una partita e la rosa di quella squadra compare qui.</div>'));
+    schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
+    return;
+  }
+
+  S.battute.forEach(function (idSq) {
+    var sq = IE.squadraDi(idSq);
+    if (!sq) return;
+    var box = el('<div class="pannello"><div class="etichetta">' + (sq.stemma || '⚽') + ' ' + esc(sq.nome) + '</div></div>');
+    var liberi = 0;
+    (sq._rosa || []).forEach(function (o) {
+      if (S.ha('r_' + o.id)) return;
+      liberi++;
+      var costo = costoDi(o);
+      var puoi = (S.scout || 0) >= costo && S.rosa.length < ROSA_MAX;
+      var sg = schedaGiocatore(o, '🫱 ' + costo, function () { chiamaInSquadra(o, sq, costo); });
+      if (!puoi) sg.classList.add('disab');
+      box.appendChild(sg);
+    });
+    if (!liberi) box.appendChild(el('<div class="picc tenue">Li hai già chiamati tutti.</div>'));
+    schermo.appendChild(box);
+  });
+  schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
+}
+
+function chiamaInSquadra(o, sq, costo) {
+  if ((S.scout || 0) < costo || S.rosa.length >= ROSA_MAX) return;
+  S.scout -= costo;
+  var g = {
+    id: 'r_' + o.id, nome: o.nome, corto: o.corto || o.nome.split(' ')[0],
+    ruolo: o.ruolo, el: o.el, col: o.col, prof: o.prof, pot: 0.9,
+    base: IE.tutteStat(o),          /* arriva forte com'era, e da lì cresce con voi */
+    allen: {}, lv: 1, exp: 0, tec: (o.tec || []).slice(),
+    numero: prossimoNumero(), am: 25, fat: 100,
+    volto: IE.voltoDi(o), provenienza: sq.nome
+  };
+  equipaggiaAuto(g);
+  S.rosa.push(g);
+  aggiornaTitolari();
+  salva();
+  velo('<div class="riga" style="gap:10px;margin-bottom:10px">' + ritrattoHtml(g, 'gr') +
+    '<div><div style="font-weight:bold;font-size:17px">' + esc(g.nome) + '</div>' +
+    '<div class="picc tenue">dalla ' + esc(sq.nome) + ' · <span class="ruolo r-' + g.ruolo + '">' + g.ruolo + '</span>n. ' + g.numero + '</div></div></div>' +
+    '<p class="picc">Ha detto di sì. Arriva con le sue tecniche e con le statistiche che aveva quando vi ha giocato contro: ' +
+    'da adesso cresce insieme a voi.</p>' +
+    '<button class="bt primario" onclick="this.closest(\'.velo\').remove();G.render()">Bene</button>');
 }
 
 /* ============================================================

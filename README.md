@@ -206,15 +206,51 @@ facoltativa e vale la pena di farla.
 - **Sessanta tecniche speciali** fra tiri, dribbling, blocchi e parate, comprese
   quelle **combinate**, che funzionano solo se in campo ci sono i compagni
   giusti.
-- **Fra una partita e l'altra** hai un numero di giorni: allenamenti (alzano le
-  statistiche) e chiacchiere nello spogliatoio (alzano l'affiatamento, che è
-  quello che sblocca le tecniche combinate).
+- **Fra una partita e l'altra non c'è nessun calendario.** Ci si allena finché
+  si regge in piedi: ogni esercizio costa **fiato** a chi lo fa, e il fiato torna
+  pieno solo giocando. In partita invece si entra sempre al massimo — la fatica
+  degli allenamenti non se la porta dietro nessuno.
+- **Prima di ogni partita** vedi la scheda dell'avversario con il **livello
+  consigliato** accanto alla media dei tuoi undici, e un giudizio onesto su come
+  può andare. Se non ti piace quello che leggi, torni indietro, ti alleni ancora
+  e la partita ti aspetta.
+- **Novantacinque tecniche**, e in campo se ne portano **quattro a testa**: quali
+  si sceglie dalla scheda del giocatore. Se ne imparano allenandosi, crescendo di
+  livello e parlando nello spogliatoio.
 - **Dalla panchina**: cinque formazioni, sostituzioni all'intervallo e due
   ordini per tempo (pressing, tutti dietro, ci mettiamo il cuore).
 - Quanto vuoi decidere in partita lo scegli tu, da Opzioni: *rapida* (solo i
   tiri in area), *normale*, *completa* (ogni singolo duello).
 - **Sul campo si vedono tutti e ventidue**: le pedine si muovono a ogni azione,
   chi ha la palla è cerchiato d'oro, chi sta per essere contrastato di rosso.
+
+### Le firme
+
+Nessuno impara la propria tecnica studiando: **gli succede addosso**. Ognuno dei
+tredici ha una tecnica che è solo sua e che si sblocca in una scena scritta, che
+il gioco fa partire da solo quando ne ricorrono le condizioni — a volte in
+allenamento, a volte dentro una partita.
+
+Gorō la trova nell'uno contro uno, il giorno che smette di inseguire. Hina al
+duecentesimo tiro contro il muro, quando capisce che il problema non era la mira.
+Zero in porta, dopo il secondo gol subito, contando le parate che nessuno gli ha
+mai contato. Rei nel secondo tempo di una partita persa, restando in piedi più a
+lungo dell'altro. Rikuto il pomeriggio in cui gli dicono che lì non ci sono
+capre e può calciare forte.
+
+Alcune di queste tecniche valgono di più quando serve: *Ultimo a Mollare* cresce
+se siete sotto, *Zero* se avete già preso gol, *Primo sul Pallone* se il fiato è
+pieno. Sulla scheda di ogni giocatore c'è scritto cosa gli manca perché succeda.
+
+### Contatti
+
+Come nei giochi, **chi hai battuto poi puoi chiamartelo in squadra**. Ogni partita
+giocata vale contatti — tre per una vittoria, due per un pareggio, uno per una
+sconfitta — e la rosa di ogni squadra che hai sconfitto compare nella schermata
+*Contatti*, con il suo prezzo. Arrivano con le loro tecniche e con le statistiche
+che avevano quando ti hanno giocato contro, e da lì crescono insieme a voi.
+
+Sì: se batti la Raimon, puoi chiamare Mark Evans.
 
 ### I volti
 

@@ -61,7 +61,7 @@ p{margin:0 0 10px}
 .centro{text-align:center}
 .pannello{background:linear-gradient(180deg,var(--pannello) 0%, #101a35 100%);
   border:1px solid var(--bordo);border-radius:var(--raggio);padding:14px;margin:0 0 12px;
-  box-shadow:var(--ombra)}
+  box-shadow:var(--ombra), 0 1px 0 rgba(255,255,255,.05) inset}
 .pannello.stretto{padding:10px}
 .riga{display:flex;gap:8px;align-items:center}
 .riga.tra{justify-content:space-between}
@@ -77,15 +77,19 @@ hr{border:0;border-top:1px solid var(--bordo);margin:12px 0}
 
 /* ---------- bottoni ---------- */
 button{font-family:inherit;font-size:15px;color:var(--testo);cursor:pointer}
-.bt{display:block;width:100%;text-align:left;background:var(--pannello2);
+.bt{display:block;width:100%;text-align:left;
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,0)) var(--pannello2);
   border:1px solid var(--bordo);border-radius:11px;padding:11px 13px;margin:0 0 8px;
-  transition:transform .06s ease, background .15s ease}
+  box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 2px 8px rgba(0,0,0,.22);
+  transition:transform .06s ease, background .15s ease, box-shadow .15s ease}
 .bt:active{transform:scale(.985)}
 .bt:hover{background:#233560}
 .bt.primario{background:linear-gradient(135deg,var(--accento) 0%, var(--accento2) 100%);
-  color:#20160a;border-color:#ffca2b;font-weight:bold;text-align:center}
+  color:#20160a;border-color:#ffca2b;font-weight:bold;text-align:center;
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 0 4px 14px rgba(255,150,40,.28)}
 .bt.primario:hover{filter:brightness(1.07)}
-.bt.verde{background:linear-gradient(135deg,#3fd07a,#1f9450);color:#052414;border-color:#3fd07a;font-weight:bold;text-align:center}
+.bt.verde{background:linear-gradient(135deg,#3fd07a,#1f9450);color:#052414;border-color:#3fd07a;font-weight:bold;text-align:center;
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset, 0 4px 14px rgba(63,208,122,.25)}
 .bt.rossa{background:#3a1622;border-color:#7a2338;color:#ffb9c4}
 .bt.piatta{background:transparent;border-color:var(--bordo);text-align:center}
 .bt.disab,.bt[disabled]{opacity:.4;pointer-events:none}
@@ -106,8 +110,10 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 
 /* ---------- ritratti ---------- */
 .ritratto{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;
-  font-weight:bold;font-size:15px;color:#0a0f1e;position:relative;
-  box-shadow:0 0 0 1px rgba(255,255,255,.14) inset}
+  font-weight:bold;font-size:15px;color:#0a0f1e;position:relative;overflow:visible;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14) inset, 0 2px 8px rgba(0,0,0,.35)}
+.ritratto:before{content:"";position:absolute;inset:-2px;border-radius:inherit;
+  border:2px solid var(--anello, transparent);opacity:.85;pointer-events:none}
 .ritratto.gr{width:64px;height:64px;font-size:22px;border-radius:16px}
 .ritratto.pc{width:30px;height:30px;font-size:11px;border-radius:9px}
 .ritratto .el{position:absolute;right:-4px;bottom:-4px;font-size:11px;background:var(--sfondo);
@@ -121,7 +127,7 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 .volto-grande svg{width:100%;height:100%;display:block}
 
 /* ---------- chat storia ---------- */
-#chat{padding-bottom:118px}
+#chat{padding-bottom:86px}
 .luogo{text-align:center;color:var(--fioco);font-size:12px;letter-spacing:1.5px;
   text-transform:uppercase;margin:14px 0 10px;position:relative}
 .luogo:before,.luogo:after{content:"";position:absolute;top:50%;width:22%;height:1px;background:var(--bordo)}
@@ -160,7 +166,9 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 .r-AT{background:#ff5468;color:#2a020a}
 
 .barra{height:6px;border-radius:99px;background:#0b1327;overflow:hidden;border:1px solid var(--bordo)}
-.barra i{display:block;height:100%;border-radius:99px}
+.barra i{display:block;height:100%;border-radius:99px;
+  background-image:linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+  box-shadow:0 0 8px rgba(255,255,255,.12)}
 .stat{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:13px}
 .stat .n{width:74px;color:var(--tenue);flex:none}
 .stat .v{width:34px;text-align:right;flex:none;font-weight:bold}
@@ -185,7 +193,20 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 #campo .linea{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.18)}
 #campo .cerchio{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;
   border:2px solid rgba(255,255,255,.18);border-radius:50%}
-#campo .area{position:absolute;top:22px;bottom:22px;width:34px;border:2px solid rgba(255,255,255,.18)}
+#campo .area{position:absolute;top:26px;bottom:26px;width:36px;border:2px solid rgba(255,255,255,.20);border-radius:2px}
+#campo .areina{position:absolute;top:52px;bottom:52px;width:16px;border:2px solid rgba(255,255,255,.14)}
+#campo .porta{position:absolute;top:60px;bottom:60px;width:7px;background:
+  repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0 1px, transparent 1px 4px),
+  repeating-linear-gradient(0deg, rgba(255,255,255,.5) 0 1px, transparent 1px 4px);
+  border:2px solid rgba(255,255,255,.7);border-radius:1px}
+#campo .dischetto{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.5);margin:-1.5px 0 0 -1.5px}
+#campo .angolo{position:absolute;width:12px;height:12px;border:2px solid rgba(255,255,255,.16);border-radius:50%}
+#campo:after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 100% at 50% 50%, transparent 55%, rgba(0,0,0,.35) 100%)}
+#campo.gol-nostro{animation:lampoVerde .7s ease}
+#campo.gol-loro{animation:lampoRosso .7s ease}
+@keyframes lampoVerde{0%{box-shadow:inset 0 0 0 0 rgba(63,208,122,0)}25%{box-shadow:inset 0 0 60px 8px rgba(63,208,122,.65)}100%{box-shadow:inset 0 0 0 0 rgba(63,208,122,0)}}
+@keyframes lampoRosso{0%{box-shadow:inset 0 0 0 0 rgba(255,84,104,0)}25%{box-shadow:inset 0 0 60px 8px rgba(255,84,104,.6)}100%{box-shadow:inset 0 0 0 0 rgba(255,84,104,0)}}
 #campo .zone{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr)}
 #campo .zona{border-right:1px dashed rgba(255,255,255,.08);display:grid;place-items:center}
 #palla{position:absolute;width:16px;height:16px;z-index:5;border-radius:50%;background:#fff;
@@ -195,6 +216,7 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 #tabellone{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px}
 #tabellone .sq{flex:1;text-align:center;font-size:13px;font-weight:bold;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap}
+#tabellone .fascia{height:4px;border-radius:99px;margin-top:5px}
 #tabellone .pt{font-size:30px;font-weight:bold;letter-spacing:2px;font-variant-numeric:tabular-nums}
 #tabellone .tempo{font-size:12px;color:var(--tenue);text-align:center}
 #log{max-height:210px;overflow-y:auto;background:#0a1226;
@@ -204,7 +226,12 @@ input[type=text]:focus{outline:2px solid var(--accento);outline-offset:1px}
 #log .ev{color:var(--accento);font-weight:bold}
 #log .gol{color:var(--verde);font-weight:bold;font-size:16px}
 #log .subito{color:var(--rosso);font-weight:bold}
-#log .tec{color:var(--viola);font-weight:bold}
+#log .tec{color:#d9c2ff;font-weight:bold;background:linear-gradient(90deg, rgba(166,120,255,.22), transparent);
+  border-left:3px solid var(--viola);padding:3px 8px;border-radius:0 8px 8px 0;margin:4px 0}
+#log .gol{background:linear-gradient(90deg, rgba(63,208,122,.20), transparent);
+  border-left:3px solid var(--verde);padding:4px 8px;border-radius:0 8px 8px 0;margin:5px 0}
+#log .subito{background:linear-gradient(90deg, rgba(255,84,104,.18), transparent);
+  border-left:3px solid var(--rosso);padding:4px 8px;border-radius:0 8px 8px 0;margin:5px 0}
 #log .arb{color:var(--fioco);font-style:italic}
 .duello{display:flex;align-items:center;gap:10px;justify-content:center;margin:6px 0 10px;
   background:#0a1226;border:1px solid var(--bordo);border-radius:12px;padding:8px}

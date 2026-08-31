@@ -127,3 +127,71 @@ lo decide il giocatore, mai a metà di una lotta.
 
 `p5e-data.js` è generato dal dataset open source del dex P5e standard
 (Jerakin/p5e-data, branch no-variants) più i datafiles di Jerakin/Pokedex5E.
+
+---
+
+## Amanome Eleven — «Undici nomi»
+
+`inazuma/` — gioco di ruolo calcistico ispirato all'universo dei primi tre
+**Inazuma Eleven**, giocabile nel browser **senza rete**. Si apre da
+`inazuma/index.html`, funziona da telefono, e il salvataggio resta sul
+dispositivo (con Esporta/Importa per spostarlo).
+
+Non è un rifacimento del gioco Nintendo: niente sprite animati né campo in 3D.
+È una partita **raccontata** — dialoghi in stile chat, un campo schematico, e
+un motore di duelli a turni sotto.
+
+### La storia
+
+Sei uno studente della **scuola media di Amanome**: un paese di
+quattrocentododici abitanti in una valle di montagna, trentotto studenti in
+tutto, tre ore di corriera dalla città. Dietro la palestra c'è un prato con due
+porte arrugginite: il club di calcio è stato sciolto nel 1986 e da allora non
+l'ha più chiesto nessuno.
+
+Il regolamento scolastico dice che per fondare un club di calcio servono
+**undici iscritti e un insegnante che firmi**. Su trentotto studenti, di cui
+nove già nel club di baseball, e cinque professori.
+
+Sei capitoli, da aprile a novembre: convincere undici persone che in gran parte
+non hanno mai toccato un pallone, rimettere in piedi il campo, trovare un
+allenatore, salvare il terreno da una ruspa, e arrivare fino al Football
+Frontier — dove, alla fine, un pullman con scritto «Raimon» si ferma davanti
+alla scuola.
+
+- **Crei il tuo personaggio**: nome, ruolo, elemento, origine, prima tecnica,
+  numero di maglia e nome della squadra. Sei tu il capitano.
+- **Tredici compagni originali**, ognuno con la sua storia: il compagno di
+  banco che dice sì senza capire, il ragazzone della segheria, la capitana del
+  club di tiro con l'arco, i gemelli che consegnano il latte alle cinque, il
+  portiere che aveva smesso dopo otto gol in una finale, il pastore che scende
+  a valle a giorni alterni.
+- **Le squadre canoniche** (Raimon, Royal Academy, Zeus, Occult, Wild,
+  Shuriken) entrano nella seconda metà della storia con i loro giocatori.
+- **Finita la storia** si continua: allenamenti liberi e amichevoli contro
+  chiunque tu abbia incontrato.
+
+### Come si gioca
+
+- **La partita** è una catena di duelli. Chi ha la palla sceglie *dribbling*,
+  *passaggio* o *tiro*; chi difende sceglie *contrasto*, *tecnica di blocco* o
+  *raddoppio* (che se salta apre il campo il doppio). Vince chi somma di più
+  fra statistiche, tecnica speciale, elemento, fiato e fortuna.
+- **Quattro zone** — difesa, centrocampo, trequarti, area: ogni duello vinto
+  ti sposta avanti di una. Si tira dalla trequarti (male) o dall'area (bene).
+- **Elementi**: 🔥 Fuoco batte 🌲 Bosco batte 🌀 Aria batte ⛰️ Terra batte 🔥
+  Fuoco, per circa il 15%.
+- **Sessanta tecniche speciali** fra tiri, dribbling, blocchi e parate, comprese
+  quelle **combinate**, che funzionano solo se in campo ci sono i compagni
+  giusti.
+- **Fra una partita e l'altra** hai un numero di giorni: allenamenti (alzano le
+  statistiche) e chiacchiere nello spogliatoio (alzano l'affiatamento, che è
+  quello che sblocca le tecniche combinate).
+- **Dalla panchina**: cinque formazioni, sostituzioni all'intervallo e due
+  ordini per tempo (pressing, tutti dietro, ci mettiamo il cuore).
+- Quanto vuoi decidere in partita lo scegli tu, da Opzioni: *rapida* (solo i
+  tiri in area), *normale*, *completa* (ogni singolo duello).
+
+Gioco di fan, non ufficiale. I nomi delle squadre e dei personaggi canonici
+seguono l'adattamento italiano; tutto il resto — Amanome, i suoi tredici
+ragazzi, il custode e la valle — è originale.

@@ -303,6 +303,42 @@ incarnati, e un pulsante «Sorteggia» se non hai voglia di scegliere. Gli
 avversari ricevono un volto generato dal loro nome, quindi lo stesso giocatore
 ha sempre la stessa faccia.
 
+### Giocarlo da computer
+
+Su uno schermo grande il gioco si apre **su due colonne**: in partita il campo,
+il portatore e il registro stanno a sinistra, le azioni e la panchina a destra;
+nell'hub i luoghi della storia da una parte e il club dall'altra; la rosa passa a
+due colonne di schede.
+
+E si gioca **tutto da tastiera**:
+
+| tasto | cosa fa |
+|---|---|
+| `1` … `9` | sceglie l'opzione con quel numero (compaiono i numerini sui pulsanti) |
+| `Invio` / `spazio` | preme il pulsante principale — Avanti, Continua, Scendere in campo |
+| `Esc` / `←` | torna indietro e chiude le finestrelle |
+| `S` | salta una scena di dialogo |
+
+#### Un file solo, da portare via
+
+Nella cartella c'è **`inazuma/amanome-eleven.html`**: è tutto il gioco — codice,
+storia, volti, icona — dentro un unico file HTML da 370 KB.
+
+Si scarica, si mette dove si vuole e **si apre con un doppio clic**. Niente
+internet, niente installazione, niente server: funziona anche da una chiavetta
+USB. Su Chrome e Firefox salva regolarmente; Safari non fa salvare i file aperti
+dal disco, e in quel caso il gioco lo dice e conviene usare *Esporta su file*
+prima di chiudere.
+
+Il file si rigenera dopo ogni modifica al codice con:
+
+```
+node inazuma/strumenti/costruisci-unico.js
+```
+
+Il salvataggio sta nel browser che stai usando, quindi non si sposta da solo fra
+telefono e computer: per passarlo, *Esporta su file* di qua e *Importa* di là.
+
 ### Installarlo sul telefono
 
 Non c'è niente da scaricare da uno store: è una pagina che il telefono salva

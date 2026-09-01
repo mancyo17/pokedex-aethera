@@ -294,6 +294,7 @@ function render() {
   })[v] || vistaHub;
   schermo.innerHTML = '';
   f();
+  numeraTasti();
   window.scrollTo(0, 0);
 }
 G.render = render;
@@ -307,6 +308,90 @@ function disegnaBarra() {
     '<span class="gettone">💚 <b>' + S.spirito + '</b></span>' +
     (S.sblocchi.allenamento ? '<span class="gettone">🫱 <b>' + (S.scout || 0) + '</b></span>' : '');
 }
+
+/* ============================================================
+   TASTIERA
+   Da computer si gioca senza toccare il mouse.
+   ============================================================ */
+var TASTI_MAX = 9;
+
+function bottoniNumerabili() {
+  var velo = document.querySelector('.velo');
+  var dove = velo || schermo;
+  if (!dove) return [];
+  return [].slice.call(dove.querySelectorAll('button.bt'))
+    .filter(function (b) {
+      return !b.classList.contains('disab') && !b.classList.contains('piatta') && b.offsetParent !== null;
+    })
+    .slice(0, TASTI_MAX);
+}
+
+function numeraTasti() {
+  if (!document.body.classList.contains('tastiera')) return;
+  bottoniNumerabili().forEach(function (b, i) {
+    if (b.querySelector('.tasto')) return;
+    var t = document.createElement('span');
+    t.className = 'tasto';
+    t.textContent = i + 1;
+    b.insertBefore(t, b.firstChild);
+  });
+}
+
+function bottonePrincipale() {
+  var velo = document.querySelector('.velo');
+  var dove = velo || schermo;
+  if (!dove) return null;
+  var b = dove.querySelector('button.bt.primario:not(.disab), button.bt.verde:not(.disab)');
+  if (b) return b;
+  return bottoniNumerabili()[0] || null;
+}
+
+function bottoneIndietro() {
+  var velo = document.querySelector('.velo');
+  if (velo) return velo.querySelector('button');
+  if (!schermo) return null;
+  return [].slice.call(schermo.querySelectorAll('button')).filter(function (b) {
+    return /◀|Torna|Chiudi|Annulla/.test(b.textContent);
+  }).pop() || null;
+}
+
+function attivaTastiera() {
+  if (document.body.classList.contains('tastiera')) return;
+  document.body.classList.add('tastiera');
+  numeraTasti();
+}
+
+document.addEventListener('keydown', function (e) {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  var a = document.activeElement;
+  if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) {
+    if (e.key === 'Enter') { var pr = bottonePrincipale(); if (pr) { e.preventDefault(); pr.click(); } }
+    return;
+  }
+  attivaTastiera();
+
+  if (e.key >= '1' && e.key <= '9') {
+    var b = bottoniNumerabili()[parseInt(e.key, 10) - 1];
+    if (b) { e.preventDefault(); b.click(); }
+    return;
+  }
+  if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+    var p = bottonePrincipale();
+    if (p) { e.preventDefault(); p.click(); }
+    return;
+  }
+  if (e.key === 'Escape' || e.key === 'ArrowLeft' || e.key === 'Backspace') {
+    var i = bottoneIndietro();
+    if (i) { e.preventDefault(); i.click(); }
+    return;
+  }
+  if (e.key === 's' || e.key === 'S') {
+    var salta = schermo && [].slice.call(schermo.querySelectorAll('button')).filter(function (x) {
+      return /Salta la scena/.test(x.textContent);
+    })[0];
+    if (salta) { e.preventDefault(); salta.click(); }
+  }
+});
 
 /* ============================================================
    SCHERMATA DEL TITOLO
@@ -338,7 +423,22 @@ function vistaTitolo() {
   }, salvato ? '' : 'primario'));
   box.appendChild(bt('Come si gioca', 'Regole, duelli, elementi.', function () { mostraAiuto(); }, 'piatta'));
   schermo.appendChild(box);
-  schermo.appendChild(el('<p class="nota centro">Gioco di fan, non ufficiale, ispirato all\'universo dei primi tre Inazuma Eleven.<br>Funziona senza rete: i salvataggi restano su questo dispositivo.</p>'));
+  if (!provaSalvataggio()) {
+    schermo.appendChild(el('<div class="avviso male picc">Questo browser non permette di salvare in locale, ' +
+      'quindi la partita andrà persa chiudendo la scheda. Succede aprendo il file dal disco con Safari: ' +
+      'prova con Chrome o Firefox, oppure apri il gioco dal sito.</div>'));
+  }
+  schermo.appendChild(el('<p class="nota centro">Gioco di fan, non ufficiale, ispirato all\'universo dei primi tre Inazuma Eleven.<br>' +
+    'Funziona senza rete: i salvataggi restano su questo dispositivo.' +
+    (window.AMANOME_UNICO ? '<br>Versione in file unico, da portare via.' : '') + '</p>'));
+}
+
+function colonne() {
+  var wrap = el('<div class="due-colonne"></div>');
+  var sx = el('<div class="col-sx"></div>');
+  var dx = el('<div class="col-dx"></div>');
+  wrap.appendChild(sx); wrap.appendChild(dx);
+  return { wrap: wrap, sx: sx, dx: dx };
 }
 
 function bt(testo, sotto, fn, cls) {
@@ -353,6 +453,7 @@ function velo(html, dopo) {
   var v = el('<div class="velo"><div class="box">' + html + '</div></div>');
   v.onclick = function (e) { if (e.target === v) { v.remove(); if (dopo) dopo(); } };
   document.body.appendChild(v);
+  numeraTasti();
   return v;
 }
 function mostraAiuto() {
@@ -664,6 +765,10 @@ function battutaHtml(r) {
    ============================================================ */
 function vistaHub() {
   var c = capitolo();
+  var co = colonne();
+  schermo.appendChild(co.wrap);
+  var schermoVero = schermo;
+  schermo = co.sx;
   schermo.appendChild(el('<div class="pannello stretto"><div class="etichetta">Capitolo ' + c.n + ' · ' + esc(c.periodo || '') + '</div>' +
     '<h2>' + esc(c.titolo) + '</h2>' +
     '<div class="picc tenue">' + esc(S.obiettivo || c.obiettivo || '') + '</div></div>'));
@@ -701,7 +806,8 @@ function vistaHub() {
     schermo.appendChild(bb);
   }
 
-  /* attività */
+  /* attività, nella colonna di destra */
+  schermo = co.dx;
   var att = el('<div class="pannello"><div class="etichetta">Il club</div></div>');
   if (S.sblocchi.allenamento) {
     var fm = faticaMedia();
@@ -731,6 +837,7 @@ function vistaHub() {
     });
     schermo.appendChild(st);
   }
+  schermo = schermoVero;
 }
 
 /* ============================================================
@@ -738,16 +845,18 @@ function vistaHub() {
    ============================================================ */
 function vistaSquadra() {
   schermo.appendChild(el('<h2>Rosa — ' + esc(S.nomeSquadra) + '</h2>'));
-  var tit = el('<div class="pannello"><div class="etichetta">In campo (' + S.titolari.length + '/11)</div></div>');
+  var tit = el('<div class="pannello"><div class="etichetta">In campo (' + S.titolari.length + '/11)</div><div class="griglia-schede"></div></div>');
+  var titG = tit.querySelector('.griglia-schede');
   S.titolari.forEach(function (id) {
     var g = S.gioc(id); if (!g) return;
-    tit.appendChild(schedaGiocatore(g, 'Lv ' + g.lv + '<br><span class="fioco">fiato ' + fatica(g) + '</span>', function () { S.selez = id; G.vai('giocatore'); }));
+    titG.appendChild(schedaGiocatore(g, 'Lv ' + g.lv + '<br><span class="fioco">fiato ' + fatica(g) + '</span>', function () { S.selez = id; G.vai('giocatore'); }));
   });
   schermo.appendChild(tit);
   var pan = S.rosa.filter(function (g) { return S.titolari.indexOf(g.id) < 0; });
   if (pan.length) {
-    var pb = el('<div class="pannello"><div class="etichetta">Panchina</div></div>');
-    pan.forEach(function (g) { pb.appendChild(schedaGiocatore(g, 'Lv ' + g.lv + '<br><span class="fioco">fiato ' + fatica(g) + '</span>', function () { S.selez = g.id; G.vai('giocatore'); })); });
+    var pb = el('<div class="pannello"><div class="etichetta">Panchina</div><div class="griglia-schede"></div></div>');
+    var pbG = pb.querySelector('.griglia-schede');
+    pan.forEach(function (g) { pbG.appendChild(schedaGiocatore(g, 'Lv ' + g.lv + '<br><span class="fioco">fiato ' + fatica(g) + '</span>', function () { S.selez = g.id; G.vai('giocatore'); })); });
     schermo.appendChild(pb);
   }
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
@@ -1211,6 +1320,10 @@ function vistaPartita() {
     if (S.partitaPendente) { var c = S.partitaPendente; S.partitaPendente = null; avviaPartita(c); return; }
     G.vai('hub'); return;
   }
+  var co = colonne();
+  schermo.appendChild(co.wrap);
+  var schermoVero = schermo;
+  schermo = co.sx;
   schermo.appendChild(el('<div class="picc fioco centro" style="margin-bottom:6px">' + esc(P.titolo) + '</div>'));
 
   /* tabellone */
@@ -1244,6 +1357,9 @@ function vistaPartita() {
   schermo.appendChild(log);
   setTimeout(function () { var e = $('#log'); if (e) e.scrollTop = e.scrollHeight; }, 20);
 
+  /* da qui in poi si scrive nella colonna di destra */
+  schermo = co.dx;
+
   var st = G.statoP || { richiesta: 'attacco', opzioni: P.opzioniAttacco() };
   var box = el('<div class="pannello"></div>');
 
@@ -1271,6 +1387,8 @@ function vistaPartita() {
     pan.appendChild(b);
     schermo.appendChild(pan);
   }
+  schermo.appendChild(el('<p class="aiuto-tasti">Tastiera: <b>1</b>…<b>9</b> scegli · <b>invio</b> conferma · <b>esc</b> indietro</p>'));
+  schermo = schermoVero;
 }
 /* ---------- posizioni dei ventidue ---------- */
 var BASE_X = { PT: 7, DF: 25, CC: 47, AT: 67 };
@@ -1631,8 +1749,38 @@ function vistaOpzioni() {
   }, 'rossa'));
   schermo.appendChild(b2);
   schermo.appendChild(bt('📱  Installare sul telefono', 'Per averlo come app, anche senza rete.', function () { mostraInstalla(); }, 'piatta'));
+  schermo.appendChild(bt('💻  Giocare da computer', 'Tastiera, schermo grande e file da portare via.', function () { mostraPC(); }, 'piatta'));
   schermo.appendChild(bt('Come si gioca', null, function () { mostraAiuto(); }, 'piatta'));
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
+}
+
+function mostraPC() {
+  var salv = provaSalvataggio();
+  velo('<h2>💻 Giocare da computer</h2>' +
+    '<p class="picc tenue">Il gioco è lo stesso: cambia solo che su uno schermo grande si apre su due colonne e ' +
+    'si può giocare tutto da tastiera.</p>' +
+    '<div class="etichetta">Tastiera</div>' +
+    '<p class="picc"><b>1</b>…<b>9</b> scelgono l\'opzione con quel numero.<br>' +
+    '<b>Invio</b> o <b>spazio</b> premono il pulsante principale (Avanti, Continua, Scendere in campo).<br>' +
+    '<b>Esc</b> o <b>←</b> tornano indietro e chiudono le finestrelle.<br>' +
+    '<b>S</b> salta una scena di dialogo.</p>' +
+    '<div class="etichetta">Portarselo dietro</div>' +
+    '<p class="picc">Nel repository c\'è <b>amanome-eleven.html</b>: è tutto il gioco in un file solo. ' +
+    'Scaricalo, mettilo dove vuoi e aprilo con un doppio clic. Non serve internet, non serve installare niente, ' +
+    'e funziona anche su una chiavetta USB.</p>' +
+    (window.AMANOME_UNICO ? '<div class="avviso buono picc">Stai già giocando la versione in file unico.</div>' : '') +
+    (salv ? '' : '<div class="avviso male picc">Attenzione: questo browser non ti fa salvare in locale ' +
+      '(succede su Safari con i file aperti dal disco). La partita resta in memoria finché non chiudi la scheda: ' +
+      'usa <b>Esporta su file</b> prima di uscire, oppure apri il gioco dal sito invece che dal file.</div>') +
+    '<div class="etichetta">Fra telefono e computer</div>' +
+    '<p class="picc">Il salvataggio sta nel browser che stai usando, quindi non si sposta da solo. ' +
+    'Per passarlo: <b>Esporta su file</b> di qua, <b>Importa</b> di là.</p>' +
+    '<button class="bt primario" onclick="this.closest(\'.velo\').remove()">Chiudi</button>');
+}
+
+function provaSalvataggio() {
+  try { localStorage.setItem('_prova', '1'); localStorage.removeItem('_prova'); return true; }
+  catch (e) { return false; }
 }
 
 function mostraInstalla() {
@@ -1662,6 +1810,11 @@ function mostraInstalla() {
    ============================================================ */
 function avvio() {
   schermo = $('#schermo'); barra = $('#barra');
+  try {
+    if (window.matchMedia && window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 900) {
+      document.body.classList.add('tastiera');
+    }
+  } catch (e) {}
   S = metodi(nuovoStato());
   render();
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {

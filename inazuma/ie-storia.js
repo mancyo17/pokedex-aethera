@@ -1262,7 +1262,7 @@ sc({ id: 'c6_v', luogo: 'Il campo dietro la palestra — dopo, al buio',
     d('amagai', "Perché nel 1986 l'ho piegata io, a giugno, il giorno che ci hanno detto che eravamo rimasti in quattro."),
     d('amagai', "Adesso siete quattordici. Si può raddrizzare.")
   ],
-  eff: [{ spirito: 25 }, { exp: 1560 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 25 }, { exp: 1560 }, { flag: 'finale' }], poi: 'al_1' });
 
 sc({ id: 'c6_p', luogo: 'Il campo dietro la palestra — dopo, al buio',
   righe: [
@@ -1288,7 +1288,7 @@ sc({ id: 'c6_p', luogo: 'Il campo dietro la palestra — dopo, al buio',
     d('zero', "Domani alle sei e mezza."),
     d('amagai', "…brava gente.")
   ],
-  eff: [{ spirito: 20 }, { exp: 1352 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 20 }, { exp: 1352 }, { flag: 'finale' }], poi: 'al_1' });
 
 sc({ id: 'c6_x', luogo: 'Il campo dietro la palestra — dopo, al buio',
   righe: [
@@ -1302,21 +1302,31 @@ sc({ id: 'c6_x', luogo: 'Il campo dietro la palestra — dopo, al buio',
     tu("Sul serio."),
     n("Si stringono la mano a metà campo, e centonovanta persone dietro una recinzione fanno il rumore che fanno centonovanta persone.")
   ],
-  eff: [{ spirito: 22 }, { exp: 1456 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 22 }, { exp: 1456 }, { flag: 'finale' }], poi: 'al_1' });
 
 sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
   righe: [
     n("L'otto dicembre inaugurano il centro polifunzionale per anziani di Amanome."),
     n("Il parcheggio sta dove c'era la rimessa del capo villaggio. Alla cerimonia parlano in tre e nessuno dei tre nomina il calcio."),
     n("Ma la signora Kurihara arriva con la sua sedia pieghevole, e quando le chiedono perché se l'è portata risponde che ormai ci ha fatto l'abitudine."),
-    n("— Il quindici dicembre chiude il campionato provinciale. Amanome finisce quinta su otto."),
+    { chi: 'narr', t: "Nella sala del centro, in fondo, c'è un cartello scritto a mano che nessuno ha autorizzato: « RACCOLTA PER IL CAMPO ». Sotto, una scatola da scarpe. Dentro, la prima settimana, quarantunomila yen.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— Il quindici dicembre chiude il campionato provinciale. Amanome finisce quinta su otto: le ultime due partite le ha giocate su un campo in prestito a Ōkubo, con il pullman della segheria.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— Il quindici dicembre chiude il campionato provinciale. Amanome finisce quinta su otto.", se: function (S) { return !S.flag.campo_distrutto; } },
     d('kenta', "Quinti."),
     d('rei', "È tanto o poco?"),
     d('kenta', "È quinti."),
     d('kenta', "Ad aprile non esistevamo, quindi tecnicamente eravamo ottavi su sette."),
-    n("— Il ventidue dicembre nevica. Il campo dietro la palestra sparisce sotto quaranta centimetri e non riappare fino a marzo."),
-    n("Vi allenate in palestra, in dodici metri per ventiquattro, con le porte da pallamano e Amagai che urla che la palla non va alzata."),
+    { chi: 'narr', t: "— Il ventidue dicembre nevica. Sul fosso che era il campo si posano quaranta centimetri e per un po' sembra quasi normale.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— Il ventidue dicembre nevica. Il campo dietro la palestra sparisce sotto quaranta centimetri e non riappare fino a marzo.", se: function (S) { return !S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "Vi allenate nella sala del centro anziani, fra i tavoli spostati, con le porte disegnate col nastro adesivo sul muro. La signora Kurihara guarda dalla sedia e ogni tanto dice a qualcuno di correre di più.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "Vi allenate in palestra, in dodici metri per ventiquattro, con le porte da pallamano e Amagai che urla che la palla non va alzata.", se: function (S) { return !S.flag.campo_distrutto; } },
     n("Rikuto smette di scendere a valle il quattro di gennaio e ricompare il diciannove di marzo, senza spiegazioni, come le cose che tornano."),
+    { chi: 'narr', t: "— Di te, in questi mesi, ad Amanome arrivano notizie di seconda mano: una cartolina da Toyama, una da Osaka, una da un posto sul mare di cui nessuno sa pronunciare il nome.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'narr', t: "Kenta le attacca tutte sulla parete della sala, in ordine di data, e sotto ci scrive i risultati che riesce a raccogliere dalla radio.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'kenta', t: "Non è statistica. È un'altra cosa e non so come si chiama.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'narr', t: "Il club di calcio della scuola media di Amanome gioca tutto l'inverno senza il suo capitano. Perde sei partite su nove e non salta un allenamento.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'narr', t: "Rei Tachibana porta la fascia. Gliel'hanno data gli altri, senza discutere, il giorno dopo che sei partito.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'rei', t: "Io non sono un capitano. Però so stare in piedi, e a quanto pare è la stessa cosa.", se: function (S) { return !!S.flag.partito; } },
     n("— A gennaio, alle iscrizioni del secondo quadrimestre, si presentano tre studenti nuovi."),
     d('nao', "Tre."),
     d('nao', "Uno è un primo anno che ha visto la partita con la Raimon da dietro la recinzione, in braccio a suo padre."),
@@ -1337,6 +1347,8 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
     n("— Il primo marzo Kenta Ubukata chiude il quaderno dell'anno e ne apre uno nuovo."),
     n("Sull'ultima pagina di quello vecchio c'è una riga sola, scritta a matita, che nessuno gli ha chiesto di scrivere:"),
     n("« Il club non è stato sciolto. »"),
+    { chi: 'narr', t: "— Il campo si rifà in aprile, come la prima volta, con le braccia. Ci sono anche il padre di Gorō col trattore, il monaco di Ōmachi e undici persone di Ōkubo arrivate in pullmino senza che nessuno le avesse chiamate.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— L'undici di giugno torni ad Amanome per tre giorni. Non lo sa nessuno tranne Nao, che sa tutto di tutti prima di tutti e ha organizzato di conseguenza.", se: function (S) { return !!S.flag.partito; } },
     n("— L'undici di giugno, quando il terreno si è asciugato, quattordici persone raddrizzano la porta nord."),
     n("Ci vogliono tre ore, due tiranti e il trattore della segheria. Amagai guarda e non tocca niente, perché gliel'avete detto voi di non toccare niente."),
     n("Quando è dritta, resta lì in mezzo al campo per un po'."),
@@ -1361,6 +1373,11 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
     n("La telefonata dura un'ora e quaranta e nessuno di voi ha mai saputo cosa si sono detti."),
     n("Si sa solo che ad agosto è venuto a vedere un'amichevole, in piedi in fondo alla recinzione, e che se n'è andato prima della fine."),
     n("E che l'anno dopo è tornato, e non se n'è andato prima della fine."),
+    { chi: 'narr', t: "Prima di ripartire restituisci ad Amagai il quaderno del 1985. Lo prende, lo apre, e vede che nell'ultima pagina bianca qualcuno ha cominciato a scrivere altri nomi.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'amagai', t: "Questi chi sono?", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'tu', t: "Quelli che ho incontrato in giro. Uno per scuola, a volte due.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'amagai', t: "…e ci hai messo anche i loro.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'tu', t: "Anche i loro.", se: function (S) { return !!S.flag.partito; } },
     n("— Il club di calcio della scuola media di Amanome conta diciassette tesserati."),
     n("Nel gabbiotto del custode ci sono due fotografie sul muro. Una del 1985 e una di adesso."),
     n("Sotto la seconda, scritti a penna sul bordo bianco, ci sono undici nomi. E poi tre. E poi lo spazio per gli altri."),
@@ -1378,7 +1395,8 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
     d('rei', "Ne mancano ancora tre, comunque. Ho contato."),
     n("— FINE DEL PRIMO ANNO —", 'urlo'),
     n("Il club continua: puoi allenare la squadra e giocare amichevoli contro tutte le squadre che hai incontrato, comprese quelle che ti hanno battuto."),
-    n("E chi hai battuto, adesso, risponde al telefono.")
+    n("E chi hai battuto, adesso, risponde al telefono."),
+    { chi: 'narr', t: "E dal piazzale, quando serve, parte un pullman con una parabola sul tetto: dall'hub trovi il Caravan della Raimon, dove giochi da singolo giocatore in mezzo a undici che non sono i tuoi, contro le squadre di Alius Academy.", cls: 'urlo' }
   ],
   eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }, { spirito: 10 },
         { momento: 'Avete raddrizzato la porta nord l\'undici di giugno.' }],
@@ -2499,6 +2517,352 @@ sc({ id: 'c8_1', luogo: 'Palazzetto di Matsumoto — girone D, primo giorno',
   ],
   eff: [{ obiettivo: 'Passare il girone D: Occult, Wild, Shuriken.' }],
   poi: { hub: true } });
+
+
+/* ============================================================
+   ALIUS ACADEMY
+   Nella seconda stagione dei giochi, squadre di ragazzi con
+   poteri impossibili girano il Giappone sfidando le scuole e
+   radendo al suolo quelle che perdono. La Raimon gira il paese
+   con un pullman a raccogliere giocatori.
+   Ad Amanome arrivano il quattro di dicembre.
+   ============================================================ */
+
+sc({ id: 'al_1', luogo: 'Il campo dietro la palestra — 4 dicembre, 15:40',
+  righe: [
+    n("Sono passate due settimane dalla partita con la Raimon."),
+    n("Il quattro di dicembre, alle tre e quaranta del pomeriggio, sul campo dietro la palestra ci sono undici persone che non sono di Amanome."),
+    n("Tute grigie, tutte uguali. Nessun borsone. Nessun pullman nel piazzale, e nessuno li ha visti arrivare dalla strada."),
+    d('rei', "Chi sono?"),
+    d('kenta', "Non sono di nessuna scuola della prefettura. Le conosco tutte."),
+    n("Uno di loro si stacca dal gruppo. Ha i capelli verdi legati e l'aria di uno che ha già fatto questa cosa molte volte."),
+    d('reize', "Scuola media di Amanome. Club di calcio, quattordici tesserati, fondato ad aprile."),
+    d('reize', "Sei tu il capitano."),
+    tv({
+      fuoco:   "Chi siete e cosa ci fate sul nostro campo?",
+      calmo:   "Sono io. E voi chi siete, visto che sapete già tutto di noi?",
+      ironico: "Complimenti per le ricerche. Adesso però mi dite anche chi siete voi, che sarebbe la parte educata.",
+      chiuso:  "Sì.",
+      ostinato:"Sì. E quello è il nostro campo, quindi comincia tu a spiegarti."
+    }),
+    d('reize', "Alius Academy. Io sono Reize."),
+    d('reize', "Vi sfidiamo. Adesso."),
+    d('kenta', "Non si può. Serve un arbitro, serve—"),
+    d('reize', "Non serve niente."),
+    n("Alza una mano verso il campo e la neve che c'era sulla linea di fondo si solleva di trenta centimetri e resta ferma a mezz'aria."),
+    n("Poi ricade tutta insieme, come se qualcuno l'avesse lasciata andare."),
+    n("Nessuno dice niente. Minoru ha fatto due passi indietro senza accorgersene."),
+    d('reize', "Se vinciamo, questo campo non c'è più."),
+    d('reize', "Non è una minaccia: è la procedura. L'abbiamo già fatto a diciannove scuole da settembre."),
+    d('shinobu', "…diciannove?"),
+    d('reize', "Diciannove."),
+    d('ayase', "Io chiamo la polizia."),
+    d('reize', "Chiami chi vuole. Ci vogliono quaranta minuti da Ōmachi e noi ci mettiamo meno."),
+    n("Amagai si è messo davanti a tutti senza che nessuno se ne accorgesse. Ha sessantotto anni e le mani in tasca."),
+    d('amagai', "Ragazzo. Perché lo fate?"),
+    d('reize', "…"),
+    d('reize', "Perché ce lo chiedono."),
+    n("Lo dice con una faccia che per un secondo non è la faccia di prima.")
+  ],
+  poi: 'al_2' });
+
+sc({ id: 'al_2', luogo: 'Il campo dietro la palestra',
+  righe: [
+    d('amagai', "Non giocate."),
+    d('hina', "Cosa?"),
+    d('amagai', "Non giocate. Sono più forti di voi e non è nemmeno una questione di quanto: è che non è la stessa cosa."),
+    d('amagai', "Il campo lo rifacciamo. L'abbiamo già fatto ad aprile."),
+    n("Ha ragione. È la cosa sensata da fare, ed è la prima volta in nove mesi che Sōichirō Amagai vi dice di non scendere in campo."),
+    d('daichi', "Capitano."),
+    d('goro', "…"),
+    d('rei', "Decidi tu."),
+    n("Quattordici persone ti guardano. Dietro la recinzione ce ne sono altre trenta arrivate in dieci minuti, perché in un paese di quattrocentododici abitanti le notizie corrono a piedi.")
+  ],
+  scelte: [
+    { t: "«Si gioca. Non è il campo: è che ce l'hanno chiesto e siamo una squadra.»", vai: 'al_3' },
+    { t: "«Si gioca, ma nessuno si fa male per un prato. Se diventa brutta, ci fermiamo.»", vai: 'al_3' },
+    { t: "«Si gioca perché ho voglia di vedere fin dove arriviamo.»", vai: 'al_3',
+      se: function (S, car, tr) { return car === 'fuoco' || car === 'ostinato' || (tr.schiena || 0) >= 8; } },
+    { t: "«Amagai ha ragione. Non giochiamo.»", vai: 'al_rifiuto' }
+  ] });
+
+sc({ id: 'al_rifiuto', luogo: 'Il campo dietro la palestra',
+  righe: [
+    tv({
+      fuoco:   "…no. Non giochiamo. Andatevene.",
+      calmo:   "No. Non c'è niente da guadagnare e c'è gente qui dietro che ha ottant'anni.",
+      ironico: "Passo. Rimandiamo alla prossima invasione, magari con più preavviso.",
+      chiuso:  "No.",
+      ostinato:"No. E non mi interessa come suona."
+    }),
+    d('reize', "…"),
+    d('reize', "Va bene."),
+    n("Si girano tutti e undici insieme, con lo stesso movimento, e si incamminano verso la strada."),
+    n("Poi Reize si ferma."),
+    d('reize', "Non cambia niente, comunque."),
+    d('reize', "Le scuole che non giocano le segnaliamo, e ci manda qualcun altro. Uno di quelli sopra di noi."),
+    d('reize', "Quelli sopra di noi non chiedono."),
+    n("Arrivano il giorno dopo, alle sei del mattino, quando sul campo non c'è nessuno."),
+    n("Nessuno li vede. Non c'è nessuna partita da raccontare."),
+    n("C'è solo che alle sei e mezza, quando arrivate per l'allenamento, il campo dietro la palestra non c'è più.")
+  ],
+  eff: [{ flag: 'campo_distrutto' }, { flag: 'non_giocato' }, { tratto: { testa: 3 } },
+        { momento: 'Hai rifiutato la sfida di Alius Academy. Sono tornati comunque, di mattina presto.' }],
+  poi: 'al_dopo' });
+
+sc({ id: 'al_3', luogo: 'Il campo dietro la palestra — 4 dicembre',
+  righe: [
+    d('reize', "Bene."),
+    n("Si dispongono senza parlarsi. Non fanno riscaldamento."),
+    d('amagai', "…"),
+    d('amagai', "Va bene. Allora ascoltatemi bene, che è l'ultima cosa che vi dico oggi."),
+    d('amagai', "Non provate a stargli dietro, perché non ci riuscite."),
+    d('amagai', "Fate la cosa che sapete fare voi e che loro non hanno mai avuto bisogno di imparare: state in piedi."),
+    d('amagai', "Novanta minuti in undici, in piedi."),
+    d('amagai', "È l'unica cosa che ho da darvi ed è tutto l'anno che funziona.")
+  ],
+  poi: { partita: { avv: 'gemini', titolo: 'Alius Academy — Amanome vs Gemini Storm', minuti: 45,
+    vinto: 'al_v', perso: 'al_p', pari: 'al_p' } } });
+
+sc({ id: 'al_v', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("La scuola media di Amanome ha battuto Gemini Storm."),
+    n("Non applaude nessuno, perché nessuno dei quaranta dietro la recinzione ha capito bene cosa ha visto."),
+    d('reize', "…"),
+    d('reize', "Non era previsto."),
+    tv({
+      fuoco:   "Non era previsto un accidente. Vi abbiamo battuti.",
+      calmo:   "Non era previsto da chi? Non da te. Tu hai giocato.",
+      ironico: "Da noi non è previsto quasi mai niente. Ci si abitua.",
+      chiuso:  "È successo lo stesso.",
+      ostinato:"Adesso il campo resta dov'è."
+    }),
+    d('reize', "Il campo resta dov'è. Quella è la regola e la regola vale anche per noi."),
+    n("Si gira per andarsene. Poi si ferma, come prima."),
+    d('reize', "Posso chiederti una cosa?"),
+    tu("Sì."),
+    d('reize', "Quel campo lì. Chi l'ha falciato?"),
+    tu("Noi. Ad aprile."),
+    d('reize', "…"),
+    d('reize', "Noi la nostra scuola non l'abbiamo costruita. Ce l'hanno data."),
+    n("Se ne vanno a piedi lungo la provinciale, in fila per due, e spariscono dietro il tornante."),
+    n("Quella notte nevica quaranta centimetri."),
+    n("La mattina dopo, alle sei e mezza, il campo dietro la palestra non c'è più."),
+    n("Non è la neve. Il terreno è aperto in due, le porte sono piegate come fili di ferro, e la parete est della palestra è caduta dentro."),
+    n("Sulla linea di fondo, dove non cresce niente, c'è un biglietto tenuto fermo da un sasso."),
+    n("« Non è stata una mia decisione. Mi dispiace. — R. »")
+  ],
+  eff: [{ flag: 'campo_distrutto' }, { flag: 'battuto_gemini' }, { spirito: 10 }, { exp: 1500 },
+        { momento: 'Avete battuto Gemini Storm. Il giorno dopo il campo non c\'era più lo stesso.' }],
+  poi: 'al_dopo' });
+
+sc({ id: 'al_p', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Non è stata una partita. È stata una dimostrazione, e voi eravate la cosa dimostrata."),
+    n("Rikuto è a terra da sei minuti e non si è ancora rialzato del tutto. Zero ha i guanti strappati sul palmo destro."),
+    n("Nessuno di loro ha mai corso a tutta velocità."),
+    d('reize', "È finita."),
+    n("Alza una mano verso il campo come aveva fatto con la neve."),
+    d('amagai', "Aspetta."),
+    n("Sōichirō Amagai attraversa il campo. Ci mette parecchio, perché ha sessantotto anni e il terreno è ghiacciato."),
+    d('amagai', "Il campo dietro la palestra è del 1985. L'ho tracciato io con il gesso quando avevo diciassette anni."),
+    d('amagai', "Adesso ha vent'anni di ruggine e un mese fa dodici ragazzi lo hanno falciato a mano."),
+    d('amagai', "Fallo pure, ma guardalo mentre lo fai."),
+    d('reize', "…"),
+    n("Lo guarda. Lo guarda per un tempo che a tutti sembra lunghissimo."),
+    n("Poi il terreno si apre in due lungo la linea di metà campo, le porte si piegano come fili di ferro, e la parete est della palestra cade dentro."),
+    n("Ci mette quattro secondi."),
+    n("Quando il rumore finisce, sulla linea di fondo, dove non cresce niente, c'è un biglietto tenuto fermo da un sasso."),
+    n("« Non è stata una mia decisione. Mi dispiace. — R. »")
+  ],
+  eff: [{ flag: 'campo_distrutto' }, { spirito: 6 }, { exp: 1200 },
+        { momento: 'Gemini Storm ha raso al suolo il campo dietro la palestra.' }],
+  poi: 'al_dopo' });
+
+sc({ id: 'al_dopo', luogo: 'Amanome — 5 dicembre',
+  righe: [
+    n("Non c'è un modo elegante di raccontare una cosa così."),
+    n("Il campo dietro la palestra è un fosso. La palestra ha tre pareti. La scuola resta chiusa per una settimana e i trentotto studenti vanno a fare lezione nella sala del centro anziani, che è nuova e ha il riscaldamento."),
+    n("La prefettura manda due ingegneri. Scrivono « cedimento del terreno dovuto al gelo » perché quello che è successo davvero non ha una casella nel modulo."),
+    d('nao', "Ho fatto i conti della ricostruzione."),
+    d('kenta', "Nao—"),
+    d('nao', "Ho fatto i conti perché è il mio lavoro farli."),
+    d('nao', "Il campo si rifà in primavera, con le braccia, come ad aprile. Quello non è il problema."),
+    d('nao', "Il problema è la palestra, e quella non la rifà il paese: la rifà la prefettura, quando le gira."),
+    d('rei', "Quindi il club?"),
+    d('ayase', "Il club esiste. Ha quattordici tesserati e un professore che ha firmato."),
+    d('ayase', "Solo che per un po' non ha dove giocare."),
+    n("Il sette di dicembre, alle undici del mattino, un pullman si ferma sulla provinciale davanti alla scuola."),
+    n("Non è il minibus della segheria. Ha una scritta sulla fiancata e una parabola sul tetto."),
+    n("« INAZUMA CARAVAN »")
+  ],
+  poi: 'al_caravan' });
+
+sc({ id: 'al_caravan', luogo: 'Piazzale della scuola — 7 dicembre',
+  righe: [
+    d('mark', "SIETE TUTTI VIVI?"),
+    d('nelly', "Mark."),
+    d('mark', "È una domanda importante!"),
+    n("Mark Evans salta giù dal pullman prima che si sia fermato del tutto. Dietro di lui scendono Jude Sharp, Axel Blaze e altri sei che riconosci dalla partita di novembre."),
+    d('mark', "Amanome è la ventunesima. Sono tre mesi che li rincorriamo e arriviamo sempre il giorno dopo."),
+    d('jude', "Diciannove scuole a settembre e ottobre. Poi Raimon."),
+    tu("…anche la vostra?"),
+    d('jude', "La nostra è stata la prima. Il quattordici di settembre."),
+    d('jude', "Della scuola media Raimon adesso è in piedi l'ala nord e basta."),
+    n("Lo dice come si dicono le cose che si sono già dette tante volte per poterle sopportare."),
+    d('mark', "Per questo giriamo. Non possiamo batterli in undici: siamo undici di una scuola sola."),
+    d('mark', "Quindi andiamo in giro a cercare gente. Uno per scuola, a volte due."),
+    d('mark', "Gente che ha giocato contro di loro e si è rialzata."),
+    n("Si gira verso di te. Ha ancora la fascia arancione in testa, a dicembre, con meno tre gradi."),
+    d('mark', "Vieni con noi?"),
+    n("Silenzio nel piazzale."),
+    d('hina', "…"),
+    d('kenta', "Aspetta. Aspetta un attimo. Stai chiedendo al nostro capitano di venire via."),
+    d('mark', "Sì."),
+    d('kenta', "Per quanto?"),
+    d('mark', "Non lo so. Finché non finisce."),
+    d('nelly', "Il consiglio scolastico della Raimon copre il trasferimento temporaneo. È tutto regolare, c'è il modulo."),
+    d('nao', "Fatemi vedere il modulo."),
+    d('nelly', "…prego?"),
+    d('nao', "Il modulo. Sono la dirigente di questo club e voglio leggerlo."),
+    n("Nelly Raimon guarda questa ragazza di quattordici anni che le sta chiedendo la documentazione, e per la prima volta in tre mesi sorride.")
+  ],
+  poi: 'al_scelta' });
+
+sc({ id: 'al_scelta', luogo: 'Piazzale della scuola',
+  righe: [
+    n("Sono tutti lì. Rei, Gorō, Hina, Zero, Minoru, Kenta, Yuki, Aoi, Shinobu, Rikuto, Benkei, Daichi, Nao."),
+    n("Ad aprile eravate in due."),
+    n("Adesso c'è un pullman che ti chiede di salirci, e un campo che non c'è più, e tredici persone che non ti stanno dicendo cosa fare perché aspettano che lo dica tu.")
+  ],
+  scelte: [
+    { t: "«Vengo. Ma torno.»", vai: 'al_parto' },
+    { t: "«Vengo, e ci vado per voi: quelli lì hanno buttato giù il nostro campo.»", vai: 'al_parto' },
+    { t: "«Non vengo. Il mio posto è qui.»", vai: 'al_resto' },
+    { t: "«Decidete voi. Se uno di voi dice no, resto.»", vai: 'al_squadra',
+      se: function (S, car, tr) { return (tr.cuore || 0) >= 6 || car === 'chiuso'; },
+      nota: 'Non è indecisione: è che non è solo tua.' }
+  ] });
+
+sc({ id: 'al_squadra', luogo: 'Piazzale della scuola',
+  righe: [
+    tv({
+      fuoco:   "Decidete voi! Io da solo non ci vado e non ci penso nemmeno!",
+      calmo:   "Non decido io. Questo club l'abbiamo fatto in quattordici e questa è una cosa che riguarda tutti e quattordici.",
+      ironico: "Facciamo una votazione. È la cosa più noiosa che ci sia e mi sembra il momento giusto.",
+      chiuso:  "Decidete voi. Se uno dice no, resto.",
+      ostinato:"Se uno solo di voi dice no, io resto qui e non se ne parla più."
+    }),
+    n("Rei alza la mano per primo, e non è nemmeno una votazione, e la alza lo stesso."),
+    d('rei', "Vai."),
+    d('goro', "…vai."),
+    d('hina', "Vai. E impara qualcosa, che qui hai finito."),
+    d('minoru', "Vai!"),
+    d('kenta', "Statisticamente sei il nostro giocatore migliore e perderemo di più. Vai lo stesso."),
+    d('shinobu', "Vai, e poi mi racconti tutto in ordine cronologico perché ci devo scrivere una cosa."),
+    d('rikuto', "…vai."),
+    d('benkei', "Vai. Ti tengo un panino."),
+    d('yuki', "Vai."),
+    d('aoi', "Vai."),
+    d('zero', "Vai."),
+    d('daichi', "Vai. E se torni e il campo non è pronto, prenditela con me."),
+    n("Nao non dice niente. Apre il quaderno, quello del club, e alla riga del tuo nome scrive una parola sola."),
+    d('nao', "« In prestito »."),
+    d('nao', "Non « trasferito ». In prestito. È una parola diversa e la scelgo io perché tengo io i registri.")
+  ],
+  eff: [{ spirito: 20 }, { tratto: { cuore: 4 } },
+        { momento: 'Non hai deciso da solo se partire. Te l\'hanno detto loro, uno per uno.' }],
+  poi: 'al_parto' });
+
+sc({ id: 'al_resto', luogo: 'Piazzale della scuola',
+  righe: [
+    tv({
+      fuoco:   "No. Io da qui non mi muovo. Il campo è nostro e lo rifacciamo noi.",
+      calmo:   "No. Grazie, davvero. Ma se me ne vado adesso, questo club non arriva a marzo.",
+      ironico: "Vi ringrazio ma ho un impegno: devo rifare un prato.",
+      chiuso:  "Resto.",
+      ostinato:"No. Sono partito da un prato ad aprile e ci resto finché non torna un campo."
+    }),
+    d('mark', "…"),
+    d('mark', "Va bene!"),
+    d('nelly', "Va bene? Mark, siamo venuti fin quassù—"),
+    d('mark', "Ha detto che deve rifare il campo. È la risposta giusta."),
+    d('mark', "Il campo viene prima."),
+    n("Torna verso il pullman. Poi si gira, come fanno tutti in questo paese."),
+    d('mark', "Però una cosa te la dico, e poi salgo."),
+    d('mark', "Quelli lì torneranno. Non da voi: dappertutto."),
+    d('mark', "E quando ci saremo in mezzo noi e non basteremo, io torno quassù."),
+    d('mark', "E quella volta non te lo chiedo."),
+    n("Il pullman riparte verso il tornante."),
+    n("Il campo dietro la palestra torna a essere un prato con dentro due cose di ferro storte, e voi ricominciate da lì, che è il posto da cui avete cominciato la prima volta."),
+    n("Ma tre giorni dopo arriva una busta della Raimon con dentro un modulo, un orario di allenamento e un biglietto scritto a mano che dice: « quando vuoi »."),
+    d('nao', "Lo metto nel raccoglitore."),
+    d('nao', "In fondo, dove tengo le cose che non buttiamo.")
+  ],
+  eff: [{ flag: 'rimasto' }, { flag: 'caravan_aperto' }, { sblocca: 'caravan' }, { spirito: 14 },
+        { tratto: { schiena: 5 } },
+        { momento: 'Hai detto di no alla Raimon per restare a rifare il campo.' }],
+  poi: 'c6_epilogo' });
+
+sc({ id: 'al_parto', luogo: 'Piazzale della scuola — 7 dicembre, 14:20',
+  righe: [
+    tv({
+      fuoco:   "Vengo. Ma torno, chiaro? Torno.",
+      calmo:   "Vengo. A una condizione che riguarda solo me: che questo resti il mio club anche mentre non ci sono.",
+      ironico: "Vengo. Ho sempre voluto vedere il mare e invece vado a farmi picchiare dagli alieni, ma vengo.",
+      chiuso:  "Vengo. E torno.",
+      ostinato:"Vengo, e quando è finita torno qui e finisco quello che ho cominciato ad aprile."
+    }),
+    d('mark', "BENE!"),
+    d('nelly', "Mark, sono le due e venti, dobbiamo essere a Nagano per le sei."),
+    d('mark', "Sì! Prendi la roba!"),
+    n("Ci metti undici minuti a fare la borsa, perché non hai quasi niente da portare."),
+    n("Sul piazzale, mentre sali, Amagai ti dà una cosa."),
+    n("È il quaderno del 1985. Quello con gli undici nomi scritti a mano."),
+    d('amagai', "Non è un regalo. È un prestito e lo rivoglio."),
+    tu("Perché me lo dà?"),
+    d('amagai', "Perché nel 1986 quelli che se ne sono andati non hanno portato via niente."),
+    d('amagai', "E non sono più tornati."),
+    d('amagai', "Tu porti via una cosa che è di qui. Così ti tocca riportarla."),
+    n("Il pullman parte alle due e trentuno. Dal finestrino di dietro si vede il piazzale con tredici persone dentro, e dietro il piazzale il tetto della palestra a tre pareti, e dietro ancora la cresta del monte Kurogane con la neve."),
+    n("Rei corre dietro al pullman per una cinquantina di metri, poi si ferma perché non ce la fa più, ed è esattamente quello che ti aspettavi che facesse."),
+    d('mark', "Ehi."),
+    tu("Sì?"),
+    d('mark', "Come si chiama la tua squadra?"),
+    n("Ci pensi un secondo, e poi glielo dici, e per il resto del viaggio nessuno ti chiede altro."),
+    n("— Da qui in avanti giochi con la Raimon."),
+    n("Non sei il capitano, non è il tuo campo e non conosci nessuno."),
+    n("Sei uno degli undici, e devi guadagnarti il posto come tutti gli altri.")
+  ],
+  eff: [{ flag: 'partito' }, { flag: 'caravan_aperto' }, { sblocca: 'caravan' }, { sblocca: 'amichevoli' },
+        { spirito: 12 }, { exp: 800 },
+        { momento: 'Sei salito sul pullman della Raimon con il quaderno del 1985 nella borsa.' }],
+  poi: 'al_raimon' });
+
+sc({ id: 'al_raimon', luogo: 'Inazuma Caravan — da qualche parte fra Nagano e il mare',
+  righe: [
+    n("Il pullman della Raimon ha nove cuccette, un tavolo che si ribalta e un allenatore che dorme seduto."),
+    d('hillman', "Tu sei quello di Amanome."),
+    tu("Sì."),
+    d('hillman', "Trentotto studenti."),
+    tu("Trentotto."),
+    d('hillman', "Il tuo custode è Sōichirō Amagai."),
+    n("Alzi la testa."),
+    d('hillman', "Secondo posto alla prefettura di Nagano, 1985. Terzo da sinistra nella fotografia."),
+    d('hillman', "Io giocavo a Shizuoka, quell'anno. Ci hanno parlato di voi per un mese."),
+    n("Coach Hillman chiude gli occhi e sembra che abbia finito di parlare. Poi non ha finito."),
+    d('hillman', "Qui non c'è la tua squadra. Qui ci sono undici che hanno perso la scuola a settembre e non hanno ancora smesso di girare."),
+    d('hillman', "Non ti chiederanno di essere il capitano e non ti daranno il tuo numero."),
+    d('hillman', "Ti chiederanno solo di esserci quando tocca a te."),
+    d('mark', "Domani a Toyama! C'è una scuola che ha giocato contro Epsilon e ha resistito settanta minuti!"),
+    d('jude', "Sessantotto."),
+    d('mark', "SETTANTA È PIÙ BELLO!"),
+    d('axel', "Sono sessantotto."),
+    n("Ti addormenti sulla cuccetta di sopra con il quaderno del 1985 sotto il cuscino, mentre fuori dal finestrino passa un Giappone che non hai mai visto."),
+    n("Sul quaderno, dopo gli undici nomi del 1985 e i quattordici di Amanome, c'è ancora molto spazio bianco.")
+  ],
+  eff: [{ spirito: 6 }],
+  poi: 'c6_epilogo' });
 
 /* ============================================================
    I RISVEGLI

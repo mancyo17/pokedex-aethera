@@ -141,6 +141,18 @@ IE.tecniche = {};
   T('firma_tu_DF',   'La Cresta del Kurogane', 'blocco', 'terra',  62, 28, 'Come la cresta sopra il paese: la vedi da lontano e non la passi.', { soloDi: 'tu' }),
   T('firma_tu_PT',   'Porta di Amanome',       'parata', 'terra',  62, 28, 'Arrugginita, storta, e da vent\'anni non l\'ha buttata giù nessuno.', { soloDi: 'tu' }),
 
+  /* --- tecniche delle squadre ufficiali --- */
+  T('atomic_flare',  'Atomic Flare',           'tiro', 'fuoco',  70, 34, 'Il tiro di Burn: una palla di fuoco che si apre come un\'esplosione.'),
+  T('northern',      'Northern Impact',        'tiro', 'aria',   70, 34, 'Il tiro di Gazel: la porta si copre di ghiaccio prima che la palla arrivi.'),
+  T('chaos_break',   'Chaos Break',            'tiro', 'terra',  76, 38, 'Burn e Gazel insieme. Non doveva succedere mai.'),
+  T('astro_break',   'Astro Break',            'tiro', 'terra',  74, 36, 'Un meteorite che cade dove c\'era il pallone.'),
+  T('the_tower',     'The Tower',              'blocco','terra', 56, 25, 'Il muro di Desarm: si alza dal terreno e non si passa.'),
+  T('the_wall',      'The Wall',               'blocco','terra', 52, 23, 'Jack Wallside si allarga e diventa esattamente quello che dice il nome.'),
+  T('mano_infinita', 'Mano Infinita',          'parata','neutro',66, 30, 'La Mano Magica cresciuta: una mano che copre tutta la porta.'),
+  T('tornado_drago', 'Tiro del Drago',         'tiro', 'fuoco',  56, 27, 'Un drago sale dal terreno e accompagna il pallone in porta.'),
+  T('taglio_vento',  'Taglio di Vento',        'drib', 'aria',   50, 22, 'Nathan Swift sparisce in una scia azzurra e ricompare dieci metri avanti.'),
+  T('pinguino2',     'Pinguino Imperatore n.2','tiro', 'neutro', 78, 38, 'La versione che serve a Jude Sharp quando la prima non basta.', { com: [] }),
+
   /* --- tiri degli avversari famosi --- */
   T('tornado_fuoco', 'Tornado di Fuoco',       'tiro', 'fuoco',  62, 30, 'Rovesciata avvolta nelle fiamme. Il tiro di Axel Blaze.'),
   T('pinguino1',     'Pinguino Imperatore n.1','tiro', 'neutro', 68, 34, 'Un esercito di pinguini spinge il pallone in porta.', { com: [] }),
@@ -380,6 +392,16 @@ IE.personaggi = {
     bio: 'Capitano della Kuzuryū. Quattrocento studenti, due campi in erba e un pullman con la scritta.' }),
   higashi_all: P({ id: 'higashi_all', nome: 'Allenatore Umezawa', corto: 'Umezawa', col: '#3f6fc0', png: true,
     bio: 'Allenatore della Nagano Higashi. Due anni fa ha lasciato un dodicenne solo in porta per quarantacinque minuti.' }),
+  reize:  P({ id: 'reize', nome: 'Jordan Greenway', corto: 'Reize', col: '#7fd08f', png: true,
+    bio: 'Capitano di Gemini Storm, la seconda squadra di Alius Academy. In originale Midorikawa Ryuuji: «Reize» è un nome in codice.' }),
+  gran:   P({ id: 'gran', nome: 'Xavier Foster', corto: 'Gran', col: '#ff9a9a', png: true,
+    bio: 'Capitano di The Genesis, la prima squadra di Alius Academy. In originale Kiyama Hiroto.' }),
+  burn:   P({ id: 'burn', nome: 'Burn', corto: 'Burn', col: '#ff9a6a', png: true,
+    bio: 'Capitano di Prominence. In originale Nagumo Haruya.' }),
+  gazel:  P({ id: 'gazel', nome: 'Gazel', corto: 'Gazel', col: '#dff2ff', png: true,
+    bio: 'Capitano di Diamond Dust. In originale Suzuno Fuusuke.' }),
+  hillman: P({ id: 'hillman', nome: 'Coach Hillman', corto: 'Hillman', col: '#8f9aa8', png: true,
+    bio: 'Allenatore della Raimon.' }),
   mark:   P({ id: 'mark', nome: 'Mark Evans', corto: 'Mark', col: '#ff7043', png: true, bio: 'Capitano e portiere della Raimon. Nipote del leggendario Dave Evans.' }),
   axel:   P({ id: 'axel', nome: 'Axel Blaze', corto: 'Axel', col: '#ff5468', png: true, bio: 'Attaccante della Raimon. Il fuoco lo tiene tutto dentro.' }),
   jude:   P({ id: 'jude', nome: 'Jude Sharp', corto: 'Jude', col: '#5fa8ff', png: true, bio: 'Stratega. Vede la partita tre passaggi avanti a chiunque.' }),
@@ -464,7 +486,14 @@ IE.rosaSquadra = function (sq) {
   var profDi = { PT: 'portiere', DF: ['muro', 'terzino'], CC: ['regista', 'ala'], AT: ['bomber', 'ala'] };
   for (i = 0; rosa.length < 16 && i < 40; i++) {
     var ruolo = manca.shift() || 'CC';
-    var nome; do { nome = NOMI[Math.floor(r() * NOMI.length)] + ' ' + COGNOMI[Math.floor(r() * COGNOMI.length)]; } while (usati[nome]);
+    var nome;
+    if (sq.nomi && sq.nomi.length) {
+      var tentativi = 0;
+      do { nome = sq.nomi[Math.floor(r() * sq.nomi.length)]; tentativi++; } while (usati[nome] && tentativi < 30);
+      if (usati[nome]) nome = sq.nomi[i % sq.nomi.length] + ' ' + (i + 2);
+    } else {
+      do { nome = NOMI[Math.floor(r() * NOMI.length)] + ' ' + COGNOMI[Math.floor(r() * COGNOMI.length)]; } while (usati[nome]);
+    }
     usati[nome] = 1;
     var p = profDi[ruolo]; p = Array.isArray(p) ? p[Math.floor(r() * p.length)] : p;
     var g2 = {
@@ -576,40 +605,164 @@ IE.squadre = {
     ] },
 
   royal: { id: 'royal', nome: 'Royal Academy', sigla: 'ROY', lvCons: 31, col: '#e8d27a', col2: '#8f7a2f',
-    lv: 34, base: 54, stemma: '👑',
-    motto: 'La scuola di calcio più forte del Giappone. Non hanno mai perso una finale nazionale.',
+    lv: 34, base: 51, stemma: '👑',
+    motto: 'Cinque Football Frontier su sei. Non hanno mai perso una semifinale, fino a quest\'anno.',
     chiave: [
-      { id: 'jude', nome: 'Jude Sharp', corto: 'Jude', ruolo: 'CC', el: 'aria', prof: 'regista', b: 24, col: '#5fa8ff',
-        tec: ['pinguino1', 'illusione', 'marcatura'], mod: { ctr: 1.5, gri: 1.3, tir: 1.2 } },
-      { id: 'sam', nome: 'David Samford', corto: 'Samford', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 21, tec: ['muro_infinito', 'pugno_teso'], mod: { par: 1.3 } },
-      { id: 'dif', nome: 'Herman Waldon', ruolo: 'DF', el: 'terra', prof: 'muro', b: 18, tec: ['cancello_pietra'], mod: { dif: 1.4, fis: 1.3 } }
+      { id: 'jude', nome: 'Jude Sharp', corto: 'Jude', jp: 'Kidou Yuuto', ruolo: 'CC', el: 'aria', prof: 'regista', b: 24, col: '#5fa8ff',
+        tec: ['pinguino1', 'pinguino2', 'illusione'], mod: { ctr: 1.5, gri: 1.3, tir: 1.2 } },
+      { id: 'genda', nome: 'Joseph King', corto: 'King', jp: 'Genda Koujirou', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 21, col: '#c8a86f',
+        tec: ['muro_infinito', 'pugno_teso'], mod: { par: 1.3 } },
+      { id: 'sakuma', nome: 'David Samford', corto: 'Samford', jp: 'Sakuma Jirou', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 20, col: '#7fc8e0',
+        tec: ['pinguino1', 'lama_vento'], mod: { tir: 1.35, ctr: 1.2 } },
+      { id: 'fudou', nome: 'Caleb Stonewall', corto: 'Caleb', jp: 'Fudou Akio', ruolo: 'CC', el: 'terra', prof: 'regista', b: 19, col: '#8f8f5f',
+        tec: ['marcatura', 'spirale_nera'], mod: { ctr: 1.3, gri: 1.3 } },
+      { id: 'henmi', nome: 'Herman Waldon', corto: 'Waldon', jp: 'Henmi Wataru', ruolo: 'DF', el: 'terra', prof: 'muro', b: 16, col: '#a89a6f',
+        tec: ['cancello_pietra'], mod: { dif: 1.35, fis: 1.25 } },
+      { id: 'doumen', nome: 'Derek Swing', corto: 'Derek', jp: 'Doumen Shuuichirou', ruolo: 'CC', el: 'aria', prof: 'ala', b: 14, col: '#c8b87a',
+        tec: ['cambio_passo'], mod: { vel: 1.25 } },
+      { id: 'gojou', nome: 'Gus Martin', corto: 'Gus', jp: 'Gojou Masaru', ruolo: 'DF', el: 'terra', prof: 'muro', b: 14, col: '#b0a070',
+        tec: ['scivolata'], mod: { dif: 1.25, fis: 1.2 } },
+      { id: 'banjou', nome: 'Ben Simmons', corto: 'Ben', jp: 'Banjou Kazumichi', ruolo: 'DF', el: 'terra', prof: 'terzino', b: 14, col: '#c0b080',
+        tec: ['anticipo'], mod: { dif: 1.2, vel: 1.15 } },
+      { id: 'jimon', nome: 'Daiki Jimon', corto: 'Jimon', jp: 'Jimon Daiki', ruolo: 'DF', el: 'bosco', prof: 'muro', b: 13, col: '#9ab07a',
+        tec: ['sbarramento'], mod: { dif: 1.2, fis: 1.2 } },
+      { id: 'narukami', nome: 'Kenya Narukami', corto: 'Narukami', jp: 'Narukami Kenya', ruolo: 'CC', el: 'fuoco', prof: 'ala', b: 13, col: '#d09a6f',
+        tec: ['giravolta'], mod: { vel: 1.2, tir: 1.1 } },
+      { id: 'kagami', nome: 'Ryuu Kagami', corto: 'Kagami', jp: 'Kagami Hiroto', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 14, col: '#e0a06f',
+        tec: ['tiro_teso'], mod: { tir: 1.3 } }
     ] },
 
   zeus: { id: 'zeus', nome: 'Istituto Zeus', sigla: 'ZEU', lvCons: 33, col: '#f0e6c8', col2: '#c8a83f',
-    lv: 38, base: 53, stemma: '⚡',
-    motto: 'Dicono di essere figli degli dèi. Per novanta minuti sembra vero.',
+    lv: 38, base: 50, stemma: '⚡',
+    motto: 'Dicono di essere figli degli dèi. In tutto il torneo non avevano ancora subito un gol.',
     chiave: [
-      { id: 'byron', nome: 'Byron Love', corto: 'Byron', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 27, col: '#ffe8a0',
+      { id: 'byron', nome: 'Byron Love', corto: 'Byron', jp: 'Afuro Terumi', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 27, col: '#ffe8a0',
         tec: ['splendore', 'lama_cometa'], mod: { tir: 1.55, ctr: 1.25 } },
-      { id: 'por', nome: 'Alan Bane', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 22, tec: ['presa_falco'], mod: { par: 1.3 } }
+      { id: 'posei', nome: 'Posei Donichi', corto: 'Posei', jp: 'Posei Donichi', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 22, col: '#cfe0f0',
+        tec: ['presa_falco', 'presa_alta'], mod: { par: 1.3 } },
+      { id: 'aporo', nome: 'Aporo Hikaru', corto: 'Aporo', jp: 'Aporo Hikaru', ruolo: 'DF', el: 'aria', prof: 'muro', b: 17, col: '#e8dfc0',
+        tec: ['cancello_pietra'], mod: { dif: 1.3, fis: 1.2 } },
+      { id: 'hepai', nome: 'Hepai En', corto: 'Hepai', jp: 'Hepai En', ruolo: 'DF', el: 'fuoco', prof: 'muro', b: 16, col: '#e0c090',
+        tec: ['muro_di_terra'], mod: { dif: 1.25, fis: 1.25 } },
+      { id: 'aresu', nome: 'Aresu Ran', corto: 'Aresu', jp: 'Aresu Ran', ruolo: 'DF', el: 'fuoco', prof: 'terzino', b: 16, col: '#d8b088',
+        tec: ['marcatura'], mod: { dif: 1.25, vel: 1.15 } },
+      { id: 'deio', nome: 'Deio Geki', corto: 'Deio', jp: 'Deio Geki', ruolo: 'DF', el: 'terra', prof: 'muro', b: 16, col: '#c8b898',
+        tec: ['scivolata'], mod: { dif: 1.3 } },
+      { id: 'arute', nome: 'Arute Saneki', corto: 'Arute', jp: 'Arute Saneki', ruolo: 'CC', el: 'aria', prof: 'regista', b: 17, col: '#e8e0c8',
+        tec: ['lettura'], mod: { ctr: 1.3 } },
+      { id: 'herume', nome: 'Herume Matsuaki', corto: 'Herume', jp: 'Herume Matsuaki', ruolo: 'CC', el: 'aria', prof: 'ala', b: 17, col: '#dfd8b8',
+        tec: ['folata'], mod: { vel: 1.35 } },
+      { id: 'atena', nome: 'Atena Tomo', corto: 'Atena', jp: 'Atena Tomo', ruolo: 'CC', el: 'bosco', prof: 'regista', b: 17, col: '#c8d8a8',
+        tec: ['illusione'], mod: { ctr: 1.3, gri: 1.15 } },
+      { id: 'demete', nome: 'Demete Yutaka', corto: 'Demete', jp: 'Demete Yutaka', ruolo: 'AT', el: 'bosco', prof: 'bomber', b: 18, col: '#b8d090',
+        tec: ['germoglio', 'foglia_morta'], mod: { tir: 1.3 } },
+      { id: 'hera', nome: 'Hera Tadashi', corto: 'Hera', jp: 'Hera Tadashi', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 18, col: '#e8b890',
+        tec: ['meteora'], mod: { tir: 1.3 } }
+    ] },
+
+
+  /* ============================================================
+     ALIUS ACADEMY  (Aliea Gakuen)
+     Le squadre della seconda stagione. I capitani e i nomi in
+     elenco sono quelli veri; le riserve portano nomi in stile,
+     perché non tutte le rose sono documentate.
+     ============================================================ */
+  gemini: { id: 'gemini', nome: 'Gemini Storm', sigla: 'GEM', lvCons: 31, col: '#8f7fd0', col2: '#4a3f8f',
+    lv: 34, base: 56, stemma: '☄️', alius: true,
+    nomi: ['Diam', 'Rhionne', 'Bourjois', 'Peperoni', 'Cameo', 'Rico', 'Zaza'],
+    motto: 'La seconda squadra di Alius Academy. Sono arrivati a piedi e hanno chiesto una partita.',
+    chiave: [
+      { id: 'reize', nome: 'Jordan Greenway', corto: 'Reize', jp: 'Midorikawa Ryuuji — nome in codice Reize', ruolo: 'AT', el: 'bosco', prof: 'bomber', b: 22, col: '#7fd08f',
+        tec: ['astro_break', 'illusione'], mod: { tir: 1.4, ctr: 1.25 } },
+      { id: 'por', nome: 'Zaza', corto: 'Zaza', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 18, tec: ['mani_pietra'], mod: { par: 1.3 } },
+      { id: 'dif', nome: 'Diam', corto: 'Diam', ruolo: 'DF', el: 'terra', prof: 'muro', b: 16, tec: ['the_tower'], mod: { dif: 1.3, fis: 1.25 } }
+    ] },
+
+  epsilon: { id: 'epsilon', nome: 'Epsilon', sigla: 'EPS', lvCons: 34, col: '#5fc8b0', col2: '#2f7a6a',
+    lv: 37, base: 55, stemma: '🛸', alius: true,
+    nomi: ['Zel', 'Hobo', 'Grinz', 'Roberts', 'Zutti', 'Anos', 'Faguu'],
+    motto: 'La squadra di Desarm. Giocano come se il risultato fosse già scritto da qualche parte.',
+    chiave: [
+      { id: 'desarm', nome: 'Desarm', corto: 'Desarm', jp: 'Saginuma Osamu — nome in codice Desarm', ruolo: 'DF', el: 'terra', prof: 'muro', b: 26, col: '#8fd0c0',
+        tec: ['the_tower', 'cancello_pietra'], mod: { dif: 1.45, fis: 1.3, gri: 1.25 } },
+      { id: 'zel', nome: 'Zel', corto: 'Zel', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 22, tec: ['astro_break'], mod: { tir: 1.35 } },
+      { id: 'por', nome: 'Anos', corto: 'Anos', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 21, tec: ['presa_falco'], mod: { par: 1.32 } }
+    ] },
+
+  diamond: { id: 'diamond', nome: 'Diamond Dust', sigla: 'DIA', lvCons: 36, col: '#bfe8ff', col2: '#5f8fb0',
+    lv: 39, base: 55, stemma: '❄️', alius: true,
+    nomi: ['Gokka', 'Rhionne', 'Fune', 'Reina', 'Bellatrix', 'Sunna', 'Kuriha'],
+    motto: 'Il campo si copre di brina dove passano loro. Nessuno li ha mai visti sudare.',
+    chiave: [
+      { id: 'gazel', nome: 'Gazel', corto: 'Gazel', jp: 'Suzuno Fuusuke — nome in codice Gazel', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 24, col: '#dff2ff',
+        tec: ['northern', 'eterna_bufera'], mod: { tir: 1.5, ctr: 1.2 } },
+      { id: 'ic', nome: 'IC', corto: 'IC', ruolo: 'CC', el: 'aria', prof: 'regista', b: 20, tec: ['raffica_gelata', 'illusione'], mod: { ctr: 1.35 } },
+      { id: 'clara', nome: 'Clara', corto: 'Clara', ruolo: 'DF', el: 'aria', prof: 'terzino', b: 19, tec: ['raffica_gelata'], mod: { dif: 1.3, vel: 1.2 } },
+      { id: 'por', nome: 'Kuriha', corto: 'Kuriha', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 20, tec: ['mani_di_neve'], mod: { par: 1.35 } }
+    ] },
+
+  prominence: { id: 'prominence', nome: 'Prominence', sigla: 'PRO', lvCons: 37, col: '#ff8a4a', col2: '#a83f1f',
+    lv: 40, base: 55, stemma: '🔥', alius: true,
+    nomi: ['Rean', 'Heat', 'Marc', 'Zaan', 'Rood', 'Gouen', 'Bakka'],
+    motto: 'Bruciano il campo e poi ci giocano sopra. La squadra di Burn.',
+    chiave: [
+      { id: 'burn', nome: 'Burn', corto: 'Burn', jp: 'Nagumo Haruya — nome in codice Burn', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 23, col: '#ff9a6a',
+        tec: ['atomic_flare', 'tornado_fuoco'], mod: { tir: 1.5, vel: 1.2 } },
+      { id: 'nepper', nome: 'Nepper', corto: 'Nepper', ruolo: 'CC', el: 'fuoco', prof: 'ala', b: 19, tec: ['giravolta', 'tiro_teso'], mod: { vel: 1.3, tir: 1.2 } },
+      { id: 'bomba', nome: 'Bomba', corto: 'Bomba', ruolo: 'DF', el: 'terra', prof: 'muro', b: 18, tec: ['the_tower'], mod: { fis: 1.4, dif: 1.3 } },
+      { id: 'por', nome: 'Gouen', corto: 'Gouen', ruolo: 'PT', el: 'fuoco', prof: 'portiere', b: 19, tec: ['pugno_teso', 'mani_pietra'], mod: { par: 1.35 } }
+    ] },
+
+  genesis: { id: 'genesis', nome: 'The Genesis', sigla: 'GEN', lvCons: 40, col: '#e8e0ff', col2: '#6f5fa8',
+    lv: 44, base: 52, stemma: '🌌', alius: true,
+    nomi: ['Zohan', 'Coma', 'Wheeze', 'Riyo', 'Aquila', 'Nagare', 'Sain'],
+    motto: 'La prima squadra di Alius Academy. Non hanno mai preso un gol da nessuno.',
+    chiave: [
+      { id: 'gran', nome: 'Xavier Foster', corto: 'Gran', jp: 'Kiyama Hiroto — nome in codice Gran', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 23, col: '#ff9a9a',
+        tec: ['lama_cometa', 'atomic_flare'], mod: { tir: 1.5, ctr: 1.3 } },
+      { id: 'ulvida', nome: 'Ulvida', corto: 'Ulvida', ruolo: 'CC', el: 'aria', prof: 'regista', b: 20, col: '#bfd8ff',
+        tec: ['northern', 'illusione'], mod: { ctr: 1.4, vel: 1.2 } },
+      { id: 'zohan', nome: 'Zohan', corto: 'Zohan', ruolo: 'DF', el: 'terra', prof: 'muro', b: 19, tec: ['cancello_pietra'], mod: { dif: 1.4, fis: 1.3 } },
+      { id: 'coma', nome: 'Coma', corto: 'Coma', ruolo: 'DF', el: 'bosco', prof: 'terzino', b: 18, tec: ['gabbia'], mod: { dif: 1.3, vel: 1.2 } },
+      { id: 'wheeze', nome: 'Wheeze', corto: 'Wheeze', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 19, tec: ['muro_infinito'], mod: { par: 1.4 } }
     ] },
 
   raimon: { id: 'raimon', nome: 'Scuola Media Raimon', sigla: 'RAI', lvCons: 29, col: '#e8703a', col2: '#8f3f18',
     lv: 32, base: 43, stemma: '⚡',
-    motto: 'Undici che non dovevano arrivare da nessuna parte, e sono arrivati fino in fondo.',
+    motto: 'Undici che non dovevano arrivare da nessuna parte, e sono arrivati fino in fondo. Campioni del Football Frontier.',
     chiave: [
-      { id: 'mark', nome: 'Mark Evans', corto: 'Mark', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 22, col: '#ff7043',
-        tec: ['mano_magica', 'muro_infinito'], mod: { par: 1.3, gri: 1.6 } },
-      { id: 'axel', nome: 'Axel Blaze', corto: 'Axel', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 24, col: '#ff5468',
+      { id: 'mark', nome: 'Mark Evans', corto: 'Mark', jp: 'Endou Mamoru', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 22, col: '#ff7043',
+        tec: ['mano_magica', 'mano_infinita'], mod: { par: 1.3, gri: 1.6 } },
+      { id: 'nathan', nome: 'Nathan Swift', corto: 'Nathan', jp: 'Kazemaru Ichirouta', ruolo: 'DF', el: 'aria', prof: 'terzino', b: 18, col: '#5fc8ff',
+        tec: ['spirale_vento', 'taglio_vento'], mod: { vel: 1.45, dif: 1.2 } },
+      { id: 'jack', nome: 'Jack Wallside', corto: 'Jack', jp: 'Kabeyama Heigorou', ruolo: 'DF', el: 'terra', prof: 'muro', b: 17, col: '#7ac87a',
+        tec: ['the_wall', 'muro_di_terra'], mod: { fis: 1.5, dif: 1.3, vel: 0.7 } },
+      { id: 'jim', nome: 'Jim Wraith', corto: 'Jim', jp: 'Kageno Jin', ruolo: 'DF', el: 'bosco', prof: 'muro', b: 12, col: '#6f5f8f',
+        tec: ['trappola_radici'], mod: { dif: 1.25, vel: 1.1 } },
+      { id: 'todd', nome: 'Todd Ironside', corto: 'Todd', jp: 'Kurimatsu Teppei', ruolo: 'DF', el: 'terra', prof: 'terzino', b: 12, col: '#c8a06f',
+        tec: ['scivolata'], mod: { dif: 1.2, res: 1.2 } },
+      { id: 'steve', nome: 'Steve Grim', corto: 'Steve', jp: 'Handa Shin\'ichi', ruolo: 'CC', el: 'bosco', prof: 'regista', b: 14, col: '#8fc87a',
+        tec: ['passo_di_lato', 'lettura'], mod: { ctr: 1.25 } },
+      { id: 'timmy', nome: 'Timmy Sanders', corto: 'Timmy', jp: 'Shourinji Ayumu', ruolo: 'CC', el: 'bosco', prof: 'ala', b: 12, col: '#a8c85f',
+        tec: ['zig_zag'], mod: { vel: 1.2, ctr: 1.15 } },
+      { id: 'sam', nome: 'Sam Kincaid', corto: 'Sam', jp: 'Shishido Sakichi', ruolo: 'CC', el: 'fuoco', prof: 'ala', b: 12, col: '#e0885f',
+        tec: ['cambio_passo'], mod: { vel: 1.2 } },
+      { id: 'max', nome: 'Max Carson', corto: 'Max', jp: 'Matsuno Kuusuke', ruolo: 'AT', el: 'aria', prof: 'ala', b: 14, col: '#7fd0c8',
+        tec: ['folata', 'tiro_a_giro'], mod: { vel: 1.35, tir: 1.1 } },
+      { id: 'axel', nome: 'Axel Blaze', corto: 'Axel', jp: 'Gouenji Shuuya', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 24, col: '#ff5468',
         tec: ['tornado_fuoco', 'giravolta'], mod: { tir: 1.45, vel: 1.2 } },
-      { id: 'nathan', nome: 'Nathan Swift', corto: 'Nathan', ruolo: 'DF', el: 'aria', prof: 'terzino', b: 18, col: '#5fc8ff',
-        tec: ['spirale_vento', 'raffica_gelata'], mod: { vel: 1.45, dif: 1.2 } },
-      { id: 'kevin', nome: 'Kevin Dragonfly', corto: 'Kevin', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 18, col: '#d05f8f',
-        tec: ['drago_ruggente'], mod: { tir: 1.35, fis: 1.2 } },
-      { id: 'jack', nome: 'Jack Wallside', corto: 'Jack', ruolo: 'DF', el: 'terra', prof: 'muro', b: 17, col: '#7ac87a',
-        tec: ['muro_di_terra'], mod: { fis: 1.5, dif: 1.3, vel: 0.7 } },
-      { id: 'shawn', nome: 'Shawn Frost', corto: 'Shawn', ruolo: 'DF', el: 'aria', prof: 'tuttofare', b: 21, col: '#bfe8ff',
-        tec: ['eterna_bufera', 'raffica_gelata'], mod: { dif: 1.3, tir: 1.3, ctr: 1.2 } }
+      { id: 'kevin', nome: 'Kevin Dragonfly', corto: 'Kevin', jp: 'Someoka Ryuugo', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 18, col: '#d05f8f',
+        tec: ['tornado_drago'], mod: { tir: 1.35, fis: 1.2 } },
+      { id: 'jude', nome: 'Jude Sharp', corto: 'Jude', jp: 'Kidou Yuuto', ruolo: 'CC', el: 'aria', prof: 'regista', b: 24, col: '#5fa8ff',
+        tec: ['pinguino1', 'illusione', 'marcatura'], mod: { ctr: 1.45, gri: 1.25, tir: 1.15 } },
+      { id: 'shawn', nome: 'Shawn Frost', corto: 'Shawn', jp: 'Fubuki Shirou', ruolo: 'DF', el: 'aria', prof: 'tuttofare', b: 21, col: '#bfe8ff',
+        tec: ['eterna_bufera', 'raffica_gelata'], mod: { dif: 1.3, tir: 1.3, ctr: 1.2 } },
+      { id: 'bobby', nome: 'Bobby Shearer', corto: 'Bobby', jp: 'Domon Asuka', ruolo: 'CC', el: 'terra', prof: 'terzino', b: 13, col: '#c87a5f',
+        tec: ['anticipo'], mod: { dif: 1.15, ctr: 1.15 } },
+      { id: 'william', nome: 'William Glass', corto: 'William', jp: 'Megane Kakeru', ruolo: 'CC', el: 'bosco', prof: 'regista', b: 6, col: '#9a9ab0',
+        tec: ['finta_secca'], mod: { ctr: 1.1 } },
+      { id: 'scotty', nome: 'Scotty Banyan', corto: 'Scotty', jp: 'Kogure Yuuya', ruolo: 'DF', el: 'bosco', prof: 'terzino', b: 11, col: '#7f9a5f',
+        tec: ['gabbia'], mod: { dif: 1.2, vel: 1.1 } }
     ] }
 };
 

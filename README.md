@@ -179,9 +179,39 @@ nove già nel club di baseball, e cinque professori.
    di voi, dietro la recinzione da tre spettatori si passa a ventidue, e alla
    Nagano Higashi arriva in mente di offrire a Hina una borsa di studio. Ed è la
    scuola in cui Zero ha preso otto gol.
-10. **Raimon** *(fine novembre)* — un pullman si ferma davanti alla scuola. Poi
-    l'inverno, la neve sul campo, le iscrizioni di gennaio, e a giugno la porta
-    nord che qualcuno aveva piegato nel 1986.
+10. **Raimon** *(fine novembre)* — un pullman si ferma davanti alla scuola. E poi,
+    il quattro di dicembre, arriva **Alius Academy**.
+
+### L'attacco, e il pullman
+
+Nella seconda stagione dei giochi, squadre di ragazzi con poteri impossibili
+girano il Giappone sfidando le scuole e radendo al suolo quelle che perdono. La
+Raimon perde la propria a settembre e comincia a girare il paese con l'**Inazuma
+Caravan** per raccogliere giocatori: uno per scuola, a volte due.
+
+Amanome è la ventunesima. Arriva **Gemini Storm**, il capitano si chiama Reize e
+la partita si può anche rifiutare — ma tornano lo stesso, di mattina presto,
+quando sul campo non c'è nessuno.
+
+Tre giorni dopo, sulla provinciale, si ferma un pullman con una parabola sul
+tetto e Mark Evans che salta giù prima che si sia fermato del tutto. Ti chiede di
+venire. Puoi dire di sì, puoi dire di no, e — se hai abbastanza cuore — puoi non
+decidere da solo e farti rispondere dai tuoi, uno per uno.
+
+Se parti, Amagai ti dà il quaderno del 1985: «non è un regalo, è un prestito e lo
+rivoglio».
+
+### Il Caravan della Raimon
+
+Finita la storia si sblocca una modalità nuova, e funziona al contrario di tutto
+il resto: **giochi un giocatore solo**. Entri negli undici della Raimon al posto
+del loro più debole nel tuo ruolo, non sei il capitano, non è il tuo campo, e
+l'esperienza la prende solo il tuo personaggio, perché è l'unico che sta
+davvero giocando.
+
+Di fronte, in ordine, le cinque squadre di Alius Academy: **Gemini Storm**,
+**Epsilon**, **Diamond Dust**, **Prominence** e **The Genesis**. L'ultima è
+pensata per non essere battuta al primo tentativo.
 
 ### La scheda del carattere
 
@@ -204,6 +234,32 @@ se hai la testa per arrivarci.
 
 La scheda tiene anche l'elenco dei **momenti che ti hanno definito**: cosa hai
 scelto, e cosa è costato.
+
+### Le squadre ufficiali
+
+Raimon, Royal Academy, Zeus e le squadre di **Alius Academy** schierano i loro
+giocatori veri, con posizione e ruolo: undici più le riserve, non più nomi
+inventati a riempire.
+
+La Raimon del Football Frontier è al completo — Mark Evans (Endou Mamoru),
+Nathan Swift (Kazemaru), Jack Wallside (Kabeyama), Jim Wraith (Kageno), Todd
+Ironside (Kurimatsu), Steve Grim (Handa), Timmy Sanders (Shourinji), Sam Kincaid
+(Shishido), Max Carson (Matsuno), Axel Blaze (Gouenji), Kevin Dragonfly
+(Someoka), più Jude Sharp (Kidou), Shawn Frost (Fubuki), Bobby Shearer (Domon),
+William Glass (Megane) e Scotty Banyan (Kogure).
+
+La Royal Academy porta Jude Sharp, Joseph King (Genda) in porta, David Samford
+(Sakuma), Caleb Stonewall (Fudou), Herman Waldon (Henmi), Derek Swing (Doumen),
+Gus Martin (Gojou) e Ben Simmons (Banjou). Lo Zeus schiera Byron Love (Afuro
+Terumi) e i dieci compagni con i nomi degli dèi.
+
+Ogni giocatore canonico porta anche il nome originale nella sua scheda.
+
+**Quello che non ho potuto verificare** è segnato: di Occult, Wild e Shuriken non
+sono riuscito a trovare rose documentate, e restano con le formazioni generate;
+delle squadre di Alius Academy sono veri i capitani e i nomi in elenco (Reize,
+Desarm, Gazel, Burn, Gran, Ulvida, IC, Clara, Nepper, Bomba, Zel, Zohan, Coma,
+Wheeze), mentre le riserve portano nomi in stile.
 
 ### Il Football Frontier visto da Amanome
 

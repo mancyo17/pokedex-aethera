@@ -563,6 +563,11 @@ IE.volti = {
   okubo:   { pelle:'media',   capelli:'castano',   taglio:'caschetto', occhi:'grandi',  bocca:'sorriso',   extra:'niente',   maglia:'#8fa8c8' },
   kuz:     { pelle:'chiara',  capelli:'corvino',   taglio:'punte',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#4f7fd0' },
   higashi_all:{ pelle:'ambra',capelli:'cenere',    taglio:'corti',     occhi:'stanchi', bocca:'seria',     extra:'niente',   maglia:'#3f6fc0' },
+  reize:   { pelle:'chiara',  capelli:'verde',     taglio:'coda',      occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#5f4f8f' },
+  gran:    { pelle:'chiara',  capelli:'rosso',     taglio:'punte',     occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#6f5fa8' },
+  burn:    { pelle:'media',   capelli:'rosso',     taglio:'punte',     occhi:'decisi',  bocca:'sorriso',   extra:'niente',   maglia:'#a83f1f' },
+  gazel:   { pelle:'pallida', capelli:'bianco',    taglio:'ciuffo',    occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#5f8fb0' },
+  hillman: { pelle:'ambra',   capelli:'cenere',    taglio:'radi',      occhi:'severi',  bocca:'seria',     extra:'berretto', extraCol:'#8f3f18', maglia:'#8f9aa8' },
   mark:    { pelle:'media',   capelli:'castano',   taglio:'punte',     occhi:'felici',  bocca:'sorrisone', extra:'fascia',   extraCol:'#e8703a', maglia:'#e8703a' },
   axel:    { pelle:'media',   capelli:'bianco',    taglio:'punte',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#e8703a' },
   jude:    { pelle:'chiara',  capelli:'corvino',   taglio:'treccine',  occhi:'severi',  bocca:'seria',     extra:'visiera',  maglia:'#e8703a' },
@@ -735,6 +740,18 @@ IE.tecniche = {};
   T('firma_tu_CC',   'Tutta la Valle',         'drib',   'aria',   62, 28, 'Non è dribbling: è sapere dove sono tutti e dieci senza guardarli.', { soloDi: 'tu' }),
   T('firma_tu_DF',   'La Cresta del Kurogane', 'blocco', 'terra',  62, 28, 'Come la cresta sopra il paese: la vedi da lontano e non la passi.', { soloDi: 'tu' }),
   T('firma_tu_PT',   'Porta di Amanome',       'parata', 'terra',  62, 28, 'Arrugginita, storta, e da vent\'anni non l\'ha buttata giù nessuno.', { soloDi: 'tu' }),
+
+  /* --- tecniche delle squadre ufficiali --- */
+  T('atomic_flare',  'Atomic Flare',           'tiro', 'fuoco',  70, 34, 'Il tiro di Burn: una palla di fuoco che si apre come un\'esplosione.'),
+  T('northern',      'Northern Impact',        'tiro', 'aria',   70, 34, 'Il tiro di Gazel: la porta si copre di ghiaccio prima che la palla arrivi.'),
+  T('chaos_break',   'Chaos Break',            'tiro', 'terra',  76, 38, 'Burn e Gazel insieme. Non doveva succedere mai.'),
+  T('astro_break',   'Astro Break',            'tiro', 'terra',  74, 36, 'Un meteorite che cade dove c\'era il pallone.'),
+  T('the_tower',     'The Tower',              'blocco','terra', 56, 25, 'Il muro di Desarm: si alza dal terreno e non si passa.'),
+  T('the_wall',      'The Wall',               'blocco','terra', 52, 23, 'Jack Wallside si allarga e diventa esattamente quello che dice il nome.'),
+  T('mano_infinita', 'Mano Infinita',          'parata','neutro',66, 30, 'La Mano Magica cresciuta: una mano che copre tutta la porta.'),
+  T('tornado_drago', 'Tiro del Drago',         'tiro', 'fuoco',  56, 27, 'Un drago sale dal terreno e accompagna il pallone in porta.'),
+  T('taglio_vento',  'Taglio di Vento',        'drib', 'aria',   50, 22, 'Nathan Swift sparisce in una scia azzurra e ricompare dieci metri avanti.'),
+  T('pinguino2',     'Pinguino Imperatore n.2','tiro', 'neutro', 78, 38, 'La versione che serve a Jude Sharp quando la prima non basta.', { com: [] }),
 
   /* --- tiri degli avversari famosi --- */
   T('tornado_fuoco', 'Tornado di Fuoco',       'tiro', 'fuoco',  62, 30, 'Rovesciata avvolta nelle fiamme. Il tiro di Axel Blaze.'),
@@ -975,6 +992,16 @@ IE.personaggi = {
     bio: 'Capitano della Kuzuryū. Quattrocento studenti, due campi in erba e un pullman con la scritta.' }),
   higashi_all: P({ id: 'higashi_all', nome: 'Allenatore Umezawa', corto: 'Umezawa', col: '#3f6fc0', png: true,
     bio: 'Allenatore della Nagano Higashi. Due anni fa ha lasciato un dodicenne solo in porta per quarantacinque minuti.' }),
+  reize:  P({ id: 'reize', nome: 'Jordan Greenway', corto: 'Reize', col: '#7fd08f', png: true,
+    bio: 'Capitano di Gemini Storm, la seconda squadra di Alius Academy. In originale Midorikawa Ryuuji: «Reize» è un nome in codice.' }),
+  gran:   P({ id: 'gran', nome: 'Xavier Foster', corto: 'Gran', col: '#ff9a9a', png: true,
+    bio: 'Capitano di The Genesis, la prima squadra di Alius Academy. In originale Kiyama Hiroto.' }),
+  burn:   P({ id: 'burn', nome: 'Burn', corto: 'Burn', col: '#ff9a6a', png: true,
+    bio: 'Capitano di Prominence. In originale Nagumo Haruya.' }),
+  gazel:  P({ id: 'gazel', nome: 'Gazel', corto: 'Gazel', col: '#dff2ff', png: true,
+    bio: 'Capitano di Diamond Dust. In originale Suzuno Fuusuke.' }),
+  hillman: P({ id: 'hillman', nome: 'Coach Hillman', corto: 'Hillman', col: '#8f9aa8', png: true,
+    bio: 'Allenatore della Raimon.' }),
   mark:   P({ id: 'mark', nome: 'Mark Evans', corto: 'Mark', col: '#ff7043', png: true, bio: 'Capitano e portiere della Raimon. Nipote del leggendario Dave Evans.' }),
   axel:   P({ id: 'axel', nome: 'Axel Blaze', corto: 'Axel', col: '#ff5468', png: true, bio: 'Attaccante della Raimon. Il fuoco lo tiene tutto dentro.' }),
   jude:   P({ id: 'jude', nome: 'Jude Sharp', corto: 'Jude', col: '#5fa8ff', png: true, bio: 'Stratega. Vede la partita tre passaggi avanti a chiunque.' }),
@@ -1059,7 +1086,14 @@ IE.rosaSquadra = function (sq) {
   var profDi = { PT: 'portiere', DF: ['muro', 'terzino'], CC: ['regista', 'ala'], AT: ['bomber', 'ala'] };
   for (i = 0; rosa.length < 16 && i < 40; i++) {
     var ruolo = manca.shift() || 'CC';
-    var nome; do { nome = NOMI[Math.floor(r() * NOMI.length)] + ' ' + COGNOMI[Math.floor(r() * COGNOMI.length)]; } while (usati[nome]);
+    var nome;
+    if (sq.nomi && sq.nomi.length) {
+      var tentativi = 0;
+      do { nome = sq.nomi[Math.floor(r() * sq.nomi.length)]; tentativi++; } while (usati[nome] && tentativi < 30);
+      if (usati[nome]) nome = sq.nomi[i % sq.nomi.length] + ' ' + (i + 2);
+    } else {
+      do { nome = NOMI[Math.floor(r() * NOMI.length)] + ' ' + COGNOMI[Math.floor(r() * COGNOMI.length)]; } while (usati[nome]);
+    }
     usati[nome] = 1;
     var p = profDi[ruolo]; p = Array.isArray(p) ? p[Math.floor(r() * p.length)] : p;
     var g2 = {
@@ -1171,40 +1205,164 @@ IE.squadre = {
     ] },
 
   royal: { id: 'royal', nome: 'Royal Academy', sigla: 'ROY', lvCons: 31, col: '#e8d27a', col2: '#8f7a2f',
-    lv: 34, base: 54, stemma: '👑',
-    motto: 'La scuola di calcio più forte del Giappone. Non hanno mai perso una finale nazionale.',
+    lv: 34, base: 51, stemma: '👑',
+    motto: 'Cinque Football Frontier su sei. Non hanno mai perso una semifinale, fino a quest\'anno.',
     chiave: [
-      { id: 'jude', nome: 'Jude Sharp', corto: 'Jude', ruolo: 'CC', el: 'aria', prof: 'regista', b: 24, col: '#5fa8ff',
-        tec: ['pinguino1', 'illusione', 'marcatura'], mod: { ctr: 1.5, gri: 1.3, tir: 1.2 } },
-      { id: 'sam', nome: 'David Samford', corto: 'Samford', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 21, tec: ['muro_infinito', 'pugno_teso'], mod: { par: 1.3 } },
-      { id: 'dif', nome: 'Herman Waldon', ruolo: 'DF', el: 'terra', prof: 'muro', b: 18, tec: ['cancello_pietra'], mod: { dif: 1.4, fis: 1.3 } }
+      { id: 'jude', nome: 'Jude Sharp', corto: 'Jude', jp: 'Kidou Yuuto', ruolo: 'CC', el: 'aria', prof: 'regista', b: 24, col: '#5fa8ff',
+        tec: ['pinguino1', 'pinguino2', 'illusione'], mod: { ctr: 1.5, gri: 1.3, tir: 1.2 } },
+      { id: 'genda', nome: 'Joseph King', corto: 'King', jp: 'Genda Koujirou', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 21, col: '#c8a86f',
+        tec: ['muro_infinito', 'pugno_teso'], mod: { par: 1.3 } },
+      { id: 'sakuma', nome: 'David Samford', corto: 'Samford', jp: 'Sakuma Jirou', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 20, col: '#7fc8e0',
+        tec: ['pinguino1', 'lama_vento'], mod: { tir: 1.35, ctr: 1.2 } },
+      { id: 'fudou', nome: 'Caleb Stonewall', corto: 'Caleb', jp: 'Fudou Akio', ruolo: 'CC', el: 'terra', prof: 'regista', b: 19, col: '#8f8f5f',
+        tec: ['marcatura', 'spirale_nera'], mod: { ctr: 1.3, gri: 1.3 } },
+      { id: 'henmi', nome: 'Herman Waldon', corto: 'Waldon', jp: 'Henmi Wataru', ruolo: 'DF', el: 'terra', prof: 'muro', b: 16, col: '#a89a6f',
+        tec: ['cancello_pietra'], mod: { dif: 1.35, fis: 1.25 } },
+      { id: 'doumen', nome: 'Derek Swing', corto: 'Derek', jp: 'Doumen Shuuichirou', ruolo: 'CC', el: 'aria', prof: 'ala', b: 14, col: '#c8b87a',
+        tec: ['cambio_passo'], mod: { vel: 1.25 } },
+      { id: 'gojou', nome: 'Gus Martin', corto: 'Gus', jp: 'Gojou Masaru', ruolo: 'DF', el: 'terra', prof: 'muro', b: 14, col: '#b0a070',
+        tec: ['scivolata'], mod: { dif: 1.25, fis: 1.2 } },
+      { id: 'banjou', nome: 'Ben Simmons', corto: 'Ben', jp: 'Banjou Kazumichi', ruolo: 'DF', el: 'terra', prof: 'terzino', b: 14, col: '#c0b080',
+        tec: ['anticipo'], mod: { dif: 1.2, vel: 1.15 } },
+      { id: 'jimon', nome: 'Daiki Jimon', corto: 'Jimon', jp: 'Jimon Daiki', ruolo: 'DF', el: 'bosco', prof: 'muro', b: 13, col: '#9ab07a',
+        tec: ['sbarramento'], mod: { dif: 1.2, fis: 1.2 } },
+      { id: 'narukami', nome: 'Kenya Narukami', corto: 'Narukami', jp: 'Narukami Kenya', ruolo: 'CC', el: 'fuoco', prof: 'ala', b: 13, col: '#d09a6f',
+        tec: ['giravolta'], mod: { vel: 1.2, tir: 1.1 } },
+      { id: 'kagami', nome: 'Ryuu Kagami', corto: 'Kagami', jp: 'Kagami Hiroto', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 14, col: '#e0a06f',
+        tec: ['tiro_teso'], mod: { tir: 1.3 } }
     ] },
 
   zeus: { id: 'zeus', nome: 'Istituto Zeus', sigla: 'ZEU', lvCons: 33, col: '#f0e6c8', col2: '#c8a83f',
-    lv: 38, base: 53, stemma: '⚡',
-    motto: 'Dicono di essere figli degli dèi. Per novanta minuti sembra vero.',
+    lv: 38, base: 50, stemma: '⚡',
+    motto: 'Dicono di essere figli degli dèi. In tutto il torneo non avevano ancora subito un gol.',
     chiave: [
-      { id: 'byron', nome: 'Byron Love', corto: 'Byron', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 27, col: '#ffe8a0',
+      { id: 'byron', nome: 'Byron Love', corto: 'Byron', jp: 'Afuro Terumi', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 27, col: '#ffe8a0',
         tec: ['splendore', 'lama_cometa'], mod: { tir: 1.55, ctr: 1.25 } },
-      { id: 'por', nome: 'Alan Bane', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 22, tec: ['presa_falco'], mod: { par: 1.3 } }
+      { id: 'posei', nome: 'Posei Donichi', corto: 'Posei', jp: 'Posei Donichi', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 22, col: '#cfe0f0',
+        tec: ['presa_falco', 'presa_alta'], mod: { par: 1.3 } },
+      { id: 'aporo', nome: 'Aporo Hikaru', corto: 'Aporo', jp: 'Aporo Hikaru', ruolo: 'DF', el: 'aria', prof: 'muro', b: 17, col: '#e8dfc0',
+        tec: ['cancello_pietra'], mod: { dif: 1.3, fis: 1.2 } },
+      { id: 'hepai', nome: 'Hepai En', corto: 'Hepai', jp: 'Hepai En', ruolo: 'DF', el: 'fuoco', prof: 'muro', b: 16, col: '#e0c090',
+        tec: ['muro_di_terra'], mod: { dif: 1.25, fis: 1.25 } },
+      { id: 'aresu', nome: 'Aresu Ran', corto: 'Aresu', jp: 'Aresu Ran', ruolo: 'DF', el: 'fuoco', prof: 'terzino', b: 16, col: '#d8b088',
+        tec: ['marcatura'], mod: { dif: 1.25, vel: 1.15 } },
+      { id: 'deio', nome: 'Deio Geki', corto: 'Deio', jp: 'Deio Geki', ruolo: 'DF', el: 'terra', prof: 'muro', b: 16, col: '#c8b898',
+        tec: ['scivolata'], mod: { dif: 1.3 } },
+      { id: 'arute', nome: 'Arute Saneki', corto: 'Arute', jp: 'Arute Saneki', ruolo: 'CC', el: 'aria', prof: 'regista', b: 17, col: '#e8e0c8',
+        tec: ['lettura'], mod: { ctr: 1.3 } },
+      { id: 'herume', nome: 'Herume Matsuaki', corto: 'Herume', jp: 'Herume Matsuaki', ruolo: 'CC', el: 'aria', prof: 'ala', b: 17, col: '#dfd8b8',
+        tec: ['folata'], mod: { vel: 1.35 } },
+      { id: 'atena', nome: 'Atena Tomo', corto: 'Atena', jp: 'Atena Tomo', ruolo: 'CC', el: 'bosco', prof: 'regista', b: 17, col: '#c8d8a8',
+        tec: ['illusione'], mod: { ctr: 1.3, gri: 1.15 } },
+      { id: 'demete', nome: 'Demete Yutaka', corto: 'Demete', jp: 'Demete Yutaka', ruolo: 'AT', el: 'bosco', prof: 'bomber', b: 18, col: '#b8d090',
+        tec: ['germoglio', 'foglia_morta'], mod: { tir: 1.3 } },
+      { id: 'hera', nome: 'Hera Tadashi', corto: 'Hera', jp: 'Hera Tadashi', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 18, col: '#e8b890',
+        tec: ['meteora'], mod: { tir: 1.3 } }
+    ] },
+
+
+  /* ============================================================
+     ALIUS ACADEMY  (Aliea Gakuen)
+     Le squadre della seconda stagione. I capitani e i nomi in
+     elenco sono quelli veri; le riserve portano nomi in stile,
+     perché non tutte le rose sono documentate.
+     ============================================================ */
+  gemini: { id: 'gemini', nome: 'Gemini Storm', sigla: 'GEM', lvCons: 31, col: '#8f7fd0', col2: '#4a3f8f',
+    lv: 34, base: 56, stemma: '☄️', alius: true,
+    nomi: ['Diam', 'Rhionne', 'Bourjois', 'Peperoni', 'Cameo', 'Rico', 'Zaza'],
+    motto: 'La seconda squadra di Alius Academy. Sono arrivati a piedi e hanno chiesto una partita.',
+    chiave: [
+      { id: 'reize', nome: 'Jordan Greenway', corto: 'Reize', jp: 'Midorikawa Ryuuji — nome in codice Reize', ruolo: 'AT', el: 'bosco', prof: 'bomber', b: 22, col: '#7fd08f',
+        tec: ['astro_break', 'illusione'], mod: { tir: 1.4, ctr: 1.25 } },
+      { id: 'por', nome: 'Zaza', corto: 'Zaza', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 18, tec: ['mani_pietra'], mod: { par: 1.3 } },
+      { id: 'dif', nome: 'Diam', corto: 'Diam', ruolo: 'DF', el: 'terra', prof: 'muro', b: 16, tec: ['the_tower'], mod: { dif: 1.3, fis: 1.25 } }
+    ] },
+
+  epsilon: { id: 'epsilon', nome: 'Epsilon', sigla: 'EPS', lvCons: 34, col: '#5fc8b0', col2: '#2f7a6a',
+    lv: 37, base: 55, stemma: '🛸', alius: true,
+    nomi: ['Zel', 'Hobo', 'Grinz', 'Roberts', 'Zutti', 'Anos', 'Faguu'],
+    motto: 'La squadra di Desarm. Giocano come se il risultato fosse già scritto da qualche parte.',
+    chiave: [
+      { id: 'desarm', nome: 'Desarm', corto: 'Desarm', jp: 'Saginuma Osamu — nome in codice Desarm', ruolo: 'DF', el: 'terra', prof: 'muro', b: 26, col: '#8fd0c0',
+        tec: ['the_tower', 'cancello_pietra'], mod: { dif: 1.45, fis: 1.3, gri: 1.25 } },
+      { id: 'zel', nome: 'Zel', corto: 'Zel', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 22, tec: ['astro_break'], mod: { tir: 1.35 } },
+      { id: 'por', nome: 'Anos', corto: 'Anos', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 21, tec: ['presa_falco'], mod: { par: 1.32 } }
+    ] },
+
+  diamond: { id: 'diamond', nome: 'Diamond Dust', sigla: 'DIA', lvCons: 36, col: '#bfe8ff', col2: '#5f8fb0',
+    lv: 39, base: 55, stemma: '❄️', alius: true,
+    nomi: ['Gokka', 'Rhionne', 'Fune', 'Reina', 'Bellatrix', 'Sunna', 'Kuriha'],
+    motto: 'Il campo si copre di brina dove passano loro. Nessuno li ha mai visti sudare.',
+    chiave: [
+      { id: 'gazel', nome: 'Gazel', corto: 'Gazel', jp: 'Suzuno Fuusuke — nome in codice Gazel', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 24, col: '#dff2ff',
+        tec: ['northern', 'eterna_bufera'], mod: { tir: 1.5, ctr: 1.2 } },
+      { id: 'ic', nome: 'IC', corto: 'IC', ruolo: 'CC', el: 'aria', prof: 'regista', b: 20, tec: ['raffica_gelata', 'illusione'], mod: { ctr: 1.35 } },
+      { id: 'clara', nome: 'Clara', corto: 'Clara', ruolo: 'DF', el: 'aria', prof: 'terzino', b: 19, tec: ['raffica_gelata'], mod: { dif: 1.3, vel: 1.2 } },
+      { id: 'por', nome: 'Kuriha', corto: 'Kuriha', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 20, tec: ['mani_di_neve'], mod: { par: 1.35 } }
+    ] },
+
+  prominence: { id: 'prominence', nome: 'Prominence', sigla: 'PRO', lvCons: 37, col: '#ff8a4a', col2: '#a83f1f',
+    lv: 40, base: 55, stemma: '🔥', alius: true,
+    nomi: ['Rean', 'Heat', 'Marc', 'Zaan', 'Rood', 'Gouen', 'Bakka'],
+    motto: 'Bruciano il campo e poi ci giocano sopra. La squadra di Burn.',
+    chiave: [
+      { id: 'burn', nome: 'Burn', corto: 'Burn', jp: 'Nagumo Haruya — nome in codice Burn', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 23, col: '#ff9a6a',
+        tec: ['atomic_flare', 'tornado_fuoco'], mod: { tir: 1.5, vel: 1.2 } },
+      { id: 'nepper', nome: 'Nepper', corto: 'Nepper', ruolo: 'CC', el: 'fuoco', prof: 'ala', b: 19, tec: ['giravolta', 'tiro_teso'], mod: { vel: 1.3, tir: 1.2 } },
+      { id: 'bomba', nome: 'Bomba', corto: 'Bomba', ruolo: 'DF', el: 'terra', prof: 'muro', b: 18, tec: ['the_tower'], mod: { fis: 1.4, dif: 1.3 } },
+      { id: 'por', nome: 'Gouen', corto: 'Gouen', ruolo: 'PT', el: 'fuoco', prof: 'portiere', b: 19, tec: ['pugno_teso', 'mani_pietra'], mod: { par: 1.35 } }
+    ] },
+
+  genesis: { id: 'genesis', nome: 'The Genesis', sigla: 'GEN', lvCons: 40, col: '#e8e0ff', col2: '#6f5fa8',
+    lv: 44, base: 52, stemma: '🌌', alius: true,
+    nomi: ['Zohan', 'Coma', 'Wheeze', 'Riyo', 'Aquila', 'Nagare', 'Sain'],
+    motto: 'La prima squadra di Alius Academy. Non hanno mai preso un gol da nessuno.',
+    chiave: [
+      { id: 'gran', nome: 'Xavier Foster', corto: 'Gran', jp: 'Kiyama Hiroto — nome in codice Gran', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 23, col: '#ff9a9a',
+        tec: ['lama_cometa', 'atomic_flare'], mod: { tir: 1.5, ctr: 1.3 } },
+      { id: 'ulvida', nome: 'Ulvida', corto: 'Ulvida', ruolo: 'CC', el: 'aria', prof: 'regista', b: 20, col: '#bfd8ff',
+        tec: ['northern', 'illusione'], mod: { ctr: 1.4, vel: 1.2 } },
+      { id: 'zohan', nome: 'Zohan', corto: 'Zohan', ruolo: 'DF', el: 'terra', prof: 'muro', b: 19, tec: ['cancello_pietra'], mod: { dif: 1.4, fis: 1.3 } },
+      { id: 'coma', nome: 'Coma', corto: 'Coma', ruolo: 'DF', el: 'bosco', prof: 'terzino', b: 18, tec: ['gabbia'], mod: { dif: 1.3, vel: 1.2 } },
+      { id: 'wheeze', nome: 'Wheeze', corto: 'Wheeze', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 19, tec: ['muro_infinito'], mod: { par: 1.4 } }
     ] },
 
   raimon: { id: 'raimon', nome: 'Scuola Media Raimon', sigla: 'RAI', lvCons: 29, col: '#e8703a', col2: '#8f3f18',
     lv: 32, base: 43, stemma: '⚡',
-    motto: 'Undici che non dovevano arrivare da nessuna parte, e sono arrivati fino in fondo.',
+    motto: 'Undici che non dovevano arrivare da nessuna parte, e sono arrivati fino in fondo. Campioni del Football Frontier.',
     chiave: [
-      { id: 'mark', nome: 'Mark Evans', corto: 'Mark', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 22, col: '#ff7043',
-        tec: ['mano_magica', 'muro_infinito'], mod: { par: 1.3, gri: 1.6 } },
-      { id: 'axel', nome: 'Axel Blaze', corto: 'Axel', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 24, col: '#ff5468',
+      { id: 'mark', nome: 'Mark Evans', corto: 'Mark', jp: 'Endou Mamoru', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 22, col: '#ff7043',
+        tec: ['mano_magica', 'mano_infinita'], mod: { par: 1.3, gri: 1.6 } },
+      { id: 'nathan', nome: 'Nathan Swift', corto: 'Nathan', jp: 'Kazemaru Ichirouta', ruolo: 'DF', el: 'aria', prof: 'terzino', b: 18, col: '#5fc8ff',
+        tec: ['spirale_vento', 'taglio_vento'], mod: { vel: 1.45, dif: 1.2 } },
+      { id: 'jack', nome: 'Jack Wallside', corto: 'Jack', jp: 'Kabeyama Heigorou', ruolo: 'DF', el: 'terra', prof: 'muro', b: 17, col: '#7ac87a',
+        tec: ['the_wall', 'muro_di_terra'], mod: { fis: 1.5, dif: 1.3, vel: 0.7 } },
+      { id: 'jim', nome: 'Jim Wraith', corto: 'Jim', jp: 'Kageno Jin', ruolo: 'DF', el: 'bosco', prof: 'muro', b: 12, col: '#6f5f8f',
+        tec: ['trappola_radici'], mod: { dif: 1.25, vel: 1.1 } },
+      { id: 'todd', nome: 'Todd Ironside', corto: 'Todd', jp: 'Kurimatsu Teppei', ruolo: 'DF', el: 'terra', prof: 'terzino', b: 12, col: '#c8a06f',
+        tec: ['scivolata'], mod: { dif: 1.2, res: 1.2 } },
+      { id: 'steve', nome: 'Steve Grim', corto: 'Steve', jp: 'Handa Shin\'ichi', ruolo: 'CC', el: 'bosco', prof: 'regista', b: 14, col: '#8fc87a',
+        tec: ['passo_di_lato', 'lettura'], mod: { ctr: 1.25 } },
+      { id: 'timmy', nome: 'Timmy Sanders', corto: 'Timmy', jp: 'Shourinji Ayumu', ruolo: 'CC', el: 'bosco', prof: 'ala', b: 12, col: '#a8c85f',
+        tec: ['zig_zag'], mod: { vel: 1.2, ctr: 1.15 } },
+      { id: 'sam', nome: 'Sam Kincaid', corto: 'Sam', jp: 'Shishido Sakichi', ruolo: 'CC', el: 'fuoco', prof: 'ala', b: 12, col: '#e0885f',
+        tec: ['cambio_passo'], mod: { vel: 1.2 } },
+      { id: 'max', nome: 'Max Carson', corto: 'Max', jp: 'Matsuno Kuusuke', ruolo: 'AT', el: 'aria', prof: 'ala', b: 14, col: '#7fd0c8',
+        tec: ['folata', 'tiro_a_giro'], mod: { vel: 1.35, tir: 1.1 } },
+      { id: 'axel', nome: 'Axel Blaze', corto: 'Axel', jp: 'Gouenji Shuuya', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 24, col: '#ff5468',
         tec: ['tornado_fuoco', 'giravolta'], mod: { tir: 1.45, vel: 1.2 } },
-      { id: 'nathan', nome: 'Nathan Swift', corto: 'Nathan', ruolo: 'DF', el: 'aria', prof: 'terzino', b: 18, col: '#5fc8ff',
-        tec: ['spirale_vento', 'raffica_gelata'], mod: { vel: 1.45, dif: 1.2 } },
-      { id: 'kevin', nome: 'Kevin Dragonfly', corto: 'Kevin', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 18, col: '#d05f8f',
-        tec: ['drago_ruggente'], mod: { tir: 1.35, fis: 1.2 } },
-      { id: 'jack', nome: 'Jack Wallside', corto: 'Jack', ruolo: 'DF', el: 'terra', prof: 'muro', b: 17, col: '#7ac87a',
-        tec: ['muro_di_terra'], mod: { fis: 1.5, dif: 1.3, vel: 0.7 } },
-      { id: 'shawn', nome: 'Shawn Frost', corto: 'Shawn', ruolo: 'DF', el: 'aria', prof: 'tuttofare', b: 21, col: '#bfe8ff',
-        tec: ['eterna_bufera', 'raffica_gelata'], mod: { dif: 1.3, tir: 1.3, ctr: 1.2 } }
+      { id: 'kevin', nome: 'Kevin Dragonfly', corto: 'Kevin', jp: 'Someoka Ryuugo', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 18, col: '#d05f8f',
+        tec: ['tornado_drago'], mod: { tir: 1.35, fis: 1.2 } },
+      { id: 'jude', nome: 'Jude Sharp', corto: 'Jude', jp: 'Kidou Yuuto', ruolo: 'CC', el: 'aria', prof: 'regista', b: 24, col: '#5fa8ff',
+        tec: ['pinguino1', 'illusione', 'marcatura'], mod: { ctr: 1.45, gri: 1.25, tir: 1.15 } },
+      { id: 'shawn', nome: 'Shawn Frost', corto: 'Shawn', jp: 'Fubuki Shirou', ruolo: 'DF', el: 'aria', prof: 'tuttofare', b: 21, col: '#bfe8ff',
+        tec: ['eterna_bufera', 'raffica_gelata'], mod: { dif: 1.3, tir: 1.3, ctr: 1.2 } },
+      { id: 'bobby', nome: 'Bobby Shearer', corto: 'Bobby', jp: 'Domon Asuka', ruolo: 'CC', el: 'terra', prof: 'terzino', b: 13, col: '#c87a5f',
+        tec: ['anticipo'], mod: { dif: 1.15, ctr: 1.15 } },
+      { id: 'william', nome: 'William Glass', corto: 'William', jp: 'Megane Kakeru', ruolo: 'CC', el: 'bosco', prof: 'regista', b: 6, col: '#9a9ab0',
+        tec: ['finta_secca'], mod: { ctr: 1.1 } },
+      { id: 'scotty', nome: 'Scotty Banyan', corto: 'Scotty', jp: 'Kogure Yuuya', ruolo: 'DF', el: 'bosco', prof: 'terzino', b: 11, col: '#7f9a5f',
+        tec: ['gabbia'], mod: { dif: 1.2, vel: 1.1 } }
     ] }
 };
 
@@ -2538,7 +2696,7 @@ sc({ id: 'c6_v', luogo: 'Il campo dietro la palestra — dopo, al buio',
     d('amagai', "Perché nel 1986 l'ho piegata io, a giugno, il giorno che ci hanno detto che eravamo rimasti in quattro."),
     d('amagai', "Adesso siete quattordici. Si può raddrizzare.")
   ],
-  eff: [{ spirito: 25 }, { exp: 1560 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 25 }, { exp: 1560 }, { flag: 'finale' }], poi: 'al_1' });
 
 sc({ id: 'c6_p', luogo: 'Il campo dietro la palestra — dopo, al buio',
   righe: [
@@ -2564,7 +2722,7 @@ sc({ id: 'c6_p', luogo: 'Il campo dietro la palestra — dopo, al buio',
     d('zero', "Domani alle sei e mezza."),
     d('amagai', "…brava gente.")
   ],
-  eff: [{ spirito: 20 }, { exp: 1352 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 20 }, { exp: 1352 }, { flag: 'finale' }], poi: 'al_1' });
 
 sc({ id: 'c6_x', luogo: 'Il campo dietro la palestra — dopo, al buio',
   righe: [
@@ -2578,21 +2736,31 @@ sc({ id: 'c6_x', luogo: 'Il campo dietro la palestra — dopo, al buio',
     tu("Sul serio."),
     n("Si stringono la mano a metà campo, e centonovanta persone dietro una recinzione fanno il rumore che fanno centonovanta persone.")
   ],
-  eff: [{ spirito: 22 }, { exp: 1456 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 22 }, { exp: 1456 }, { flag: 'finale' }], poi: 'al_1' });
 
 sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
   righe: [
     n("L'otto dicembre inaugurano il centro polifunzionale per anziani di Amanome."),
     n("Il parcheggio sta dove c'era la rimessa del capo villaggio. Alla cerimonia parlano in tre e nessuno dei tre nomina il calcio."),
     n("Ma la signora Kurihara arriva con la sua sedia pieghevole, e quando le chiedono perché se l'è portata risponde che ormai ci ha fatto l'abitudine."),
-    n("— Il quindici dicembre chiude il campionato provinciale. Amanome finisce quinta su otto."),
+    { chi: 'narr', t: "Nella sala del centro, in fondo, c'è un cartello scritto a mano che nessuno ha autorizzato: « RACCOLTA PER IL CAMPO ». Sotto, una scatola da scarpe. Dentro, la prima settimana, quarantunomila yen.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— Il quindici dicembre chiude il campionato provinciale. Amanome finisce quinta su otto: le ultime due partite le ha giocate su un campo in prestito a Ōkubo, con il pullman della segheria.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— Il quindici dicembre chiude il campionato provinciale. Amanome finisce quinta su otto.", se: function (S) { return !S.flag.campo_distrutto; } },
     d('kenta', "Quinti."),
     d('rei', "È tanto o poco?"),
     d('kenta', "È quinti."),
     d('kenta', "Ad aprile non esistevamo, quindi tecnicamente eravamo ottavi su sette."),
-    n("— Il ventidue dicembre nevica. Il campo dietro la palestra sparisce sotto quaranta centimetri e non riappare fino a marzo."),
-    n("Vi allenate in palestra, in dodici metri per ventiquattro, con le porte da pallamano e Amagai che urla che la palla non va alzata."),
+    { chi: 'narr', t: "— Il ventidue dicembre nevica. Sul fosso che era il campo si posano quaranta centimetri e per un po' sembra quasi normale.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— Il ventidue dicembre nevica. Il campo dietro la palestra sparisce sotto quaranta centimetri e non riappare fino a marzo.", se: function (S) { return !S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "Vi allenate nella sala del centro anziani, fra i tavoli spostati, con le porte disegnate col nastro adesivo sul muro. La signora Kurihara guarda dalla sedia e ogni tanto dice a qualcuno di correre di più.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "Vi allenate in palestra, in dodici metri per ventiquattro, con le porte da pallamano e Amagai che urla che la palla non va alzata.", se: function (S) { return !S.flag.campo_distrutto; } },
     n("Rikuto smette di scendere a valle il quattro di gennaio e ricompare il diciannove di marzo, senza spiegazioni, come le cose che tornano."),
+    { chi: 'narr', t: "— Di te, in questi mesi, ad Amanome arrivano notizie di seconda mano: una cartolina da Toyama, una da Osaka, una da un posto sul mare di cui nessuno sa pronunciare il nome.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'narr', t: "Kenta le attacca tutte sulla parete della sala, in ordine di data, e sotto ci scrive i risultati che riesce a raccogliere dalla radio.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'kenta', t: "Non è statistica. È un'altra cosa e non so come si chiama.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'narr', t: "Il club di calcio della scuola media di Amanome gioca tutto l'inverno senza il suo capitano. Perde sei partite su nove e non salta un allenamento.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'narr', t: "Rei Tachibana porta la fascia. Gliel'hanno data gli altri, senza discutere, il giorno dopo che sei partito.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'rei', t: "Io non sono un capitano. Però so stare in piedi, e a quanto pare è la stessa cosa.", se: function (S) { return !!S.flag.partito; } },
     n("— A gennaio, alle iscrizioni del secondo quadrimestre, si presentano tre studenti nuovi."),
     d('nao', "Tre."),
     d('nao', "Uno è un primo anno che ha visto la partita con la Raimon da dietro la recinzione, in braccio a suo padre."),
@@ -2613,6 +2781,8 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
     n("— Il primo marzo Kenta Ubukata chiude il quaderno dell'anno e ne apre uno nuovo."),
     n("Sull'ultima pagina di quello vecchio c'è una riga sola, scritta a matita, che nessuno gli ha chiesto di scrivere:"),
     n("« Il club non è stato sciolto. »"),
+    { chi: 'narr', t: "— Il campo si rifà in aprile, come la prima volta, con le braccia. Ci sono anche il padre di Gorō col trattore, il monaco di Ōmachi e undici persone di Ōkubo arrivate in pullmino senza che nessuno le avesse chiamate.", se: function (S) { return !!S.flag.campo_distrutto; } },
+    { chi: 'narr', t: "— L'undici di giugno torni ad Amanome per tre giorni. Non lo sa nessuno tranne Nao, che sa tutto di tutti prima di tutti e ha organizzato di conseguenza.", se: function (S) { return !!S.flag.partito; } },
     n("— L'undici di giugno, quando il terreno si è asciugato, quattordici persone raddrizzano la porta nord."),
     n("Ci vogliono tre ore, due tiranti e il trattore della segheria. Amagai guarda e non tocca niente, perché gliel'avete detto voi di non toccare niente."),
     n("Quando è dritta, resta lì in mezzo al campo per un po'."),
@@ -2637,6 +2807,11 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
     n("La telefonata dura un'ora e quaranta e nessuno di voi ha mai saputo cosa si sono detti."),
     n("Si sa solo che ad agosto è venuto a vedere un'amichevole, in piedi in fondo alla recinzione, e che se n'è andato prima della fine."),
     n("E che l'anno dopo è tornato, e non se n'è andato prima della fine."),
+    { chi: 'narr', t: "Prima di ripartire restituisci ad Amagai il quaderno del 1985. Lo prende, lo apre, e vede che nell'ultima pagina bianca qualcuno ha cominciato a scrivere altri nomi.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'amagai', t: "Questi chi sono?", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'tu', t: "Quelli che ho incontrato in giro. Uno per scuola, a volte due.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'amagai', t: "…e ci hai messo anche i loro.", se: function (S) { return !!S.flag.partito; } },
+    { chi: 'tu', t: "Anche i loro.", se: function (S) { return !!S.flag.partito; } },
     n("— Il club di calcio della scuola media di Amanome conta diciassette tesserati."),
     n("Nel gabbiotto del custode ci sono due fotografie sul muro. Una del 1985 e una di adesso."),
     n("Sotto la seconda, scritti a penna sul bordo bianco, ci sono undici nomi. E poi tre. E poi lo spazio per gli altri."),
@@ -2654,7 +2829,8 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
     d('rei', "Ne mancano ancora tre, comunque. Ho contato."),
     n("— FINE DEL PRIMO ANNO —", 'urlo'),
     n("Il club continua: puoi allenare la squadra e giocare amichevoli contro tutte le squadre che hai incontrato, comprese quelle che ti hanno battuto."),
-    n("E chi hai battuto, adesso, risponde al telefono.")
+    n("E chi hai battuto, adesso, risponde al telefono."),
+    { chi: 'narr', t: "E dal piazzale, quando serve, parte un pullman con una parabola sul tetto: dall'hub trovi il Caravan della Raimon, dove giochi da singolo giocatore in mezzo a undici che non sono i tuoi, contro le squadre di Alius Academy.", cls: 'urlo' }
   ],
   eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }, { spirito: 10 },
         { momento: 'Avete raddrizzato la porta nord l\'undici di giugno.' }],
@@ -3775,6 +3951,352 @@ sc({ id: 'c8_1', luogo: 'Palazzetto di Matsumoto — girone D, primo giorno',
   ],
   eff: [{ obiettivo: 'Passare il girone D: Occult, Wild, Shuriken.' }],
   poi: { hub: true } });
+
+
+/* ============================================================
+   ALIUS ACADEMY
+   Nella seconda stagione dei giochi, squadre di ragazzi con
+   poteri impossibili girano il Giappone sfidando le scuole e
+   radendo al suolo quelle che perdono. La Raimon gira il paese
+   con un pullman a raccogliere giocatori.
+   Ad Amanome arrivano il quattro di dicembre.
+   ============================================================ */
+
+sc({ id: 'al_1', luogo: 'Il campo dietro la palestra — 4 dicembre, 15:40',
+  righe: [
+    n("Sono passate due settimane dalla partita con la Raimon."),
+    n("Il quattro di dicembre, alle tre e quaranta del pomeriggio, sul campo dietro la palestra ci sono undici persone che non sono di Amanome."),
+    n("Tute grigie, tutte uguali. Nessun borsone. Nessun pullman nel piazzale, e nessuno li ha visti arrivare dalla strada."),
+    d('rei', "Chi sono?"),
+    d('kenta', "Non sono di nessuna scuola della prefettura. Le conosco tutte."),
+    n("Uno di loro si stacca dal gruppo. Ha i capelli verdi legati e l'aria di uno che ha già fatto questa cosa molte volte."),
+    d('reize', "Scuola media di Amanome. Club di calcio, quattordici tesserati, fondato ad aprile."),
+    d('reize', "Sei tu il capitano."),
+    tv({
+      fuoco:   "Chi siete e cosa ci fate sul nostro campo?",
+      calmo:   "Sono io. E voi chi siete, visto che sapete già tutto di noi?",
+      ironico: "Complimenti per le ricerche. Adesso però mi dite anche chi siete voi, che sarebbe la parte educata.",
+      chiuso:  "Sì.",
+      ostinato:"Sì. E quello è il nostro campo, quindi comincia tu a spiegarti."
+    }),
+    d('reize', "Alius Academy. Io sono Reize."),
+    d('reize', "Vi sfidiamo. Adesso."),
+    d('kenta', "Non si può. Serve un arbitro, serve—"),
+    d('reize', "Non serve niente."),
+    n("Alza una mano verso il campo e la neve che c'era sulla linea di fondo si solleva di trenta centimetri e resta ferma a mezz'aria."),
+    n("Poi ricade tutta insieme, come se qualcuno l'avesse lasciata andare."),
+    n("Nessuno dice niente. Minoru ha fatto due passi indietro senza accorgersene."),
+    d('reize', "Se vinciamo, questo campo non c'è più."),
+    d('reize', "Non è una minaccia: è la procedura. L'abbiamo già fatto a diciannove scuole da settembre."),
+    d('shinobu', "…diciannove?"),
+    d('reize', "Diciannove."),
+    d('ayase', "Io chiamo la polizia."),
+    d('reize', "Chiami chi vuole. Ci vogliono quaranta minuti da Ōmachi e noi ci mettiamo meno."),
+    n("Amagai si è messo davanti a tutti senza che nessuno se ne accorgesse. Ha sessantotto anni e le mani in tasca."),
+    d('amagai', "Ragazzo. Perché lo fate?"),
+    d('reize', "…"),
+    d('reize', "Perché ce lo chiedono."),
+    n("Lo dice con una faccia che per un secondo non è la faccia di prima.")
+  ],
+  poi: 'al_2' });
+
+sc({ id: 'al_2', luogo: 'Il campo dietro la palestra',
+  righe: [
+    d('amagai', "Non giocate."),
+    d('hina', "Cosa?"),
+    d('amagai', "Non giocate. Sono più forti di voi e non è nemmeno una questione di quanto: è che non è la stessa cosa."),
+    d('amagai', "Il campo lo rifacciamo. L'abbiamo già fatto ad aprile."),
+    n("Ha ragione. È la cosa sensata da fare, ed è la prima volta in nove mesi che Sōichirō Amagai vi dice di non scendere in campo."),
+    d('daichi', "Capitano."),
+    d('goro', "…"),
+    d('rei', "Decidi tu."),
+    n("Quattordici persone ti guardano. Dietro la recinzione ce ne sono altre trenta arrivate in dieci minuti, perché in un paese di quattrocentododici abitanti le notizie corrono a piedi.")
+  ],
+  scelte: [
+    { t: "«Si gioca. Non è il campo: è che ce l'hanno chiesto e siamo una squadra.»", vai: 'al_3' },
+    { t: "«Si gioca, ma nessuno si fa male per un prato. Se diventa brutta, ci fermiamo.»", vai: 'al_3' },
+    { t: "«Si gioca perché ho voglia di vedere fin dove arriviamo.»", vai: 'al_3',
+      se: function (S, car, tr) { return car === 'fuoco' || car === 'ostinato' || (tr.schiena || 0) >= 8; } },
+    { t: "«Amagai ha ragione. Non giochiamo.»", vai: 'al_rifiuto' }
+  ] });
+
+sc({ id: 'al_rifiuto', luogo: 'Il campo dietro la palestra',
+  righe: [
+    tv({
+      fuoco:   "…no. Non giochiamo. Andatevene.",
+      calmo:   "No. Non c'è niente da guadagnare e c'è gente qui dietro che ha ottant'anni.",
+      ironico: "Passo. Rimandiamo alla prossima invasione, magari con più preavviso.",
+      chiuso:  "No.",
+      ostinato:"No. E non mi interessa come suona."
+    }),
+    d('reize', "…"),
+    d('reize', "Va bene."),
+    n("Si girano tutti e undici insieme, con lo stesso movimento, e si incamminano verso la strada."),
+    n("Poi Reize si ferma."),
+    d('reize', "Non cambia niente, comunque."),
+    d('reize', "Le scuole che non giocano le segnaliamo, e ci manda qualcun altro. Uno di quelli sopra di noi."),
+    d('reize', "Quelli sopra di noi non chiedono."),
+    n("Arrivano il giorno dopo, alle sei del mattino, quando sul campo non c'è nessuno."),
+    n("Nessuno li vede. Non c'è nessuna partita da raccontare."),
+    n("C'è solo che alle sei e mezza, quando arrivate per l'allenamento, il campo dietro la palestra non c'è più.")
+  ],
+  eff: [{ flag: 'campo_distrutto' }, { flag: 'non_giocato' }, { tratto: { testa: 3 } },
+        { momento: 'Hai rifiutato la sfida di Alius Academy. Sono tornati comunque, di mattina presto.' }],
+  poi: 'al_dopo' });
+
+sc({ id: 'al_3', luogo: 'Il campo dietro la palestra — 4 dicembre',
+  righe: [
+    d('reize', "Bene."),
+    n("Si dispongono senza parlarsi. Non fanno riscaldamento."),
+    d('amagai', "…"),
+    d('amagai', "Va bene. Allora ascoltatemi bene, che è l'ultima cosa che vi dico oggi."),
+    d('amagai', "Non provate a stargli dietro, perché non ci riuscite."),
+    d('amagai', "Fate la cosa che sapete fare voi e che loro non hanno mai avuto bisogno di imparare: state in piedi."),
+    d('amagai', "Novanta minuti in undici, in piedi."),
+    d('amagai', "È l'unica cosa che ho da darvi ed è tutto l'anno che funziona.")
+  ],
+  poi: { partita: { avv: 'gemini', titolo: 'Alius Academy — Amanome vs Gemini Storm', minuti: 45,
+    vinto: 'al_v', perso: 'al_p', pari: 'al_p' } } });
+
+sc({ id: 'al_v', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("La scuola media di Amanome ha battuto Gemini Storm."),
+    n("Non applaude nessuno, perché nessuno dei quaranta dietro la recinzione ha capito bene cosa ha visto."),
+    d('reize', "…"),
+    d('reize', "Non era previsto."),
+    tv({
+      fuoco:   "Non era previsto un accidente. Vi abbiamo battuti.",
+      calmo:   "Non era previsto da chi? Non da te. Tu hai giocato.",
+      ironico: "Da noi non è previsto quasi mai niente. Ci si abitua.",
+      chiuso:  "È successo lo stesso.",
+      ostinato:"Adesso il campo resta dov'è."
+    }),
+    d('reize', "Il campo resta dov'è. Quella è la regola e la regola vale anche per noi."),
+    n("Si gira per andarsene. Poi si ferma, come prima."),
+    d('reize', "Posso chiederti una cosa?"),
+    tu("Sì."),
+    d('reize', "Quel campo lì. Chi l'ha falciato?"),
+    tu("Noi. Ad aprile."),
+    d('reize', "…"),
+    d('reize', "Noi la nostra scuola non l'abbiamo costruita. Ce l'hanno data."),
+    n("Se ne vanno a piedi lungo la provinciale, in fila per due, e spariscono dietro il tornante."),
+    n("Quella notte nevica quaranta centimetri."),
+    n("La mattina dopo, alle sei e mezza, il campo dietro la palestra non c'è più."),
+    n("Non è la neve. Il terreno è aperto in due, le porte sono piegate come fili di ferro, e la parete est della palestra è caduta dentro."),
+    n("Sulla linea di fondo, dove non cresce niente, c'è un biglietto tenuto fermo da un sasso."),
+    n("« Non è stata una mia decisione. Mi dispiace. — R. »")
+  ],
+  eff: [{ flag: 'campo_distrutto' }, { flag: 'battuto_gemini' }, { spirito: 10 }, { exp: 1500 },
+        { momento: 'Avete battuto Gemini Storm. Il giorno dopo il campo non c\'era più lo stesso.' }],
+  poi: 'al_dopo' });
+
+sc({ id: 'al_p', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Non è stata una partita. È stata una dimostrazione, e voi eravate la cosa dimostrata."),
+    n("Rikuto è a terra da sei minuti e non si è ancora rialzato del tutto. Zero ha i guanti strappati sul palmo destro."),
+    n("Nessuno di loro ha mai corso a tutta velocità."),
+    d('reize', "È finita."),
+    n("Alza una mano verso il campo come aveva fatto con la neve."),
+    d('amagai', "Aspetta."),
+    n("Sōichirō Amagai attraversa il campo. Ci mette parecchio, perché ha sessantotto anni e il terreno è ghiacciato."),
+    d('amagai', "Il campo dietro la palestra è del 1985. L'ho tracciato io con il gesso quando avevo diciassette anni."),
+    d('amagai', "Adesso ha vent'anni di ruggine e un mese fa dodici ragazzi lo hanno falciato a mano."),
+    d('amagai', "Fallo pure, ma guardalo mentre lo fai."),
+    d('reize', "…"),
+    n("Lo guarda. Lo guarda per un tempo che a tutti sembra lunghissimo."),
+    n("Poi il terreno si apre in due lungo la linea di metà campo, le porte si piegano come fili di ferro, e la parete est della palestra cade dentro."),
+    n("Ci mette quattro secondi."),
+    n("Quando il rumore finisce, sulla linea di fondo, dove non cresce niente, c'è un biglietto tenuto fermo da un sasso."),
+    n("« Non è stata una mia decisione. Mi dispiace. — R. »")
+  ],
+  eff: [{ flag: 'campo_distrutto' }, { spirito: 6 }, { exp: 1200 },
+        { momento: 'Gemini Storm ha raso al suolo il campo dietro la palestra.' }],
+  poi: 'al_dopo' });
+
+sc({ id: 'al_dopo', luogo: 'Amanome — 5 dicembre',
+  righe: [
+    n("Non c'è un modo elegante di raccontare una cosa così."),
+    n("Il campo dietro la palestra è un fosso. La palestra ha tre pareti. La scuola resta chiusa per una settimana e i trentotto studenti vanno a fare lezione nella sala del centro anziani, che è nuova e ha il riscaldamento."),
+    n("La prefettura manda due ingegneri. Scrivono « cedimento del terreno dovuto al gelo » perché quello che è successo davvero non ha una casella nel modulo."),
+    d('nao', "Ho fatto i conti della ricostruzione."),
+    d('kenta', "Nao—"),
+    d('nao', "Ho fatto i conti perché è il mio lavoro farli."),
+    d('nao', "Il campo si rifà in primavera, con le braccia, come ad aprile. Quello non è il problema."),
+    d('nao', "Il problema è la palestra, e quella non la rifà il paese: la rifà la prefettura, quando le gira."),
+    d('rei', "Quindi il club?"),
+    d('ayase', "Il club esiste. Ha quattordici tesserati e un professore che ha firmato."),
+    d('ayase', "Solo che per un po' non ha dove giocare."),
+    n("Il sette di dicembre, alle undici del mattino, un pullman si ferma sulla provinciale davanti alla scuola."),
+    n("Non è il minibus della segheria. Ha una scritta sulla fiancata e una parabola sul tetto."),
+    n("« INAZUMA CARAVAN »")
+  ],
+  poi: 'al_caravan' });
+
+sc({ id: 'al_caravan', luogo: 'Piazzale della scuola — 7 dicembre',
+  righe: [
+    d('mark', "SIETE TUTTI VIVI?"),
+    d('nelly', "Mark."),
+    d('mark', "È una domanda importante!"),
+    n("Mark Evans salta giù dal pullman prima che si sia fermato del tutto. Dietro di lui scendono Jude Sharp, Axel Blaze e altri sei che riconosci dalla partita di novembre."),
+    d('mark', "Amanome è la ventunesima. Sono tre mesi che li rincorriamo e arriviamo sempre il giorno dopo."),
+    d('jude', "Diciannove scuole a settembre e ottobre. Poi Raimon."),
+    tu("…anche la vostra?"),
+    d('jude', "La nostra è stata la prima. Il quattordici di settembre."),
+    d('jude', "Della scuola media Raimon adesso è in piedi l'ala nord e basta."),
+    n("Lo dice come si dicono le cose che si sono già dette tante volte per poterle sopportare."),
+    d('mark', "Per questo giriamo. Non possiamo batterli in undici: siamo undici di una scuola sola."),
+    d('mark', "Quindi andiamo in giro a cercare gente. Uno per scuola, a volte due."),
+    d('mark', "Gente che ha giocato contro di loro e si è rialzata."),
+    n("Si gira verso di te. Ha ancora la fascia arancione in testa, a dicembre, con meno tre gradi."),
+    d('mark', "Vieni con noi?"),
+    n("Silenzio nel piazzale."),
+    d('hina', "…"),
+    d('kenta', "Aspetta. Aspetta un attimo. Stai chiedendo al nostro capitano di venire via."),
+    d('mark', "Sì."),
+    d('kenta', "Per quanto?"),
+    d('mark', "Non lo so. Finché non finisce."),
+    d('nelly', "Il consiglio scolastico della Raimon copre il trasferimento temporaneo. È tutto regolare, c'è il modulo."),
+    d('nao', "Fatemi vedere il modulo."),
+    d('nelly', "…prego?"),
+    d('nao', "Il modulo. Sono la dirigente di questo club e voglio leggerlo."),
+    n("Nelly Raimon guarda questa ragazza di quattordici anni che le sta chiedendo la documentazione, e per la prima volta in tre mesi sorride.")
+  ],
+  poi: 'al_scelta' });
+
+sc({ id: 'al_scelta', luogo: 'Piazzale della scuola',
+  righe: [
+    n("Sono tutti lì. Rei, Gorō, Hina, Zero, Minoru, Kenta, Yuki, Aoi, Shinobu, Rikuto, Benkei, Daichi, Nao."),
+    n("Ad aprile eravate in due."),
+    n("Adesso c'è un pullman che ti chiede di salirci, e un campo che non c'è più, e tredici persone che non ti stanno dicendo cosa fare perché aspettano che lo dica tu.")
+  ],
+  scelte: [
+    { t: "«Vengo. Ma torno.»", vai: 'al_parto' },
+    { t: "«Vengo, e ci vado per voi: quelli lì hanno buttato giù il nostro campo.»", vai: 'al_parto' },
+    { t: "«Non vengo. Il mio posto è qui.»", vai: 'al_resto' },
+    { t: "«Decidete voi. Se uno di voi dice no, resto.»", vai: 'al_squadra',
+      se: function (S, car, tr) { return (tr.cuore || 0) >= 6 || car === 'chiuso'; },
+      nota: 'Non è indecisione: è che non è solo tua.' }
+  ] });
+
+sc({ id: 'al_squadra', luogo: 'Piazzale della scuola',
+  righe: [
+    tv({
+      fuoco:   "Decidete voi! Io da solo non ci vado e non ci penso nemmeno!",
+      calmo:   "Non decido io. Questo club l'abbiamo fatto in quattordici e questa è una cosa che riguarda tutti e quattordici.",
+      ironico: "Facciamo una votazione. È la cosa più noiosa che ci sia e mi sembra il momento giusto.",
+      chiuso:  "Decidete voi. Se uno dice no, resto.",
+      ostinato:"Se uno solo di voi dice no, io resto qui e non se ne parla più."
+    }),
+    n("Rei alza la mano per primo, e non è nemmeno una votazione, e la alza lo stesso."),
+    d('rei', "Vai."),
+    d('goro', "…vai."),
+    d('hina', "Vai. E impara qualcosa, che qui hai finito."),
+    d('minoru', "Vai!"),
+    d('kenta', "Statisticamente sei il nostro giocatore migliore e perderemo di più. Vai lo stesso."),
+    d('shinobu', "Vai, e poi mi racconti tutto in ordine cronologico perché ci devo scrivere una cosa."),
+    d('rikuto', "…vai."),
+    d('benkei', "Vai. Ti tengo un panino."),
+    d('yuki', "Vai."),
+    d('aoi', "Vai."),
+    d('zero', "Vai."),
+    d('daichi', "Vai. E se torni e il campo non è pronto, prenditela con me."),
+    n("Nao non dice niente. Apre il quaderno, quello del club, e alla riga del tuo nome scrive una parola sola."),
+    d('nao', "« In prestito »."),
+    d('nao', "Non « trasferito ». In prestito. È una parola diversa e la scelgo io perché tengo io i registri.")
+  ],
+  eff: [{ spirito: 20 }, { tratto: { cuore: 4 } },
+        { momento: 'Non hai deciso da solo se partire. Te l\'hanno detto loro, uno per uno.' }],
+  poi: 'al_parto' });
+
+sc({ id: 'al_resto', luogo: 'Piazzale della scuola',
+  righe: [
+    tv({
+      fuoco:   "No. Io da qui non mi muovo. Il campo è nostro e lo rifacciamo noi.",
+      calmo:   "No. Grazie, davvero. Ma se me ne vado adesso, questo club non arriva a marzo.",
+      ironico: "Vi ringrazio ma ho un impegno: devo rifare un prato.",
+      chiuso:  "Resto.",
+      ostinato:"No. Sono partito da un prato ad aprile e ci resto finché non torna un campo."
+    }),
+    d('mark', "…"),
+    d('mark', "Va bene!"),
+    d('nelly', "Va bene? Mark, siamo venuti fin quassù—"),
+    d('mark', "Ha detto che deve rifare il campo. È la risposta giusta."),
+    d('mark', "Il campo viene prima."),
+    n("Torna verso il pullman. Poi si gira, come fanno tutti in questo paese."),
+    d('mark', "Però una cosa te la dico, e poi salgo."),
+    d('mark', "Quelli lì torneranno. Non da voi: dappertutto."),
+    d('mark', "E quando ci saremo in mezzo noi e non basteremo, io torno quassù."),
+    d('mark', "E quella volta non te lo chiedo."),
+    n("Il pullman riparte verso il tornante."),
+    n("Il campo dietro la palestra torna a essere un prato con dentro due cose di ferro storte, e voi ricominciate da lì, che è il posto da cui avete cominciato la prima volta."),
+    n("Ma tre giorni dopo arriva una busta della Raimon con dentro un modulo, un orario di allenamento e un biglietto scritto a mano che dice: « quando vuoi »."),
+    d('nao', "Lo metto nel raccoglitore."),
+    d('nao', "In fondo, dove tengo le cose che non buttiamo.")
+  ],
+  eff: [{ flag: 'rimasto' }, { flag: 'caravan_aperto' }, { sblocca: 'caravan' }, { spirito: 14 },
+        { tratto: { schiena: 5 } },
+        { momento: 'Hai detto di no alla Raimon per restare a rifare il campo.' }],
+  poi: 'c6_epilogo' });
+
+sc({ id: 'al_parto', luogo: 'Piazzale della scuola — 7 dicembre, 14:20',
+  righe: [
+    tv({
+      fuoco:   "Vengo. Ma torno, chiaro? Torno.",
+      calmo:   "Vengo. A una condizione che riguarda solo me: che questo resti il mio club anche mentre non ci sono.",
+      ironico: "Vengo. Ho sempre voluto vedere il mare e invece vado a farmi picchiare dagli alieni, ma vengo.",
+      chiuso:  "Vengo. E torno.",
+      ostinato:"Vengo, e quando è finita torno qui e finisco quello che ho cominciato ad aprile."
+    }),
+    d('mark', "BENE!"),
+    d('nelly', "Mark, sono le due e venti, dobbiamo essere a Nagano per le sei."),
+    d('mark', "Sì! Prendi la roba!"),
+    n("Ci metti undici minuti a fare la borsa, perché non hai quasi niente da portare."),
+    n("Sul piazzale, mentre sali, Amagai ti dà una cosa."),
+    n("È il quaderno del 1985. Quello con gli undici nomi scritti a mano."),
+    d('amagai', "Non è un regalo. È un prestito e lo rivoglio."),
+    tu("Perché me lo dà?"),
+    d('amagai', "Perché nel 1986 quelli che se ne sono andati non hanno portato via niente."),
+    d('amagai', "E non sono più tornati."),
+    d('amagai', "Tu porti via una cosa che è di qui. Così ti tocca riportarla."),
+    n("Il pullman parte alle due e trentuno. Dal finestrino di dietro si vede il piazzale con tredici persone dentro, e dietro il piazzale il tetto della palestra a tre pareti, e dietro ancora la cresta del monte Kurogane con la neve."),
+    n("Rei corre dietro al pullman per una cinquantina di metri, poi si ferma perché non ce la fa più, ed è esattamente quello che ti aspettavi che facesse."),
+    d('mark', "Ehi."),
+    tu("Sì?"),
+    d('mark', "Come si chiama la tua squadra?"),
+    n("Ci pensi un secondo, e poi glielo dici, e per il resto del viaggio nessuno ti chiede altro."),
+    n("— Da qui in avanti giochi con la Raimon."),
+    n("Non sei il capitano, non è il tuo campo e non conosci nessuno."),
+    n("Sei uno degli undici, e devi guadagnarti il posto come tutti gli altri.")
+  ],
+  eff: [{ flag: 'partito' }, { flag: 'caravan_aperto' }, { sblocca: 'caravan' }, { sblocca: 'amichevoli' },
+        { spirito: 12 }, { exp: 800 },
+        { momento: 'Sei salito sul pullman della Raimon con il quaderno del 1985 nella borsa.' }],
+  poi: 'al_raimon' });
+
+sc({ id: 'al_raimon', luogo: 'Inazuma Caravan — da qualche parte fra Nagano e il mare',
+  righe: [
+    n("Il pullman della Raimon ha nove cuccette, un tavolo che si ribalta e un allenatore che dorme seduto."),
+    d('hillman', "Tu sei quello di Amanome."),
+    tu("Sì."),
+    d('hillman', "Trentotto studenti."),
+    tu("Trentotto."),
+    d('hillman', "Il tuo custode è Sōichirō Amagai."),
+    n("Alzi la testa."),
+    d('hillman', "Secondo posto alla prefettura di Nagano, 1985. Terzo da sinistra nella fotografia."),
+    d('hillman', "Io giocavo a Shizuoka, quell'anno. Ci hanno parlato di voi per un mese."),
+    n("Coach Hillman chiude gli occhi e sembra che abbia finito di parlare. Poi non ha finito."),
+    d('hillman', "Qui non c'è la tua squadra. Qui ci sono undici che hanno perso la scuola a settembre e non hanno ancora smesso di girare."),
+    d('hillman', "Non ti chiederanno di essere il capitano e non ti daranno il tuo numero."),
+    d('hillman', "Ti chiederanno solo di esserci quando tocca a te."),
+    d('mark', "Domani a Toyama! C'è una scuola che ha giocato contro Epsilon e ha resistito settanta minuti!"),
+    d('jude', "Sessantotto."),
+    d('mark', "SETTANTA È PIÙ BELLO!"),
+    d('axel', "Sono sessantotto."),
+    n("Ti addormenti sulla cuccetta di sopra con il quaderno del 1985 sotto il cuscino, mentre fuori dal finestrino passa un Giappone che non hai mai visto."),
+    n("Sul quaderno, dopo gli undici nomi del 1985 e i quattordici di Amanome, c'è ancora molto spazio bianco.")
+  ],
+  eff: [{ spirito: 6 }],
+  poi: 'c6_epilogo' });
 
 /* ============================================================
    I RISVEGLI
@@ -4970,7 +5492,7 @@ function render() {
     allenamento: vistaAllenamento, spogliatoio: vistaSpogliatoio, partita: vistaPartita,
     finepartita: vistaFinePartita, opzioni: vistaOpzioni, amichevoli: vistaAmichevoli,
     risveglio: vistaRisveglio, contatti: vistaContatti, prepartita: vistaPrePartita,
-    carattere: vistaCarattere
+    carattere: vistaCarattere, caravan: vistaCaravan
   })[v] || vistaHub;
   schermo.innerHTML = '';
   f();
@@ -5368,21 +5890,25 @@ function schedaGiocatore(g, dx, fn) {
 /* ============================================================
    STORIA (chat)
    ============================================================ */
+function righeDi(sc) {
+  return (sc.righe || []).filter(function (r) { return !r.se || r.se(S, carattere(), tratti()); });
+}
+
 function vistaStoria() {
   var sc = IE.storia.scene[S.scena];
   if (!sc) { G.vai('hub'); return; }
+  var righe = righeDi(sc);
   schermo.appendChild(el('<div class="luogo">' + esc(sc.luogo || '') + '</div>'));
   var chat = el('<div id="chat"></div>');
   schermo.appendChild(chat);
-  var fine = S.riga >= sc.righe.length;
-  for (var i = 0; i < Math.min(S.riga + 1, sc.righe.length); i++) chat.appendChild(battutaHtml(sc.righe[i]));
+  for (var i = 0; i < Math.min(S.riga + 1, righe.length); i++) chat.appendChild(battutaHtml(righe[i]));
 
   var piede = el('<div id="avanti"></div>');
   schermo.appendChild(piede);
-  if (S.riga < sc.righe.length - 1) {
+  if (S.riga < righe.length - 1) {
     piede.appendChild(bt('Avanti ▸', null, function () { S.riga++; salva(); render(); ancoraGiu(); }, 'primario'));
     var salta = bt('Salta la scena', null, function () {
-      S.riga = sc.righe.length - 1; salva(); render(); ancoraGiu();
+      S.riga = righe.length - 1; salva(); render(); ancoraGiu();
     }, 'piatta');
     salta.style.marginTop = '4px';
     piede.appendChild(salta);
@@ -5505,6 +6031,7 @@ function vistaHub() {
   att.appendChild(bt('👥  Rosa', S.rosa.length + ' tesserati.', function () { G.vai('squadra'); }));
   att.appendChild(bt('📋  Formazione', S.formazione + ' · ' + (IE.formazioni[S.formazione] || {}).nome, function () { G.vai('formazione'); }));
   if (S.sblocchi.amichevoli) att.appendChild(bt('⚽  Amichevoli', 'Rigioca contro chiunque tu abbia incontrato.', function () { G.vai('amichevoli'); }));
+  if (S.sblocchi.caravan) att.appendChild(bt('🚐  Caravan della Raimon', 'Giochi da solo, dentro la loro squadra, contro Alius Academy.', function () { G.vai('caravan'); }, 'verde'));
   att.appendChild(bt('⚙️  Salvataggio e opzioni', null, function () { G.vai('opzioni'); }, 'piatta'));
   schermo.appendChild(att);
 
@@ -5863,6 +6390,7 @@ function vistaRisveglio() {
   var sc = IE.storia.scene[d.scena];
   var g = S.gioc(d.gioc);
   if (!sc || !g) { S.vista = d.ritorno; render(); return; }
+  var righe = righeDi(sc);
 
   schermo.appendChild(el('<div class="centro" style="margin:6px 0 10px">' +
     '<div class="etichetta">Una cosa che non si insegna</div>' +
@@ -5872,11 +6400,11 @@ function vistaRisveglio() {
 
   var chat = el('<div id="chat"></div>');
   schermo.appendChild(chat);
-  for (var i = 0; i <= Math.min(d.riga, sc.righe.length - 1); i++) chat.appendChild(battutaHtml(sc.righe[i]));
+  for (var i = 0; i <= Math.min(d.riga, righe.length - 1); i++) chat.appendChild(battutaHtml(righe[i]));
 
   var piede = el('<div id="avanti"></div>');
   schermo.appendChild(piede);
-  if (d.riga < sc.righe.length - 1) {
+  if (d.riga < righe.length - 1) {
     piede.appendChild(bt('Avanti ▸', null, function () { d.riga++; salva(); render(); ancoraGiu(); }, 'primario'));
   } else {
     var tec = concediFirma(g, d.f, d.clone);
@@ -5930,7 +6458,7 @@ function vistaPrePartita() {
   if (!cfg) { G.vai('hub'); return; }
   var sq = IE.squadre[cfg.avv];
   var cons = sq.lvCons || sq.lv || 1;
-  var mio = livelloMedio();
+  var mio = cfg.caravan ? Math.round(IE.squadraDi('raimon').lv * 0.9) : livelloMedio();
   var d = mio - cons;
   var giudizio, cls, col;
   if (d >= 4)      { giudizio = 'Siete più avanti di loro. Dovrebbe andare bene.';  cls = 'buono';  col = '#3fd07a'; }
@@ -5946,7 +6474,7 @@ function vistaPrePartita() {
 
   schermo.appendChild(el('<div class="pannello">' +
     '<div class="riga tra" style="align-items:flex-end;margin-bottom:10px">' +
-    '<div><div class="etichetta" style="margin:0">La tua squadra</div>' +
+    '<div><div class="etichetta" style="margin:0">' + (cfg.caravan ? 'La Raimon, con te dentro' : 'La tua squadra') + '</div>' +
     '<div style="font-size:30px;font-weight:bold;line-height:1">Lv ' + mio + '</div>' +
     '<div class="picc fioco">media degli undici</div></div>' +
     '<div style="text-align:right"><div class="etichetta" style="margin:0">Consigliato</div>' +
@@ -5971,11 +6499,18 @@ function scendiInCampo() {
   var sq = IE.squadraDi(cfg.avv);
   if (!sq) { G.vai('hub'); return; }
   aggiornaTitolari();
-  var titolari = S.titolari.map(function (id) { return clona(S.gioc(id)); }).filter(Boolean);
-  var panchina = S.rosa.filter(function (g) { return S.titolari.indexOf(g.id) < 0; }).map(clona);
-  if (titolari.length < 11) {
-    /* meno di undici: si gioca lo stesso, ma si sente */
-    while (titolari.length < 11 && panchina.length) titolari.push(panchina.shift());
+  var titolari, panchina, nomeMio = S.nomeSquadra, siglaMia = S.sigla, colMio = '#2f9e63';
+  if (cfg.caravan) {
+    var cv = rosaCaravan();
+    titolari = cv.undici; panchina = cv.panchina;
+    nomeMio = 'Raimon'; siglaMia = 'RAI'; colMio = '#e8703a';
+  } else {
+    titolari = S.titolari.map(function (id) { return clona(S.gioc(id)); }).filter(Boolean);
+    panchina = S.rosa.filter(function (g) { return S.titolari.indexOf(g.id) < 0; }).map(clona);
+    if (titolari.length < 11) {
+      /* meno di undici: si gioca lo stesso, ma si sente */
+      while (titolari.length < 11 && panchina.length) titolari.push(panchina.shift());
+    }
   }
   var rosaAvv = sq._rosa || IE.rosaSquadra(sq);
   sq._rosa = rosaAvv;
@@ -5983,12 +6518,15 @@ function scendiInCampo() {
     titolo: cfg.titolo || 'Partita',
     minutiTempo: cfg.minuti || 45,
     interazione: S.opz.interazione,
-    mia: { nome: S.nomeSquadra, sigla: S.sigla, col: '#2f9e63', stemma: S.stemma, rosa: titolari, panchina: panchina, formazione: S.formazione, spirito: S.spirito },
+    mia: { nome: nomeMio, sigla: siglaMia, col: colMio, stemma: cfg.caravan ? '⚡' : S.stemma,
+           rosa: titolari, panchina: panchina, formazione: cfg.caravan ? '4-4-2' : S.formazione,
+           spirito: cfg.caravan ? 70 : S.spirito },
     avv: { nome: sq.nome, sigla: sq.sigla, col: sq.col, stemma: sq.stemma, rosa: rosaAvv.slice(0, 11).map(clona), panchina: rosaAvv.slice(11).map(clona), formazione: '4-4-2', spirito: 40 }
   });
   G.posPrec = null; G.logVisto = 0;
   P.esiti = { vinto: cfg.vinto, perso: cfg.perso, pari: cfg.pari };
   P.amichevole = !!cfg.amichevole;
+  P.caravan = !!cfg.caravan;
   P.avvId = cfg.avv;
   S.vista = 'partita';
   G.statoP = P.avanza(null);
@@ -6202,6 +6740,7 @@ function finePartita() {
   var righe = [];
   P.mia.rosa.concat(P.mia.panchina).forEach(function (c) {
     var g = c._orig; if (!g) return;
+    if (P.caravan && g.id !== 'tu') return;   /* nel caravan gioca solo il capitano: gli altri non sono tuoi */
     var inCampo = P.mia.rosa.indexOf(c) >= 0;
     var e = Math.round((premio + (inCampo ? 130 : 60)) * (1 + P.mia.duelliVinti * 0.012));
     var r = daiExp(g, e);
@@ -6217,13 +6756,13 @@ function finePartita() {
   if (S.incontrate.indexOf(P.avv.nome) < 0) S.incontrate.push(P.avv.nome);
 
   /* dopo una partita si rifiata, e si è parlato abbastanza */
-  riposoCompleto();
+  if (!P.caravan) riposoCompleto();
 
   /* contatti: chi ti ha visto giocare risponde al telefono */
   var contatti = esito === 'vittoria' ? 3 : esito === 'pareggio' ? 2 : 1;
   S.scout = (S.scout || 0) + contatti;
   var battuta = false;
-  if (esito === 'vittoria' && P.avvId && S.battute.indexOf(P.avvId) < 0) { S.battute.push(P.avvId); battuta = true; }
+  if (esito === 'vittoria' && P.avvId && !P.caravan && S.battute.indexOf(P.avvId) < 0) { S.battute.push(P.avvId); battuta = true; }
   righe.push('Contatti +' + contatti + (battuta ? ' — la rosa della ' + esc(P.avv.nome) + ' è ora richiamabile.' : ''));
   G.fine = { esito: esito, righe: righe, battuta: battuta, mia: P.mia.gol, avv: P.avv.gol, nomeAvv: P.avv.nome,
     tiri: [P.mia.tiri, P.avv.tiri], duelli: [P.mia.duelliVinti, P.avv.duelliVinti], esiti: P.esiti, amichevole: P.amichevole };
@@ -6383,6 +6922,65 @@ function chiamaInSquadra(o, sq, costo) {
     '<p class="picc">Ha detto di sì. Arriva con le sue tecniche e con le statistiche che aveva quando vi ha giocato contro: ' +
     'da adesso cresce insieme a voi.</p>' +
     '<button class="bt primario" onclick="this.closest(\'.velo\').remove();G.render()">Bene</button>');
+}
+
+/* ============================================================
+   CARAVAN DELLA RAIMON
+   Finita la storia, si gioca da singolo giocatore dentro una
+   squadra che non è la tua, contro le squadre di Alius Academy.
+   ============================================================ */
+var ALIUS = ['gemini', 'epsilon', 'diamond', 'prominence', 'genesis'];
+
+function rosaCaravan() {
+  var r = IE.squadraDi('raimon');
+  var rosa = (r._rosa || IE.rosaSquadra(r));
+  var undici = rosa.slice(0, 11).map(clona);
+  var panchina = rosa.slice(11).map(clona);
+  var io = clona(S.gioc('tu'));
+  /* qui non sei il capitano e il tuo numero ce l'ha già qualcuno */
+  io.capitano = false;
+  var presi = {};
+  undici.concat(panchina).forEach(function (g) { presi[g.numero] = 1; });
+  if (presi[io.numero]) { for (var n = 12; n < 40; n++) if (!presi[n]) { io.numero = n; break; } }
+  /* entri al posto del compagno più debole del tuo ruolo */
+  var stesso = undici.filter(function (g) { return g.ruolo === io.ruolo; });
+  var pool = stesso.length ? stesso : undici;
+  var fuori = pool.slice().sort(function (a, b) { return IE.valutazione(a) - IE.valutazione(b); })[0];
+  undici[undici.indexOf(fuori)] = io;
+  panchina.unshift(fuori);
+  return { undici: undici, panchina: panchina, uscito: fuori };
+}
+
+function vistaCaravan() {
+  schermo.appendChild(el('<h2>🚐 Caravan della Raimon</h2>'));
+  schermo.appendChild(el('<p class="picc tenue">Qui non sei il capitano e non è il tuo campo. Sei uno degli undici, ' +
+    'in mezzo a gente che ha perso la scuola a settembre, contro le squadre di Alius Academy.</p>'));
+
+  var c = rosaCaravan();
+  var io = S.gioc('tu');
+  var box = el('<div class="pannello"><div class="etichetta">Gli undici di oggi</div><div class="griglia-schede"></div></div>');
+  var g11 = box.querySelector('.griglia-schede');
+  c.undici.forEach(function (g) {
+    g11.appendChild(schedaGiocatore(g, g.id === 'tu' ? '<b>tu</b>' : 'Lv ' + g.lv, null));
+  });
+  box.appendChild(el('<div class="picc fioco" style="margin-top:8px">Entri al posto di <b>' + esc(c.uscito.nome) +
+    '</b>, che è il ' + IE.ruoli[io.ruolo].nome.toLowerCase() + ' più debole dei loro. Se cresci, la scelta cambia da sola.</div>'));
+  schermo.appendChild(box);
+
+  var sfide = el('<div class="pannello"><div class="etichetta">Chi c\'è in giro</div></div>');
+  ALIUS.forEach(function (id) {
+    var sq = IE.squadre[id];
+    if (!sq) return;
+    var b = bt(sq.stemma + '  ' + sq.nome, sq.motto + '  ·  livello consigliato ' + (sq.lvCons || sq.lv), function () {
+      avviaPartita({ avv: id, titolo: 'Caravan — Raimon vs ' + sq.nome, minuti: 45, amichevole: true, caravan: true });
+    });
+    sfide.appendChild(b);
+  });
+  schermo.appendChild(sfide);
+
+  schermo.appendChild(el('<div class="avviso picc">Le partite del caravan non toccano la rosa di Amanome: ' +
+    'l\'esperienza la prendi solo tu, che sei l\'unico che sta davvero giocando.</div>'));
+  schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
 }
 
 /* ============================================================

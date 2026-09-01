@@ -290,7 +290,7 @@ function render() {
     allenamento: vistaAllenamento, spogliatoio: vistaSpogliatoio, partita: vistaPartita,
     finepartita: vistaFinePartita, opzioni: vistaOpzioni, amichevoli: vistaAmichevoli,
     risveglio: vistaRisveglio, contatti: vistaContatti, prepartita: vistaPrePartita,
-    carattere: vistaCarattere
+    carattere: vistaCarattere, caravan: vistaCaravan
   })[v] || vistaHub;
   schermo.innerHTML = '';
   f();
@@ -688,21 +688,25 @@ function schedaGiocatore(g, dx, fn) {
 /* ============================================================
    STORIA (chat)
    ============================================================ */
+function righeDi(sc) {
+  return (sc.righe || []).filter(function (r) { return !r.se || r.se(S, carattere(), tratti()); });
+}
+
 function vistaStoria() {
   var sc = IE.storia.scene[S.scena];
   if (!sc) { G.vai('hub'); return; }
+  var righe = righeDi(sc);
   schermo.appendChild(el('<div class="luogo">' + esc(sc.luogo || '') + '</div>'));
   var chat = el('<div id="chat"></div>');
   schermo.appendChild(chat);
-  var fine = S.riga >= sc.righe.length;
-  for (var i = 0; i < Math.min(S.riga + 1, sc.righe.length); i++) chat.appendChild(battutaHtml(sc.righe[i]));
+  for (var i = 0; i < Math.min(S.riga + 1, righe.length); i++) chat.appendChild(battutaHtml(righe[i]));
 
   var piede = el('<div id="avanti"></div>');
   schermo.appendChild(piede);
-  if (S.riga < sc.righe.length - 1) {
+  if (S.riga < righe.length - 1) {
     piede.appendChild(bt('Avanti ▸', null, function () { S.riga++; salva(); render(); ancoraGiu(); }, 'primario'));
     var salta = bt('Salta la scena', null, function () {
-      S.riga = sc.righe.length - 1; salva(); render(); ancoraGiu();
+      S.riga = righe.length - 1; salva(); render(); ancoraGiu();
     }, 'piatta');
     salta.style.marginTop = '4px';
     piede.appendChild(salta);
@@ -825,6 +829,7 @@ function vistaHub() {
   att.appendChild(bt('👥  Rosa', S.rosa.length + ' tesserati.', function () { G.vai('squadra'); }));
   att.appendChild(bt('📋  Formazione', S.formazione + ' · ' + (IE.formazioni[S.formazione] || {}).nome, function () { G.vai('formazione'); }));
   if (S.sblocchi.amichevoli) att.appendChild(bt('⚽  Amichevoli', 'Rigioca contro chiunque tu abbia incontrato.', function () { G.vai('amichevoli'); }));
+  if (S.sblocchi.caravan) att.appendChild(bt('🚐  Caravan della Raimon', 'Giochi da solo, dentro la loro squadra, contro Alius Academy.', function () { G.vai('caravan'); }, 'verde'));
   att.appendChild(bt('⚙️  Salvataggio e opzioni', null, function () { G.vai('opzioni'); }, 'piatta'));
   schermo.appendChild(att);
 
@@ -1183,6 +1188,7 @@ function vistaRisveglio() {
   var sc = IE.storia.scene[d.scena];
   var g = S.gioc(d.gioc);
   if (!sc || !g) { S.vista = d.ritorno; render(); return; }
+  var righe = righeDi(sc);
 
   schermo.appendChild(el('<div class="centro" style="margin:6px 0 10px">' +
     '<div class="etichetta">Una cosa che non si insegna</div>' +
@@ -1192,11 +1198,11 @@ function vistaRisveglio() {
 
   var chat = el('<div id="chat"></div>');
   schermo.appendChild(chat);
-  for (var i = 0; i <= Math.min(d.riga, sc.righe.length - 1); i++) chat.appendChild(battutaHtml(sc.righe[i]));
+  for (var i = 0; i <= Math.min(d.riga, righe.length - 1); i++) chat.appendChild(battutaHtml(righe[i]));
 
   var piede = el('<div id="avanti"></div>');
   schermo.appendChild(piede);
-  if (d.riga < sc.righe.length - 1) {
+  if (d.riga < righe.length - 1) {
     piede.appendChild(bt('Avanti ▸', null, function () { d.riga++; salva(); render(); ancoraGiu(); }, 'primario'));
   } else {
     var tec = concediFirma(g, d.f, d.clone);
@@ -1250,7 +1256,7 @@ function vistaPrePartita() {
   if (!cfg) { G.vai('hub'); return; }
   var sq = IE.squadre[cfg.avv];
   var cons = sq.lvCons || sq.lv || 1;
-  var mio = livelloMedio();
+  var mio = cfg.caravan ? Math.round(IE.squadraDi('raimon').lv * 0.9) : livelloMedio();
   var d = mio - cons;
   var giudizio, cls, col;
   if (d >= 4)      { giudizio = 'Siete più avanti di loro. Dovrebbe andare bene.';  cls = 'buono';  col = '#3fd07a'; }
@@ -1266,7 +1272,7 @@ function vistaPrePartita() {
 
   schermo.appendChild(el('<div class="pannello">' +
     '<div class="riga tra" style="align-items:flex-end;margin-bottom:10px">' +
-    '<div><div class="etichetta" style="margin:0">La tua squadra</div>' +
+    '<div><div class="etichetta" style="margin:0">' + (cfg.caravan ? 'La Raimon, con te dentro' : 'La tua squadra') + '</div>' +
     '<div style="font-size:30px;font-weight:bold;line-height:1">Lv ' + mio + '</div>' +
     '<div class="picc fioco">media degli undici</div></div>' +
     '<div style="text-align:right"><div class="etichetta" style="margin:0">Consigliato</div>' +
@@ -1291,11 +1297,18 @@ function scendiInCampo() {
   var sq = IE.squadraDi(cfg.avv);
   if (!sq) { G.vai('hub'); return; }
   aggiornaTitolari();
-  var titolari = S.titolari.map(function (id) { return clona(S.gioc(id)); }).filter(Boolean);
-  var panchina = S.rosa.filter(function (g) { return S.titolari.indexOf(g.id) < 0; }).map(clona);
-  if (titolari.length < 11) {
-    /* meno di undici: si gioca lo stesso, ma si sente */
-    while (titolari.length < 11 && panchina.length) titolari.push(panchina.shift());
+  var titolari, panchina, nomeMio = S.nomeSquadra, siglaMia = S.sigla, colMio = '#2f9e63';
+  if (cfg.caravan) {
+    var cv = rosaCaravan();
+    titolari = cv.undici; panchina = cv.panchina;
+    nomeMio = 'Raimon'; siglaMia = 'RAI'; colMio = '#e8703a';
+  } else {
+    titolari = S.titolari.map(function (id) { return clona(S.gioc(id)); }).filter(Boolean);
+    panchina = S.rosa.filter(function (g) { return S.titolari.indexOf(g.id) < 0; }).map(clona);
+    if (titolari.length < 11) {
+      /* meno di undici: si gioca lo stesso, ma si sente */
+      while (titolari.length < 11 && panchina.length) titolari.push(panchina.shift());
+    }
   }
   var rosaAvv = sq._rosa || IE.rosaSquadra(sq);
   sq._rosa = rosaAvv;
@@ -1303,12 +1316,15 @@ function scendiInCampo() {
     titolo: cfg.titolo || 'Partita',
     minutiTempo: cfg.minuti || 45,
     interazione: S.opz.interazione,
-    mia: { nome: S.nomeSquadra, sigla: S.sigla, col: '#2f9e63', stemma: S.stemma, rosa: titolari, panchina: panchina, formazione: S.formazione, spirito: S.spirito },
+    mia: { nome: nomeMio, sigla: siglaMia, col: colMio, stemma: cfg.caravan ? '⚡' : S.stemma,
+           rosa: titolari, panchina: panchina, formazione: cfg.caravan ? '4-4-2' : S.formazione,
+           spirito: cfg.caravan ? 70 : S.spirito },
     avv: { nome: sq.nome, sigla: sq.sigla, col: sq.col, stemma: sq.stemma, rosa: rosaAvv.slice(0, 11).map(clona), panchina: rosaAvv.slice(11).map(clona), formazione: '4-4-2', spirito: 40 }
   });
   G.posPrec = null; G.logVisto = 0;
   P.esiti = { vinto: cfg.vinto, perso: cfg.perso, pari: cfg.pari };
   P.amichevole = !!cfg.amichevole;
+  P.caravan = !!cfg.caravan;
   P.avvId = cfg.avv;
   S.vista = 'partita';
   G.statoP = P.avanza(null);
@@ -1522,6 +1538,7 @@ function finePartita() {
   var righe = [];
   P.mia.rosa.concat(P.mia.panchina).forEach(function (c) {
     var g = c._orig; if (!g) return;
+    if (P.caravan && g.id !== 'tu') return;   /* nel caravan gioca solo il capitano: gli altri non sono tuoi */
     var inCampo = P.mia.rosa.indexOf(c) >= 0;
     var e = Math.round((premio + (inCampo ? 130 : 60)) * (1 + P.mia.duelliVinti * 0.012));
     var r = daiExp(g, e);
@@ -1537,13 +1554,13 @@ function finePartita() {
   if (S.incontrate.indexOf(P.avv.nome) < 0) S.incontrate.push(P.avv.nome);
 
   /* dopo una partita si rifiata, e si è parlato abbastanza */
-  riposoCompleto();
+  if (!P.caravan) riposoCompleto();
 
   /* contatti: chi ti ha visto giocare risponde al telefono */
   var contatti = esito === 'vittoria' ? 3 : esito === 'pareggio' ? 2 : 1;
   S.scout = (S.scout || 0) + contatti;
   var battuta = false;
-  if (esito === 'vittoria' && P.avvId && S.battute.indexOf(P.avvId) < 0) { S.battute.push(P.avvId); battuta = true; }
+  if (esito === 'vittoria' && P.avvId && !P.caravan && S.battute.indexOf(P.avvId) < 0) { S.battute.push(P.avvId); battuta = true; }
   righe.push('Contatti +' + contatti + (battuta ? ' — la rosa della ' + esc(P.avv.nome) + ' è ora richiamabile.' : ''));
   G.fine = { esito: esito, righe: righe, battuta: battuta, mia: P.mia.gol, avv: P.avv.gol, nomeAvv: P.avv.nome,
     tiri: [P.mia.tiri, P.avv.tiri], duelli: [P.mia.duelliVinti, P.avv.duelliVinti], esiti: P.esiti, amichevole: P.amichevole };
@@ -1703,6 +1720,65 @@ function chiamaInSquadra(o, sq, costo) {
     '<p class="picc">Ha detto di sì. Arriva con le sue tecniche e con le statistiche che aveva quando vi ha giocato contro: ' +
     'da adesso cresce insieme a voi.</p>' +
     '<button class="bt primario" onclick="this.closest(\'.velo\').remove();G.render()">Bene</button>');
+}
+
+/* ============================================================
+   CARAVAN DELLA RAIMON
+   Finita la storia, si gioca da singolo giocatore dentro una
+   squadra che non è la tua, contro le squadre di Alius Academy.
+   ============================================================ */
+var ALIUS = ['gemini', 'epsilon', 'diamond', 'prominence', 'genesis'];
+
+function rosaCaravan() {
+  var r = IE.squadraDi('raimon');
+  var rosa = (r._rosa || IE.rosaSquadra(r));
+  var undici = rosa.slice(0, 11).map(clona);
+  var panchina = rosa.slice(11).map(clona);
+  var io = clona(S.gioc('tu'));
+  /* qui non sei il capitano e il tuo numero ce l'ha già qualcuno */
+  io.capitano = false;
+  var presi = {};
+  undici.concat(panchina).forEach(function (g) { presi[g.numero] = 1; });
+  if (presi[io.numero]) { for (var n = 12; n < 40; n++) if (!presi[n]) { io.numero = n; break; } }
+  /* entri al posto del compagno più debole del tuo ruolo */
+  var stesso = undici.filter(function (g) { return g.ruolo === io.ruolo; });
+  var pool = stesso.length ? stesso : undici;
+  var fuori = pool.slice().sort(function (a, b) { return IE.valutazione(a) - IE.valutazione(b); })[0];
+  undici[undici.indexOf(fuori)] = io;
+  panchina.unshift(fuori);
+  return { undici: undici, panchina: panchina, uscito: fuori };
+}
+
+function vistaCaravan() {
+  schermo.appendChild(el('<h2>🚐 Caravan della Raimon</h2>'));
+  schermo.appendChild(el('<p class="picc tenue">Qui non sei il capitano e non è il tuo campo. Sei uno degli undici, ' +
+    'in mezzo a gente che ha perso la scuola a settembre, contro le squadre di Alius Academy.</p>'));
+
+  var c = rosaCaravan();
+  var io = S.gioc('tu');
+  var box = el('<div class="pannello"><div class="etichetta">Gli undici di oggi</div><div class="griglia-schede"></div></div>');
+  var g11 = box.querySelector('.griglia-schede');
+  c.undici.forEach(function (g) {
+    g11.appendChild(schedaGiocatore(g, g.id === 'tu' ? '<b>tu</b>' : 'Lv ' + g.lv, null));
+  });
+  box.appendChild(el('<div class="picc fioco" style="margin-top:8px">Entri al posto di <b>' + esc(c.uscito.nome) +
+    '</b>, che è il ' + IE.ruoli[io.ruolo].nome.toLowerCase() + ' più debole dei loro. Se cresci, la scelta cambia da sola.</div>'));
+  schermo.appendChild(box);
+
+  var sfide = el('<div class="pannello"><div class="etichetta">Chi c\'è in giro</div></div>');
+  ALIUS.forEach(function (id) {
+    var sq = IE.squadre[id];
+    if (!sq) return;
+    var b = bt(sq.stemma + '  ' + sq.nome, sq.motto + '  ·  livello consigliato ' + (sq.lvCons || sq.lv), function () {
+      avviaPartita({ avv: id, titolo: 'Caravan — Raimon vs ' + sq.nome, minuti: 45, amichevole: true, caravan: true });
+    });
+    sfide.appendChild(b);
+  });
+  schermo.appendChild(sfide);
+
+  schermo.appendChild(el('<div class="avviso picc">Le partite del caravan non toccano la rosa di Amanome: ' +
+    'l\'esperienza la prendi solo tu, che sei l\'unico che sta davvero giocando.</div>'));
+  schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
 }
 
 /* ============================================================

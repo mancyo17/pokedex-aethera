@@ -1400,6 +1400,7 @@ sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
   ],
   eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }, { spirito: 10 },
         { momento: 'Avete raddrizzato la porta nord l\'undici di giugno.' }],
+  poiSe: [{ se: function (S) { return !!S.flag.partito && !S.flag.viaggio_finito; }, poi: { capitolo: 11 } }],
   poi: { hub: true } });
 
 
@@ -2839,30 +2840,685 @@ sc({ id: 'al_parto', luogo: 'Piazzale della scuola — 7 dicembre, 14:20',
         { momento: 'Sei salito sul pullman della Raimon con il quaderno del 1985 nella borsa.' }],
   poi: 'al_raimon' });
 
-sc({ id: 'al_raimon', luogo: 'Inazuma Caravan — da qualche parte fra Nagano e il mare',
+sc({ id: 'al_raimon', luogo: 'Inazuma Caravan — statale 19, verso nord',
   righe: [
     n("Il pullman della Raimon ha nove cuccette, un tavolo che si ribalta e un allenatore che dorme seduto."),
     d('hillman', "Tu sei quello di Amanome."),
     tu("Sì."),
-    d('hillman', "Trentotto studenti."),
-    tu("Trentotto."),
-    d('hillman', "Il tuo custode è Sōichirō Amagai."),
+    d('hillman', "Trentotto studenti. E il tuo custode è Sōichirō Amagai."),
     n("Alzi la testa."),
     d('hillman', "Secondo posto alla prefettura di Nagano, 1985. Terzo da sinistra nella fotografia."),
     d('hillman', "Io giocavo a Shizuoka, quell'anno. Ci hanno parlato di voi per un mese."),
-    n("Coach Hillman chiude gli occhi e sembra che abbia finito di parlare. Poi non ha finito."),
-    d('hillman', "Qui non c'è la tua squadra. Qui ci sono undici che hanno perso la scuola a settembre e non hanno ancora smesso di girare."),
-    d('hillman', "Non ti chiederanno di essere il capitano e non ti daranno il tuo numero."),
-    d('hillman', "Ti chiederanno solo di esserci quando tocca a te."),
-    d('mark', "Domani a Toyama! C'è una scuola che ha giocato contro Epsilon e ha resistito settanta minuti!"),
-    d('jude', "Sessantotto."),
-    d('mark', "SETTANTA È PIÙ BELLO!"),
-    d('axel', "Sono sessantotto."),
+    n("Coach Hillman chiude gli occhi e sembra che abbia finito. Poi non ha finito."),
+    d('hillman', "Sharp. Raccontagli da dove veniamo, che se lo faccio io ci metto un'ora."),
+    d('jude', "Da settembre."),
+    d('jude', "Il quattordici settembre Gemini Storm è arrivata alla scuola media Raimon e ha chiesto una partita, esattamente come da voi."),
+    d('jude', "Abbiamo perso e della Raimon è rimasta in piedi l'ala nord."),
+    d('jude', "Quello è stato il primo capitolo di questa storia, se vuoi chiamarla così."),
+    tu("E il secondo?"),
+    d('jude', "Il secondo è la parte che non capiamo ancora."),
+    d('jude', "C'è un pallone nero che gira. Compare dove è appena passata Alius Academy, e sparisce prima che qualcuno lo raccolga."),
+    d('jude', "E ci sono uomini in giacca che si fanno vedere vicino alle scuole colpite, e che con dei ragazzi con i poteri non c'entrano niente."),
+    d('nelly', "Mio padre dice che il Primo Ministro ha ricevuto una proposta. E che non l'ha rifiutata."),
+    d('jude', "Ecco. Quello è il secondo capitolo, ed è ancora aperto."),
+    n("Guardi il pullman: nove cuccette, undici persone, un allenatore che dorme seduto."),
+    tv({
+      fuoco:   "E l'attaccante? Quello del tornado di fuoco. Dov'è?",
+      calmo:   "Manca qualcuno. A novembre da noi eravate in dodici e c'era anche l'attaccante numero dieci.",
+      ironico: "Scusate se lo chiedo il primo giorno: avete perso un pezzo? Quello che tira le fiamme.",
+      chiuso:  "Manca Axel Blaze.",
+      ostinato:"Prima di dormire voglio saperlo: dov'è finito il vostro numero dieci?"
+    }),
+    n("Nessuno risponde subito. Mark Evans smette di fare quello che stava facendo."),
+    d('mark', "Axel se n'è andato."),
+    tu("Perché?"),
+    d('mark', "Perché ha una sorella in ospedale e un padre che gli ha fatto scegliere."),
+    d('mark', "E perché quando la scuola è caduta, ha pensato che fosse colpa del calcio."),
+    d('jude', "Torna."),
+    d('mark', "Torna!"),
+    d('jude', "Non l'ho detto per consolarti. L'ho detto perché lo penso."),
     n("Ti addormenti sulla cuccetta di sopra con il quaderno del 1985 sotto il cuscino, mentre fuori dal finestrino passa un Giappone che non hai mai visto."),
-    n("Sul quaderno, dopo gli undici nomi del 1985 e i quattordici di Amanome, c'è ancora molto spazio bianco.")
+    n("Alle sei del mattino Coach Hillman ferma il pullman in un'area di sosta e sveglia tutti."),
+    d('hillman', "Da qui in avanti la strada si divide, e voglio che lo decida chi è salito per ultimo.")
   ],
-  eff: [{ spirito: 6 }],
+  poi: 'al_versione' });
+
+sc({ id: 'al_versione', luogo: 'Area di sosta — statale 19, sei del mattino',
+  righe: [
+    d('hillman', "Alius Academy ha cinque squadre. Non le incontreremo tutte: dipende da dove passiamo."),
+    d('hillman', "Se saliamo dritti a nord, verso Hokkaido, prima o poi ci troviamo davanti Diamond Dust: giocano sul ghiaccio e il loro capitano si chiama Gazel."),
+    d('hillman', "Se pieghiamo verso ovest e scendiamo, incontriamo Prominence, che è la squadra di Burn e brucia il campo prima di giocarci sopra."),
+    d('jude', "Le due strade portano allo stesso posto. Cambia solo chi ci trovi in mezzo."),
+    d('mark', "E cambia anche un'altra cosa!"),
+    d('nelly', "Mark, non è il momento di—"),
+    d('mark', "Cambia che se andiamo a nord passiamo da Hokkaido e io voglio andare a Hokkaido."),
+    d('jude', "Ci passiamo comunque, Mark."),
+    d('mark', "Ah. Allora niente."),
+    n("Coach Hillman apre la cartina sul cofano. È una cartina di carta, piegata male, con le strade segnate a penna."),
+    d('hillman', "Decidi tu. È il tuo primo giorno e sei l'unico qui dentro che non ha ancora perso niente in questa storia."),
+    n("(Come nei due giochi: la strada che scegli decide quale squadra di Alius Academy incontrerai. L'altra si può affrontare dopo, alla fine.)")
+  ],
+  scelte: [
+    { t: "🔥  Tempesta di Fuoco — verso ovest, incontro a Prominence", vai: 'al_ver_fuoco',
+      nota: 'La strada che segue Axel Blaze.' },
+    { t: "❄️  Bufera di Neve — dritti a nord, incontro a Diamond Dust", vai: 'al_ver_neve',
+      nota: 'La strada che segue Shawn Froste.' }
+  ] });
+
+sc({ id: 'al_ver_fuoco', luogo: 'Area di sosta',
+  righe: [
+    tv({
+      fuoco:   "Ovest. Se il vostro numero dieci è là fuori, passiamo di là.",
+      calmo:   "Ovest. Se torna qualcuno, torna dove abita, e Axel Blaze non abita a Hokkaido.",
+      ironico: "Ovest. Ho vissuto tredici anni in mezzo alla neve, ne ho abbastanza.",
+      chiuso:  "Ovest.",
+      ostinato:"Ovest. E ce lo riprendiamo, il vostro dieci."
+    }),
+    d('hillman', "Ovest."),
+    d('mark', "…grazie."),
+    n("Piega la cartina lungo la linea che va verso ovest, e non la riapre più per tutto il viaggio.")
+  ],
+  eff: [{ versione: 'fuoco' }, { momento: 'Hai scelto la strada di ovest: Tempesta di Fuoco.' }],
   poi: 'c6_epilogo' });
+
+sc({ id: 'al_ver_neve', luogo: 'Area di sosta',
+  righe: [
+    tv({
+      fuoco:   "Nord! Se giocano sul ghiaccio andiamo a giocare sul ghiaccio!",
+      calmo:   "Nord. In montagna ci sono cresciuto: è l'unico posto dove il vantaggio ce l'ho io.",
+      ironico: "Nord. Almeno il freddo lo so già fare.",
+      chiuso:  "Nord.",
+      ostinato:"Nord. Dritti, senza girarci intorno."
+    }),
+    d('hillman', "Nord."),
+    d('mark', "Hokkaido!"),
+    d('nelly', "Mark, sono milleduecento chilometri."),
+    d('mark', "HOKKAIDO!")
+  ],
+  eff: [{ versione: 'neve' }, { momento: 'Hai scelto la strada di nord: Bufera di Neve.' }],
+  poi: 'c6_epilogo' });
+
+
+/* ============================================================
+   ATTO SECONDO — IL VIAGGIO
+   Segue i capitoli di «Inazuma Eleven 2: Tempesta di Fuoco» e
+   «Bufera di Neve», dal terzo in poi: è lì che sali sul pullman.
+   ============================================================ */
+
+sc({ id: 't3_1', luogo: 'Hokkaido — statale 275, tormenta',
+  righe: [
+    n("Ci vogliono due giorni e mezzo per arrivare a Hokkaido, e l'ultimo tratto lo fate a venti all'ora."),
+    n("Fuori dal finestrino non si vede la strada: si vede bianco, e ogni tanto un palo."),
+    d('nelly', "Coach, dovremmo fermarci."),
+    d('hillman', "Se ci fermiamo qui domattina ci scavano fuori."),
+    n("Poi Mark Evans grida di fermare il pullman, e nessuno capisce perché finché non lo vedete anche voi."),
+    n("In mezzo alla neve, a piedi, senza cappotto, c'è un ragazzo."),
+    d('mark', "FERMA! FERMA IL PULLMAN!"),
+    n("Sale con la faccia bianca e le mani che non si chiudono. Ci mette dieci minuti a riuscire a parlare."),
+    d('shawn', "…grazie."),
+    d('shawn', "Abito a otto chilometri. Torno a piedi ogni giorno, e di solito ce la faccio."),
+    d('jude', "Di solito."),
+    d('shawn', "Di solito."),
+    n("Si chiama Shawn Froste. Gioca nella scuola media Hakuren, che è l'unica scuola nel raggio di trenta chilometri."),
+    n("Quando il pullman ricomincia a muoversi, la neve sul tetto scivola giù tutta insieme e il mezzo si inclina di lato."),
+    n("Succede tutto in tre secondi: il pullman scivola verso il fosso, Coach Hillman non arriva al freno, e Shawn Froste è già fuori dalla portiera."),
+    n("Non si capisce bene cosa faccia. Si capisce che il pullman si ferma."),
+    d('mark', "…"),
+    d('mark', "COSA HAI FATTO."),
+    d('shawn', "L'ho spinto."),
+    d('mark', "SI SPINGE UN PULLMAN?"),
+    d('shawn', "Se sta scivolando, sì. Bisogna colpirlo nel punto giusto."),
+    n("Mark Evans lo guarda con una faccia che hai già visto una volta, a novembre, sul campo dietro la palestra di Amanome."),
+    d('mark', "Domani ci giochi contro. Voglio vedere."),
+    d('shawn', "…contro? Vi ho appena tirato fuori dal fosso."),
+    d('mark', "APPUNTO!")
+  ],
+  eff: [{ obiettivo: 'Hokkaido. La scuola media Hakuren, e il ragazzo che ha fermato un pullman.' }],
+  poi: { hub: true } });
+
+sc({ id: 't3_partita', luogo: 'Hakuren — campo coperto di neve battuta',
+  righe: [
+    n("Il campo della Hakuren è neve battuta con le linee scavate con la pala. Ci giocano da ottobre a maggio e non conoscono altro."),
+    d('shawn', "Vi avverto: qui la palla non rimbalza."),
+    d('jude', "L'avevo capito."),
+    d('shawn', "E i miei compagni sono dieci ragazzi normali di una scuola di montagna."),
+    d('shawn', "Quello difficile sono io, e mi dispiace dirlo così ma è vero."),
+    n("Coach Hillman ti chiama a bordo campo mentre gli altri si scaldano."),
+    d('hillman', "Oggi giochi."),
+    tu("…io?"),
+    d('hillman', "Tu. Sei salito tre giorni fa e finora hai guardato."),
+    d('hillman', "Non ti sto premiando: mi serve sapere cosa so di avere."),
+    tv({
+      fuoco:   "Va bene. Non le farò rimpiangere niente.",
+      calmo:   "Va bene. Mi dica cosa le serve che faccia e lo faccio.",
+      ironico: "Perfetto, la mia prima partita da riserva assoluta su un campo di neve contro uno che sposta i pullman.",
+      chiuso:  "Va bene.",
+      ostinato:"Va bene. E non mi tolga dopo venti minuti."
+    })
+  ],
+  poi: { partita: { avv: 'hakuren', titolo: 'Hokkaido — Raimon vs Hakuren', minuti: 45, caravan: true,
+    vinto: 't3_fine', perso: 't3_fine', pari: 't3_fine' } } });
+
+sc({ id: 't3_fine', luogo: 'Hakuren — dopo',
+  righe: [
+    n("Shawn Froste ha giocato in difesa e in attacco nella stessa partita, ed è arrivato prima in tutti e due i posti."),
+    d('mark', "Vieni con noi."),
+    d('shawn', "Non posso. Ho una squadra."),
+    d('mark', "Portala."),
+    d('shawn', "Sono dieci ragazzi di montagna che giocano per divertirsi."),
+    d('mark', "Allora vieni tu, e loro restano a divertirsi, che è già una cosa che quest'anno in Giappone non fa quasi più nessuno."),
+    n("Shawn Froste guarda il campo di neve battuta, e poi la sua scuola, che è ancora in piedi perché ad Alius Academy Hokkaido non interessa ancora."),
+    d('shawn', "Ancora."),
+    d('jude', "Ancora."),
+    n("Sale sul pullman con una borsa e un paio di scarpe."),
+    n("— Shawn Froste si è unito alla squadra.", 'urlo')
+  ],
+  eff: [{ arrivi: 3 }, { spirito: 6 }, { exp: 400 }], poi: { capitolo: 12 } });
+
+sc({ id: 't4_1', luogo: 'Inazuma Caravan — di nuovo verso sud',
+  righe: [
+    n("Il quarto capitolo di questa storia comincia con una persona che non dovrebbe essere lì."),
+    n("È in piedi in mezzo alla strada, biondo, con una divisa bianca che a dicembre non ha senso."),
+    d('jude', "…Byron Love."),
+    d('nelly', "Quello dello Zeus?"),
+    d('jude', "Quello dello Zeus."),
+    d('byron', "Vi stavo aspettando."),
+    d('mark', "BYRON!"),
+    d('byron', "Buonasera anche a te, Evans."),
+    n("Byron Love è il capitano che ha portato l'Istituto Zeus in finale al Football Frontier, e che ha perso contro questi qui."),
+    d('byron', "Non sono venuto a giocare. Sono venuto a dirvi una cosa che ho scoperto e che non mi piace."),
+    d('byron', "Alius Academy ha una seconda squadra che sta salendo, e si chiama Epsilon."),
+    d('byron', "E il loro allenatore mi ha cercato a novembre."),
+    d('jude', "Cercato per cosa?"),
+    d('byron', "Per offrirmi di giocare con loro."),
+    n("Silenzio nel pullman."),
+    d('byron', "Ho detto di no, e voglio che lo sappiate da me e non da qualcun altro."),
+    d('byron', "Ma qualcuno ha detto di sì. E non erano alieni: erano ragazzi come noi."),
+    d('hillman', "…"),
+    d('hillman', "Salga, Love. Fuori si gela."),
+    n("Più tardi, in un'area di servizio, mentre comprate da mangiare, un ragazzino di prima media vi segue fino al pullman e non se ne va."),
+    d('scotty', "Io vi ho visti a settembre."),
+    d('mark', "Come ti chiami?"),
+    d('scotty', "Scotty. Scotty Banyan."),
+    d('scotty', "Ero alla Raimon. Sono al primo anno e non mi avete mai preso in squadra perché faccio gli scherzi."),
+    d('mark', "…"),
+    d('scotty', "Adesso la scuola non c'è più, quindi tecnicamente non posso nemmeno essere escluso.")
+  ],
+  eff: [{ obiettivo: 'Epsilon. E un primo anno che vi segue e non se ne va.' }],
+  poi: { hub: true } });
+
+sc({ id: 't4_partita', luogo: 'Campo abbandonato — Epsilon',
+  righe: [
+    n("Epsilon vi aspetta su un campo di periferia con i riflettori accesi in pieno giorno."),
+    n("Il loro capitano è alto, sta fermo, e non parla per tutto il riscaldamento."),
+    d('desarm', "Desarm."),
+    d('jude', "È l'unica cosa che dirà."),
+    d('desarm', "Sì."),
+    d('byron', "Evans. Una cosa prima che cominci."),
+    d('byron', "Quando ho perso contro di voi, in finale, ho pensato per un mese che il calcio fosse una cosa che si vince."),
+    d('byron', "Poi è arrivata gente che il calcio lo usa per buttare giù le scuole, e ho capito che avevo torto io e ragione tu."),
+    d('mark', "…non ho capito ma grazie!"),
+    d('byron', "Non hai capito, no. Va bene lo stesso.")
+  ],
+  poi: { partita: { avv: 'epsilon', titolo: 'Alius Academy — Raimon vs Epsilon', minuti: 45, caravan: true,
+    vinto: 't4_fine', perso: 't4_fine', pari: 't4_fine' } } });
+
+sc({ id: 't4_fine', luogo: 'Campo abbandonato — dopo',
+  righe: [
+    d('desarm', "…"),
+    d('desarm', "Non siete come le altre diciannove."),
+    d('jude', "Ventuno."),
+    d('desarm', "Ventuno."),
+    n("Se ne vanno in fila, come fanno tutti quelli di Alius Academy, e Scotty Banyan esce da sotto il pullman dove si era nascosto per guardare la partita."),
+    d('scotty', "Posso venire?"),
+    d('mark', "Hai dodici anni."),
+    d('scotty', "Dodici e mezzo."),
+    d('nelly', "Serve la firma di un genitore."),
+    d('scotty', "Ce l'ho."),
+    d('nelly', "…ce l'hai già?"),
+    d('scotty', "L'ho fatta firmare a settembre. Speravo."),
+    n("— Scotty Banyan si è unito alla squadra.", 'urlo')
+  ],
+  eff: [{ arrivi: 4 }, { spirito: 5 }, { exp: 450 }], poi: { capitolo: 13 } });
+
+sc({ id: 't5_1', luogo: 'Inazuma Caravan — mattina',
+  righe: [
+    n("Epsilon torna dopo undici giorni, e non è più la stessa squadra."),
+    n("Si muovono in modo diverso: prima giocavano come se il risultato fosse già scritto, adesso giocano come se qualcuno glielo stesse dettando dalla panchina."),
+    d('jude', "Ho già visto giocare così."),
+    d('nelly', "Dove?"),
+    d('jude', "Per tre anni. Tutti i giorni."),
+    n("Sulla panchina di Epsilon, con un cappotto scuro e le mani dietro la schiena, c'è un uomo che Jude Sharp conosce meglio di chiunque altro al mondo."),
+    d('jude', "Ray Dark."),
+    d('hillman', "…"),
+    d('hillman', "Ragazzi, sedetevi. Questa parte la spiego io e la spiego una volta sola."),
+    d('hillman', "Trent'anni fa io e quell'uomo allenavamo due squadre della stessa città."),
+    d('hillman', "Lui ha vinto più di me. Ha vinto in un modo che a me non è mai venuto in mente, e per vent'anni mi sono chiesto se ero io a essere stupido."),
+    d('hillman', "Poi ho visto cosa restava dei ragazzi che allenava, e ho smesso di chiedermelo."),
+    d('mark', "Coach."),
+    d('hillman', "Oggi non è una partita contro Epsilon. Oggi è una partita contro di lui."),
+    d('hillman', "E la panchina la faccio io.")
+  ],
+  eff: [{ obiettivo: 'Epsilon, di nuovo. Ma stavolta in panchina c\'è Ray Dark.' }],
+  poi: { hub: true } });
+
+sc({ id: 't5_partita', luogo: 'Stadio comunale — Epsilon Migliorata',
+  righe: [
+    d('dark', "Hillman."),
+    d('hillman', "Dark."),
+    d('dark', "Trent'anni."),
+    d('hillman', "Trentuno."),
+    n("Ray Dark guarda la vostra panchina, uno per uno, e si ferma su di te."),
+    d('dark', "Questo è nuovo."),
+    d('hillman', "Questo viene da un paese di quattrocento abitanti in cui hanno rifatto il campo a mano."),
+    d('dark', "…che tenerezza."),
+    d('hillman', "Sì. È esattamente la parola che non hai mai capito.")
+  ],
+  poi: { partita: { avv: 'epsilon_kai', titolo: 'Resa dei conti — Raimon vs Epsilon Migliorata', minuti: 45, caravan: true,
+    vinto: 't5_fine', perso: 't5_fine', pari: 't5_fine' } } });
+
+sc({ id: 't5_fine', luogo: 'Stadio comunale — dopo',
+  righe: [
+    n("Ray Dark se ne va prima del fischio finale, come fanno quelli che hanno già calcolato il risultato e non hanno voglia di vederlo."),
+    d('desarm', "Aspetti."),
+    n("Desarm lo chiama e Ray Dark non si gira."),
+    d('desarm', "…"),
+    d('jude', "Non ti risponderà."),
+    d('desarm', "Lo so."),
+    d('jude', "Lo so anch'io. Ci ho messo tre anni."),
+    n("Coach Hillman resta in piedi in mezzo al campo per un po', da solo, con le mani in tasca."),
+    tv({
+      fuoco:   "Coach! È finita!",
+      calmo:   "Coach. Se resta lì un altro po' si gela.",
+      ironico: "Coach, l'ha battuto. Può anche darlo a vedere.",
+      chiuso:  "Coach.",
+      ostinato:"Coach, io non me ne vado finché non viene via anche lei."
+    }),
+    d('hillman', "…sì."),
+    d('hillman', "Andiamo.")
+  ],
+  eff: [{ spirito: 6 }, { exp: 500 }], poi: { capitolo: 14 } });
+
+
+sc({ id: 't6_1', luogo: 'Luna park di Inazuma — 23 dicembre',
+  righe: [
+    n("Il sesto capitolo comincia con Coach Hillman che dice una frase che nessuno si aspettava."),
+    d('hillman', "Domani niente allenamento."),
+    d('mark', "COSA?"),
+    d('hillman', "Domani è il ventitré dicembre e siete tredici ragazzini che da tre mesi dormono su un pullman."),
+    d('hillman', "Domani si va al luna park e non voglio sentire parlare di calcio."),
+    n("Ci andate. È aperto, mezzo vuoto, e ci sono le luci accese sopra la neve sporca."),
+    n("Scotty Banyan fa quattordici giri sulle tazze e vomita dietro il tiro a segno."),
+    n("Shawn Froste non era mai stato su una ruota panoramica."),
+    n("Mark Evans vince un pupazzo al tiro a segno e lo dà a Nelly, che dice grazie in un modo strano."),
+    n("E tu, per la prima volta da settembre, per tre ore non pensi al campo dietro la palestra."),
+    d('shawn', "Posso chiederti una cosa?"),
+    tu("Sì."),
+    d('shawn', "Tu ce l'hai ancora, la tua squadra?"),
+    tv({
+      fuoco:   "Sì. Sono lì, e mi stanno aspettando, e quando torno gliela faccio pagare.",
+      calmo:   "Sì. È a trecento chilometri e sta giocando senza di me. Ho ricevuto due cartoline.",
+      ironico: "Ce l'ho, sì. Anzi: ce l'hanno loro. Io sono in prestito, c'è scritto sul registro.",
+      chiuso:  "Sì.",
+      ostinato:"Sì. E torno."
+    }),
+    d('shawn', "Io no."),
+    d('shawn', "Cioè: Hakuren c'è. Ma non è la mia squadra da un po', ed è colpa mia e non ho voglia di raccontarlo stasera."),
+    n("Alle nove, mentre state uscendo, il luna park si spegne tutto insieme."),
+    n("In mezzo alla giostra dei cavalli, ferma, ci sono undici ragazzi in tuta che non c'erano."),
+    d('nelly', "…quanti sono stasera?"),
+    d('jude', "Undici. Come sempre.")
+  ],
+  eff: [{ obiettivo: 'Ventitré dicembre. Non doveva essere una giornata di calcio.' }],
+  poi: { hub: true } });
+
+sc({ id: 't6_partita', luogo: 'Luna park — piazzale delle giostre',
+  righe: [
+    { chi: 'narr', t: "Il capitano si stacca dal gruppo. Ha i capelli rossi e cammina come uno a cui non hanno mai detto di no.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'burn', t: "Burn. Prominence.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'burn', t: "Vi bruciamo il piazzale e andiamo a casa. Non ci mettiamo niente.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'narr', t: "Il capitano si stacca dal gruppo. Ha i capelli bianchi e non guarda nessuno negli occhi.", se: function (S) { return S.versione === 'neve'; } },
+    { chi: 'gazel', t: "Gazel. Diamond Dust.", se: function (S) { return S.versione === 'neve'; } },
+    { chi: 'gazel', t: "Ghiacciamo il piazzale e andiamo a casa. Non ci mettiamo niente.", se: function (S) { return S.versione === 'neve'; } },
+    d('mark', "Non si gioca al luna park."),
+    d('jude', "Mark."),
+    d('mark', "NON SI GIOCA AL LUNA PARK! È IL VENTITRÉ DICEMBRE!"),
+    n("È la cosa più stupida che potesse dire ed è anche l'unica cosa vera detta in tutta la serata."),
+    d('hillman', "…in campo."),
+    d('hillman', "E ricordatevi che oggi non ci eravamo preparati. Se perdiamo, perdiamo una partita che non doveva esistere.")
+  ],
+  poi: { partita: { avv: 'versione', titolo: 'Luna park — Raimon contro Alius', minuti: 45, caravan: true,
+    vinto: 't6_fine', perso: 't6_fine', pari: 't6_fine' } } });
+
+sc({ id: 't6_fine', luogo: 'Luna park — dopo',
+  righe: [
+    n("Quando finisce, le luci del luna park si riaccendono tutte insieme e nessuno capisce perché."),
+    { chi: 'burn', t: "Non è finita. Questa era la volta in cui non ci stavamo provando.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'gazel', t: "Non è finita. Questa era la volta in cui non ci stavamo provando.", se: function (S) { return S.versione === 'neve'; } },
+    d('jude', "Lo dicono tutti."),
+    { chi: 'burn', t: "Loro lo dicono. Io lo faccio.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'gazel', t: "Loro lo dicono. Io lo faccio.", se: function (S) { return S.versione === 'neve'; } },
+    n("Sul pullman, quella notte, nessuno dorme."),
+    d('mark', "Coach. Ci serve una cosa che non abbiamo."),
+    d('hillman', "Lo so."),
+    d('mark', "E non so cosa sia."),
+    d('hillman', "Nemmeno io. Ma so dov'è scritto.")
+  ],
+  eff: [{ spirito: 5 }, { exp: 520 }], poi: { capitolo: 15 } });
+
+sc({ id: 't7_1', luogo: 'Inazuma — quello che resta della scuola media Raimon',
+  righe: [
+    n("Della scuola media Raimon è in piedi l'ala nord, transennata, con i vetri rotti al secondo piano."),
+    n("È la prima volta che ci torni con loro, e capisci in trenta secondi perché nessuno ne parla mai."),
+    d('mark', "La stanza del club era là. Al piano terra, in fondo."),
+    d('mark', "Adesso è sotto."),
+    n("Coach Hillman li porta fino alla transenna e poi si ferma."),
+    d('hillman', "Evans, tuo nonno per quarant'anni ha scritto tutto quello che sapeva sul calcio in un quaderno."),
+    d('mark', "Il taccuino. Ce l'ho io, l'ho sempre avuto io."),
+    d('hillman', "Quello è il primo."),
+    d('mark', "…come, il primo?"),
+    d('hillman', "Dave Evans ne ha scritti due. Il secondo non l'ha mai fatto vedere a nessuno."),
+    d('hillman', "Diceva che c'era dentro roba che non si doveva insegnare a un ragazzino."),
+    n("Ci mettete sei ore e mezza a spostare macerie con le mani, in tredici, con i guanti da lavoro che Nelly ha comprato in un ferramenta."),
+    n("Lo trova Scotty Banyan, che è il più piccolo e l'unico che passa nel buco."),
+    d('scotty', "…c'è una scatola."),
+    n("Dentro la scatola c'è un quaderno con la copertina rovinata dall'acqua, e sulla prima pagina, scritto a mano:"),
+    n("« Per quando gli undici non bastano. »"),
+    n("Tu hai in borsa un quaderno del 1985 con undici nomi scritti a mano, e per un attimo non riesci a dire niente a nessuno.")
+  ],
+  eff: [{ obiettivo: 'Il secondo taccuino di Dave Evans, sotto le macerie della Raimon.' }],
+  poi: { hub: true } });
+
+sc({ id: 't7_partita', luogo: 'Royal Academy — campo d\'allenamento',
+  righe: [
+    n("Nel taccuino non ci sono tecniche. Ci sono schemi, e servono più di undici persone per provarli."),
+    d('jude', "Ci serve una squadra vera contro cui provarli. Non un'amichevole: una squadra che ci voglia battere."),
+    d('nelly', "E chi ce la dà, a due giorni da Natale?"),
+    d('jude', "…"),
+    d('jude', "Datemi un telefono."),
+    n("La Royal Academy vi riceve il ventisei dicembre su un campo d'allenamento con l'erba tagliata a due centimetri."),
+    d('sakuma', "Sharp."),
+    d('jude', "Samford."),
+    d('sakuma', "Ci hai chiamati."),
+    d('jude', "Sì."),
+    d('sakuma', "Dopo tre mesi che non chiamavi."),
+    d('jude', "Sì."),
+    n("David Samford lo guarda per un tempo scomodo, e poi fa una cosa che non ti aspettavi: si toglie la benda dall'occhio, la rimette, e sorride storto."),
+    d('sakuma', "Novanta minuti. E non ti regalo niente perché siamo amici.")
+  ],
+  poi: { partita: { avv: 'royal', titolo: 'Allenamento vero — Raimon vs Royal Academy', minuti: 45, caravan: true,
+    vinto: 't7_fine', perso: 't7_fine', pari: 't7_fine' } } });
+
+sc({ id: 't7_fine', luogo: 'Royal Academy — dopo',
+  righe: [
+    d('sakuma', "Adesso ditemi cosa stavate provando, perché non era calcio normale."),
+    d('jude', "È un taccuino."),
+    d('sakuma', "Un taccuino."),
+    d('mark', "Di mio nonno!"),
+    d('sakuma', "…"),
+    d('sakuma', "Voi siete completamente fuori di testa e vi invidio moltissimo."),
+    n("Prima di andarvene, il portiere della Royal Academy ti ferma vicino al pullman."),
+    d('genda', "Tu sei quello nuovo."),
+    tu("Sì."),
+    d('genda', "Da dove vieni?"),
+    tv({
+      fuoco:   "Da un paese in montagna che non conosce nessuno!",
+      calmo:   "Da una scuola di trentotto studenti in provincia di Nagano.",
+      ironico: "Da un posto dove il pullman passa due volte al giorno. Ho fatto carriera.",
+      chiuso:  "Da Amanome.",
+      ostinato:"Da un paese di quattrocentododici abitanti, e ci torno."
+    }),
+    d('genda', "Mai sentito."),
+    d('genda', "Però tieni la posizione meglio di due dei miei difensori, quindi qualcuno lì ti ha insegnato bene.")
+  ],
+  eff: [{ spirito: 5 }, { exp: 560 }], poi: { capitolo: 16 } });
+
+
+sc({ id: 't8_1', luogo: 'Okinawa — spiaggia di Nagahama, 4 gennaio',
+  righe: [
+    n("A gennaio la carovana scende fino a Okinawa, che è l'unico posto del Giappone dove a gennaio ci sono ventun gradi."),
+    n("Non ci andate per il sole: ci andate perché è l'ultima scuola con un club di calcio ancora in piedi in quella prefettura."),
+    n("Sulla spiaggia, invece della scuola, trovate uno con una tavola da surf sotto il braccio."),
+    d('hurley', "Cercate il club di calcio? Non c'è più."),
+    d('hurley', "Sono passati a novembre. Adesso quello è un parcheggio."),
+    d('mark', "E tu?"),
+    d('hurley', "Io faccio surf."),
+    d('hurley', "È lo stesso identico sport, solo che l'onda non ti chiede di vincere."),
+    n("Si chiama Hurley Kane. Era il difensore di quella scuola e non tocca un pallone da due mesi."),
+    d('hurley', "Non c'è onda che non riesca a cavalcare, sai?"),
+    d('jude', "…e allora perché non giochi più?"),
+    d('hurley', "…"),
+    d('hurley', "Perché quando è caduta la scuola io ero in acqua."),
+    n("La sera, in albergo — un albergo, per la prima volta da settembre — Coach Hillman riceve una telefonata e non dice a nessuno di chi era."),
+    n("La mattina dopo, alle sei, sulla spiaggia c'è una persona in più."),
+    d('axel', "Ho saputo che eravate qui."),
+    n("Nessuno dice niente per parecchio."),
+    d('mark', "…Axel."),
+    d('axel', "Mia sorella si è svegliata il ventotto dicembre."),
+    d('axel', "Ha chiesto di me e poi ha chiesto se avevo ricominciato a giocare."),
+    d('axel', "Le ho detto di sì. Ed era una bugia, e non mi va di dirle bugie."),
+    n("Mark Evans non urla. È l'unica volta in tutta questa storia in cui non urla."),
+    d('mark', "…bentornato."),
+    d('axel', "Chi è il ragazzo nuovo?"),
+    tv({
+      fuoco:   "Sono quello di Amanome! Abbiamo giocato contro a novembre!",
+      calmo:   "Amanome. Ci hai giocato contro a novembre, sotto le luci di un cortile.",
+      ironico: "Sono quello che ti ha fatto la domanda scema a novembre. Mi hai risposto anche bene.",
+      chiuso:  "Amanome.",
+      ostinato:"Quello di Amanome. Il campo che hai visto a novembre adesso non c'è più."
+    }),
+    d('axel', "…Amanome."),
+    d('axel', "Il campo di novantuno metri per cinquantatré."),
+    d('axel', "Me lo ricordo.")
+  ],
+  eff: [{ obiettivo: 'Okinawa. Il ritorno di Axel Blaze, e un difensore che fa surf.' }],
+  poi: { hub: true } });
+
+sc({ id: 't8_partita', luogo: 'Okinawa — il campo che adesso è un parcheggio',
+  righe: [
+    { chi: 'narr', t: "Prominence vi aspetta sull'asfalto di quello che a novembre era il campo della scuola.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'burn', t: "Ci risiamo. E stavolta ci stiamo provando.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'narr', t: "Diamond Dust vi aspetta sull'asfalto di quello che a novembre era il campo della scuola. A Okinawa, a ventun gradi, il piazzale è coperto di brina.", se: function (S) { return S.versione === 'neve'; } },
+    { chi: 'gazel', t: "Ci risiamo. E stavolta ci stiamo provando.", se: function (S) { return S.versione === 'neve'; } },
+    d('hurley', "Aspettate."),
+    n("Hurley Kane scende dal muretto con la tavola ancora sotto il braccio."),
+    d('hurley', "Quello lì è il mio campo."),
+    d('hurley', "Cioè: era. Adesso è un parcheggio, ma è il mio parcheggio."),
+    d('mark', "Sai giocare in difesa?"),
+    d('hurley', "Sono un difensore."),
+    d('mark', "ALLORA METTITI LÌ!"),
+    n("— Hurley Kane e Axel Blaze si sono uniti alla squadra.", 'urlo')
+  ],
+  eff: [{ arrivi: 8 }],
+  poi: { partita: { avv: 'versione', titolo: 'Okinawa — Raimon contro Alius', minuti: 45, caravan: true,
+    vinto: 't8_fine', perso: 't8_fine', pari: 't8_fine' } } });
+
+sc({ id: 't8_fine', luogo: 'Okinawa — dopo',
+  righe: [
+    { chi: 'burn', t: "…tsk.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'burn', t: "Digli che ho fatto quello che potevo. A Gran, intendo.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'gazel', t: "…", se: function (S) { return S.versione === 'neve'; } },
+    { chi: 'gazel', t: "Digli che ho fatto quello che potevo. A Gran, intendo.", se: function (S) { return S.versione === 'neve'; } },
+    d('jude', "Chi è Gran?"),
+    { chi: 'burn', t: "Quello che gioca per ultimo.", se: function (S) { return S.versione !== 'neve'; } },
+    { chi: 'gazel', t: "Quello che gioca per ultimo.", se: function (S) { return S.versione === 'neve'; } },
+    n("Quella sera, sulla spiaggia, Axel Blaze si allena da solo fino alle due di notte."),
+    n("Alle due e un quarto ti alzi e vai giù anche tu, perché è quello che avresti fatto ad Amanome."),
+    d('axel', "Non dormi?"),
+    tu("No."),
+    d('axel', "Nemmeno io. Sono tre mesi."),
+    n("Vi allenate insieme senza parlare fino alle quattro e mezza."),
+    n("È la prima volta in tutto il viaggio in cui non ti senti in prestito.")
+  ],
+  eff: [{ spirito: 8 }, { exp: 620 }, { momento: 'Ti sei allenato su una spiaggia di Okinawa fino alle quattro e mezza con Axel Blaze.' }],
+  poi: { capitolo: 17 } });
+
+sc({ id: 't9_1', luogo: 'Isola di Aliea — 20 gennaio',
+  righe: [
+    n("Il nono capitolo comincia con una cosa che non vi aspettavate: un indirizzo."),
+    d('nelly', "Mio padre ha trovato dove sta la loro scuola."),
+    d('jude', "Non è una scuola."),
+    d('nelly', "No. È un'isola, ed è intestata a una fondazione che si occupa di orfani."),
+    n("Silenzio nel pullman."),
+    d('nelly', "Alius Academy è un istituto per ragazzi senza famiglia."),
+    d('nelly', "E il meteorite di cui parlano tutti c'è davvero: è caduto lì nel 2005, e da allora quelli che ci stanno vicino diventano… quello che avete visto."),
+    d('shawn', "Quindi non sono alieni."),
+    d('nelly', "Non sono mai stati alieni."),
+    d('mark', "…"),
+    d('mark', "Sono ragazzini."),
+    d('jude', "Sono ragazzini a cui qualcuno ha detto che l'unico modo per contare qualcosa era buttare giù le scuole degli altri."),
+    d('jude', "E io so esattamente come funziona quella frase, perché me l'hanno detta per tre anni."),
+    n("Sull'isola vi aspetta una squadra sola. La prima. Quella che non ha mai giocato."),
+    d('gran', "Gran. The Genesis."),
+    d('gran', "Vi abbiamo lasciato arrivare fin qui perché volevo vedere se ci arrivavate."),
+    d('mark', "E adesso?"),
+    d('gran', "E adesso vi mando a casa.")
+  ],
+  eff: [{ obiettivo: 'L\'isola. The Genesis, e la verità su Alius Academy.' }],
+  poi: { hub: true } });
+
+sc({ id: 't9_partita', luogo: 'Isola di Aliea — campo bianco',
+  righe: [
+    n("Il campo di The Genesis è bianco. Non è neve: è pietra levigata."),
+    d('gran', "Una cosa prima di cominciare, visto che siete arrivati fin qui."),
+    d('gran', "Nessuno di noi voleva giocare a calcio."),
+    d('gran', "Ci hanno detto che era il modo. E l'unica cosa che sappiamo fare bene, adesso, è questa."),
+    tv({
+      fuoco:   "E allora smettete! Adesso! Nessuno vi obbliga!",
+      calmo:   "Se è l'unica cosa che sapete fare bene, allora è anche l'unica cosa da cui vi si può togliere.",
+      ironico: "Bella storia. Anche a me hanno detto che il calcio non serviva a niente, e guarda dove sono finito.",
+      chiuso:  "Allora smettete.",
+      ostinato:"Non me ne frega niente di chi ve l'ha detto. Adesso ve lo dico io: potete anche smettere."
+    }),
+    d('gran', "…"),
+    d('gran', "Novanta minuti. Poi ne riparliamo.")
+  ],
+  poi: { partita: { avv: 'genesis', titolo: 'The Genesis — la prima volta', minuti: 45, caravan: true,
+    vinto: 't9_fine', perso: 't9_fine', pari: 't9_fine' } } });
+
+sc({ id: 't9_fine', luogo: 'Isola di Aliea — dopo',
+  righe: [
+    d('gran', "Tornate."),
+    d('mark', "Cosa?"),
+    d('gran', "Tornate. Fra dieci giorni."),
+    d('gran', "Non è generosità: è che oggi ho capito una cosa e ho bisogno di dieci giorni per decidere cosa farne."),
+    n("Se ne va per primo, e gli altri dieci lo seguono come fanno sempre."),
+    n("Sul traghetto del ritorno, Coach Hillman apre il secondo taccuino di Dave Evans all'ultima pagina."),
+    d('hillman', "C'è scritta una cosa sola, qui in fondo."),
+    d('mark', "Cosa?"),
+    d('hillman', "« Quando arrivi in fondo e non basta ancora, non cercare un'altra tecnica. Cerca un'altra persona. »"),
+    n("Guardi il pullman: quattordici persone, un allenatore, una manager."),
+    n("E un quaderno del 1985 nella tua borsa, con undici nomi, e altri quattordici, e altri ancora scritti da te in questi due mesi.")
+  ],
+  eff: [{ spirito: 8 }, { exp: 700 }], poi: { capitolo: 18 } });
+
+sc({ id: 't10_1', luogo: 'Isola di Aliea — 30 gennaio',
+  righe: [
+    n("Dieci giorni dopo tornate sull'isola, e sul molo, ad aspettarvi, non c'è The Genesis."),
+    n("C'è Gran, da solo."),
+    d('gran', "Il nostro direttore non c'è più. Se n'è andato ieri notte con una barca."),
+    d('gran', "E adesso qui ci sono ottantasei ragazzi che non sanno cosa fare, e undici di loro sono i più forti del Giappone."),
+    d('jude', "E tu cosa vuoi?"),
+    d('gran', "Una partita normale."),
+    d('gran', "Una sola, giocata come si gioca, senza che alla fine cada niente."),
+    d('gran', "Non l'ho mai fatto e ho quattordici anni."),
+    n("Mark Evans fa un passo avanti e nessuno lo ferma."),
+    d('mark', "Va bene."),
+    d('mark', "Però se poi perdi non puoi buttare giù l'isola."),
+    d('gran', "…"),
+    d('gran', "Non è divertente."),
+    d('mark', "Un po' sì.")
+  ],
+  eff: [{ obiettivo: 'L\'ultima partita. Una normale.' }],
+  poi: { hub: true } });
+
+sc({ id: 't10_partita', luogo: 'Isola di Aliea — l\'ultima',
+  righe: [
+    n("Prima del fischio, Coach Hillman fa una cosa che non ha mai fatto: chiama te."),
+    d('hillman', "Tu, con me un secondo."),
+    d('hillman', "Quando sei salito su questo pullman a dicembre non sapevo cosa farmene."),
+    d('hillman', "Undici li avevo. Uno in più era solo una bocca da sfamare."),
+    d('hillman', "Poi ti ho guardato giocare a Hokkaido e ho capito una cosa che il taccuino dice all'ultima pagina."),
+    tu("Quale?"),
+    d('hillman', "Che non serviva un'altra tecnica. Serviva un'altra persona."),
+    d('hillman', "In campo."),
+    n("Mentre entri, Mark Evans ti tira per la maglia."),
+    d('mark', "Ehi! Non me l'hai mai detto."),
+    tu("Cosa?"),
+    d('mark', "Come si chiama la tua squadra. Te l'ho chiesto sul pullman a dicembre e mi hai risposto, ma non ti ho sentito."),
+    tv({
+      fuoco:   "TE LO DICO DOPO! ADESSO GIOCHIAMO!",
+      calmo:   "Te lo dico alla fine. Se la vinciamo, suona meglio.",
+      ironico: "Se te lo dico adesso poi ti distrai e prendi gol. Dopo.",
+      chiuso:  "Dopo.",
+      ostinato:"Dopo la partita. E stavolta ascolti."
+    }),
+    d('mark', "…va bene!"),
+    d('mark', "ANDIAMO!")
+  ],
+  poi: { partita: { avv: 'genesis', titolo: 'Inazuma Eleven — l\'ultima partita', minuti: 45, caravan: true,
+    vinto: 't10_v', perso: 't10_p', pari: 't10_p' } } });
+
+sc({ id: 't10_v', luogo: 'Isola di Aliea — fischio finale',
+  righe: [
+    n("Alla fine, sull'isola, non cade niente."),
+    n("È l'unica volta in tutta questa storia, ed è il motivo per cui è stata giocata."),
+    d('gran', "…"),
+    d('gran', "Adesso capisco perché lo fate."),
+    d('mark', "Ci hai messo poco!"),
+    d('gran', "Ci ho messo quattordici anni."),
+    n("Gli ottantasei ragazzi dell'istituto escono sul campo e per un po' non succede niente di raccontabile: giocano e basta, tutti insieme, senza squadre."),
+    d('mark', "Ehi. Adesso dimmelo."),
+    tu("Cosa?"),
+    d('mark', "Come si chiama la tua squadra.")
+  ],
+  poi: 't10_fine' });
+
+sc({ id: 't10_p', luogo: 'Isola di Aliea — fischio finale',
+  righe: [
+    n("Avete perso l'ultima partita, e sull'isola non cade niente lo stesso."),
+    d('gran', "Volevo una partita normale."),
+    d('gran', "Non ho detto che volevo perderla."),
+    d('mark', "RIVINCITA!"),
+    d('gran', "…quando?"),
+    d('mark', "SEMPRE!"),
+    n("Gli ottantasei ragazzi dell'istituto escono sul campo e per un po' non succede niente di raccontabile: giocano e basta, tutti insieme, senza squadre."),
+    d('mark', "Ehi. Adesso dimmelo."),
+    tu("Cosa?"),
+    d('mark', "Come si chiama la tua squadra.")
+  ],
+  poi: 't10_fine' });
+
+sc({ id: 't10_fine', luogo: 'Isola di Aliea — sera',
+  righe: [
+    tv({
+      fuoco:   "Amanome. Scuola media di Amanome, trentotto studenti.",
+      calmo:   "Scuola media di Amanome. Trentotto studenti, un campo di novantuno metri per cinquantatré.",
+      ironico: "Amanome. Non l'hai mai sentita nominare e va benissimo così.",
+      chiuso:  "Amanome.",
+      ostinato:"Amanome. E adesso torno lì."
+    }),
+    d('mark', "Amanome."),
+    d('mark', "Quella col campo falciato a mano."),
+    tu("Quella."),
+    d('mark', "Quando lo rifate?"),
+    tu("In aprile."),
+    d('mark', "…"),
+    d('mark', "Nelly. Ad aprile dove siamo?"),
+    d('nelly', "Mark, ad aprile ricomincia la scuola. Quella che non c'è più."),
+    d('mark', "Appunto! Non abbiamo niente da fare!"),
+    n("Il traghetto parte alle sette e dieci."),
+    n("Sul ponte, mentre l'isola diventa piccola, Coach Hillman ti restituisce una cosa."),
+    n("È il quaderno del 1985. Lo aveva preso lui dalla tua borsa, e ci ha scritto dentro una riga."),
+    n("Sotto gli undici nomi del 1985, sotto i quattordici di Amanome, e sotto quelli che hai raccolto tu in due mesi, c'è scritto con una calligrafia di uno di sessant'anni:"),
+    n("« E poi ce n'era uno che è arrivato al terzo capitolo, quando eravamo già rotti, e non se n'è accorto nessuno finché non è servito. »"),
+    n("— FINE DEL VIAGGIO —", 'urlo'),
+    n("Torni ad Amanome il primo febbraio. Il campo lo rifate in aprile."),
+    n("Dall'hub puoi continuare: allenare il club, giocare amichevoli, e tornare sul pullman della Raimon quando ti va.")
+  ],
+  eff: [{ flag: 'viaggio_finito' }, { sblocca: 'caravan' }, { sblocca: 'amichevoli' }, { spirito: 15 },
+        { exp: 900 }, { momento: 'Hai finito il viaggio. Coach Hillman ha scritto una riga sul quaderno del 1985.' }],
+  poi: { hub: true } });
 
 /* ============================================================
    I RISVEGLI
@@ -3204,8 +3860,66 @@ IE.capitoli = [
   { n: 10, titolo: 'Raimon', periodo: 'Fine novembre',
     apertura: 'c6_1',
     obiettivo: 'Una partita che non conta per nessuna classifica.',
-    luoghi: [] }
+    luoghi: [] },
+
+  /* ---------- ATTO SECONDO: i capitoli di Inazuma Eleven 2 ---------- */
+  { n: 11, atto: 2, nGioco: 3, titolo: 'Una stella del nord', periodo: 'Dicembre · Hokkaido',
+    apertura: 't3_1',
+    obiettivo: 'Hokkaido. La scuola media Hakuren, e il ragazzo che ha fermato un pullman.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ Hakuren', icona: '🏔️', scena: 't3_partita', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 12, atto: 2, nGioco: 4, titolo: 'Un appuntamento con la divinità', periodo: 'Dicembre',
+    apertura: 't4_1',
+    obiettivo: 'Epsilon. E un primo anno che vi segue e non se ne va.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ Epsilon', icona: '🛸', scena: 't4_partita', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 13, atto: 2, nGioco: 5, titolo: 'Resa dei conti: Hillman contro Dark', periodo: 'Dicembre',
+    apertura: 't5_1',
+    obiettivo: 'Epsilon, di nuovo. Ma stavolta in panchina c\'è Ray Dark.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ Epsilon Migliorata', icona: '🧬', scena: 't5_partita', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 14, atto: 2, nGioco: 6, titolo: 'Tutto il divertimento del luna park', periodo: '23 dicembre',
+    apertura: 't6_1',
+    obiettivo: 'Ventitré dicembre. Non doveva essere una giornata di calcio.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ Il piazzale delle giostre', icona: '🎡', scena: 't6_partita', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 15, atto: 2, nGioco: 7, titolo: 'Il taccuino segreto', periodo: 'Fine dicembre',
+    apertura: 't7_1',
+    obiettivo: 'Il secondo taccuino di Dave Evans, sotto le macerie della Raimon.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ Royal Academy', icona: '👑', scena: 't7_partita', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 16, atto: 2, nGioco: 8, titolo: 'Il ritorno del fuoco', periodo: 'Gennaio · Okinawa',
+    apertura: 't8_1',
+    obiettivo: 'Okinawa. Il ritorno di Axel Blaze, e un difensore che fa surf.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ Il campo che adesso è un parcheggio', icona: '🏄', scena: 't8_partita', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 17, atto: 2, nGioco: 9, titolo: 'La minaccia di The Genesis', periodo: '20 gennaio',
+    apertura: 't9_1',
+    obiettivo: 'L\'isola. The Genesis, e la verità su Alius Academy.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ The Genesis', icona: '🌌', scena: 't9_partita', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 18, atto: 2, nGioco: 10, titolo: 'Inazuma Eleven per sempre', periodo: '30 gennaio',
+    apertura: 't10_1',
+    obiettivo: 'L\'ultima partita. Una normale.',
+    luoghi: [
+      { id: 'partita', nome: '⚽ L\'ultima', icona: '⚡', scena: 't10_partita', se: function () { return true; }, principale: true }
+    ] }
 ];
+
 
 /* ============================================================
    ALLENAMENTI

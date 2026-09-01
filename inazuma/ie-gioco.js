@@ -153,6 +153,8 @@ function applica(effs) {
     if (typeof e.exp === 'number') S.rosa.forEach(function (g) { daiExp(g, e.exp); });
     if (e.tratto) { var tr = tratti(); for (var k in e.tratto) tr[k] = Math.max(0, Math.min(20, (tr[k] || 0) + e.tratto[k])); }
     if (e.momento && S.io) { S.io.momenti = S.io.momenti || []; if (S.io.momenti.indexOf(e.momento) < 0) S.io.momenti.push(e.momento); }
+    if (e.versione) { S.versione = e.versione; preparaCaravan(); }
+    if (typeof e.arrivi === 'number') arrivanoInCarovana(e.arrivi);
   });
 }
 function reclutaGiocatore(id) {
@@ -268,6 +270,7 @@ function finiScena() {
   var sc = IE.storia.scene[S.scena];
   applica(sc.eff);
   var poi = sc.poi;
+  (sc.poiSe || []).forEach(function (r) { if (r.se && r.se(S)) poi = r.poi; });
   S.scena = null;
   if (!poi) { G.vai('hub'); return; }
   if (typeof poi === 'string') { apriScena(poi); return; }
@@ -302,7 +305,14 @@ G.render = render;
 function disegnaBarra() {
   var c = capitolo();
   $('#barra-stemma').textContent = S.stemma || '⚡';
-  $('#barra-tit').innerHTML = esc(S.nomeSquadra) + '<small>Cap. ' + c.n + ' · ' + esc(c.titolo) + ' · ' + esc(c.periodo || '') + '</small>';
+  var viaggio = c.atto === 2 && !S.flag.viaggio_finito;
+  var eti = viaggio
+    ? 'Atto II · Cap. ' + c.nGioco + ' · ' + esc(c.titolo) + ' · ' + esc(c.periodo || '')
+    : c.atto === 2 ? 'Dopo il viaggio · ' + esc(S.nomeSquadra)
+    : 'Cap. ' + c.n + ' · ' + esc(c.titolo) + ' · ' + esc(c.periodo || '');
+  var nome = viaggio ? 'Inazuma Caravan' : esc(S.nomeSquadra);
+  $('#barra-stemma').textContent = viaggio ? '🚐' : (S.stemma || '⚡');
+  $('#barra-tit').innerHTML = nome + '<small>' + eti + '</small>';
   $('#barra-ris').innerHTML =
     '<span class="gettone">👥 <b>' + S.rosa.length + '</b></span>' +
     '<span class="gettone">💚 <b>' + S.spirito + '</b></span>' +
@@ -812,7 +822,18 @@ function vistaHub() {
 
   /* attività, nella colonna di destra */
   schermo = co.dx;
-  var att = el('<div class="pannello"><div class="etichetta">Il club</div></div>');
+  var inViaggio = c.atto === 2 && !S.flag.viaggio_finito;
+  var att = el('<div class="pannello"><div class="etichetta">' + (inViaggio ? 'Sul pullman' : 'Il club') + '</div></div>');
+  if (inViaggio) {
+    att.appendChild(el('<div class="picc tenue" style="margin-bottom:8px">Qui non alleni nessuno e non scegli la formazione: ' +
+      'sei uno degli undici e la panchina la fa Coach Hillman.</div>'));
+    att.appendChild(bt('🪪  La tua scheda', 'Come ti stai comportando.', function () { G.vai('carattere'); }));
+    att.appendChild(bt('👥  Chi c\'è sul pullman', (S.caravan ? S.caravan.rosa.length : 11) + ' giocatori.', function () { G.vai('caravan'); }));
+    att.appendChild(bt('⚙️  Salvataggio e opzioni', null, function () { G.vai('opzioni'); }, 'piatta'));
+    schermo.appendChild(att);
+    schermo = schermoVero;
+    return;
+  }
   if (S.sblocchi.allenamento) {
     var fm = faticaMedia();
     var ba = bt('🏃  Allenamento', fm > 25 ? 'Fiato della squadra: ' + fm + ' su 100.' : 'Sono a pezzi: serve una partita per rifiatare.',
@@ -1243,6 +1264,7 @@ function clona(g) {
   return c;
 }
 function avviaPartita(cfg) {
+  if (cfg.avv === 'versione') { cfg = Object.assign({}, cfg, { avv: squadraVersione() }); }
   if (!IE.squadre[cfg.avv]) { G.vai('hub'); return; }
   S.partitaPendente = cfg;
   aggiornaTitolari();
@@ -1317,7 +1339,7 @@ function scendiInCampo() {
     minutiTempo: cfg.minuti || 45,
     interazione: S.opz.interazione,
     mia: { nome: nomeMio, sigla: siglaMia, col: colMio, stemma: cfg.caravan ? '⚡' : S.stemma,
-           rosa: titolari, panchina: panchina, formazione: cfg.caravan ? '4-4-2' : S.formazione,
+           rosa: titolari, panchina: panchina, formazione: cfg.caravan ? '4-3-3' : S.formazione,
            spirito: cfg.caravan ? 70 : S.spirito },
     avv: { nome: sq.nome, sigla: sq.sigla, col: sq.col, stemma: sq.stemma, rosa: rosaAvv.slice(0, 11).map(clona), panchina: rosaAvv.slice(11).map(clona), formazione: '4-4-2', spirito: 40 }
   });
@@ -1729,11 +1751,56 @@ function chiamaInSquadra(o, sq, costo) {
    ============================================================ */
 var ALIUS = ['gemini', 'epsilon', 'diamond', 'prominence', 'genesis'];
 
-function rosaCaravan() {
+/* ---------- la rosa della carovana, che cambia capitolo per capitolo ---------- */
+function preparaCaravan() {
+  if (!S.caravan) S.caravan = { rosa: IE.caravanBase.slice(), arrivati: [] };
+  return S.caravan;
+}
+function arrivanoInCarovana(nGioco) {
+  preparaCaravan();
+  var nuovi = IE.caravanArrivi[nGioco] || [];
+  nuovi.forEach(function (id) {
+    if (S.caravan.rosa.indexOf(id) < 0) S.caravan.rosa.push(id);
+    if (S.caravan.arrivati.indexOf(id) < 0) S.caravan.arrivati.push(id);
+  });
+}
+function giocatoreRaimon(id) {
   var r = IE.squadraDi('raimon');
-  var rosa = (r._rosa || IE.rosaSquadra(r));
-  var undici = rosa.slice(0, 11).map(clona);
-  var panchina = rosa.slice(11).map(clona);
+  var rosa = r._rosa || IE.rosaSquadra(r);
+  for (var i = 0; i < rosa.length; i++) if (rosa[i].id === 'raimon_' + id) return rosa[i];
+  return null;
+}
+function squadraVersione() {
+  var v = IE.versioni[S.versione] || IE.versioni.fuoco;
+  return v.squadra;
+}
+
+
+
+function rosaCaravan() {
+  preparaCaravan();
+  var disponibili = S.caravan.rosa.map(giocatoreRaimon).filter(Boolean);
+  if (disponibili.length < 11) {
+    var r0 = IE.squadraDi('raimon');
+    (r0._rosa || []).forEach(function (g) {
+      if (disponibili.length < 11 && disponibili.indexOf(g) < 0) disponibili.push(g);
+    });
+  }
+  /* gli undici: il portiere, poi i migliori per ruolo */
+  var ordine = { PT: 0, DF: 1, CC: 2, AT: 3 };
+  var ord = disponibili.slice().sort(function (a, b) {
+    if (ordine[a.ruolo] !== ordine[b.ruolo]) return ordine[a.ruolo] - ordine[b.ruolo];
+    return IE.valutazione(b) - IE.valutazione(a);
+  });
+  /* la Raimon del secondo gioco gioca con il tridente: Axel, Shawn e te */
+  var conta = { PT: 0, DF: 0, CC: 0, AT: 0 }, voluti = { PT: 1, DF: 4, CC: 3, AT: 3 };
+  var scelti = [], resto = [];
+  ord.forEach(function (g) {
+    if (conta[g.ruolo] < voluti[g.ruolo]) { scelti.push(g); conta[g.ruolo]++; } else resto.push(g);
+  });
+  while (scelti.length < 11 && resto.length) scelti.push(resto.shift());
+  var undici = scelti.slice(0, 11).map(clona);
+  var panchina = resto.concat(scelti.slice(11)).map(clona);
   var io = clona(S.gioc('tu'));
   /* qui non sei il capitano e il tuo numero ce l'ha già qualcuno */
   io.capitano = false;
@@ -1750,34 +1817,79 @@ function rosaCaravan() {
 }
 
 function vistaCaravan() {
-  schermo.appendChild(el('<h2>🚐 Caravan della Raimon</h2>'));
-  schermo.appendChild(el('<p class="picc tenue">Qui non sei il capitano e non è il tuo campo. Sei uno degli undici, ' +
-    'in mezzo a gente che ha perso la scuola a settembre, contro le squadre di Alius Academy.</p>'));
+  var c = capitolo();
+  var inViaggio = c.atto === 2 && !S.flag.viaggio_finito;
+  preparaCaravan();
+  var ver = IE.versioni[S.versione] || IE.versioni.fuoco;
 
-  var c = rosaCaravan();
+  schermo.appendChild(el('<h2>🚐 Inazuma Caravan</h2>'));
+  schermo.appendChild(el('<p class="picc tenue">Non sei il capitano e non è il tuo campo. Sei uno degli undici, ' +
+    'in mezzo a gente che ha perso la scuola a settembre.</p>'));
+  schermo.appendChild(el('<div class="pannello stretto"><div class="etichetta">La strada che hai scelto</div>' +
+    '<div style="font-size:17px;font-weight:bold">' + ver.icona + ' ' + esc(ver.nome) + '</div>' +
+    '<div class="picc tenue">' + esc(ver.desc) + '</div></div>'));
+
+  var cv = rosaCaravan();
   var io = S.gioc('tu');
   var box = el('<div class="pannello"><div class="etichetta">Gli undici di oggi</div><div class="griglia-schede"></div></div>');
   var g11 = box.querySelector('.griglia-schede');
-  c.undici.forEach(function (g) {
+  cv.undici.forEach(function (g) {
     g11.appendChild(schedaGiocatore(g, g.id === 'tu' ? '<b>tu</b>' : 'Lv ' + g.lv, null));
   });
-  box.appendChild(el('<div class="picc fioco" style="margin-top:8px">Entri al posto di <b>' + esc(c.uscito.nome) +
-    '</b>, che è il ' + IE.ruoli[io.ruolo].nome.toLowerCase() + ' più debole dei loro. Se cresci, la scelta cambia da sola.</div>'));
+  if (cv.uscito) box.appendChild(el('<div class="picc fioco" style="margin-top:8px">Entri al posto di <b>' +
+    esc(cv.uscito.nome) + '</b>, il ' + IE.ruoli[io.ruolo].nome.toLowerCase() +
+    ' più debole fra quelli disponibili. Se cresci, la scelta cambia da sola.</div>'));
   schermo.appendChild(box);
 
-  var sfide = el('<div class="pannello"><div class="etichetta">Chi c\'è in giro</div></div>');
+  var arr = (S.caravan.arrivati || []);
+  if (arr.length) {
+    var ab = el('<div class="pannello stretto"><div class="etichetta">Arrivati strada facendo</div></div>');
+    arr.forEach(function (id) {
+      var pg = IE.personaggi[id];
+      var cap = { shawn: 3, scotty: 4, axel: 8, hurley: 8 }[id];
+      ab.appendChild(el('<div class="picc" style="margin-bottom:4px">· <b>' + esc(pg ? pg.nome : id) +
+        '</b> <span class="fioco">— capitolo ' + cap + '</span></div>'));
+    });
+    schermo.appendChild(ab);
+  }
+
+  if (inViaggio) {
+    schermo.appendChild(el('<div class="avviso picc">Le partite le decide la storia: quando è ora, il capitolo ti porta in campo.</div>'));
+    schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
+    return;
+  }
+
+  /* dopo il viaggio: si torna a giocarsele */
+  S.alius = S.alius || [];
+  var sfide = el('<div class="pannello"><div class="etichetta">Alius Academy</div></div>');
   ALIUS.forEach(function (id) {
     var sq = IE.squadre[id];
     if (!sq) return;
-    var b = bt(sq.stemma + '  ' + sq.nome, sq.motto + '  ·  livello consigliato ' + (sq.lvCons || sq.lv), function () {
+    var mia = (id === ver.squadra), altra = (id === ver.altra);
+    var nota = sq.motto + '  ·  livello consigliato ' + (sq.lvCons || sq.lv) +
+      (mia ? '  ·  la squadra della tua strada' : altra ? '  ·  la squadra dell\'altra versione' : '');
+    sfide.appendChild(bt(sq.stemma + '  ' + sq.nome, nota, function () {
       avviaPartita({ avv: id, titolo: 'Caravan — Raimon vs ' + sq.nome, minuti: 45, amichevole: true, caravan: true });
-    });
-    sfide.appendChild(b);
+    }));
   });
   schermo.appendChild(sfide);
 
-  schermo.appendChild(el('<div class="avviso picc">Le partite del caravan non toccano la rosa di Amanome: ' +
-    'l\'esperienza la prendi solo tu, che sei l\'unico che sta davvero giocando.</div>'));
+  var sq2 = IE.squadre.chaos;
+  var pronte = S.alius.indexOf('prominence') >= 0 && S.alius.indexOf('diamond') >= 0;
+  var cb = el('<div class="pannello"><div class="etichetta">Collegare le due versioni</div></div>');
+  cb.appendChild(el('<p class="picc tenue">Nei giochi <b>Chaos</b> — Prominence e Diamond Dust messe insieme — si vede solo ' +
+    'mettendo in comunicazione le due cartucce, e solo dopo aver battuto la squadra di ciascuna versione. ' +
+    'Qui funziona uguale.</p>'));
+  cb.appendChild(el('<div class="picc" style="margin-bottom:8px">' +
+    (S.alius.indexOf('prominence') >= 0 ? '✔' : '○') + ' Prominence &nbsp;&nbsp; ' +
+    (S.alius.indexOf('diamond') >= 0 ? '✔' : '○') + ' Diamond Dust</div>'));
+  var bc = bt(sq2.stemma + '  ' + sq2.nome, pronte ? sq2.motto : 'Battile tutte e due, poi torna qui.', function () {
+    avviaPartita({ avv: 'chaos', titolo: 'Caravan — Raimon vs Chaos', minuti: 45, amichevole: true, caravan: true });
+  }, pronte ? 'verde' : '');
+  if (!pronte) bc.classList.add('disab');
+  cb.appendChild(bc);
+  schermo.appendChild(cb);
+
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
 }
 

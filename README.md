@@ -184,167 +184,67 @@ nove già nel club di baseball, e cinque professori.
 
 ### L'attacco, e il pullman
 
-Nella seconda stagione dei giochi, squadre di ragazzi con poteri impossibili
-girano il Giappone sfidando le scuole e radendo al suolo quelle che perdono. La
-Raimon perde la propria a settembre e comincia a girare il paese con l'**Inazuma
-Caravan** per raccogliere giocatori: uno per scuola, a volte due.
+Il quattro di dicembre arriva **Gemini Storm**. La sfida si può accettare o
+rifiutare, ma il campo dietro la palestra non c'è più in nessuno dei due casi —
+e se vinci, il biglietto sotto il sasso dice *«non è stata una mia decisione»*.
 
-Amanome è la ventunesima. Arriva **Gemini Storm**, il capitano si chiama Reize e
-la partita si può anche rifiutare — ma tornano lo stesso, di mattina presto,
-quando sul campo non c'è nessuno.
+Tre giorni dopo si ferma sulla provinciale un pullman con la scritta **INAZUMA
+CARAVAN**. Puoi salirci, puoi rifiutare, e con abbastanza cuore puoi non
+decidere da solo e fartelo dire dai tuoi, uno per uno.
 
-Tre giorni dopo, sulla provinciale, si ferma un pullman con una parabola sul
-tetto e Mark Evans che salta giù prima che si sia fermato del tutto. Ti chiede di
-venire. Puoi dire di sì, puoi dire di no, e — se hai abbastanza cuore — puoi non
-decidere da solo e farti rispondere dai tuoi, uno per uno.
+Se parti, Amagai ti dà il quaderno del 1985: «non è un regalo, è un prestito e
+lo rivoglio».
 
-Se parti, Amagai ti dà il quaderno del 1985: «non è un regalo, è un prestito e lo
-rivoglio».
+## Atto secondo — Il viaggio
 
-### Il Caravan della Raimon
+Da qui il gioco segue la struttura vera di **Inazuma Eleven 2: Tempesta di
+Fuoco** e **Bufera di Neve**, e ci si entra dove ci entrerebbe un giocatore
+nuovo: **al terzo capitolo**, quando la carovana sale verso Hokkaido. I primi
+due te li racconta Jude Sharp sul pullman.
 
-Finita la storia si sblocca una modalità nuova, e funziona al contrario di tutto
-il resto: **giochi un giocatore solo**. Entri negli undici della Raimon al posto
-del loro più debole nel tuo ruolo, non sei il capitano, non è il tuo campo, e
-l'esperienza la prende solo il tuo personaggio, perché è l'unico che sta
-davvero giocando.
+| | capitolo del gioco | cosa succede |
+|---|---|---|
+| II-3 | *A Northern Star* | Hokkaido, la tormenta, il ragazzo che ferma un pullman. **Shawn Froste** si unisce |
+| II-4 | *A Date With Divinity* | Byron Love porta una notizia, Epsilon scende in campo. **Scotty Banyan** si unisce |
+| II-5 | *Grudge Match – Hillman vs. Dark* | Epsilon torna con **Ray Dark** in panchina, e Coach Hillman racconta trent'anni |
+| II-6 | *All The Fun Of The Fair* | Il 23 dicembre al luna park. Non doveva essere una giornata di calcio |
+| II-7 | *The Secret Scrapbook Revealed* | Il **secondo taccuino di Dave Evans**, sotto le macerie della Raimon |
+| II-8 | *Blazing Back* | Okinawa. **Axel Blaze** torna, **Hurley Kane** si unisce |
+| II-9 | *The Genesis Menace* | L'isola, e la verità: Alius Academy è un istituto per orfani |
+| II-10 | *Inazuma Eleven Forever* | L'ultima partita. Una normale |
 
-Di fronte, in ordine, le cinque squadre di Alius Academy: **Gemini Storm**,
-**Epsilon**, **Diamond Dust**, **Prominence** e **The Genesis**. L'ultima è
-pensata per non essere battuta al primo tentativo.
+**Le due versioni.** All'inizio del viaggio scegli la strada, come si sceglieva
+la cartuccia: **Tempesta di Fuoco** ti fa incontrare **Prominence** e segue Axel
+Blaze, **Bufera di Neve** ti fa incontrare **Diamond Dust** e segue Shawn Froste.
+**Chaos** — le due squadre unite — nei giochi si vedeva solo mettendo in
+comunicazione le due cartucce dopo aver battuto entrambe: qui funziona uguale, e
+compare nel menù della carovana quando le hai battute tutte e due.
 
-### La scheda del carattere
+**La rosa cambia capitolo per capitolo.** Quando sali sul pullman **Axel Blaze
+non c'è**: se n'è andato dopo il crollo della scuola e torna all'ottavo capitolo,
+esattamente come nel gioco. Shawn Froste arriva al terzo, Scotty Banyan al
+quarto, Hurley Kane all'ottavo. Il tuo personaggio entra negli undici al posto
+del più debole nel tuo ruolo fra quelli disponibili in quel momento: all'inizio
+c'è posto, più avanti te lo devi meritare.
 
-Alla creazione scegli **che tipo sei**: *Fuoco addosso*, *Testa fredda*,
-*Battuta pronta*, *Poche parole*, *Testardo*. Non è un dettaglio estetico: **è
-quello che dici per tutta la storia**. Le battute del capitano hanno una
-versione per ciascun carattere, e gli altri ti rispondono di conseguenza.
+La carovana gioca con il **4-3-3**, che è il modo di stare in campo di quella
+Raimon lì: tre davanti. Nei capitoli in cui Axel non c'è il tridente è **Shawn
+Froste, Kevin Dragonfly e tu**; dall'ottavo in poi diventa **Axel, Shawn e tu**,
+e Hurley Kane entra in difesa. Shawn è schierato **attaccante**, come nel gioco,
+dove viene presentato come uno che gioca difensore e attaccante nella stessa
+partita ma ha il ruolo di punta.
 
-Poi ci sono tre tratti che crescono con quello che scegli di dire:
+**Quello che non ho verificato lo dico:** i titoli dei dieci capitoli, gli arrivi
+in squadra, le differenze fra le due versioni e il ritorno di Axel all'ottavo
+capitolo sono presi dalle guide del gioco. Gli avversari capitolo per capitolo
+sono invece una mia ricostruzione: le guide dettagliate (GameFAQs, Neoseeker)
+sono bloccate dal proxy di questo ambiente e non ho potuto leggerle.
 
-- **❤️ Cuore** — quanto metti le persone prima del risultato;
-- **🧠 Testa** — quanto ragioni prima di muoverti;
-- **🦴 Schiena** — quanto sei disposto a startene lì quando conviene andarsene.
+### Dopo il viaggio
 
-Non sono decorazioni: **certe strade si aprono solo se sei arrivato abbastanza
-in là**. In segheria, davanti al padre di Gorō, puoi zittire l'adulto e chiedere
-al ragazzo di parlare — ma solo se hai la schiena per farlo. A Hina puoi
-chiedere se ha paura di andarsene o di scoprire che qui non le bastava — ma solo
-se hai la testa per arrivarci.
-
-La scheda tiene anche l'elenco dei **momenti che ti hanno definito**: cosa hai
-scelto, e cosa è costato.
-
-### Le squadre ufficiali
-
-Raimon, Royal Academy, Zeus e le squadre di **Alius Academy** schierano i loro
-giocatori veri, con posizione e ruolo: undici più le riserve, non più nomi
-inventati a riempire.
-
-La Raimon del Football Frontier è al completo — Mark Evans (Endou Mamoru),
-Nathan Swift (Kazemaru), Jack Wallside (Kabeyama), Jim Wraith (Kageno), Todd
-Ironside (Kurimatsu), Steve Grim (Handa), Timmy Sanders (Shourinji), Sam Kincaid
-(Shishido), Max Carson (Matsuno), Axel Blaze (Gouenji), Kevin Dragonfly
-(Someoka), più Jude Sharp (Kidou), Shawn Frost (Fubuki), Bobby Shearer (Domon),
-William Glass (Megane) e Scotty Banyan (Kogure).
-
-La Royal Academy porta Jude Sharp, Joseph King (Genda) in porta, David Samford
-(Sakuma), Caleb Stonewall (Fudou), Herman Waldon (Henmi), Derek Swing (Doumen),
-Gus Martin (Gojou) e Ben Simmons (Banjou). Lo Zeus schiera Byron Love (Afuro
-Terumi) e i dieci compagni con i nomi degli dèi.
-
-Ogni giocatore canonico porta anche il nome originale nella sua scheda.
-
-**Quello che non ho potuto verificare** è segnato: di Occult, Wild e Shuriken non
-sono riuscito a trovare rose documentate, e restano con le formazioni generate;
-delle squadre di Alius Academy sono veri i capitani e i nomi in elenco (Reize,
-Desarm, Gazel, Burn, Gran, Ulvida, IC, Clara, Nepper, Bomba, Zel, Zohan, Coma,
-Wheeze), mentre le riserve portano nomi in stile.
-
-### Il Football Frontier visto da Amanome
-
-Mentre giochi in valle, dall'altra parte del Giappone succede tutto il resto.
-Lo segui dal quaderno di Kenta e dalla radio sopra il banco frigo degli
-alimentari, con due giorni di ritardo e il segnale che salta quando piove:
-
-- maggio — a Inazuma una scuola con **sette giocatori**, che stava per sciogliere
-  il club, sfida la Royal Academy invece di chiudere;
-- giugno — la Raimon ha un attaccante nuovo, uno che aveva smesso di giocare
-  «per motivi personali»; e il loro portiere si allena da solo all'argine del
-  fiume, tutte le mattine, contro un muro di cemento;
-- agosto — comincia il Football Frontier, e nel girone della Raimon ci sono le
-  stesse tre squadre del tuo;
-- ottobre — la **semifinale**: la Royal Academy, cinque titoli su sei, perde
-  contro l'Istituto Zeus. Tre giorni dopo **Jude Sharp si trasferisce alla
-  Raimon**, e sul giornale c'è solo una foto sgranata senza spiegazioni;
-- novembre — la Raimon vince la finale. Poi un pullman con la loro scritta
-  sulla fiancata si ferma davanti alla tua scuola.
-
-Se glielo chiedi, Jude ti dice lui perché ha cambiato maglia. È una scena
-facoltativa e vale la pena di farla.
-
-### Come si gioca
-
-- **La partita** è una catena di duelli. Chi ha la palla sceglie *dribbling*,
-  *passaggio* o *tiro*; chi difende sceglie *contrasto*, *tecnica di blocco* o
-  *raddoppio* (che se salta apre il campo il doppio). Vince chi somma di più
-  fra statistiche, tecnica speciale, elemento, fiato e fortuna.
-- **Quattro zone** — difesa, centrocampo, trequarti, area: ogni duello vinto
-  ti sposta avanti di una. Si tira dalla trequarti (male) o dall'area (bene).
-- **Elementi**: 🔥 Fuoco batte 🌲 Bosco batte 🌀 Aria batte ⛰️ Terra batte 🔥
-  Fuoco, per circa il 15%.
-- **Sessanta tecniche speciali** fra tiri, dribbling, blocchi e parate, comprese
-  quelle **combinate**, che funzionano solo se in campo ci sono i compagni
-  giusti.
-- **Fra una partita e l'altra non c'è nessun calendario.** Ci si allena finché
-  si regge in piedi: ogni esercizio costa **fiato** a chi lo fa, e il fiato torna
-  pieno solo giocando. In partita invece si entra sempre al massimo — la fatica
-  degli allenamenti non se la porta dietro nessuno.
-- **Prima di ogni partita** vedi la scheda dell'avversario con il **livello
-  consigliato** accanto alla media dei tuoi undici, e un giudizio onesto su come
-  può andare. Se non ti piace quello che leggi, torni indietro, ti alleni ancora
-  e la partita ti aspetta.
-- **Novantacinque tecniche**, e in campo se ne portano **quattro a testa**: quali
-  si sceglie dalla scheda del giocatore. Se ne imparano allenandosi, crescendo di
-  livello e parlando nello spogliatoio.
-- **Due squadre nuove** lungo la strada: la scuola media di Ōkubo, che ha undici
-  studenti in tutto il secondo anno e gioca in nove più due presi in prestito
-  dalla pallavolo, e la Nagano Higashi, ottocento studenti, quella in cui Zero
-  ha preso otto gol.
-- **Dalla panchina**: cinque formazioni, sostituzioni all'intervallo e due
-  ordini per tempo (pressing, tutti dietro, ci mettiamo il cuore).
-- Quanto vuoi decidere in partita lo scegli tu, da Opzioni: *rapida* (solo i
-  tiri in area), *normale*, *completa* (ogni singolo duello).
-- **Sul campo si vedono tutti e ventidue**: le pedine si muovono a ogni azione,
-  chi ha la palla è cerchiato d'oro, chi sta per essere contrastato di rosso.
-
-### Le firme
-
-Nessuno impara la propria tecnica studiando: **gli succede addosso**. Ognuno dei
-tredici ha una tecnica che è solo sua e che si sblocca in una scena scritta, che
-il gioco fa partire da solo quando ne ricorrono le condizioni — a volte in
-allenamento, a volte dentro una partita.
-
-Gorō la trova nell'uno contro uno, il giorno che smette di inseguire. Hina al
-duecentesimo tiro contro il muro, quando capisce che il problema non era la mira.
-Zero in porta, dopo il secondo gol subito, contando le parate che nessuno gli ha
-mai contato. Rei nel secondo tempo di una partita persa, restando in piedi più a
-lungo dell'altro. Rikuto il pomeriggio in cui gli dicono che lì non ci sono
-capre e può calciare forte.
-
-Alcune di queste tecniche valgono di più quando serve: *Ultimo a Mollare* cresce
-se siete sotto, *Zero* se avete già preso gol, *Primo sul Pallone* se il fiato è
-pieno. Sulla scheda di ogni giocatore c'è scritto cosa gli manca perché succeda.
-
-### Contatti
-
-Come nei giochi, **chi hai battuto poi puoi chiamartelo in squadra**. Ogni partita
-giocata vale contatti — tre per una vittoria, due per un pareggio, uno per una
-sconfitta — e la rosa di ogni squadra che hai sconfitto compare nella schermata
-*Contatti*, con il suo prezzo. Arrivano con le loro tecniche e con le statistiche
-che avevano quando ti hanno giocato contro, e da lì crescono insieme a voi.
-
-Sì: se batti la Raimon, puoi chiamare Mark Evans.
+Torni ad Amanome e il gioco continua: alleni il club, giochi amichevoli contro
+chiunque tu abbia incontrato, chiami in squadra chi hai battuto, e dal pullman
+puoi rigiocarti le squadre di Alius Academy quando ti va.
 
 ### I volti
 

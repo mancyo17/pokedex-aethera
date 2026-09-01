@@ -148,6 +148,8 @@ IE.tecniche = {};
   T('astro_break',   'Astro Break',            'tiro', 'terra',  74, 36, 'Un meteorite che cade dove c\'era il pallone.'),
   T('the_tower',     'The Tower',              'blocco','terra', 56, 25, 'Il muro di Desarm: si alza dal terreno e non si passa.'),
   T('the_wall',      'The Wall',               'blocco','terra', 52, 23, 'Jack Wallside si allarga e diventa esattamente quello che dice il nome.'),
+  T('wolf_legend',   'Wolf Legend',            'tiro', 'aria',   66, 32, 'Il tiro di Shawn Froste: un lupo bianco esce dalla neve e corre con la palla.'),
+  T('tsunami_boost', 'Tsunami Boost',          'drib', 'aria',   46, 20, 'Hurley Kane cavalca l\'onda: il difensore resta a guardare il mare che passa.'),
   T('mano_infinita', 'Mano Infinita',          'parata','neutro',66, 30, 'La Mano Magica cresciuta: una mano che copre tutta la porta.'),
   T('tornado_drago', 'Tiro del Drago',         'tiro', 'fuoco',  56, 27, 'Un drago sale dal terreno e accompagna il pallone in porta.'),
   T('taglio_vento',  'Taglio di Vento',        'drib', 'aria',   50, 22, 'Nathan Swift sparisce in una scia azzurra e ricompare dieci metri avanti.'),
@@ -402,6 +404,22 @@ IE.personaggi = {
     bio: 'Capitano di Diamond Dust. In originale Suzuno Fuusuke.' }),
   hillman: P({ id: 'hillman', nome: 'Coach Hillman', corto: 'Hillman', col: '#8f9aa8', png: true,
     bio: 'Allenatore della Raimon.' }),
+  shawn:  P({ id: 'shawn', nome: 'Shawn Froste', corto: 'Shawn', col: '#bfe8ff', png: true,
+    bio: 'Scuola media Hakuren, Hokkaido. In originale Fubuki Shirou. Si unisce alla carovana al terzo capitolo.' }),
+  scotty: P({ id: 'scotty', nome: 'Scotty Banyan', corto: 'Scotty', col: '#7f9a5f', png: true,
+    bio: 'Primo anno della Raimon. In originale Kogure Yuuya. Si unisce al quarto capitolo.' }),
+  hurley: P({ id: 'hurley', nome: 'Hurley Kane', corto: 'Hurley', col: '#5fb8c8', png: true,
+    bio: 'Difensore di Okinawa, in originale Tsunami Jousuke. Si unisce all\'ottavo capitolo.' }),
+  byron:  P({ id: 'byron', nome: 'Byron Love', corto: 'Byron', col: '#ffe8a0', png: true,
+    bio: 'Capitano dell\'Istituto Zeus. In originale Afuro Terumi, «Aphrodi».' }),
+  desarm: P({ id: 'desarm', nome: 'Desarm', corto: 'Desarm', col: '#8fd0c0', png: true,
+    bio: 'Capitano di Epsilon. In originale Saginuma Osamu.' }),
+  dark:   P({ id: 'dark', nome: 'Ray Dark', corto: 'Dark', col: '#6f6f7f', png: true,
+    bio: 'In originale Kageyama Reiji. Ha allenato la Royal Academy di Jude Sharp per tre anni.' }),
+  sakuma: P({ id: 'sakuma', nome: 'David Samford', corto: 'Samford', col: '#7fc8e0', png: true,
+    bio: 'Royal Academy. In originale Sakuma Jirou.' }),
+  genda:  P({ id: 'genda', nome: 'Joseph King', corto: 'King', col: '#c8a86f', png: true,
+    bio: 'Portiere della Royal Academy. In originale Genda Koujirou.' }),
   mark:   P({ id: 'mark', nome: 'Mark Evans', corto: 'Mark', col: '#ff7043', png: true, bio: 'Capitano e portiere della Raimon. Nipote del leggendario Dave Evans.' }),
   axel:   P({ id: 'axel', nome: 'Axel Blaze', corto: 'Axel', col: '#ff5468', png: true, bio: 'Attaccante della Raimon. Il fuoco lo tiene tutto dentro.' }),
   jude:   P({ id: 'jude', nome: 'Jude Sharp', corto: 'Jude', col: '#5fa8ff', png: true, bio: 'Stratega. Vede la partita tre passaggi avanti a chiunque.' }),
@@ -661,6 +679,39 @@ IE.squadre = {
     ] },
 
 
+  /* ---------- squadre del viaggio (Inazuma Eleven 2) ---------- */
+  hakuren: { id: 'hakuren', nome: 'Scuola Media Hakuren', sigla: 'HKR', lvCons: 32, col: '#dff2ff', col2: '#6f9ac0',
+    lv: 35, base: 64, stemma: '🏔️',
+    motto: 'La scuola di Hokkaido dove nevica da ottobre a maggio. In squadra hanno uno che vale da solo quanto gli altri dieci.',
+    chiave: [
+      { id: 'shawn', nome: 'Shawn Froste', corto: 'Shawn', jp: 'Fubuki Shirou', ruolo: 'AT', el: 'aria', prof: 'tuttofare', b: 30, col: '#bfe8ff',
+        tec: ['eterna_bufera', 'wolf_legend', 'raffica_gelata'], mod: { tir: 1.4, dif: 1.3, ctr: 1.25 } },
+      { id: 'por', nome: 'Yuki Konko', corto: 'Konko', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 16, tec: ['mani_di_neve'], mod: { par: 1.3 } }
+    ] },
+
+  epsilon_kai: { id: 'epsilon_kai', nome: 'Epsilon Migliorata', sigla: 'EPK', lvCons: 35, col: '#7fd0b8', col2: '#2f7a6a',
+    lv: 38, base: 68, stemma: '🧬', alius: true,
+    nomi: ['Zel', 'Grinz', 'Roberts', 'Zutti', 'Anos', 'Faguu', 'Hobo'],
+    motto: 'Epsilon rimessa in piedi da un allenatore che con Alius Academy non c\'entra niente.',
+    chiave: [
+      { id: 'desarm', nome: 'Desarm', corto: 'Desarm', jp: 'Saginuma Osamu', ruolo: 'DF', el: 'terra', prof: 'muro', b: 22, col: '#8fd0c0',
+        tec: ['the_tower', 'cancello_pietra'], mod: { dif: 1.45, fis: 1.3, gri: 1.3 } },
+      { id: 'zel', nome: 'Zel', corto: 'Zel', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 20, tec: ['astro_break'], mod: { tir: 1.35 } },
+      { id: 'por', nome: 'Anos', corto: 'Anos', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 19, tec: ['presa_falco'], mod: { par: 1.32 } }
+    ] },
+
+  chaos: { id: 'chaos', nome: 'Chaos', sigla: 'CHA', lvCons: 42, col: '#ff7fb0', col2: '#7a2f5f',
+    lv: 46, base: 66, stemma: '🌗', alius: true, doppia: true,
+    nomi: ['Nepper', 'IC', 'Bomba', 'Clara', 'Rean', 'Gokka', 'Heat'],
+    motto: 'Prominence e Diamond Dust messe insieme. Si vede solo mettendo in comunicazione le due versioni del gioco.',
+    chiave: [
+      { id: 'burn', nome: 'Burn', corto: 'Burn', jp: 'Nagumo Haruya', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 24, col: '#ff9a6a',
+        tec: ['chaos_break', 'atomic_flare'], mod: { tir: 1.5, vel: 1.2 } },
+      { id: 'gazel', nome: 'Gazel', corto: 'Gazel', jp: 'Suzuno Fuusuke', ruolo: 'AT', el: 'aria', prof: 'bomber', b: 24, col: '#dff2ff',
+        tec: ['chaos_break', 'northern'], mod: { tir: 1.5, ctr: 1.2 } },
+      { id: 'por', nome: 'Gouen', corto: 'Gouen', ruolo: 'PT', el: 'fuoco', prof: 'portiere', b: 20, tec: ['mani_pietra'], mod: { par: 1.35 } }
+    ] },
+
   /* ============================================================
      ALIUS ACADEMY  (Aliea Gakuen)
      Le squadre della seconda stagione. I capitani e i nomi in
@@ -679,7 +730,7 @@ IE.squadre = {
     ] },
 
   epsilon: { id: 'epsilon', nome: 'Epsilon', sigla: 'EPS', lvCons: 34, col: '#5fc8b0', col2: '#2f7a6a',
-    lv: 37, base: 55, stemma: '🛸', alius: true,
+    lv: 37, base: 68, stemma: '🛸', alius: true,
     nomi: ['Zel', 'Hobo', 'Grinz', 'Roberts', 'Zutti', 'Anos', 'Faguu'],
     motto: 'La squadra di Desarm. Giocano come se il risultato fosse già scritto da qualche parte.',
     chiave: [
@@ -690,7 +741,7 @@ IE.squadre = {
     ] },
 
   diamond: { id: 'diamond', nome: 'Diamond Dust', sigla: 'DIA', lvCons: 36, col: '#bfe8ff', col2: '#5f8fb0',
-    lv: 39, base: 55, stemma: '❄️', alius: true,
+    lv: 39, base: 66, stemma: '❄️', alius: true,
     nomi: ['Gokka', 'Rhionne', 'Fune', 'Reina', 'Bellatrix', 'Sunna', 'Kuriha'],
     motto: 'Il campo si copre di brina dove passano loro. Nessuno li ha mai visti sudare.',
     chiave: [
@@ -702,7 +753,7 @@ IE.squadre = {
     ] },
 
   prominence: { id: 'prominence', nome: 'Prominence', sigla: 'PRO', lvCons: 37, col: '#ff8a4a', col2: '#a83f1f',
-    lv: 40, base: 55, stemma: '🔥', alius: true,
+    lv: 40, base: 66, stemma: '🔥', alius: true,
     nomi: ['Rean', 'Heat', 'Marc', 'Zaan', 'Rood', 'Gouen', 'Bakka'],
     motto: 'Bruciano il campo e poi ci giocano sopra. La squadra di Burn.',
     chiave: [
@@ -714,7 +765,7 @@ IE.squadre = {
     ] },
 
   genesis: { id: 'genesis', nome: 'The Genesis', sigla: 'GEN', lvCons: 40, col: '#e8e0ff', col2: '#6f5fa8',
-    lv: 44, base: 52, stemma: '🌌', alius: true,
+    lv: 44, base: 60, stemma: '🌌', alius: true,
     nomi: ['Zohan', 'Coma', 'Wheeze', 'Riyo', 'Aquila', 'Nagare', 'Sain'],
     motto: 'La prima squadra di Alius Academy. Non hanno mai preso un gol da nessuno.',
     chiave: [
@@ -724,7 +775,7 @@ IE.squadre = {
         tec: ['northern', 'illusione'], mod: { ctr: 1.4, vel: 1.2 } },
       { id: 'zohan', nome: 'Zohan', corto: 'Zohan', ruolo: 'DF', el: 'terra', prof: 'muro', b: 19, tec: ['cancello_pietra'], mod: { dif: 1.4, fis: 1.3 } },
       { id: 'coma', nome: 'Coma', corto: 'Coma', ruolo: 'DF', el: 'bosco', prof: 'terzino', b: 18, tec: ['gabbia'], mod: { dif: 1.3, vel: 1.2 } },
-      { id: 'wheeze', nome: 'Wheeze', corto: 'Wheeze', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 19, tec: ['muro_infinito'], mod: { par: 1.4 } }
+      { id: 'wheeze', nome: 'Wheeze', corto: 'Wheeze', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 16, tec: ['muro_infinito'], mod: { par: 1.34 } }
     ] },
 
   raimon: { id: 'raimon', nome: 'Scuola Media Raimon', sigla: 'RAI', lvCons: 29, col: '#e8703a', col2: '#8f3f18',
@@ -755,14 +806,16 @@ IE.squadre = {
         tec: ['tornado_drago'], mod: { tir: 1.35, fis: 1.2 } },
       { id: 'jude', nome: 'Jude Sharp', corto: 'Jude', jp: 'Kidou Yuuto', ruolo: 'CC', el: 'aria', prof: 'regista', b: 24, col: '#5fa8ff',
         tec: ['pinguino1', 'illusione', 'marcatura'], mod: { ctr: 1.45, gri: 1.25, tir: 1.15 } },
-      { id: 'shawn', nome: 'Shawn Frost', corto: 'Shawn', jp: 'Fubuki Shirou', ruolo: 'DF', el: 'aria', prof: 'tuttofare', b: 21, col: '#bfe8ff',
-        tec: ['eterna_bufera', 'raffica_gelata'], mod: { dif: 1.3, tir: 1.3, ctr: 1.2 } },
+      { id: 'shawn', nome: 'Shawn Froste', corto: 'Shawn', jp: 'Fubuki Shirou', ruolo: 'AT', el: 'aria', prof: 'tuttofare', b: 24, col: '#bfe8ff',
+        tec: ['eterna_bufera', 'wolf_legend', 'raffica_gelata'], mod: { tir: 1.4, dif: 1.25, ctr: 1.2 } },
       { id: 'bobby', nome: 'Bobby Shearer', corto: 'Bobby', jp: 'Domon Asuka', ruolo: 'CC', el: 'terra', prof: 'terzino', b: 13, col: '#c87a5f',
         tec: ['anticipo'], mod: { dif: 1.15, ctr: 1.15 } },
       { id: 'william', nome: 'William Glass', corto: 'William', jp: 'Megane Kakeru', ruolo: 'CC', el: 'bosco', prof: 'regista', b: 6, col: '#9a9ab0',
         tec: ['finta_secca'], mod: { ctr: 1.1 } },
       { id: 'scotty', nome: 'Scotty Banyan', corto: 'Scotty', jp: 'Kogure Yuuya', ruolo: 'DF', el: 'bosco', prof: 'terzino', b: 11, col: '#7f9a5f',
-        tec: ['gabbia'], mod: { dif: 1.2, vel: 1.1 } }
+        tec: ['gabbia'], mod: { dif: 1.2, vel: 1.1 } },
+      { id: 'hurley', nome: 'Hurley Kane', corto: 'Hurley', jp: 'Tsunami Jousuke', ruolo: 'DF', el: 'aria', prof: 'muro', b: 19, col: '#5fb8c8',
+        tec: ['the_wall', 'tsunami_boost'], mod: { dif: 1.35, fis: 1.3, gri: 1.2 } }
     ] }
 };
 
@@ -811,10 +864,37 @@ IE.firme = {
 /* la firma del capitano dipende dal ruolo scelto */
 IE.firmaTua = function (ruolo) { return 'firma_tu_' + (ruolo || 'CC'); };
 
+
+/* ============================================================
+   ATTO SECONDO — IL VIAGGIO
+   Ricalca la struttura dei giochi «Inazuma Eleven 2: Tempesta di
+   Fuoco» e «Bufera di Neve»: stessi capitoli, stesso ordine,
+   stessi arrivi in squadra. Il capitano di Amanome si aggiunge
+   al capitolo 3, quando la carovana sale verso Hokkaido.
+   ============================================================ */
+IE.versioni = {
+  fuoco: { id: 'fuoco', nome: 'Tempesta di Fuoco', icona: '🔥',
+    desc: 'La strada che segue Axel Blaze. Di fronte troverai Prominence.',
+    squadra: 'prominence', altra: 'diamond', segue: 'Axel Blaze' },
+  neve:  { id: 'neve', nome: 'Bufera di Neve', icona: '❄️',
+    desc: 'La strada che segue Shawn Froste. Di fronte troverai Diamond Dust.',
+    squadra: 'diamond', altra: 'prominence', segue: 'Shawn Froste' }
+};
+
+/* Chi c'è sul pullman quando ci sali, e chi arriva dopo.
+   Axel Blaze non è in squadra: torna al capitolo 8. */
+IE.caravanBase = ['mark', 'nathan', 'jack', 'jim', 'todd', 'steve', 'timmy', 'sam', 'max', 'kevin', 'jude', 'bobby', 'william'];
+IE.caravanArrivi = {
+  3: ['shawn'],            /* Una stella del nord */
+  4: ['scotty'],           /* Un appuntamento con la divinità */
+  8: ['axel', 'hurley']    /* Il ritorno del fuoco */
+};
+
 /* ---------- formazioni ---------- */
 IE.formazioni = {
   '4-4-2':  { nome: '4-4-2 Classico',  linee: { PT: 1, DF: 4, CC: 4, AT: 2 }, dif: 1.0,  att: 1.0,  desc: 'Equilibrata. Nessuno si lamenta, nessuno si esalta.' },
   '5-3-2':  { nome: '5-3-2 Catenaccio',linee: { PT: 1, DF: 5, CC: 3, AT: 2 }, dif: 1.18, att: 0.86, desc: 'Chiudere tutto e sperare in un contropiede.' },
+  '4-3-3':  { nome: '4-3-3 Tridente',  linee: { PT: 1, DF: 4, CC: 3, AT: 3 }, dif: 0.94, att: 1.1,  desc: 'Tre davanti e tre in mezzo: si copre un po\' meno e si punge molto di più.' },
   '3-4-3':  { nome: '3-4-3 Offensiva', linee: { PT: 1, DF: 3, CC: 4, AT: 3 }, dif: 0.85, att: 1.18, desc: 'Attaccare finché si respira.' },
   '4-5-1':  { nome: '4-5-1 Ragnatela', linee: { PT: 1, DF: 4, CC: 5, AT: 1 }, dif: 1.08, att: 0.94, desc: 'Il centrocampo si prende tutto, l\'attaccante si arrangia.' },
   '3-3-4':  { nome: '3-3-4 Disperata', linee: { PT: 1, DF: 3, CC: 3, AT: 4 }, dif: 0.72, att: 1.32, desc: 'Quando mancano dieci minuti e un gol.' }

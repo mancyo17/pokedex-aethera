@@ -91,9 +91,10 @@ IE.milestoneTu = {
 
 function creaTu(dati) {
   var org = IE.origini.filter(function (o) { return o.id === dati.origine; })[0];
+  var car = IE.caratteri[dati.carattere] || IE.caratteri.ostinato;
   var base = {};
   IE.ordineStat.forEach(function (k) {
-    base[k] = BASE_TU[k] + ((BONUS_RUOLO[dati.ruolo] || {})[k] || 0) + ((org.bonus || {})[k] || 0);
+    base[k] = BASE_TU[k] + ((BONUS_RUOLO[dati.ruolo] || {})[k] || 0) + ((org.bonus || {})[k] || 0) + ((car.bonus || {})[k] || 0);
   });
   var tecRuolo = dati.tecnica;
   var tipo = dati.ruolo === 'PT' ? 'parata' : dati.ruolo === 'DF' ? 'blocco' : dati.ruolo === 'AT' ? 'tiro' : 'drib';
@@ -105,7 +106,10 @@ function creaTu(dati) {
     col: '#ffd23f', prof: org.profilo, pot: 1.3, base: base, allen: {}, lv: 1, exp: 0,
     tec: tec, numero: dati.numero, am: 100, origine: dati.origine, capitano: true,
     volto: Object.assign({ maglia: '#2f9e63' }, dati.volto || {}),
-    fat: 100
+    fat: 100,
+    carattere: dati.carattere || 'ostinato',
+    tratti: { cuore: 0, testa: 0, schiena: 0 },
+    momenti: []
   };
 }
 
@@ -147,6 +151,8 @@ function applica(effs) {
     if (e.obiettivo) S.obiettivo = e.obiettivo;
     if (e.sblocca) S.sblocchi[e.sblocca] = true;
     if (typeof e.exp === 'number') S.rosa.forEach(function (g) { daiExp(g, e.exp); });
+    if (e.tratto) { var tr = tratti(); for (var k in e.tratto) tr[k] = Math.max(0, Math.min(20, (tr[k] || 0) + e.tratto[k])); }
+    if (e.momento && S.io) { S.io.momenti = S.io.momenti || []; if (S.io.momenti.indexOf(e.momento) < 0) S.io.momenti.push(e.momento); }
   });
 }
 function reclutaGiocatore(id) {
@@ -283,7 +289,8 @@ function render() {
     squadra: vistaSquadra, giocatore: vistaGiocatore, formazione: vistaFormazione,
     allenamento: vistaAllenamento, spogliatoio: vistaSpogliatoio, partita: vistaPartita,
     finepartita: vistaFinePartita, opzioni: vistaOpzioni, amichevoli: vistaAmichevoli,
-    risveglio: vistaRisveglio, contatti: vistaContatti, prepartita: vistaPrePartita
+    risveglio: vistaRisveglio, contatti: vistaContatti, prepartita: vistaPrePartita,
+    carattere: vistaCarattere
   })[v] || vistaHub;
   schermo.innerHTML = '';
   f();
@@ -367,9 +374,10 @@ function vistaCreazione() {
   var c = G.crea;
   c.dati = c.dati || {
     nome: '', ruolo: 'CC', el: 'aria', origine: 'tribuna', numero: 10, squadra: 'Amanome Eleven',
-    volto: { pelle: 'media', capelli: 'castano', taglio: 'punte', occhi: 'decisi', bocca: 'sorriso', extra: 'niente' }
+    volto: { pelle: 'media', capelli: 'castano', taglio: 'punte', occhi: 'decisi', bocca: 'sorriso', extra: 'niente' },
+    carattere: 'ostinato'
   };
-  var passi = ['Chi sei', 'Che faccia hai', 'Il ruolo', 'L\'elemento', 'Da dove vieni', 'La prima tecnica', 'La squadra', 'Pronto'];
+  var passi = ['Chi sei', 'Che faccia hai', 'Che tipo sei', 'Il ruolo', 'L\'elemento', 'Da dove vieni', 'La prima tecnica', 'La squadra', 'Pronto'];
   schermo.appendChild(el('<div class="centro" style="margin-bottom:12px">' +
     '<div class="etichetta">Passo ' + (c.passo + 1) + ' di ' + passi.length + '</div>' +
     '<h1>' + esc(passi[c.passo]) + '</h1></div>'));
@@ -437,8 +445,20 @@ function vistaCreazione() {
     box.appendChild(fila);
   }
 
-  /* ---- 2. ruolo ---- */
+  /* ---- 2. carattere ---- */
   else if (c.passo === 2) {
+    box.appendChild(el('<p class="picc tenue">Non cambia quasi niente nelle statistiche. Cambia quello che dici per tutta la storia, ' +
+      'e quindi come ti rispondono gli altri.</p>'));
+    IE.listaCaratteri.forEach(function (k) {
+      var ca = IE.caratteri[k];
+      var b = Object.keys(ca.bonus).map(function (x) { return IE.stat[x].nome + ' +' + ca.bonus[x]; }).join(', ');
+      box.appendChild(bt(ca.icona + '  ' + ca.nome, ca.desc + '  ·  «' + ca.come + '»  ·  ' + b,
+        function () { c.dati.carattere = k; c.passo++; render(); }, c.dati.carattere === k ? 'primario' : ''));
+    });
+  }
+
+  /* ---- 3. ruolo ---- */
+  else if (c.passo === 3) {
     box.appendChild(el('<p class="picc tenue">Dove ti metti in campo. Cambia come cresci e che tecniche impari.</p>'));
     ['PT', 'DF', 'CC', 'AT'].forEach(function (r) {
       box.appendChild(bt(IE.ruoli[r].nome, IE.ruoli[r].desc,
@@ -447,7 +467,7 @@ function vistaCreazione() {
   }
 
   /* ---- 3. elemento ---- */
-  else if (c.passo === 3) {
+  else if (c.passo === 4) {
     box.appendChild(el('<p class="picc tenue">Fuoco batte Bosco, Bosco batte Aria, Aria batte Terra, Terra batte Fuoco.</p>'));
     IE.listaElementi.forEach(function (e) {
       var dd = IE.elementi[e];
@@ -457,7 +477,7 @@ function vistaCreazione() {
   }
 
   /* ---- 4. origine ---- */
-  else if (c.passo === 4) {
+  else if (c.passo === 5) {
     box.appendChild(el('<p class="picc tenue">Perché sei ad Amanome, e cosa ti porti dietro.</p>'));
     IE.origini.forEach(function (o) {
       var b = Object.keys(o.bonus).map(function (k) { return IE.stat[k].nome + ' +' + o.bonus[k]; }).join(', ');
@@ -467,7 +487,7 @@ function vistaCreazione() {
   }
 
   /* ---- 5. prima tecnica ---- */
-  else if (c.passo === 5) {
+  else if (c.passo === 6) {
     var lista = IE.tecnicheIniziali[c.dati.ruolo];
     var tipo = c.dati.ruolo === 'PT' ? 'parata' : c.dati.ruolo === 'DF' ? 'blocco' : c.dati.ruolo === 'AT' ? 'tiro' : 'drib';
     var extra = IE.tecnicaElemento[c.dati.el][tipo];
@@ -481,7 +501,7 @@ function vistaCreazione() {
   }
 
   /* ---- 6. squadra ---- */
-  else if (c.passo === 6) {
+  else if (c.passo === 7) {
     box.appendChild(el('<p class="picc tenue">Il club non esiste ancora. Ma un nome ce l\'ha già, nella tua testa, da un pezzo.</p>'));
     box.appendChild(el('<div class="etichetta">Nome della squadra</div>'));
     var i2 = el('<input type="text" maxlength="28">'); i2.value = c.dati.squadra; box.appendChild(i2);
@@ -521,7 +541,7 @@ function vistaCreazione() {
     }, 'primario'));
   }
 
-  if (c.passo > 0 && c.passo < 7) schermo.appendChild(bt('◀ Indietro', null, function () { c.passo--; render(); }, 'piatta'));
+  if (c.passo > 0 && c.passo < 8) schermo.appendChild(bt('◀ Indietro', null, function () { c.passo--; render(); }, 'piatta'));
 }
 
 
@@ -588,8 +608,8 @@ function vistaStoria() {
   } else {
     if (sc.scelte && sc.scelte.length) {
       var d = el('<div class="scelte"><div class="etichetta">Cosa dici</div></div>');
-      sc.scelte.forEach(function (s) {
-        d.appendChild(bt(s.t, null, function () {
+      sc.scelte.filter(function (x) { return !x.se || x.se(S, carattere(), tratti()); }).forEach(function (s) {
+        d.appendChild(bt(s.t, s.nota || null, function () {
           applica(sc.eff); applica(s.eff);
           S.scena = null;
           if (s.vai) apriScena(s.vai); else G.vai('hub');
@@ -605,6 +625,19 @@ function vistaStoria() {
 function ancoraGiu() {
   setTimeout(function () { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }, 30);
 }
+function carattere() { return (S.io && S.io.carattere) || 'ostinato'; }
+function tratti() {
+  if (!S.io) return { cuore: 0, testa: 0, schiena: 0 };
+  if (!S.io.tratti) S.io.tratti = { cuore: 0, testa: 0, schiena: 0 };
+  return S.io.tratti;
+}
+
+/* Una battuta può avere una versione diversa per ogni carattere. */
+function vociDi(r) {
+  if (!r.v) return r.t;
+  return r.v[carattere()] || r.v.base || r.t || '';
+}
+
 function testoScena(t) {
   if (t.indexOf('{') < 0) return t;
   var sc = IE.storia.scene[S.scena] || {};
@@ -615,7 +648,7 @@ function testoScena(t) {
           .replace(/\{IO\}/g, S.io ? S.io.nome : 'tu');
 }
 function battutaHtml(r) {
-  r = { chi: r.chi, t: testoScena(r.t), cls: r.cls };
+  r = { chi: r.chi, t: testoScena(vociDi(r)), cls: r.cls };
   if (r.chi === 'narr') return el('<div class="battuta narr ' + (r.cls || '') + '"><div class="bolla">' + esc(r.t) + '</div></div>');
   var p, io = false;
   if (r.chi === 'tu') { p = S.io || { nome: 'Tu', corto: 'Tu', col: '#ffd23f' }; io = true; }
@@ -682,6 +715,7 @@ function vistaHub() {
     if (S.battute.length) att.appendChild(bt('🫱  Contatti', 'Chiama in squadra chi hai già battuto. Hai ' + (S.scout || 0) + ' contatti.',
       function () { G.vai('contatti'); }));
   }
+  att.appendChild(bt('🪪  La tua scheda', (IE.caratteri[carattere()] || {}).nome + ' · come ti stai comportando.', function () { G.vai('carattere'); }));
   att.appendChild(bt('👥  Rosa', S.rosa.length + ' tesserati.', function () { G.vai('squadra'); }));
   att.appendChild(bt('📋  Formazione', S.formazione + ' · ' + (IE.formazioni[S.formazione] || {}).nome, function () { G.vai('formazione'); }));
   if (S.sblocchi.amichevoli) att.appendChild(bt('⚽  Amichevoli', 'Rigioca contro chiunque tu abbia incontrato.', function () { G.vai('amichevoli'); }));
@@ -892,7 +926,7 @@ function faiAllenamento(a) {
       if (k === 'par' && g.ruolo !== 'PT') return;
       g.allen[k] = (g.allen[k] || 0) + a.q;
     });
-    var r = daiExp(g, a.exp || 150);
+    var r = daiExp(g, a.exp || 100);
     if (r.salito.length) righe.push(esc(g.nome) + ' sale al livello ' + g.lv + '.');
     r.imparate.forEach(function (t) { righe.push('<b>' + esc(g.nome) + ' impara ' + esc(IE.tec(t).nome) + '</b>'); });
   });
@@ -1366,12 +1400,12 @@ function pannelloCambi() {
 /* ---------- fine partita ---------- */
 function finePartita() {
   var esito = P.esito;
-  var premio = esito === 'vittoria' ? 480 : esito === 'pareggio' ? 340 : 240;
+  var premio = esito === 'vittoria' ? 310 : esito === 'pareggio' ? 220 : 155;
   var righe = [];
   P.mia.rosa.concat(P.mia.panchina).forEach(function (c) {
     var g = c._orig; if (!g) return;
     var inCampo = P.mia.rosa.indexOf(c) >= 0;
-    var e = Math.round((premio + (inCampo ? 200 : 90)) * (1 + P.mia.duelliVinti * 0.012));
+    var e = Math.round((premio + (inCampo ? 130 : 60)) * (1 + P.mia.duelliVinti * 0.012));
     var r = daiExp(g, e);
     if (r.salito.length) righe.push(esc(g.nome) + ' → livello ' + g.lv);
     r.imparate.forEach(function (t) { righe.push('<b>' + esc(g.nome) + ' impara ' + esc(IE.tec(t).nome) + '</b>'); });
@@ -1437,6 +1471,54 @@ function vistaAmichevoli() {
     }));
   });
   schermo.appendChild(box);
+  schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
+}
+
+/* ============================================================
+   SCHEDA DEL CARATTERE
+   ============================================================ */
+function vistaCarattere() {
+  var g = S.io;
+  if (!g) { G.vai('hub'); return; }
+  var ca = IE.caratteri[carattere()] || IE.caratteri.ostinato;
+  var tr = tratti();
+
+  schermo.appendChild(el('<div class="centro" style="margin:4px 0 12px">' +
+    '<div class="volto-grande" style="margin:0 auto 8px">' + IE.volto(IE.voltoDi(g), { maglia: '#2f9e63' }) + '</div>' +
+    '<h1 style="font-size:23px">' + esc(g.nome) + '</h1>' +
+    '<div class="picc tenue"><span class="ruolo r-' + g.ruolo + '">' + g.ruolo + '</span>' +
+    IE.elementi[g.el].icona + ' ' + IE.elementi[g.el].nome + ' · maglia n. ' + g.numero + ' · capitano</div></div>'));
+
+  schermo.appendChild(el('<div class="pannello">' +
+    '<div class="etichetta">Che tipo sei</div>' +
+    '<div style="font-size:18px;font-weight:bold;margin-bottom:4px">' + ca.icona + ' ' + esc(ca.nome) + '</div>' +
+    '<p class="picc" style="margin-bottom:8px">' + esc(ca.desc) + '</p>' +
+    '<div class="picc fioco">Per gli altri sei: «' + esc(ca.come) + '»</div></div>'));
+
+  var box = el('<div class="pannello"><div class="etichetta">Come ti sei comportato finora</div>' +
+    '<div class="picc fioco" style="margin:-4px 0 10px">Cresce con quello che scegli di dire. Certe cose si possono fare solo se sei arrivato abbastanza in là.</div></div>');
+  ['cuore', 'testa', 'schiena'].forEach(function (k) {
+    var t = IE.tratti[k], v = tr[k] || 0;
+    box.appendChild(el('<div style="margin-bottom:10px">' +
+      '<div class="stat" style="margin-bottom:3px"><span class="n">' + t.icona + ' ' + t.nome + '</span>' +
+      '<span class="barra"><i style="width:' + Math.min(100, v * 5) + '%;background:' + t.col + '"></i></span>' +
+      '<span class="v">' + v + '</span></div>' +
+      '<div class="picc fioco">' + esc(v >= 9 ? t.alto : v >= 4 ? (t.medio || t.basso) : t.basso) + '</div></div>'));
+  });
+  schermo.appendChild(box);
+
+  var mom = (g.momenti || []);
+  var mb = el('<div class="pannello"><div class="etichetta">Momenti che ti hanno definito</div></div>');
+  if (!mom.length) mb.appendChild(el('<div class="picc tenue">Ancora niente. È aprile.</div>'));
+  mom.slice().reverse().forEach(function (m) {
+    mb.appendChild(el('<div class="picc" style="border-left:3px solid var(--bordo);padding:2px 0 2px 10px;margin-bottom:7px">' + esc(m) + '</div>'));
+  });
+  schermo.appendChild(mb);
+
+  schermo.appendChild(el('<div class="pannello stretto"><div class="etichetta">Spirito del club</div>' +
+    '<div class="stat" style="margin:0"><span class="n">Insieme</span><span class="barra">' +
+    '<i style="width:' + S.spirito + '%;background:#3fd07a"></i></span><span class="v">' + S.spirito + '</span></div></div>'));
+
   schermo.appendChild(bt('◀ Torna', null, function () { G.vai('hub'); }, 'piatta'));
 }
 

@@ -153,23 +153,57 @@ Il regolamento scolastico dice che per fondare un club di calcio servono
 **undici iscritti e un insegnante che firmi**. Su trentotto studenti, di cui
 nove già nel club di baseball, e cinque professori.
 
-Sei capitoli, da aprile a novembre: convincere undici persone che in gran parte
-non hanno mai toccato un pallone, rimettere in piedi il campo, trovare un
-allenatore, salvare il terreno da una ruspa, e arrivare fino al Football
-Frontier — dove, alla fine, un pullman con scritto «Raimon» si ferma davanti
-alla scuola.
+**Dieci capitoli**, da aprile a giugno dell'anno dopo:
 
-- **Crei il tuo personaggio**: nome, ruolo, elemento, origine, prima tecnica,
-  numero di maglia e nome della squadra. Sei tu il capitano.
-- **Tredici compagni originali**, ognuno con la sua storia: il compagno di
-  banco che dice sì senza capire, il ragazzone della segheria, la capitana del
-  club di tiro con l'arco, i gemelli che consegnano il latte alle cinque, il
-  portiere che aveva smesso dopo otto gol in una finale, il pastore che scende
-  a valle a giorni alterni.
-- **Le squadre canoniche** (Raimon, Royal Academy, Zeus, Occult, Wild,
-  Shuriken) entrano nella seconda metà della storia con i loro giocatori.
-- **Finita la storia** si continua: allenamenti liberi e amichevoli contro
-  chiunque tu abbia incontrato.
+1. **Undici nomi** *(aprile)* — convincere dieci persone, quasi nessuna delle
+   quali ha mai toccato un pallone.
+2. **Il campo dietro la palestra** *(maggio)* — falciare, togliere duemila
+   sassi, tracciare le linee, e trovare qualcuno che sappia allenarvi.
+3. **Il pullman** *(giugno)* — il campionato si gioca anche fuori, e servono
+   settantaduemila yen, un mezzo e undici maglie. Non ci sono. Il paese però ha
+   sacchi da scaricare, un piazzale di tempio da rastrellare e un magazzino
+   senza ascensore.
+4. **Il portiere che aveva smesso** *(fine giugno)* — Zero, otto gol in una
+   finale davanti a duemila persone, sceso da un pullman con la borsa vuota.
+5. **Quello che se ne va** *(luglio)* — Gorō non viene da tre giorni. È in
+   segheria, e non è un capriccio: è un ordine da quattrocento travi da cui
+   dipende se la sua famiglia resta ad Amanome. È esattamente quello che ha
+   sciolto il club nel 1986.
+6. **La recinzione** *(agosto)* — il comune vuole farci il parcheggio. Il campo
+   si salva solo vincendo il torneo estivo.
+7. **Il posto in più** *(settembre)* — ripescati al Football Frontier. E Tonda
+   si riprende la rivincita che aveva promesso ad aprile.
+8. **Il girone** *(ottobre)* — Occult, Wild, Shuriken: le stesse tre squadre che
+   l'anno prima si era trovato la Raimon.
+9. **Quelli che ci guardano** *(novembre)* — il giornale della prefettura parla
+   di voi, dietro la recinzione da tre spettatori si passa a ventidue, e alla
+   Nagano Higashi arriva in mente di offrire a Hina una borsa di studio. Ed è la
+   scuola in cui Zero ha preso otto gol.
+10. **Raimon** *(fine novembre)* — un pullman si ferma davanti alla scuola. Poi
+    l'inverno, la neve sul campo, le iscrizioni di gennaio, e a giugno la porta
+    nord che qualcuno aveva piegato nel 1986.
+
+### La scheda del carattere
+
+Alla creazione scegli **che tipo sei**: *Fuoco addosso*, *Testa fredda*,
+*Battuta pronta*, *Poche parole*, *Testardo*. Non è un dettaglio estetico: **è
+quello che dici per tutta la storia**. Le battute del capitano hanno una
+versione per ciascun carattere, e gli altri ti rispondono di conseguenza.
+
+Poi ci sono tre tratti che crescono con quello che scegli di dire:
+
+- **❤️ Cuore** — quanto metti le persone prima del risultato;
+- **🧠 Testa** — quanto ragioni prima di muoverti;
+- **🦴 Schiena** — quanto sei disposto a startene lì quando conviene andarsene.
+
+Non sono decorazioni: **certe strade si aprono solo se sei arrivato abbastanza
+in là**. In segheria, davanti al padre di Gorō, puoi zittire l'adulto e chiedere
+al ragazzo di parlare — ma solo se hai la schiena per farlo. A Hina puoi
+chiedere se ha paura di andarsene o di scoprire che qui non le bastava — ma solo
+se hai la testa per arrivarci.
+
+La scheda tiene anche l'elenco dei **momenti che ti hanno definito**: cosa hai
+scelto, e cosa è costato.
 
 ### Il Football Frontier visto da Amanome
 
@@ -217,6 +251,10 @@ facoltativa e vale la pena di farla.
 - **Novantacinque tecniche**, e in campo se ne portano **quattro a testa**: quali
   si sceglie dalla scheda del giocatore. Se ne imparano allenandosi, crescendo di
   livello e parlando nello spogliatoio.
+- **Due squadre nuove** lungo la strada: la scuola media di Ōkubo, che ha undici
+  studenti in tutto il secondo anno e gioca in nove più due presi in prestito
+  dalla pallavolo, e la Nagano Higashi, ottocento studenti, quella in cui Zero
+  ha preso otto gol.
 - **Dalla panchina**: cinque formazioni, sostituzioni all'intervallo e due
   ordini per tempo (pressing, tutti dietro, ci mettiamo il cuore).
 - Quanto vuoi decidere in partita lo scegli tu, da Opzioni: *rapida* (solo i

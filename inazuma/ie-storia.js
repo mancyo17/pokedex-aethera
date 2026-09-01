@@ -14,6 +14,10 @@ function n(t, cls) { return { chi: 'narr', t: t, cls: cls || '' }; }
 function tu(t, cls) { return { chi: 'tu', t: t, cls: cls || '' }; }
 function d(chi, t, cls) { return { chi: chi, t: t, cls: cls || '' }; }
 
+/* Una battuta del capitano che cambia con il suo carattere.
+   Le chiavi sono i cinque caratteri; «base» vale per quelli non elencati. */
+function tv(v, cls) { return { chi: 'tu', v: v, cls: cls || '' }; }
+
 /* ============================================================
    CAPITOLO 1 — UNDICI NOMI
    ============================================================ */
@@ -24,11 +28,23 @@ sc({ id: 'c1_1', luogo: 'Scuola media di Amanome — Aula 2-A',
     n("Il pullman per la città passa due volte al giorno. Alle 6:40 e alle 17:10. Se lo perdi, dormi dove sei."),
     n("È il primo lunedì di aprile. Fuori dalla finestra c'è ancora neve sulla cresta del monte Kurogane."),
     d('rei', "Ehi. Ehi. Stai guardando fuori da venti minuti."),
-    tu("Guardo il campo."),
+    tv({
+      fuoco:   "Guardo il campo!",
+      calmo:   "Guardo il campo.",
+      ironico: "Sto valutando una proprietà immobiliare.",
+      chiuso:  "Il campo.",
+      ostinato:"Guardo il campo. Da venti minuti, sì."
+    }),
     d('rei', "Quale campo?"),
     tu("Quello dietro la palestra."),
     d('rei', "Quello è un prato. Con dentro due cose di ferro arrugginite."),
-    tu("Sono due porte."),
+    tv({
+      fuoco:   "SONO DUE PORTE!",
+      calmo:   "Sono due porte. Storte, ma due porte.",
+      ironico: "Sono due porte molto rilassate.",
+      chiuso:  "Sono porte.",
+      ostinato:"Sono due porte, e restano due porte anche se lo dici in un altro modo."
+    }),
     d('rei', "Sono due cose di ferro arrugginite in un prato.", 'pensiero'),
     n("Rei Tachibana è il tuo compagno di banco da un anno e mezzo. Non ha mai visto una partita di calcio per intero in vita sua."),
     n("Tu invece sai a memoria le formazioni di squadre che hanno smesso di esistere prima che tu nascessi."),
@@ -454,7 +470,13 @@ sc({ id: 'c1_fine', luogo: 'Ufficio del preside — ultimo giorno di aprile',
     d('preside', "Il campo dietro la palestra è vostro. Vi avverto che è vostro nel senso che nessun altro lo vuole."),
     n("Fuori, nel corridoio, ci sono dieci persone che fanno finta di passare di lì per caso."),
     d('rei', "Allora?"),
-    tu("Esistiamo."),
+    tv({
+      fuoco:   "ESISTIAMO!",
+      calmo:   "Esistiamo. Da adesso è scritto da qualche parte.",
+      ironico: "Siamo ufficialmente un problema amministrativo.",
+      chiuso:  "Esistiamo.",
+      ostinato:"Esistiamo, e adesso ci tocca dimostrare che non era uno sbaglio."
+    }),
     d('shinobu', "Esistiamo!"),
     d('kenta', "Esistiamo con una probabilità di successo dello zero virgola tre per cento."),
     d('goro', "…esistiamo."),
@@ -485,7 +507,7 @@ sc({ id: 'c1_dopo_v', luogo: 'Il campo dietro la palestra — sera',
     d('tonda', "Non lo so. Quando avrete perso contro qualcuno di vero, così tornate con l'umore giusto."),
     n("Era una battuta. Sarebbe stato meglio se non lo fosse stata.")
   ],
-  eff: [{ spirito: 8 }, { exp: 480 }], poi: { capitolo: 2 } });
+  eff: [{ spirito: 8 }, { exp: 312 }], poi: { capitolo: 2 } });
 
 sc({ id: 'c1_dopo_p', luogo: 'Il campo dietro la palestra — sera',
   righe: [
@@ -504,7 +526,7 @@ sc({ id: 'c1_dopo_p', luogo: 'Il campo dietro la palestra — sera',
     d('goro', "…si può risalire, però."),
     n("È la frase più lunga che Gorō Ishizuka abbia detto in due anni.")
   ],
-  eff: [{ spirito: 10 }, { exp: 360 }], poi: { capitolo: 2 } });
+  eff: [{ spirito: 10 }, { exp: 234 }], poi: { capitolo: 2 } });
 
 /* ============================================================
    CAPITOLO 2 — IL CAMPO DIETRO LA PALESTRA
@@ -597,7 +619,13 @@ sc({ id: 'c2_amagai_c', luogo: 'Gabbiotto del custode',
     d('amagai', "Non uno. Ho guardato. La ragazza dell'arco tira bene e non sa dove mettersi. Il grosso non sa cadere. Il piccolo scappa dalla palla."),
     d('amagai', "E tu corri dappertutto perché pensi che il capitano debba essere ovunque, e così non sei da nessuna parte."),
     n("È la critica più precisa che tu abbia mai ricevuto e viene da un uomo che ti ha guardato da dietro una tenda."),
-    tu("Ce lo insegni."),
+    tv({
+      fuoco:   "Allora ce lo insegni lei!",
+      calmo:   "Se ha visto tutte queste cose da dietro una tenda, ce le insegni da dentro il campo.",
+      ironico: "Senta, ci ha appena distrutti in quindici secondi. Le conviene finire il lavoro.",
+      chiuso:  "Ce lo insegni.",
+      ostinato:"Non me ne vado finché non dice di sì. Ha le chiavi, ma io ho tempo."
+    }),
     d('amagai', "…"),
     d('amagai', "Alle sei e mezza. Non le sette: le sei e mezza, prima che apra la scuola. Chi arriva tardi corre."),
     d('amagai', "E un'altra cosa."),
@@ -656,7 +684,7 @@ sc({ id: 'c2_v', luogo: 'Campo comunale di Kuzuryū — dopo',
     d('amagai', "Adesso vi guarderanno. Prima eravate un paese con un prato. Da domani siete una squadra che ha battuto la Kuzuryū."),
     d('amagai', "Nessuno vi regalerà più niente. Bene: era ora.")
   ],
-  eff: [{ spirito: 12 }, { exp: 1040 }], poi: { capitolo: 3 } });
+  eff: [{ spirito: 12 }, { exp: 676 }], poi: { capitolo: 3 } });
 
 sc({ id: 'c2_p', luogo: 'Campo comunale di Kuzuryū — dopo',
   righe: [
@@ -672,7 +700,7 @@ sc({ id: 'c2_p', luogo: 'Campo comunale di Kuzuryū — dopo',
     d('amagai', "Voi siete in piedi in undici e avete perso. Loro hanno vinto e domani non si ricorderanno il vostro nome."),
     d('amagai', "Fra un anno se lo ricorderanno.")
   ],
-  eff: [{ spirito: 14 }, { exp: 880 }], poi: { capitolo: 3 } });
+  eff: [{ spirito: 14 }, { exp: 572 }], poi: { capitolo: 3 } });
 
 sc({ id: 'c2_x', luogo: 'Campo comunale di Kuzuryū — dopo',
   righe: [
@@ -685,7 +713,7 @@ sc({ id: 'c2_x', luogo: 'Campo comunale di Kuzuryū — dopo',
     tu("Siamo in piedi in undici."),
     d('amagai', "Allora era una buona giornata.")
   ],
-  eff: [{ spirito: 13 }, { exp: 960 }], poi: { capitolo: 3 } });
+  eff: [{ spirito: 13 }, { exp: 624 }], poi: { capitolo: 3 } });
 
 /* ============================================================
    CAPITOLO 3 — IL PORTIERE CHE AVEVA SMESSO
@@ -815,7 +843,7 @@ sc({ id: 'c3_v', luogo: 'Il campo dietro la palestra — dopo',
     n("Amagai è in piedi in fondo al campo, vicino alla porta piegata che nessuno ha ancora raddrizzato. Non applaude. Guarda."),
     n("Quando pensa che nessuno lo veda, si toglie il berretto.")
   ],
-  eff: [{ spirito: 12 }, { exp: 1280 }], poi: { capitolo: 4 } });
+  eff: [{ spirito: 12 }, { exp: 832 }], poi: { capitolo: 5 } });
 
 sc({ id: 'c3_p', luogo: 'Il campo dietro la palestra — dopo',
   righe: [
@@ -831,7 +859,7 @@ sc({ id: 'c3_p', luogo: 'Il campo dietro la palestra — dopo',
     d('amagai', "Solo questo. È tutto quello che ho da darti e funziona."),
     n("Zero resta a raccogliere i palloni da solo. Nessuno gli dice di smettere.")
   ],
-  eff: [{ spirito: 10 }, { exp: 1120 }], poi: { capitolo: 4 } });
+  eff: [{ spirito: 10 }, { exp: 728 }], poi: { capitolo: 5 } });
 
 /* ============================================================
    CAPITOLO 4 — LA RECINZIONE
@@ -914,39 +942,21 @@ sc({ id: 'c4_4', luogo: 'Fuori dal municipio',
     d('daichi', "Quando avete fondato il club non sono venuto. Sai perché?"),
     tu("Perché avevi paura che finisse come nell'86."),
     d('daichi', "Perché sapevo come sarebbe finita. Due mesi, poi qualcuno si stufa, poi siete in sette, poi il preside chiude tutto e mio padre ha ragione da trent'anni."),
-    d('daichi', "E invece siete ancora undici."),
-    tu("Dodici."),
-    d('daichi', "Dodici. Con il portiere che ha smesso."),
+    d('daichi', "E invece siete ancora tredici."),
+    tu("Tredici."),
+    d('daichi', "Tredici. Con il portiere che ha smesso e la nipote del custode."),
     n("Guarda verso la scuola. Da qui si vede il tetto della palestra e, dietro, un pezzo di prato con la fettuccia bianca e rossa che si muove nel vento."),
     d('daichi', "Ho una condizione."),
     tu("Dimmi."),
-    d('daichi', "Se perdiamo il torneo, il primo settembre vengo lì con voi a guardare i camion. In piedi. Tutti e tredici."),
+    d('daichi', "Se perdiamo il torneo, il primo settembre vengo lì con voi a guardare i camion. In piedi. Tutti e quattordici."),
     d('daichi', "Non voglio che qualcuno se ne stia a casa a far finta di niente. Quello ha rovinato mio nonno."),
-    tu("Tredici."),
-    d('daichi', "Tredici.")
+    tu("Quattordici."),
+    d('daichi', "Quattordici.")
   ],
   eff: [{ recluta: 'daichi' }, { spirito: 15 }],
   poi: { hub: true } });
 
-sc({ id: 'c4_nao', luogo: 'Alimentari Kirishima — chiuso, luce accesa',
-  righe: [
-    n("Nao sta facendo l'inventario delle bibite alle nove di sera con la faccia di una che sta pensando ad altro."),
-    d('nao', "Siete tredici."),
-    tu("Tredici."),
-    d('nao', "Ne giocano undici. Due in panchina. Se uno si fa male all'ultimo minuto, siete undici esatti."),
-    d('nao', "Se se ne fanno male due, non potete nemmeno scendere in campo, e il regolamento del torneo dice sconfitta a tavolino."),
-    tu("Kenta ha fatto lo stesso conto ieri."),
-    d('nao', "Kenta fa i conti. Io tengo i registri, e nel registro del club c'è una casella vuota che si chiama «riserve»."),
-    n("Chiude il quaderno dell'inventario."),
-    d('nao', "Io scrivo, non corro."),
-    tu("Lo so."),
-    d('nao', "…quanti siete? Tredici? Ah."),
-    d('nao', "Va bene. Va bene."),
-    n("Prende la penna delle bollette e firma il modulo del club con la calligrafia di una che firma cose da quando ha undici anni."),
-    d('nao', "Ma il numero lo scelgo io. Quattordici. Come il mio compleanno e come la casella che era vuota."),
-    n("Quattordici tesserati.")
-  ],
-  eff: [{ recluta: 'nao' }, { spirito: 8 }], poi: { hub: true } });
+
 
 sc({ id: 'c4_semi', luogo: 'Torneo estivo della vallata — semifinale',
   righe: [
@@ -979,7 +989,7 @@ sc({ id: 'c4_ko', luogo: 'Campo comunale di fondovalle — dopo',
     d('kenta', "…noi abbiamo perso una semifinale di un torneo estivo di vallata."),
     d('amagai', "Voi ad aprile eravate un prato.")
   ],
-  eff: [{ flag: 'campo_perso' }, { exp: 1200 }], poi: { capitolo: 5 } });
+  eff: [{ flag: 'campo_perso' }, { exp: 780 }], poi: { capitolo: 7 } });
 
 sc({ id: 'c4_fin', luogo: 'Torneo estivo della vallata — finale',
   righe: [
@@ -1019,7 +1029,7 @@ sc({ id: 'c4_v', luogo: 'Campo comunale di fondovalle — fischio finale',
     d('sindaco', "Trent'anni."),
     d('amagai', "Trentuno.")
   ],
-  eff: [{ flag: 'campo_salvo' }, { spirito: 20 }, { exp: 1680 }], poi: { capitolo: 5 } });
+  eff: [{ flag: 'campo_salvo' }, { spirito: 20 }, { exp: 1092 }], poi: { capitolo: 7 } });
 
 /* ============================================================
    CAPITOLO 5 — IL POSTO IN PIÙ
@@ -1076,7 +1086,7 @@ sc({ id: 'c5_ripesca', luogo: 'Spogliatoi — dopo la sconfitta',
     n("Kenta chiude il quaderno."),
     d('kenta', "…sì. Va bene. Allora vinciamo le prossime due.")
   ],
-  eff: [{ exp: 1040 }], poi: 'c5_wild' });
+  eff: [{ exp: 676 }], poi: 'c5_wild' });
 
 sc({ id: 'c5_wild', luogo: 'Qualificazioni Football Frontier — girone D',
   righe: [
@@ -1121,7 +1131,7 @@ sc({ id: 'c5_p', luogo: 'Fine del girone',
     d('amagai', "Allora conviene cominciare domani mattina alle sei e mezza."),
     n("Il Football Frontier di quest'anno finirà senza di voi. Ma ci sarà un'amichevole, a novembre, che nessuno di voi si aspetta.")
   ],
-  eff: [{ exp: 1360 }], poi: { capitolo: 6 } });
+  eff: [{ exp: 884 }], poi: { capitolo: 9 } });
 
 sc({ id: 'c5_v', luogo: 'Fine del girone — Amanome qualificata',
   righe: [
@@ -1142,7 +1152,7 @@ sc({ id: 'c5_v', luogo: 'Fine del girone — Amanome qualificata',
     d('nao', "Noi siamo la scuola media di Amanome, trentotto studenti, ripescata, campo rifatto a mano, quattordici tesserati di cui uno che scrive le bollette."),
     d('nao', "Siamo l'unica squadra qui dentro che nessuno ha invitato.")
   ],
-  eff: [{ flag: 'qualificati' }, { spirito: 15 }, { exp: 1600 }], poi: { capitolo: 6 } });
+  eff: [{ flag: 'qualificati' }, { spirito: 15 }, { exp: 1040 }], poi: { capitolo: 9 } });
 
 /* ============================================================
    CAPITOLO 6 — RAIMON
@@ -1252,7 +1262,7 @@ sc({ id: 'c6_v', luogo: 'Il campo dietro la palestra — dopo, al buio',
     d('amagai', "Perché nel 1986 l'ho piegata io, a giugno, il giorno che ci hanno detto che eravamo rimasti in quattro."),
     d('amagai', "Adesso siete quattordici. Si può raddrizzare.")
   ],
-  eff: [{ spirito: 25 }, { exp: 2400 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 25 }, { exp: 1560 }, { flag: 'finale' }], poi: 'c6_epilogo' });
 
 sc({ id: 'c6_p', luogo: 'Il campo dietro la palestra — dopo, al buio',
   righe: [
@@ -1278,7 +1288,7 @@ sc({ id: 'c6_p', luogo: 'Il campo dietro la palestra — dopo, al buio',
     d('zero', "Domani alle sei e mezza."),
     d('amagai', "…brava gente.")
   ],
-  eff: [{ spirito: 20 }, { exp: 2080 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 20 }, { exp: 1352 }, { flag: 'finale' }], poi: 'c6_epilogo' });
 
 sc({ id: 'c6_x', luogo: 'Il campo dietro la palestra — dopo, al buio',
   righe: [
@@ -1292,26 +1302,87 @@ sc({ id: 'c6_x', luogo: 'Il campo dietro la palestra — dopo, al buio',
     tu("Sul serio."),
     n("Si stringono la mano a metà campo, e centonovanta persone dietro una recinzione fanno il rumore che fanno centonovanta persone.")
   ],
-  eff: [{ spirito: 22 }, { exp: 2240 }, { flag: 'finale' }], poi: 'c6_epilogo' });
+  eff: [{ spirito: 22 }, { exp: 1456 }, { flag: 'finale' }], poi: 'c6_epilogo' });
 
 sc({ id: 'c6_epilogo', luogo: 'Amanome — dicembre',
   righe: [
-    n("Il centro polifunzionale per anziani di Amanome è stato inaugurato l'8 dicembre. Il parcheggio sta dove c'era la rimessa del capo villaggio."),
-    n("Il club di calcio della scuola media di Amanome conta quattordici tesserati."),
-    n("A gennaio, alle iscrizioni del secondo quadrimestre, si presenteranno altri tre studenti. Uno è un primo anno che ha visto la partita contro la Raimon da dietro la recinzione, in braccio a suo padre."),
-    n("Nel gabbiotto del custode, la fotografia del 1985 non è più dietro la porta."),
-    n("È sul muro, accanto a un'altra."),
-    n("Nella seconda, quattordici ragazzi in verde e bianco su un campo di novantuno metri per cinquantatré, con dietro una porta ancora piegata."),
-    n("Sotto, scritto a penna sul bordo bianco, undici nomi. E poi tre. E poi lo spazio per gli altri."),
+    n("L'otto dicembre inaugurano il centro polifunzionale per anziani di Amanome."),
+    n("Il parcheggio sta dove c'era la rimessa del capo villaggio. Alla cerimonia parlano in tre e nessuno dei tre nomina il calcio."),
+    n("Ma la signora Kurihara arriva con la sua sedia pieghevole, e quando le chiedono perché se l'è portata risponde che ormai ci ha fatto l'abitudine."),
+    n("— Il quindici dicembre chiude il campionato provinciale. Amanome finisce quinta su otto."),
+    d('kenta', "Quinti."),
+    d('rei', "È tanto o poco?"),
+    d('kenta', "È quinti."),
+    d('kenta', "Ad aprile non esistevamo, quindi tecnicamente eravamo ottavi su sette."),
+    n("— Il ventidue dicembre nevica. Il campo dietro la palestra sparisce sotto quaranta centimetri e non riappare fino a marzo."),
+    n("Vi allenate in palestra, in dodici metri per ventiquattro, con le porte da pallamano e Amagai che urla che la palla non va alzata."),
+    n("Rikuto smette di scendere a valle il quattro di gennaio e ricompare il diciannove di marzo, senza spiegazioni, come le cose che tornano."),
+    n("— A gennaio, alle iscrizioni del secondo quadrimestre, si presentano tre studenti nuovi."),
+    d('nao', "Tre."),
+    d('nao', "Uno è un primo anno che ha visto la partita con la Raimon da dietro la recinzione, in braccio a suo padre."),
+    d('nao', "Ha sei anni e non può iscriversi. Ha compilato il modulo lo stesso e me lo ha consegnato."),
+    d('nao', "L'ho messo nel raccoglitore. In fondo, dove tengo le cose che non buttiamo."),
+    n("— A gennaio Hina Kurosawa risponde alla Nagano Higashi."),
+    n("Cosa le ha scritto lo sa solo lei e nessuno gliel'ha chiesto, che in questa squadra è il modo in cui ci si vuole bene."),
+    n("Il tre di febbraio, all'allenamento delle sei e mezza, è lì con gli altri e non dice niente, e nessuno dice niente, e Rei piange e dice che è per il freddo."),
+    n("— A febbraio Sōichirō Amagai compie sessantanove anni."),
+    n("Nao trova la data nel registro del personale, che non doveva guardare, e il club si presenta al gabbiotto alle sei e mezza del mattino con una torta comprata al negozio Kirishima e pagata regolarmente, perché Nao è Nao."),
+    d('amagai', "Non è il mio compleanno."),
+    d('nao', "C'è scritto nel registro."),
+    d('amagai', "Nel registro c'è la data che ho dato quando mi sono assunto nel 1985, e nel 1985 avevo fretta."),
+    d('shinobu', "Quindi quando è?"),
+    d('amagai', "In agosto."),
+    d('rei', "…e la torta?"),
+    d('amagai', "La torta la mangiamo, che è già pagata."),
+    n("— Il primo marzo Kenta Ubukata chiude il quaderno dell'anno e ne apre uno nuovo."),
+    n("Sull'ultima pagina di quello vecchio c'è una riga sola, scritta a matita, che nessuno gli ha chiesto di scrivere:"),
+    n("« Il club non è stato sciolto. »"),
+    n("— L'undici di giugno, quando il terreno si è asciugato, quattordici persone raddrizzano la porta nord."),
+    n("Ci vogliono tre ore, due tiranti e il trattore della segheria. Amagai guarda e non tocca niente, perché gliel'avete detto voi di non toccare niente."),
+    n("Quando è dritta, resta lì in mezzo al campo per un po'."),
+    d('amagai', "L'ho piegata io, questa."),
+    tu("Lo so."),
+    d('amagai', "Il ventidue di giugno del 1986. Ci si è appeso Tanabe, e io gli ho detto che tanto non serviva più a niente."),
+    d('amagai', "E lui è rimasto appeso finché non si è piegata."),
+    d('amagai', "E poi ce ne siamo andati a casa e non ce lo siamo più detto."),
+    n("Si toglie il berretto e si asciuga la faccia, e fa finta che sia per il caldo di giugno."),
+    d('amagai', "Ce l'ho ancora il suo numero, sai. Su un foglietto, da trent'anni."),
+    tv({
+      fuoco:   "E allora chiamalo! Adesso! Digli che la porta è dritta!",
+      calmo:   "Se lo chiami e non risponde, sei nella stessa situazione di adesso. Se risponde, no.",
+      ironico: "Guarda, peggio di come è andata finora non può andare. Chiamalo e digli che gli hanno raddrizzato la roba.",
+      chiuso:  "Chiamalo.",
+      ostinato:"Chiamalo. E se non risponde, richiamalo domani. Ho tutta l'estate."
+    }),
+    d('amagai', "…"),
+    d('amagai', "Ci penso."),
+    n("Ci pensa per undici giorni. Il ventidue di giugno, che è la data, telefona."),
+    n("Tanabe risponde al secondo squillo. Vive a Kawasaki, ha cinquantasei anni, e non parlavano da trent'anni."),
+    n("La telefonata dura un'ora e quaranta e nessuno di voi ha mai saputo cosa si sono detti."),
+    n("Si sa solo che ad agosto è venuto a vedere un'amichevole, in piedi in fondo alla recinzione, e che se n'è andato prima della fine."),
+    n("E che l'anno dopo è tornato, e non se n'è andato prima della fine."),
+    n("— Il club di calcio della scuola media di Amanome conta diciassette tesserati."),
+    n("Nel gabbiotto del custode ci sono due fotografie sul muro. Una del 1985 e una di adesso."),
+    n("Sotto la seconda, scritti a penna sul bordo bianco, ci sono undici nomi. E poi tre. E poi lo spazio per gli altri."),
     d('rei', "Allora, capitano."),
     tu("Dimmi."),
     d('rei', "Cosa facciamo adesso?"),
-    tu("Domani alle sei e mezza."),
+    tv({
+      fuoco:   "Domani alle sei e mezza!",
+      calmo:   "Domani alle sei e mezza. E poi il giorno dopo.",
+      ironico: "Domani alle sei e mezza. Lo so, mi odi. Va bene così.",
+      chiuso:  "Domani alle sei e mezza.",
+      ostinato:"Domani alle sei e mezza. Come tutti i giorni da aprile dell'anno scorso."
+    }),
     d('rei', "…lo sapevo che me la facevi pagare per due anni."),
+    d('rei', "Ne mancano ancora tre, comunque. Ho contato."),
     n("— FINE DEL PRIMO ANNO —", 'urlo'),
-    n("Il club continua: puoi allenare la squadra e giocare amichevoli contro tutte le squadre che hai incontrato, comprese quelle che ti hanno battuto.")
+    n("Il club continua: puoi allenare la squadra e giocare amichevoli contro tutte le squadre che hai incontrato, comprese quelle che ti hanno battuto."),
+    n("E chi hai battuto, adesso, risponde al telefono.")
   ],
-  eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }], poi: { hub: true } });
+  eff: [{ flag: 'gioco_finito' }, { sblocca: 'amichevoli' }, { spirito: 10 },
+        { momento: 'Avete raddrizzato la porta nord l\'undici di giugno.' }],
+  poi: { hub: true } });
 
 
 /* ============================================================
@@ -1459,6 +1530,975 @@ sc({ id: 'c6_jude', luogo: 'Il campo dietro la palestra',
   ],
   eff: [{ spirito: 6 }], poi: 'c6_2b' });
 
+
+
+/* ============================================================
+   CAPITOLO 3 — IL PULLMAN
+   Il campionato provinciale si gioca anche fuori. Amanome non ha
+   un pullman, non ha le maglie e non ha diciottomila yen.
+   ============================================================ */
+
+sc({ id: 'c3b_1', luogo: 'Sala professori — primi di giugno',
+  righe: [
+    d('ayase', "Ho il calendario del provinciale. Sette partite: tre in casa e quattro fuori."),
+    d('kenta', "Fuori dove?"),
+    d('ayase', "Ōkubo, Nanao, Tomegawa e il ritorno a Kuzuryū."),
+    d('kenta', "La più vicina è a cinquantadue chilometri."),
+    d('ayase', "Sì."),
+    n("Silenzio. La corriera per la città passa due volte al giorno e non va in nessuno di quei posti."),
+    d('ayase', "Ho chiesto un preventivo a una ditta di noleggio. Diciottomila yen a trasferta, autista compreso."),
+    d('kenta', "Per quattro trasferte fanno settantaduemila."),
+    d('ayase', "Il bilancio del club di calcio della scuola media di Amanome, a oggi, è di zero yen."),
+    d('ayase', "Perché il club esiste da cinque settimane e nessuno ha pensato che servissero dei soldi."),
+    n("È vero. Nessuno ci ha pensato. Tu per primo."),
+    d('shinobu', "E poi c'è l'altra cosa."),
+    d('ayase', "Quale altra cosa?"),
+    d('shinobu', "Che giochiamo con le magliette di ginnastica e il numero scritto col pennarello."),
+    d('shinobu', "A Kuzuryū uno di loro ha chiesto a Rei se eravamo una punizione della scuola."),
+    d('rei', "Non era cattivo, era una domanda vera."),
+    d('rei', "Gliel'ho anche spiegato. E poi ci ho pensato tutto il viaggio di ritorno."),
+    tv({
+      fuoco:   "Allora troviamo i soldi. Non so come. Li troviamo.",
+      calmo:   "Ok. Settantaduemila e le maglie. Facciamo l'elenco di cosa possiamo fare e partiamo da lì.",
+      ironico: "Quindi ci mancano solo i soldi, il pullman e i vestiti. Il resto ce l'abbiamo tutto.",
+      chiuso:  "…li troviamo.",
+      ostinato:"Non rinunciamo a una partita. Nemmeno una. Trovo un modo."
+    }),
+    d('ayase', "Apprezzo l'entusiasmo, ma io i soldi non ce li ho e la scuola nemmeno."),
+    d('kenta', "C'è una persona in questo paese che sa dove sono i soldi."),
+    d('shinobu', "Chi?"),
+    d('kenta', "Quella che tiene una cassa da quando aveva undici anni.")
+  ],
+  eff: [{ obiettivo: 'Trovare settantaduemila yen, un pullman e undici maglie.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c3b_nao', luogo: 'Alimentari Kirishima — dopo la chiusura',
+  righe: [
+    n("Nao Kirishima ha quattordici anni e tiene la cassa del negozio da quando ne aveva undici, perché sua madre lavora anche al consorzio e qualcuno deve stare lì."),
+    n("Le spieghi la faccenda. Lei ascolta senza interrompere, il che non è da lei."),
+    d('nao', "Settantaduemila."),
+    tu("Settantaduemila."),
+    d('nao', "E le maglie."),
+    tu("E le maglie."),
+    d('nao', "Quindi siete venuti a chiedermi dei soldi."),
+    tv({
+      fuoco:   "No! Cioè, sì. Ma non i tuoi. Siamo venuti a chiederti come si fa.",
+      calmo:   "Non i tuoi soldi. Il tuo modo di contarli. È una cosa diversa e ci serve di più.",
+      ironico: "Tecnicamente siamo venuti a chiederti di lavorare gratis per undici sconosciuti. Detta così suona male.",
+      chiuso:  "No. Siamo venuti a chiederti di occupartene tu.",
+      ostinato:"Siamo venuti a chiederti di dirci di no in un modo che ci lasci una strada aperta."
+    }),
+    n("Nao chiude il registratore di cassa. Fa quel rumore che fanno i registratori di cassa vecchi."),
+    d('nao', "Vi dico due cose e poi decidete voi."),
+    d('nao', "Uno: in questo paese non ci sono settantaduemila yen che qualcuno vi regali. Non perché siano cattivi. Perché non ci sono."),
+    d('nao', "Due: in questo paese ci sono centoquaranta persone sopra i settant'anni che hanno cose da spostare e nessuno che gliele sposti."),
+    d('kenta', "…"),
+    d('nao', "La signora Kurihara ha ottantasei anni e le arrivano i pellet per la stufa in sacchi da quindici chili. Li scarica il camion in strada. Poi restano lì."),
+    d('nao', "L'ufficio postale ha un solo dipendente e il magazzino è al primo piano senza ascensore."),
+    d('nao', "Il tempio ha un piazzale che nessuno rastrella da quando è morto il vecchio custode del tempio, che era il fratello del vostro custode."),
+    tu("Ci stai dicendo di lavorare."),
+    d('nao', "Vi sto dicendo che avete undici ragazzi che si allenano alle sei e mezza del mattino e poi non hanno niente da fare fino alle quattro."),
+    d('nao', "E che il paese ha esattamente quel problema lì, al contrario."),
+    n("Prende un quaderno da sotto il banco. Non è il registro del negozio: è nuovo."),
+    d('nao', "L'ho comprato tre settimane fa. Quando ho sentito che avevate fondato il club e ho pensato: questi si schiantano entro luglio."),
+    d('nao', "Ho cominciato a scrivere cosa gli sarebbe servito."),
+    d('rei', "…e cosa ci serve?"),
+    d('nao', "Tutto. Ho fatto quattro pagine."),
+    tu("Nao."),
+    d('nao', "So cosa stai per chiedermi e la risposta è che io non gioco a calcio."),
+    tv({
+      fuoco:   "Non ti sto chiedendo di giocare! Ti sto chiedendo di comandarci!",
+      calmo:   "Non ti chiedo di giocare. Ti chiedo di tenere quel quaderno e di dirci ogni settimana quanto siamo lontani.",
+      ironico: "Perfetto, perché a guardarti non hai proprio il fisico. Neanche noi, comunque.",
+      chiuso:  "Non serve che giochi.",
+      ostinato:"Non oggi. Oggi ti chiedo solo il quaderno."
+    }),
+    n("Nao Kirishima guarda il quaderno. Poi lo gira verso di te e ti fa vedere la prima pagina."),
+    n("In cima, scritto tre settimane fa, c'è: « CLUB DI CALCIO — COSE CHE NON HANNO »."),
+    d('nao', "Va bene. Ma le cifre le tengo io e non si discutono."),
+    n("Il club di calcio della scuola media di Amanome ha una dirigente.")
+  ],
+  eff: [{ recluta: 'nao' }, { spirito: 6 }, { tratto: { testa: 2 } },
+        { momento: 'Hai chiesto aiuto a Nao Kirishima prima di sapere se serviva.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c3b_lavori', luogo: 'Amanome — due settimane di pomeriggi',
+  righe: [
+    n("Il quaderno di Nao è diviso in colonne: cosa, chi, quanto, quando pagano."),
+    n("Nessuno di voi aveva mai lavorato per soldi. Tre di voi avevano già lavorato senza."),
+    n("— Lunedì. Gorō e Rikuto scaricano ottanta sacchi di pellet da quindici chili in via del tempio. Alla signora Kurihara viene un colpo quando li vede arrivare in due invece che in sei."),
+    d('goro', "…dove li metto."),
+    n("« Dove vuole lei, signora. » La signora Kurihara ha ottantasei anni e non le si rivolge qualcuno da giovedì."),
+    n("— Martedì. Il piazzale del tempio. Sono quattrocento metri quadri di ghiaia e foglie di undici anni."),
+    d('shinobu', "Undici anni di foglie."),
+    d('kenta', "Dodici. Il fratello di Amagai è morto nel 2013."),
+    n("Ci mettono due pomeriggi. Il monaco che viene una volta al mese da Ōmachi, quando arriva e vede, si ferma in mezzo al piazzale e non dice niente per parecchio."),
+    n("— Mercoledì. Ufficio postale, primo piano, niente ascensore. Minoru fa ventidue viaggi e alla fine è l'unico che riesce ancora a parlare."),
+    d('minoru', "Io corro! È l'unica cosa che so fare! Fatemi fare i viaggi!"),
+    n("— Giovedì. La segheria. Il padre di Gorō li guarda lavorare per venti minuti senza dire una parola."),
+    n("Poi va dentro, torna con undici paia di guanti da lavoro e li appoggia sul ceppo senza commentare."),
+    n("— Venerdì. Il cimitero. Nessuno lo ha chiesto: lo ha proposto Aoi, che parla una volta al giorno."),
+    d('aoi', "C'è l'erba alta."),
+    d('yuki', "Nostro nonno è lì in fondo."),
+    d('aoi', "Anche il tuo, Rei."),
+    n("Ci vanno tutti e dodici. Non lo racconta nessuno a nessuno, e in un paese di quattrocentododici abitanti lo sanno tutti entro sera."),
+    n("— La domenica sera, Nao apre il quaderno alla pagina delle cifre."),
+    d('nao', "Sessantunomila e quattrocento."),
+    d('kenta', "Mancano diecimilaseicento."),
+    d('nao', "Mancavano. La signora Kurihara è passata stamattina e ha lasciato una busta con dentro ottomila yen e un biglietto."),
+    d('shinobu', "Cosa c'è scritto?"),
+    d('nao', "« Per la benzina. »"),
+    n("E poi, sotto, con una calligrafia da ottantasei anni:"),
+    d('nao', "« Mio marito giocava nel 1985. Terzino sinistro. »")
+  ],
+  eff: [{ flag: 'soldi' }, { spirito: 10 }, { tratto: { schiena: 2 } },
+        { momento: 'Avete lavorato due settimane per pagarvi quattro trasferte.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c3b_maglie', luogo: 'Casa Anzai — la sarta',
+  righe: [
+    n("Tsuru Anzai ha ottantun anni e una Singer a pedale del 1961 che funziona meglio di qualunque cosa in questo paese."),
+    n("Ha cucito le maglie del 1985. Ha ancora il cartamodello, dentro una busta di carta oleata, in un cassetto che apre senza cercarlo."),
+    d('ayase', "Signora Anzai, non possiamo pagarla."),
+    d('nao', "Ho già discusso. Ha detto che le paghiamo il filo."),
+    n("La vecchia stende il cartamodello sul tavolo. È carta gialla, con i numeri segnati a matita e il nome di undici ragazzi scritto a lato."),
+    n("Uno dei nomi è « AMAGAI S. — 5 »."),
+    d('anzai', "Il verde di allora non lo trovo più. Facevano un verde che adesso non lo fa nessuno."),
+    d('anzai', "Quindi decidete voi. È la vostra squadra, non la loro.")
+  ],
+  scelte: [
+    { t: "«Il verde più simile che si trova. Siamo la stessa squadra.»", vai: 'c3b_maglie_a' },
+    { t: "«Un colore nuovo. Non siamo loro e non dobbiamo esserlo.»", vai: 'c3b_maglie_b' },
+    { t: "«Decida lei, signora. Lei c'era.»", vai: 'c3b_maglie_c' }
+  ] });
+
+sc({ id: 'c3b_maglie_a', luogo: 'Casa Anzai',
+  righe: [
+    tv({
+      fuoco:   "Il verde. Il più simile che c'è. Non voglio che sembri un'altra cosa.",
+      calmo:   "Il verde più vicino che si trova. Non per nostalgia: perché quel colore in questo paese vuol già dire qualcosa.",
+      ironico: "Verde. Se poi perdiamo, almeno ci confondiamo con l'erba.",
+      chiuso:  "Verde.",
+      ostinato:"Verde. Quello. Anche se ci vuole di più."
+    }),
+    d('anzai', "Ne trovo uno che ci somiglia. Sarà più chiaro."),
+    tu("Va bene più chiaro."),
+    d('anzai', "…"),
+    d('anzai', "Sai perché avevano scelto il verde, nell'85?"),
+    tu("No."),
+    d('anzai', "Perché il rosso costava duecento yen in più al metro."),
+    n("Ride. È una risata piccola, di una che ride poco."),
+    d('anzai', "Vi hanno raccontato tutti che era il colore della montagna. Era il prezzo del tessuto."),
+    d('anzai', "Adesso però è il colore della montagna, perché è quello che si sono messi addosso.")
+  ],
+  eff: [{ flag: 'maglie' }, { spirito: 6 }, { tratto: { cuore: 2 } },
+        { momento: 'Avete scelto il verde del 1985, sapendo che era stata una questione di prezzo.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c3b_maglie_b', luogo: 'Casa Anzai',
+  righe: [
+    tv({
+      fuoco:   "Un colore nostro. Quelli dell'85 sono finiti in quattro. Noi non finiamo così.",
+      calmo:   "Un colore nuovo. Con rispetto: se ci mettiamo il loro, ogni partita che perdiamo diventa anche la loro.",
+      ironico: "Nuovo. Con tutto il bene, non voglio andare in giro vestito da fantasma di qualcun altro.",
+      chiuso:  "Un colore nostro.",
+      ostinato:"Nuovo. Il loro se lo sono guadagnato loro. Il nostro ce lo guadagniamo noi."
+    }),
+    d('anzai', "…"),
+    d('anzai', "Bene."),
+    n("Ripiega il cartamodello del 1985 e lo rimette nella busta di carta oleata, con cura, come una cosa che ha finito il suo lavoro."),
+    d('anzai', "Sai che sei il primo che me lo dice?"),
+    d('anzai', "In trent'anni sono venuti qui in tre a chiedermi di quel modello. Tutti e tre volevano rifarlo uguale."),
+    d('anzai', "E tutti e tre non hanno mai messo insieme una squadra."),
+    n("Prende un foglio nuovo. Non il cartamodello: un foglio bianco."),
+    d('anzai', "Allora dimmi che colore.")
+  ],
+  eff: [{ flag: 'maglie' }, { spirito: 6 }, { tratto: { schiena: 2 } },
+        { momento: 'Avete rifiutato le maglie del 1985 e ne avete fatte di vostre.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c3b_maglie_c', luogo: 'Casa Anzai',
+  righe: [
+    tv({
+      fuoco:   "Decida lei! Lei le ha cucite, lei c'era, lei sa!",
+      calmo:   "Decida lei. Noi possiamo scegliere un colore. Lei può scegliere il colore giusto.",
+      ironico: "Onestamente non abbiamo il gusto per queste cose. Guardi come siamo vestiti adesso.",
+      chiuso:  "Lei c'era. Scelga lei.",
+      ostinato:"Scelga lei, e qualunque cosa scelga noi ce la mettiamo e non ci lamentiamo."
+    }),
+    n("Tsuru Anzai posa le mani sul tavolo. Sono mani di una che cuce da settant'anni."),
+    d('anzai', "Mi state chiedendo di scegliere per voi."),
+    tu("Sì."),
+    d('anzai', "È una cosa molto scomoda da chiedere a una persona vecchia, ragazzo."),
+    d('anzai', "Perché noi le scelte le abbiamo già fatte, e non tutte sono andate bene."),
+    n("Silenzio. Poi va all'armadio e torna con una pezza di stoffa che non è verde."),
+    d('anzai', "Bianca. Con una riga verde sulla spalla."),
+    d('anzai', "Bianca perché si vede da lontano, e in questo paese chi guarda le partite le guarda dalla strada del tornante."),
+    d('anzai', "E la riga verde perché una cosa dell'85 ve la potete anche portare dietro. Ma una riga, non tutta la maglia."),
+    n("Nessuno dice niente."),
+    d('anzai', "Il mio Anzai era il numero otto. Non era bravo.")
+  ],
+  eff: [{ flag: 'maglie' }, { spirito: 9 }, { tratto: { cuore: 3 } },
+        { momento: 'Avete lasciato scegliere le maglie a chi aveva cucito quelle del 1985.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c3b_partita', luogo: 'Piazzale della scuola — 6:15 del mattino',
+  righe: [
+    n("Il pullman è il minibus della segheria Ishizuka. Nove posti omologati, dodici persone dentro, e Rikuto in piedi in mezzo perché non ci sta seduto."),
+    n("Guida Amagai. Ha una patente per il trasporto di persone del 1985 e non ha mai smesso di rinnovarla, cosa su cui nessuno gli fa domande."),
+    d('nao', "Ho contato: con quello che abbiamo risparmiato sul noleggio ci restano quarantatremila yen per il resto della stagione."),
+    d('kenta', "Che vuol dire che possiamo permetterci anche il ritorno."),
+    d('shinobu', "Non era scontato?"),
+    d('nao', "Nel mio quaderno? No."),
+    n("Le maglie sono nel bagagliaio, in una scatola di cartone con scritto sopra ANZAI a pennarello."),
+    n("Nessuno le ha ancora indossate. Le mettono nello spogliatoio della scuola media di Ōkubo, che è un'aula con le sedie spostate."),
+    n("Ci vogliono nove minuti buoni, perché nessuno vuole essere il primo."),
+    d('rei', "…"),
+    d('rei', "Scusate, mi devo sedere un attimo."),
+    d('hina', "Rei."),
+    d('rei', "Sto bene. È che è la prima volta in vita mia che ho una maglia con un numero cucito sopra.")
+  ],
+  poi: { partita: { avv: 'okubo', titolo: 'Provinciale — Ōkubo vs Amanome', minuti: 45,
+    vinto: 'c3b_v', perso: 'c3b_p', pari: 'c3b_p' } } });
+
+sc({ id: 'c3b_v', luogo: 'Scuola media di Ōkubo — dopo',
+  righe: [
+    n("La scuola media di Ōkubo ha undici studenti in tutto il secondo anno. Giocano in nove più due presi in prestito dal club di pallavolo."),
+    n("Hanno perso, e il loro capitano viene a stringervi la mano uno per uno, cosa che non fa quasi nessuno."),
+    d('okubo', "Bella maglia."),
+    tu("Grazie."),
+    d('okubo', "Le nostre le compriamo online. Sono di poliestere e d'estate fanno schifo."),
+    d('okubo', "Quella è cucita, si vede."),
+    n("Guarda i vostri dodici che caricano la scatola vuota sul minibus della segheria."),
+    d('okubo', "Posso chiederti una cosa? Come avete fatto a venire fin qui?"),
+    tv({
+      fuoco:   "Abbiamo scaricato ottanta sacchi di pellet, rastrellato un tempio e tagliato l'erba del cimitero!",
+      calmo:   "Abbiamo lavorato due settimane. Il paese aveva cose da spostare, noi avevamo dodici pomeriggi liberi.",
+      ironico: "Ufficio postale. Primo piano. Niente ascensore. Non chiedere.",
+      chiuso:  "Lavorando.",
+      ostinato:"Ce li siamo guadagnati. Non c'era un altro modo, quindi era quello."
+    }),
+    d('okubo', "…"),
+    d('okubo', "Noi il club l'abbiamo sciolto due anni fa e riaperto a marzo."),
+    d('okubo', "Quando l'abbiamo riaperto, il preside ha detto che tanto non saremmo andati da nessuna parte."),
+    d('okubo', "E io gli ho creduto. Fino a stamattina."),
+    n("Gli stringi la mano una seconda volta e non sai bene perché.")
+  ],
+  eff: [{ spirito: 10 }, { exp: 585 }, { tratto: { cuore: 1 } }], poi: { capitolo: 4 } });
+
+sc({ id: 'c3b_p', luogo: 'Scuola media di Ōkubo — dopo',
+  righe: [
+    n("Avete perso contro una scuola con undici studenti in tutto il secondo anno, in trasferta, con le maglie nuove."),
+    n("Sul minibus del ritorno non parla nessuno per venti chilometri."),
+    d('nao', "Diciottomila yen risparmiati sul noleggio, meno il gasolio, meno i panini: quattordicimila e duecento."),
+    d('kenta', "Nao—"),
+    d('nao', "Sto arrivando al punto. Quattordicimila e duecento è quello che ci è costata questa partita."),
+    d('nao', "Otto sacchi di pellet a testa, il piazzale del tempio, il magazzino della posta e il cimitero."),
+    n("Silenzio."),
+    d('nao', "Ve lo dico perché è il mio lavoro dirvelo, non per farvi stare male."),
+    d('nao', "E perché voglio che quando arriva la prossima sappiate esattamente quanto vale."),
+    d('goro', "…quanto vale?"),
+    d('nao', "Quattordicimila e duecento yen di braccia di dodici persone."),
+    n("Rikuto, in piedi in mezzo al minibus perché non ci sta seduto, dice la seconda frase più lunga dell'anno."),
+    d('rikuto', "Allora la prossima la vinciamo.")
+  ],
+  eff: [{ spirito: 8 }, { exp: 520 }, { tratto: { schiena: 1 } }], poi: { capitolo: 4 } });
+
+/* ============================================================
+   CAPITOLO 5 — QUELLO CHE SE NE VA
+   Nel 1986 il club non è morto perché erano scarsi.
+   ============================================================ */
+
+sc({ id: 'c5b_1', luogo: 'Il campo dietro la palestra — luglio, terzo giorno',
+  righe: [
+    n("Gorō Ishizuka non viene all'allenamento da tre giorni."),
+    n("Il primo giorno avete pensato che fosse malato. Il secondo che fosse successo qualcosa in famiglia."),
+    n("Il terzo, Minoru è passato davanti alla segheria alle sette di sera e ha visto la luce accesa e Gorō dentro."),
+    d('minoru', "Stava spostando i tronchi. Da solo."),
+    d('minoru', "L'ho chiamato e mi ha visto. Sono sicuro che mi ha visto."),
+    d('minoru', "E ha continuato."),
+    d('shinobu', "Magari non poteva fermarsi."),
+    d('kenta', "O magari ha smesso."),
+    d('rei', "Kenta!"),
+    d('kenta', "Scusate. Mi avete chiesto la verità anche quando è brutta e a volte me ne dimentico che è brutta."),
+    n("Amagai non ha detto niente per tutto l'allenamento."),
+    n("Alla fine, mentre raccoglie i coni, parla senza girarsi."),
+    d('amagai', "Nel 1986 il primo è stato Tanabe. Terza media, difensore centrale, il più forte di tutti noi."),
+    d('amagai', "Un giovedì non è venuto. Il venerdì nemmeno. Il lunedì gli ho chiesto perché e mi ha detto: « ho da fare »."),
+    d('amagai', "E io gli ho detto va bene."),
+    d('amagai', "Gli ho detto va bene, e sono andato a casa."),
+    n("Mette l'ultimo cono nel sacco."),
+    d('amagai', "Non ci ho più pensato per trent'anni. Poi ci ho pensato tutte le notti degli ultimi tre giorni.")
+  ],
+  eff: [{ obiettivo: 'Capire cos\'è successo a Gorō. E decidere cosa farne.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c5b_segheria', luogo: 'Segheria Ishizuka — sette di sera',
+  righe: [
+    n("La segheria è aperta e c'è solo Gorō. Sposta travi da tre metri, una alla volta, e le impila."),
+    n("Ne ha già impilate parecchie. Troppe per un pomeriggio."),
+    tu("Gorō."),
+    d('goro', "…"),
+    tu("Gorō."),
+    d('goro', "Non posso venire."),
+    tu("Lo vedo."),
+    d('goro', "Allora perché me lo chiedi."),
+    n("Dalla porta dell'ufficio esce suo padre. Non lo avevi mai visto da vicino: è più basso di Gorō di quindici centimetri e ha la stessa faccia."),
+    d('ishizuka', "Tu sei quello del club."),
+    tu("Sì."),
+    d('ishizuka', "Vieni dentro, che qui non si sente."),
+    n("L'ufficio della segheria è una stanza di tre metri per tre con un calendario del 2019 e una fattura appesa a un chiodo."),
+    d('ishizuka', "Il ventidue di giugno mi è arrivato un ordine da un'impresa di Matsumoto. Quattrocento travi da tre metri, consegna entro il quindici di agosto."),
+    d('ishizuka', "È il più grosso che prendo da nove anni. Se lo consegno in tempo, questa segheria campa fino al 2028."),
+    d('ishizuka', "Se non lo consegno, chiudo entro Natale e ce ne andiamo a Nagano da mia sorella."),
+    n("Lo dice come si dicono le cose che si sono già dette molte volte da soli."),
+    d('ishizuka', "Per farlo mi servirebbero due uomini. Un uomo costa duecentomila yen al mese e io non li ho."),
+    d('ishizuka', "Ho mio figlio, che ha tredici anni e la schiena di uno di venticinque."),
+    tu("…"),
+    d('ishizuka', "Non gliel'ho chiesto io."),
+    d('ishizuka', "Si è messo il grembiule il diciannove sera e ha detto: da domani faccio i pomeriggi. E io non gli ho detto di no."),
+    d('ishizuka', "Questa è la parte per cui non riesco a dormire, se ti interessa: che non gli ho detto di no.")
+  ],
+  scelte: [
+    { t: "«Allora veniamo tutti. Dodici pomeriggi valgono due uomini.»", vai: 'c5b_lavoro',
+      nota: 'La strada del cuore. Costa a tutti, e non è detto che basti.' },
+    { t: "«Facciamo i conti. Quanto manca davvero, in ore?»", vai: 'c5b_conti',
+      nota: 'La strada della testa. Serve che qualcuno sappia contare.' },
+    { t: "«Ha ragione lei. Gorō resta qui e noi giochiamo in dieci.»", vai: 'c5b_dieci',
+      nota: 'La strada onesta. È anche quella che fa più male.' },
+    { t: "«Gorō. Dillo tu. Non lui, non io: tu.»", vai: 'c5b_goro',
+      se: function (S, car, tr) { return car === 'chiuso' || car === 'ostinato' || (tr.schiena || 0) >= 4; },
+      nota: 'Nessuno gliel\'ha ancora chiesto.' }
+  ] });
+
+sc({ id: 'c5b_lavoro', luogo: 'Segheria Ishizuka',
+  righe: [
+    tv({
+      fuoco:   "Allora veniamo tutti! Dodici pomeriggi! Cosa sono due uomini? Noi siamo dodici!",
+      calmo:   "Due uomini sono sedici ore al giorno. Noi siamo dodici e possiamo darle quattro ore a testa dopo la scuola. Sono quarantotto.",
+      ironico: "Guardi che siamo dodici e nove di noi non hanno mai fatto niente di faticoso in vita loro. Ma siamo dodici.",
+      chiuso:  "Veniamo noi.",
+      ostinato:"Veniamo tutti i pomeriggi fino al quindici di agosto. Non me lo faccia ripetere."
+    }),
+    n("Il padre di Gorō vi guarda uno alla volta. Poi ride, e non è una risata gentile."),
+    d('ishizuka', "Voi non sapete cosa state dicendo."),
+    d('ishizuka', "Una trave da tre metri di larice pesa novanta chili. La signorina lì" ),
+    d('shinobu', "Shinobu."),
+    d('ishizuka', "…Shinobu. Quanto pesi?"),
+    d('shinobu', "Quarantaquattro."),
+    d('ishizuka', "Ecco."),
+    d('nao', "Non tutti devono spostare le travi."),
+    n("Nao Kirishima apre il quaderno. Non quello del club: quello del negozio."),
+    d('nao', "Lei ha quattrocento travi da segare, squadrare, impilare, contare e caricare. Le travi le spostano in tre: Gorō, Rikuto e Ishizuka figlio."),
+    d('nao', "Contare, marcare, impilare i corti, pulire la sega, tenere il registro delle consegne e fare da mangiare a chi lavora sono altre sei mansioni, e per quelle non serve pesare novanta chili."),
+    d('nao', "Serve esserci tutti i giorni alla stessa ora."),
+    d('nao', "E noi ci siamo tutti i giorni alla stessa ora da aprile. È l'unica cosa che sappiamo fare bene."),
+    n("Silenzio nell'ufficio di tre metri per tre."),
+    d('ishizuka', "…"),
+    d('ishizuka', "Dalle due e mezza alle sei. Chi arriva tardi non entra."),
+    d('goro', "Papà—"),
+    d('ishizuka', "Sta' zitto e va' a prendere gli altri guanti."),
+    n("Fanno diciannove giorni. Il campo dietro la palestra resta vuoto tutti i pomeriggi di luglio, e per la prima volta da aprile nessuno di voi tocca un pallone per due settimane e mezza."),
+    n("L'ordine parte il tredici di agosto, due giorni prima della scadenza."),
+    n("La sera del tredici, il padre di Gorō attraversa il cortile della scuola con una busta in mano e la dà a Nao senza dire niente."),
+    d('nao', "…sono quarantamila yen."),
+    d('ishizuka', "È quello che avrei pagato due uomini per sei giorni. Non per diciannove: per sei."),
+    d('ishizuka', "Gli altri tredici li avete lavorati per lui e quelli non ve li pago, perché non erano lavoro."),
+    n("Se ne va senza salutare, che dalle sue parti è un modo di salutare.")
+  ],
+  eff: [{ flag: 'goro_torna' }, { spirito: 16 }, { tratto: { cuore: 4 } },
+        { momento: 'Il club ha lavorato diciannove giorni in una segheria per non perdere un difensore.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c5b_conti', luogo: 'Segheria Ishizuka',
+  righe: [
+    tv({
+      fuoco:   "Quante ore! Me lo dica in ore e vediamo se è vero che non si può!",
+      calmo:   "Prima di dirle qualcosa di stupido, vorrei sapere una cosa: quante ore mancano davvero. Non due uomini: ore.",
+      ironico: "Senta, noi siamo pessimi a quasi tutto, ma abbiamo uno che conta le cose in modo preoccupante.",
+      chiuso:  "Quante ore mancano.",
+      ostinato:"Non me ne vado finché non so quante ore sono. Poi decidiamo."
+    }),
+    d('ishizuka', "…ore?"),
+    d('kenta', "Ore, sì. Quattrocento travi. Quanto ci vuole per una?"),
+    d('ishizuka', "Ragazzo, non è che—"),
+    d('kenta', "Quanto ci vuole per una."),
+    n("Kenta Ubukata ha un metro e cinquantadue, ha fatto due flessioni in tutta la vita, e ha appena interrotto un adulto senza accorgersene."),
+    d('ishizuka', "…venti minuti, se la sega tiene. Mezz'ora se non tiene."),
+    d('kenta', "Quattrocento per venticinque minuti fanno centosessantasei ore. Da oggi al quindici agosto sono trentanove giorni."),
+    d('kenta', "Quattro ore e venti al giorno."),
+    d('ishizuka', "Che io da solo non le faccio, perché ho anche il resto."),
+    d('kenta', "No. Lei da solo fa la sega, che è l'unica cosa che sa fare solo lei."),
+    d('kenta', "Squadrare, impilare, marcare, contare e caricare sono cinque cose che sanno fare tutti dopo mezz'ora che gliele hanno spiegate."),
+    d('kenta', "Sono novanta ore su centosessantasei. Il cinquantaquattro per cento."),
+    n("Il padre di Gorō guarda questo ragazzino che gli sta smontando il problema come si smonta un motorino."),
+    d('kenta', "Il punto non è che a Gorō serve rinunciare al calcio. Il punto è che a lei serve che qualcuno stia in segheria dalle due e mezza alle sei."),
+    d('kenta', "E noi possiamo starci a turno. Tre alla volta, quattro giorni a settimana."),
+    d('kenta', "Così Gorō ci sta due pomeriggi su quattro invece che quattro su quattro. E i giorni che non c'è, si allena."),
+    d('ishizuka', "…"),
+    d('ishizuka', "E chi mi dice che venite?"),
+    d('kenta', "Nessuno. Però io scrivo tutto, e se qualcuno salta lo scrivo."),
+    d('kenta', "E poi glielo faccio vedere."),
+    n("Il padre di Gorō guarda il figlio, che è rimasto sulla porta e non ha ancora detto una parola."),
+    d('ishizuka', "Tu lo sapevi che il tuo amico contava le cose così?"),
+    d('goro', "…lo conta anche quando nessuno glielo chiede.")
+  ],
+  eff: [{ flag: 'goro_torna' }, { flag: 'turni' }, { spirito: 12 }, { tratto: { testa: 4 } },
+        { momento: 'Kenta ha smontato il problema della segheria in cinque mansioni e un turno.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c5b_dieci', luogo: 'Segheria Ishizuka',
+  righe: [
+    tv({
+      fuoco:   "…ha ragione lei. Odio dirlo. Ha ragione lei.",
+      calmo:   "Ha ragione. Se la segheria chiude, Gorō a settembre non è più ad Amanome. Il calcio viene dopo.",
+      ironico: "Sa qual è la cosa peggiore? Che non riesco nemmeno a farci una battuta sopra.",
+      chiuso:  "Ha ragione.",
+      ostinato:"Non mi piace. Ma ha ragione, e far finta di no sarebbe da stupidi."
+    }),
+    d('ishizuka', "…"),
+    tu("Se la segheria chiude, a settembre Gorō non è più qui. E allora non l'ho perso per un'estate: l'ho perso e basta."),
+    tu("Preferisco perderlo per un'estate."),
+    n("Il padre di Gorō ti guarda con una faccia che non ti aspettavi: sorpresa, e un po' dispiaciuta."),
+    d('ishizuka', "Pensavo che avresti insistito."),
+    tu("Ci ho pensato."),
+    d('ishizuka', "E?"),
+    tu("E poi ho pensato a chi ci rimette se insisto e va male."),
+    n("Gorō non dice niente. Ma quando esci dalla segheria ti segue fino in strada, e questa è la prima volta in due anni che ti segue da qualche parte."),
+    d('goro', "Ehi."),
+    tu("Sì?"),
+    d('goro', "Il quindici di agosto."),
+    tu("Cosa?"),
+    d('goro', "Consegniamo il quindici. Il sedici sono libero."),
+    d('goro', "Non ti sto chiedendo di aspettarmi. Ti sto dicendo la data."),
+    n("Il club di calcio della scuola media di Amanome giocherà una partita in dieci."),
+    n("E il sedici di agosto, alle sei e mezza del mattino, Gorō Ishizuka è sul campo prima di tutti gli altri.")
+  ],
+  eff: [{ flag: 'goro_via' }, { spirito: 8 }, { tratto: { testa: 2 }, }, { tratto: { schiena: 3 } },
+        { momento: 'Hai lasciato andare Gorō in segheria invece di insistere. È tornato il sedici di agosto.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c5b_goro', luogo: 'Segheria Ishizuka',
+  righe: [
+    n("Non rispondi al padre. Ti giri verso Gorō, che è rimasto in piedi sulla porta dell'ufficio da quando siete entrati."),
+    tv({
+      fuoco:   "Gorō. Non m'importa cosa dice tuo padre. Dillo tu. Cosa vuoi fare.",
+      calmo:   "Gorō. In questa stanza hanno parlato tutti tranne quello di cui si sta parlando. Dillo tu.",
+      ironico: "Scusi signore, senza offesa: lui ce l'ha una bocca? L'ho visto usarla nove volte in due anni ma esiste.",
+      chiuso:  "Gorō. Parla tu.",
+      ostinato:"No. Non decide lei e non decido io. Gorō, dillo tu, e io non me ne vado finché non lo dici."
+    }),
+    n("Silenzio nell'ufficio di tre metri per tre."),
+    n("Gorō Ishizuka ha tredici anni, un metro e ottantatré, e in due anni di scuola gli hanno rivolto la parola meno di quante volte lui abbia spostato un tronco in un pomeriggio."),
+    d('goro', "…"),
+    d('goro', "Io—"),
+    n("Si ferma. Ricomincia."),
+    d('goro', "Quando ero piccolo mio padre mi diceva di stare fuori dal capannone perché era pericoloso."),
+    d('goro', "Poi a undici anni mi ha detto che potevo entrare."),
+    d('goro', "E io ho pensato: adesso servo."),
+    d('goro', "E mi è piaciuto tantissimo."),
+    n("Nessuno lo interrompe. È il discorso più lungo della sua vita e lo stanno capendo tutti insieme."),
+    d('goro', "Poi ad aprile è venuto uno a chiedermi di stare fermo mentre gli altri mi venivano addosso."),
+    d('goro', "E anche lì ho pensato: adesso servo."),
+    d('goro', "E mi è piaciuto uguale."),
+    d('goro', "E adesso mi dicono che devo sceglierne una."),
+    d('goro', "E io non voglio scegliere. Voglio tutte e due. E so che non si può, e mi fa arrabbiare, e non so con chi."),
+    n("Suo padre guarda il pavimento."),
+    d('ishizuka', "…con me."),
+    d('goro', "No."),
+    d('ishizuka', "Sì. Con me. Sono io quello che non ti ha detto di no il diciannove sera."),
+    n("Gorō Ishizuka fa una cosa che non gli ha visto fare nessuno: alza la voce."),
+    d('goro', "E ALLORA DIMMELO ADESSO!"),
+    n("Il ronzio della sega, fuori, è l'unica cosa che si sente."),
+    d('ishizuka', "…dalle due e mezza alle sei. Ma il martedì e il giovedì no."),
+    d('ishizuka', "Il martedì e il giovedì vai a giocare a pallone e non ti voglio vedere qui."),
+    d('goro', "…"),
+    d('ishizuka', "E porta gli altri, che se stanno lì a guardare mi innervosiscono.")
+  ],
+  eff: [{ flag: 'goro_torna' }, { flag: 'turni' }, { spirito: 18 }, { tratto: { schiena: 4 }, }, { tratto: { cuore: 2 } },
+        { momento: 'Hai fatto parlare Gorō al posto di suo padre. Ha urlato per la prima volta in vita sua.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c5b_partita', luogo: 'Il campo dietro la palestra — ritorno con la Kuzuryū',
+  righe: [
+    n("La Kuzuryū scende dal pullman — il loro, quello vero, con la scritta sulla fiancata — e guarda il campo dietro la palestra."),
+    d('cronista', "Radio Valle in diretta dal campo della scuola media di Amanome per il ritorno con la Kuzuryū. Sono presenti… ottantasei persone."),
+    d('nao', "Ottantasei?"),
+    d('kenta', "A maggio erano quarantatré."),
+    d('nao', "C'è la signora Kurihara. In prima fila. Con la sedia."),
+    n("Il capitano della Kuzuryū, quello del gol dell'andata, si ferma davanti a voi e guarda le maglie."),
+    d('kuz', "Queste sono nuove."),
+    tu("Sì."),
+    d('kuz', "Le nostre le fa uno sponsor. Ci hanno messo il logo di un concessionario di Nagano."),
+    d('kuz', "Vostro padre ha un concessionario?"),
+    tu("No."),
+    d('kuz', "E allora chi ve le ha pagate?"),
+    tv({
+      fuoco:   "Ottanta sacchi di pellet, un piazzale di tempio, un magazzino di posta e un cimitero!",
+      calmo:   "Le abbiamo pagate noi. Con due settimane di pomeriggi.",
+      ironico: "Una signora di ottantasei anni. Sul serio. C'era anche il biglietto.",
+      chiuso:  "Noi.",
+      ostinato:"Nessuno. Ce le siamo fatte."
+    }),
+    d('amagai', "In campo."),
+    d('amagai', "E una cosa sola, oggi: a maggio siamo andati a casa loro a farci misurare."),
+    d('amagai', "Oggi sono venuti a casa nostra. È una cosa completamente diversa e voglio che ve ne ricordiate per tutti i novanta minuti.")
+  ],
+  poi: { partita: { avv: 'kuzuryu', titolo: 'Provinciale — Amanome vs Kuzuryū (ritorno)', minuti: 45,
+    vinto: 'c5b_v', perso: 'c5b_p', pari: 'c5b_x' } } });
+
+sc({ id: 'c5b_v', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Ottantasei persone che gridano insieme, in un paese di quattrocentododici, si sentono dal tornante."),
+    d('cronista', "…e Radio Valle non ha più niente da aggiungere. La Kuzuryū è stata battuta ad Amanome."),
+    d('kuz', "Come avete fatto?"),
+    tu("In che senso?"),
+    d('kuz', "A maggio eravate un'altra squadra. Letteralmente un'altra. Cosa avete fatto in due mesi?"),
+    n("Ci pensi. La risposta vera è lunghissima e non sta in una frase, ma la parte che conta è breve."),
+    tv({
+      fuoco:   "Abbiamo lavorato in una segheria per non perdere un difensore.",
+      calmo:   "Abbiamo passato luglio a fare una cosa che con il calcio non c'entrava niente.",
+      ironico: "Abbiamo scoperto che il calcio è la parte facile.",
+      chiuso:  "Abbiamo tenuto tutti.",
+      ostinato:"Non abbiamo perso nessuno. Era quello il campionato di luglio."
+    }),
+    d('kuz', "…non ho capito."),
+    tu("Lo so.")
+  ],
+  eff: [{ spirito: 12 }, { exp: 650 }], poi: { capitolo: 6 } });
+
+sc({ id: 'c5b_p', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Persa. In casa, con le maglie nuove, davanti a ottantasei persone."),
+    n("La signora Kurihara si alza dalla sedia, la ripiega, e prima di andarsene si ferma davanti a Gorō."),
+    d('kurihara', "Tu sei quello dei sacchi."),
+    d('goro', "…sì."),
+    d('kurihara', "Mio marito era terzino sinistro. Nel 1985 hanno perso otto partite su ventidue."),
+    d('goro', "…"),
+    d('kurihara', "Otto. E per trent'anni me ne ha raccontate quattordici."),
+    n("Se ne va con la sua sedia sotto il braccio."),
+    d('amagai', "…"),
+    d('amagai', "Sua moglie non aveva mai parlato con nessuno di noi. In trent'anni."),
+    d('amagai', "Nemmeno al funerale.")
+  ],
+  eff: [{ spirito: 10 }, { exp: 585 }], poi: { capitolo: 6 } });
+
+sc({ id: 'c5b_x', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Un pareggio, in casa, contro la squadra che a maggio vi aveva battuti senza accorgersi di voi."),
+    d('kenta', "Due punti in classifica. Ne abbiamo tre in totale."),
+    d('rei', "Tre è un numero?"),
+    d('kenta', "Tre è un numero."),
+    d('rei', "Ad aprile eravamo in due e adesso abbiamo tre punti. Sono più punti che persone di aprile."),
+    d('shinobu', "Rei, questa è la cosa più stupida che tu abbia mai detto."),
+    d('rei', "Lo so. Sono felice.")
+  ],
+  eff: [{ spirito: 11 }, { exp: 618 }], poi: { capitolo: 6 } });
+
+/* ============================================================
+   CAPITOLO 9 — QUELLI CHE CI GUARDANO
+   Arriva quello che non avevate messo in conto: essere guardati.
+   ============================================================ */
+
+sc({ id: 'c9_1', luogo: 'Aula 2-A — primi di novembre',
+  righe: [
+    n("Il giornale della prefettura di Nagano esce il martedì e arriva ad Amanome il giovedì."),
+    n("Questo giovedì, a pagina undici, c'è mezza pagina con una fotografia del campo dietro la palestra."),
+    n("Titolo: « TRENTOTTO STUDENTI, UNDICI GIOCATORI: IL MIRACOLO DI AMANOME »."),
+    d('shinobu', "Miracolo."),
+    d('kenta', "Miracolo."),
+    d('hina', "Non è un miracolo, è che ci alziamo alle sei."),
+    d('nao', "Ho venduto quarantun copie del giornale stamattina. Ne tengo di solito quattro."),
+    n("È cominciata una cosa che non avevate previsto e per cui nessuno vi ha preparati."),
+    n("Alle quattro e mezza, dietro la recinzione del campo, ci sono ventidue persone a guardarvi fare gli esercizi."),
+    n("Il lunedì erano tre."),
+    d('minoru', "Mi guardano."),
+    d('rei', "Guardano tutti, non solo te."),
+    d('minoru', "Sì ma prima non mi guardava nessuno e adesso mi guardano e non riesco a fare la cosa dei coni."),
+    d('amagai', "Sasaoka."),
+    d('minoru', "Sì?"),
+    d('amagai', "Fra tre settimane potrebbero essere duemila."),
+    d('minoru', "…"),
+    d('amagai', "Non lo dico per spaventarti. Lo dico perché è meglio che tu lo scopra qui, con ventidue persone che ti conoscono per nome."),
+    n("Nao arriva di corsa dal cortile con una busta in mano, e ha la faccia di una che ha già letto il contenuto."),
+    d('nao', "È per Hina."),
+    d('nao', "Ed è della Nagano Higashi.")
+  ],
+  eff: [{ obiettivo: 'Decidere cosa siete adesso che vi guardano.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_hina', luogo: 'Campo di tiro con l\'arco — dietro il tempio',
+  righe: [
+    n("Hina Kurosawa tira. Sei frecce, sei centri, come sempre."),
+    n("La busta della Nagano Higashi è appoggiata sulla panca, aperta, con il foglio ripiegato dentro."),
+    d('hina', "Sai cosa c'è scritto?"),
+    tu("No."),
+    d('hina', "Trasferimento a gennaio. Retta pagata, convitto pagato, materiale pagato."),
+    d('hina', "Ottocento studenti. Tre campi. Due allenatori con il patentino."),
+    d('hina', "E un club di tiro con l'arco che l'anno scorso è arrivato quarto ai nazionali."),
+    n("Questa è la parte che non ti aspettavi."),
+    d('hina', "Hanno visto il pezzo sul giornale. Ma nella lettera parlano più dell'arco che del calcio."),
+    d('hina', "Dicono che con una preparazione seria potrei fare i nazionali in due anni."),
+    n("Tira un'altra freccia. Centro."),
+    d('hina', "Io tiro con l'arco da dodici anni. Gioco a calcio da sette mesi."),
+    d('hina', "Non è nemmeno una scelta difficile, se la guardi da fuori."),
+    tu("E se la guardi da dentro?"),
+    d('hina', "Da dentro è la cosa più difficile che mi sia mai capitata e non riesco a spiegare perché."),
+    n("Abbassa l'arco."),
+    d('hina', "Dimmi cosa ne pensi. Sul serio, non quello che dovresti dire da capitano.")
+  ],
+  scelte: [
+    { t: "«Vai. Se resti per noi e poi ti pesa, ci odierai.»", vai: 'c9_hina_a' },
+    { t: "«Resta. Qui sei una delle undici. Là saresti una delle ottocento.»", vai: 'c9_hina_b' },
+    { t: "«Non te lo dico. È tua e sarebbe scorretto.»", vai: 'c9_hina_c' },
+    { t: "«Cosa ti fa paura: andare, o scoprire che qui non ti bastava?»", vai: 'c9_hina_d',
+      se: function (S, car, tr) { return (tr.testa || 0) >= 5 || car === 'calmo'; },
+      nota: 'È la domanda giusta, ed è cattiva.' }
+  ] });
+
+sc({ id: 'c9_hina_a', luogo: 'Campo di tiro con l\'arco',
+  righe: [
+    tv({
+      fuoco:   "Vai. Lo dico controvoglia e non me lo far ripetere: vai.",
+      calmo:   "Vai. Se resti per noi, fra tre anni sarà colpa nostra, e non voglio quel debito.",
+      ironico: "Vai. Poi però quando fai i nazionali ci mandi i biglietti, che qui non usciamo mai.",
+      chiuso:  "Vai.",
+      ostinato:"Vai. E se torni a trovarci ti facciamo giocare lo stesso, così ti roviniamo la preparazione."
+    }),
+    d('hina', "…"),
+    d('hina', "Speravo che me lo dicessi."),
+    d('hina', "E adesso che me l'hai detto sono furiosa, il che mi dice una cosa che non sapevo."),
+    n("Piega il foglio della Nagano Higashi e se lo mette in tasca."),
+    d('hina', "Rispondo a gennaio. Non prima."),
+    d('hina', "Voglio vedere come finisce.")
+  ],
+  eff: [{ spirito: 6 }, { tratto: { cuore: 3 } },
+        { momento: 'Hai detto a Hina di andarsene, sperando che restasse. Non è una cosa pulita.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_hina_b', luogo: 'Campo di tiro con l\'arco',
+  righe: [
+    tv({
+      fuoco:   "Resta! Qui sei una degli undici! Là sei un numero in un elenco!",
+      calmo:   "Resta. Là avresti tutto tranne una cosa: essere necessaria. E tu quella lì l'hai scoperta a maggio.",
+      ironico: "Resta. Là hanno tre campi ma nessuno che ti chiami «capitana dell'arco» con quel tono che usa Minoru.",
+      chiuso:  "Resta.",
+      ostinato:"Resta. Te lo chiedo, non te lo consiglio. È diverso e voglio che tu senta la differenza."
+    }),
+    d('hina', "…lo sai che è egoista."),
+    tu("Lo so."),
+    d('hina', "E lo dici lo stesso."),
+    tu("Lo dico lo stesso."),
+    n("Hina Kurosawa ti guarda per un tempo scomodo."),
+    d('hina', "Va bene."),
+    d('hina', "Non « va bene resto ». « Va bene, hai detto una cosa vera invece di una cosa nobile »."),
+    d('hina', "Rispondo a gennaio. Volevo solo sapere se qualcuno me lo avrebbe chiesto.")
+  ],
+  eff: [{ spirito: 8 }, { tratto: { schiena: 3 } },
+        { momento: 'Hai chiesto a Hina di restare sapendo che era egoista, e gliel\'hai detto.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_hina_c', luogo: 'Campo di tiro con l\'arco',
+  righe: [
+    tv({
+      fuoco:   "No. Non te lo dico. Se te lo dico io poi non è più tua e mi verrebbe da urlartelo.",
+      calmo:   "Non te lo dico. Qualunque cosa dicessi, peserebbe più di quanto dovrebbe, e questa scelta deve pesare solo quanto pesa.",
+      ironico: "Se te lo dico io, poi per trent'anni sarà colpa mia. Ho già abbastanza roba.",
+      chiuso:  "È tua.",
+      ostinato:"No. Su questa non ti aiuto, e non cambio idea nemmeno se insisti."
+    }),
+    d('hina', "…"),
+    d('hina', "Sei un vigliacco."),
+    tu("Forse."),
+    d('hina', "No, aspetta. Ci ripenso."),
+    n("Incocca una freccia, la tiene, non tira."),
+    d('hina', "Nel tiro con l'arco c'è una cosa: se qualcuno ti parla mentre stai per tirare, tu senti la sua voce dentro il tiro. Anche se dice una cosa giusta."),
+    d('hina', "Per questo il maestro sta zitto."),
+    d('hina', "Sta zitto e non è perché non gli importa."),
+    n("Tira. Centro."),
+    d('hina', "Ritiro « vigliacco ».")
+  ],
+  eff: [{ spirito: 5 }, { tratto: { testa: 3 } },
+        { momento: 'Non hai risposto a Hina. Lei ha capito perché.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_hina_d', luogo: 'Campo di tiro con l\'arco',
+  righe: [
+    tv({
+      base:    "Posso farti una domanda scortese?",
+      ironico: "Posso farti una domanda che ti farà venire voglia di tirarmi addosso una freccia?"
+    }),
+    d('hina', "Fammela."),
+    tu("Cosa ti fa paura davvero: andare via, o scoprire che stare qui non ti bastava?"),
+    n("Hina Kurosawa non risponde per undici secondi. Li conti."),
+    d('hina', "…"),
+    d('hina', "La seconda."),
+    d('hina', "A maggio pensavo che il vostro sport fosse una cosa disordinata per gente a cui va bene il caso."),
+    d('hina', "A ottobre ho segnato un gol al novantesimo contro la Wild e ho urlato in un modo che non avevo mai fatto in dodici anni di gare."),
+    d('hina', "E la sera, a casa, ho pensato: allora l'arco non mi bastava."),
+    d('hina', "E quel pensiero lì mi ha fatto stare male per tre giorni."),
+    n("Rimette la freccia nella faretra senza tirarla."),
+    d('hina', "Perché se l'arco non mi bastava, vuol dire che dodici anni li ho passati a fare una cosa che facevo bene invece di una cosa che volevo."),
+    d('hina', "E adesso arriva una lettera che mi offre altri sei anni della stessa cosa, fatta meglio."),
+    n("Ti guarda."),
+    d('hina', "Grazie. Era la domanda giusta ed è stata cattiva."),
+    d('hina', "Rispondo a gennaio.")
+  ],
+  eff: [{ spirito: 9 }, { tratto: { testa: 3 } }, { tratto: { cuore: 2 } },
+        { momento: 'Hai chiesto a Hina la cosa che nessuno le aveva chiesto in dodici anni.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_zero', luogo: 'Gabbiotto del custode — dopo le otto',
+  righe: [
+    d('nao', "C'è un'altra cosa nella busta della Nagano Higashi."),
+    d('nao', "Propongono un'amichevole. Qui, il ventidue."),
+    n("Zero, che stava attraversando il cortile con il sacco dei palloni, si ferma."),
+    d('zero', "…no."),
+    d('nao', "Zero—"),
+    d('zero', "Ho detto no."),
+    n("Mette giù il sacco. Non lo appoggia: lo lascia cadere."),
+    d('zero', "Sapete perché mi sono trasferito qui? Non per la scuola. Non per gli zii."),
+    d('zero', "Perché ad Amanome non arriva il giornale della prefettura il giorno stesso."),
+    d('zero', "Arriva con due giorni di ritardo e nel frattempo la gente ha già smesso di parlarne."),
+    d('zero', "Mi sono trasferito in un posto dove le notizie arrivano tardi. Questo è il motivo. È scemo e è quello."),
+    d('amagai', "E adesso il giornale parla di voi."),
+    d('zero', "E adesso il giornale parla di noi.")
+  ],
+  scelte: [
+    { t: "«Allora non giochiamo. Rifiutiamo e basta.»", vai: 'c9_zero_a' },
+    { t: "«Giochiamo. Ma tu quel giorno stai in panchina, se vuoi.»", vai: 'c9_zero_b' },
+    { t: "«Giochiamo e tu giochi. Sono venuti a vedere te, e devono vedere te.»", vai: 'c9_zero_c',
+      se: function (S, car, tr) { return (tr.schiena || 0) >= 6 || car === 'ostinato' || car === 'fuoco'; },
+      nota: 'È dura, e potrebbe essere sbagliata.' }
+  ] });
+
+sc({ id: 'c9_zero_a', luogo: 'Gabbiotto del custode',
+  righe: [
+    tv({
+      fuoco:   "Allora niente. Nao, rispondi di no. Non ci andiamo e non se ne parla più.",
+      calmo:   "Rifiutiamo. Non c'è nessun motivo tecnico per giocarla e c'è un motivo grosso per non farlo.",
+      ironico: "Rifiutiamo. Diciamo che avevamo il pullman impegnato. È anche vero, il pullman è una segheria.",
+      chiuso:  "No. Rifiutiamo.",
+      ostinato:"Rifiutiamo. E se insistono, rifiutiamo di nuovo."
+    }),
+    d('nao', "Va bene. Scrivo io."),
+    d('zero', "…"),
+    d('zero', "Aspetta."),
+    n("Zero Naruse guarda il sacco dei palloni per terra."),
+    d('zero', "Fammi passare la notte."),
+    n("La mattina dopo arriva alle sei e venti — venti minuti prima, non dieci minuti dopo — e mentre si mette i guanti dice una frase sola."),
+    d('zero', "Scrivi di sì."),
+    tu("Zero—"),
+    d('zero', "Hai detto no per me davanti a tutti senza pensarci."),
+    d('zero', "Questa è la prima volta in due anni che qualcuno si mette in mezzo invece che dietro."),
+    d('zero', "Quindi adesso la gioco, e non perché sono guarito. Perché mi sembra brutto non giocarla.")
+  ],
+  eff: [{ spirito: 10 }, { tratto: { cuore: 3 } },
+        { momento: 'Hai rifiutato la partita per proteggere Zero. Lui ha voluto giocarla lo stesso.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_zero_b', luogo: 'Gabbiotto del custode',
+  righe: [
+    tv({
+      fuoco:   "Giochiamo, ma tu quel giorno stai fuori. Non è una punizione, è che decido io e ho deciso così.",
+      calmo:   "Giochiamo. Tu in panchina. Benkei ha parato contro la Shuriken e può reggere novanta minuti.",
+      ironico: "Giochiamo, e tu quel giorno fai il vice-allenatore. Ti do anche la cartellina.",
+      chiuso:  "Giochiamo. Tu fuori.",
+      ostinato:"Giochiamo. Tu decidi la mattina stessa e nessuno ti chiede niente."
+    }),
+    d('zero', "Quindi mi state mettendo in panchina."),
+    tu("Ti sto dando una porta aperta."),
+    d('zero', "…"),
+    d('benkei', "Io la faccio."),
+    n("Benkei Marui ha in mano un panino e lo dice con la bocca piena, il che toglie solennità e la rende più vera."),
+    d('benkei', "Novanta minuti li reggo. Ne prendo quattro o cinque, però li reggo."),
+    d('zero', "Ne prendi otto."),
+    d('benkei', "Va bene, otto."),
+    d('benkei', "Otto li ho presi anche io a maggio a Kuzuryū e sono ancora qui."),
+    n("Zero lo guarda. È la prima volta che qualcuno gli dice quel numero senza pesarlo."),
+    d('zero', "…deciderò la mattina.")
+  ],
+  eff: [{ spirito: 7 }, { tratto: { testa: 2 } }, { tratto: { cuore: 2 } },
+        { momento: 'Hai lasciato a Zero la scelta di non giocare contro la sua vecchia scuola.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_zero_c', luogo: 'Gabbiotto del custode',
+  righe: [
+    tv({
+      fuoco:   "No. Giochi. Sono venuti a vedere te e devono vedere te, non una versione di te che si nasconde.",
+      calmo:   "Giochi. Non perché te lo devi. Perché se non giochi, quel pomeriggio resta il pomeriggio che non hai giocato, e ti resta addosso più a lungo della partita.",
+      ironico: "Giochi. Guarda che se stai fuori poi ti tocca stare seduto vicino a me per novanta minuti, e io parlo.",
+      chiuso:  "Giochi.",
+      ostinato:"Giochi. E se ne prendi otto ne prendi otto, e il ventitré ti alzi alle sei e mezza come tutti gli altri giorni."
+    }),
+    n("Zero Naruse ti guarda con un'espressione che non gli hai mai visto: non rabbia. Qualcosa di più scomodo."),
+    d('zero', "Tu non sai cosa mi stai chiedendo."),
+    tu("No."),
+    d('zero', "E lo chiedi lo stesso."),
+    tu("Sì."),
+    d('amagai', "Naruse."),
+    d('zero', "…"),
+    d('amagai', "Ha ragione lui, e ti dico anche perché, e poi non ne parliamo più."),
+    d('amagai', "Nel 1986 io ho lasciato andare Tanabe senza dirgli niente, perché mi sembrava di rispettarlo."),
+    d('amagai', "Non lo stavo rispettando. Stavo evitando una conversazione."),
+    d('amagai', "Il tuo capitano ha appena fatto la conversazione. È scomoda ed è meglio del silenzio."),
+    n("Zero non risponde. Ma il giorno dopo, e quello dopo ancora, resta in campo mezz'ora in più a farsi tirare addosso i palloni da Hina."),
+    n("E non chiede a nessuno di smettere.")
+  ],
+  eff: [{ spirito: 12 }, { tratto: { schiena: 4 } },
+        { momento: 'Hai obbligato Zero a giocare contro la scuola che lo aveva chiamato Zero.' }],
+  poi: { hub: true } });
+
+sc({ id: 'c9_partita', luogo: 'Il campo dietro la palestra — 22 novembre',
+  righe: [
+    n("Il pullman della Nagano Higashi non entra nel piazzale della scuola e deve fermarsi sulla provinciale."),
+    n("Scendono in ventiquattro, con le tute uguali e i borsoni uguali, e camminano fino al campo in fila per due."),
+    n("Dietro la recinzione ci sono centoquaranta persone. Il paese ne ha quattrocentododici."),
+    d('kenta', "Il loro portiere è Kaoru Ijūin. Secondo anno."),
+    d('zero', "Lo so chi è. Era il mio secondo."),
+    d('kenta', "…"),
+    d('zero', "Due anni fa, in quella finale, quando ho preso l'ottavo, l'allenatore stava per farmi uscire e mettere lui."),
+    d('zero', "Non ha fatto in tempo perché l'arbitro ha fischiato."),
+    n("Dall'altra parte del campo un uomo in giacca da tuta blu guarda verso la vostra panchina e non si muove."),
+    d('zero', "Quello è l'allenatore."),
+    d('amagai', "…"),
+    d('amagai', "Naruse. Una cosa sola."),
+    d('zero', "Sì."),
+    d('amagai', "Oggi in porta non ci sei tu contro di loro."),
+    d('amagai', "Oggi in porta c'è la scuola media di Amanome, e tu sei quello che ci sta dentro."),
+    d('amagai', "Se prendi gol, li prendiamo noi. È una differenza tecnica da niente e cambia tutto."),
+    d('zero', "…"),
+    d('zero', "Va bene.")
+  ],
+  poi: { partita: { avv: 'higashi', titolo: 'Amichevole — Amanome vs Nagano Higashi', minuti: 45,
+    vinto: 'c9_v', perso: 'c9_p', pari: 'c9_x' } } });
+
+sc({ id: 'c9_v', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Centoquaranta persone. Il rumore che fanno quando finisce non lo dimenticherà nessuno di voi."),
+    n("L'allenatore della Nagano Higashi attraversa il campo e si ferma davanti a Zero."),
+    d('higashi_all', "Naruse."),
+    d('zero', "Buonasera."),
+    d('higashi_all', "Hai fatto una partita che non ti avevo mai visto fare."),
+    d('zero', "…"),
+    d('higashi_all', "Volevo dirti una cosa da due anni e non ho mai trovato il modo, quindi la dico male."),
+    d('higashi_all', "Quella finale non l'hai persa tu."),
+    d('higashi_all', "L'ho persa io, perché ti ho lasciato lì dentro da solo con una difesa che non esisteva più, e ti ho lasciato lì perché avevo paura di sembrare uno che molla."),
+    d('higashi_all', "Avevi dodici anni."),
+    n("Zero Naruse non dice niente. Ha ancora i guanti addosso e li stringe."),
+    d('higashi_all', "Il giornale ha scritto zero. Io non l'ho corretto."),
+    d('higashi_all', "Potevo, e non l'ho fatto."),
+    n("Silenzio. Poi Zero fa una cosa che sorprende tutti: gli tende la mano."),
+    d('zero', "Dieci."),
+    d('higashi_all', "…come?"),
+    d('zero', "Dieci parate su diciotto tiri. Le ha contate un mio compagno di squadra due anni fa, in un paese dove non arriva il segnale, prima ancora di conoscermi."),
+    d('zero', "Se lo scrive da qualche parte, siamo pari.")
+  ],
+  eff: [{ spirito: 14 }, { exp: 910 }, { flag: 'zero_pari' }], poi: { capitolo: 10 } });
+
+sc({ id: 'c9_p', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Avete perso. Non era una partita che dovevate vincere: ottocento studenti contro trentotto."),
+    n("Ma Zero Naruse è rimasto in piedi per novanta minuti davanti a centoquaranta persone che erano venute a vedere se sarebbe crollato."),
+    n("E alla fine, quando l'arbitro ha fischiato, si è girato verso la recinzione invece che verso terra."),
+    d('higashi_all', "Naruse."),
+    d('zero', "Buonasera."),
+    d('higashi_all', "Quella finale non l'hai persa tu. L'ho persa io e non l'ho mai detto a nessuno."),
+    d('zero', "Lo so."),
+    d('higashi_all', "…lo sai?"),
+    d('zero', "L'ho capito quest'anno. Con undici che mi stanno davanti, gli stessi tiri diventano cinque."),
+    d('zero', "Non ero io il problema. Era che ero solo."),
+    n("L'allenatore della Nagano Higashi resta lì un momento di troppo."),
+    d('higashi_all', "Hai un buon allenatore."),
+    d('zero', "Ho un buon custode.")
+  ],
+  eff: [{ spirito: 12 }, { exp: 845 }, { flag: 'zero_pari' }], poi: { capitolo: 10 } });
+
+sc({ id: 'c9_x', luogo: 'Il campo dietro la palestra — dopo',
+  righe: [
+    n("Un pareggio contro una scuola da ottocento studenti, in casa, davanti a centoquaranta persone."),
+    d('zero', "Kenta."),
+    d('kenta', "Dimmi."),
+    d('zero', "Quante ne ho parate?"),
+    d('kenta', "Nove su undici."),
+    d('zero', "Scrivilo."),
+    d('kenta', "L'ho già scritto."),
+    d('zero', "…lo so. Volevo sentirtelo dire.")
+  ],
+  eff: [{ spirito: 13 }, { exp: 878 }, { flag: 'zero_pari' }], poi: { capitolo: 10 } });
+
+
+sc({ id: 'c7_baseball', luogo: 'Campo grande — sabato pomeriggio',
+  righe: [
+    n("Gen Tonda vi aspetta al campo grande con il guantone infilato, come ad aprile."),
+    d('tonda', "Ve lo ricordate cosa vi ho detto a maggio?"),
+    tu("« Rifacciamola quando avrete perso contro qualcuno di vero, così tornate con l'umore giusto. »"),
+    d('tonda', "Esatto. Solo che poi avete cominciato a vincere e la cosa mi ha rovinato la battuta."),
+    d('tonda', "Quindi la rifacciamo adesso, prima che andiate al Football Frontier e diventiate insopportabili."),
+    d('shinobu', "Siamo già insopportabili."),
+    d('tonda', "Sì, ma ancora poco."),
+    n("Il club di baseball di Amanome è sempre nove giocatori più due che si annoiano."),
+    n("Sono cinque mesi che vi vedono uscire alle sei e mezza del mattino."),
+    d('tonda', "Una cosa però ve la dico prima, che poi non me la ricordo."),
+    d('tonda', "Ad aprile vi ho sfidati perché mi facevate pena."),
+    d('tonda', "Undici che non sapevano tenere in piedi un club, e noi nove che il club lo tenevamo in piedi da tre anni senza vincere niente."),
+    d('tonda', "Volevo vincere una volta contro qualcuno, capisci? Una."),
+    tv({
+      fuoco:   "E l'hai vinta? O l'ho vinta io? Non me lo ricordo mai.",
+      calmo:   "Ad aprile eravamo la squadra giusta contro cui vincere. È un ruolo che abbiamo fatto bene.",
+      ironico: "Tonda, se ti fa piacere possiamo ancora perdere. Ci riesce benissimo, è il nostro forte storico.",
+      chiuso:  "Lo so.",
+      ostinato:"E adesso vuoi vincerne una contro di noi che siamo diventati bravi. Bene: è più difficile e conta di più."
+    }),
+    d('tonda', "Adesso il club di baseball ha dodici iscritti."),
+    d('kenta', "…dodici? Eravate undici."),
+    d('tonda', "Tre primi anni si sono iscritti a settembre. Uno se n'è andato."),
+    d('tonda', "Sono venuti perché hanno visto voi."),
+    d('tonda', "E hanno scelto il baseball, il che mi ha fatto un piacere enorme, ma sono venuti perché hanno visto voi.")
+  ],
+  poi: { partita: { avv: 'baseball', titolo: 'Amichevole — Amanome vs Club di Baseball (ritorno)', minuti: 30,
+    vinto: 'c7_dopo', perso: 'c7_dopo', pari: 'c7_dopo' } } });
+
+sc({ id: 'c7_dopo', luogo: 'Campo grande — sera',
+  righe: [
+    d('tonda', "Ok. Adesso andate a giocare quel torneo."),
+    tu("Tonda."),
+    d('tonda', "Che c'è."),
+    tv({
+      fuoco:   "Grazie di aprile. Sul serio. Sei stato il primo a dirci di sì.",
+      calmo:   "Ad aprile hai giocato con undici che non sapevano giocare. Non lo doveva fare nessuno e l'hai fatto tu.",
+      ironico: "Se un giorno diventiamo famosi ti nomino da qualche parte. Piccolo, sotto, ma ti nomino.",
+      chiuso:  "Grazie di aprile.",
+      ostinato:"Voglio che sia scritto da qualche parte che la prima partita ce l'ha data il club di baseball."
+    }),
+    d('tonda', "…"),
+    d('tonda', "Vaffanculo, dai. Ci vediamo lunedì a scuola.")
+  ],
+  eff: [{ spirito: 6 }, { exp: 455 }, { tratto: { cuore: 1 } }],
+  poi: { capitolo: 8 } });
+
+sc({ id: 'c8_1', luogo: 'Palazzetto di Matsumoto — girone D, primo giorno',
+  righe: [
+    n("Le qualificazioni prefetturali del Football Frontier si giocano su campi veri, con le linee dipinte e gli spogliatoi con le docce."),
+    n("È la prima volta che entrate in uno spogliatoio con le docce. Ci mettono nove minuti a smettere di commentarle."),
+    d('minoru', "C'è l'acqua calda!"),
+    d('nao', "Minoru, c'è l'acqua calda anche a scuola."),
+    d('minoru', "Sì ma qui esce subito!"),
+    d('kenta', "Girone D. Tre partite: Occult, Wild, Shuriken. Passa la prima."),
+    d('kenta', "Sono le stesse tre squadre del girone della Raimon, l'anno scorso. Ve l'avevo detto ad agosto."),
+    d('daichi', "E la Raimon com'era andata?"),
+    d('kenta', "Tre vittorie."),
+    d('daichi', "Ah."),
+    d('amagai', "Ascoltate, che poi non lo dico più."),
+    d('amagai', "Da qui in avanti tutte le squadre che incontrate sono più forti di voi. Tutte, senza eccezione, fino alla fine."),
+    d('amagai', "Non è pessimismo: sono i numeri. Loro pescano da mille studenti, voi da trentotto."),
+    d('amagai', "Quindi smettete di chiedervi se siete più forti, perché non lo siete, e cominciate a chiedervi l'altra cosa."),
+    tu("Quale?"),
+    d('amagai', "Quanto siete disposti a stare in piedi."),
+    d('amagai', "Quella lì non gliela pesca nessuno da mille studenti.")
+  ],
+  eff: [{ obiettivo: 'Passare il girone D: Occult, Wild, Shuriken.' }],
+  poi: { hub: true } });
 
 /* ============================================================
    I RISVEGLI
@@ -1687,9 +2727,9 @@ sc({ id: 'f_nao', firma: 'firma_nao', titolo: 'Nao Kirishima', luogo: 'Secondo t
     d('nao', "Ma il quattordici è mio e non lo do a nessuno.")
   ] });
 
-sc({ id: 'f_tu', firma: null, titolo: 'Il capitano', luogo: 'Secondo tempo — sotto di due',
+sc({ id: 'f_tu', firma: null, titolo: 'Il capitano', luogo: 'Secondo tempo — sotto',
   righe: [
-    n("Sotto di due. Venti minuti alla fine."),
+    n("Sotto. Venti minuti alla fine, e il tabellone dice quello che dice."),
     n("Guardi la panchina e Amagai non dice niente, perché non c'è niente da dire che tu non sappia già."),
     n("Guardi i tuoi dieci. Rei che ha le mani sulle ginocchia. Gorō che respira come una macchina rotta. Minoru che ha ancora paura. Hina che è arrabbiata con sé stessa."),
     n("Undici persone che ad aprile non sapevano giocare a calcio, in un campo che avete falciato voi, davanti a un paese che non ha altro."),
@@ -1734,27 +2774,51 @@ IE.capitoli = [
       { id: 'partita', nome: '⚽ Andare a Kuzuryū', icona: '🚌', scena: 'c2_partita', se: function (S) { return S.flag.sfida_kuzuryu; }, principale: true }
     ] },
 
-  { n: 3, titolo: 'Il portiere che aveva smesso', periodo: 'Giugno',
+  { n: 3, titolo: 'Il pullman', periodo: 'Giugno',
+    apertura: 'c3b_1',
+    obiettivo: 'Trovare settantaduemila yen, un pullman e undici maglie.',
+    luoghi: [
+      { id: 'radio', nome: 'Il quaderno di Kenta', icona: '📻', scena: 'n_c3', se: function () { return true; } },
+      { id: 'nao', nome: 'Alimentari Kirishima', icona: '🏪', scena: 'c3b_nao', se: function (S) { return !S.ha('nao'); } },
+      { id: 'lavori', nome: 'Due settimane di pomeriggi', icona: '🧤', scena: 'c3b_lavori', se: function (S) { return S.ha('nao') && !S.flag.soldi; }, bloccoTxt: 'Prima serve qualcuno che sappia contare.' },
+      { id: 'maglie', nome: 'Casa Anzai, la sarta', icona: '🧵', scena: 'c3b_maglie', se: function (S) { return S.flag.soldi && !S.flag.maglie; }, bloccoTxt: 'Prima i soldi.' },
+      { id: 'partita', nome: '⚽ Trasferta a Ōkubo', icona: '🚐', scena: 'c3b_partita', se: function (S) { return S.flag.maglie; }, bloccoTxt: 'Non si parte senza maglie.', principale: true }
+    ] },
+
+  { n: 4, titolo: 'Il portiere che aveva smesso', periodo: 'Fine giugno',
     apertura: 'c3_1',
     obiettivo: 'Convincere Zero a tornare in porta, poi la prima partita in casa.',
     luoghi: [
-      { id: 'radio', nome: 'Il quaderno di Kenta', icona: '📻', scena: 'n_c3', se: function () { return true; } },
       { id: 'zero', nome: 'Via del tempio', icona: '🧤', scena: 'r_zero_1', se: function (S) { return !S.ha('zero'); } },
       { id: 'partita', nome: '⚽ Shirakaba — prima in casa', icona: '🏠', scena: 'c3_partita', se: function (S) { return S.ha('zero'); }, bloccoTxt: 'Non si gioca in casa senza portiere.', principale: true }
     ] },
 
-  { n: 4, titolo: 'La recinzione', periodo: 'Luglio — Agosto',
+  { n: 5, titolo: 'Quello che se ne va', periodo: 'Luglio',
+    apertura: 'c5b_1',
+    obiettivo: 'Capire cos\'è successo a Gorō. E decidere cosa farne.',
+    luoghi: [
+      { id: 'segheria', nome: 'Segheria Ishizuka', icona: '🪵', scena: 'c5b_segheria', se: function (S) { return !S.flag.goro_torna && !S.flag.goro_via; } },
+      { id: 'partita', nome: '⚽ Ritorno con la Kuzuryū', icona: '🏠', scena: 'c5b_partita', se: function (S) { return S.flag.goro_torna || S.flag.goro_via; }, bloccoTxt: 'Prima si va in segheria.', principale: true }
+    ] },
+
+  { n: 6, titolo: 'La recinzione', periodo: 'Agosto',
     apertura: 'c4_1',
     obiettivo: 'Vincere il torneo estivo della vallata. In palio: il campo.',
     luoghi: [
       { id: 'radio', nome: 'La radio degli alimentari', icona: '📻', scena: 'n_c4', se: function () { return true; } },
-      { id: 'nao', nome: 'Alimentari Kirishima', icona: '🏪', scena: 'c4_nao', se: function (S) { return S.flag.ultimatum && !S.ha('nao'); } },
       { id: 'semi', nome: '⚽ Semifinale — Tomegawa', icona: '🏆', scena: 'c4_semi', se: function (S) { return S.flag.ultimatum; }, principale: true }
     ] },
 
-  { n: 5, titolo: 'Il posto in più', periodo: 'Settembre — Ottobre',
+  { n: 7, titolo: 'Il posto in più', periodo: 'Settembre',
     apertura: 'c5_1',
-    obiettivo: 'Superare il girone di qualificazione del Football Frontier.',
+    obiettivo: 'Prepararsi al Football Frontier.',
+    luoghi: [
+      { id: 'baseball', nome: '⚾ La rivincita di Tonda', icona: '⚾', scena: 'c7_baseball', se: function () { return true; }, principale: true }
+    ] },
+
+  { n: 8, titolo: 'Il girone', periodo: 'Ottobre',
+    apertura: 'c8_1',
+    obiettivo: 'Passare il girone D: Occult, Wild, Shuriken.',
     luoghi: [
       { id: 'radio', nome: 'La semifinale alla radio', icona: '📻', scena: 'n_c5', se: function () { return true; } },
       { id: 'occult', nome: '⚽ Girone — Occult', icona: '👻', scena: 'c5_occult', se: function (S) { return !S.flag.g_occult; }, eff: [{ flag: 'g_occult' }], principale: true },
@@ -1762,7 +2826,18 @@ IE.capitoli = [
       { id: 'shuriken', nome: '⚽ Girone — Shuriken', icona: '🥷', scena: 'c5_shuriken', se: function (S) { return S.flag.g_wild; }, principale: true }
     ] },
 
-  { n: 6, titolo: 'Raimon', periodo: 'Novembre',
+  { n: 9, titolo: 'Quelli che ci guardano', periodo: 'Novembre',
+    apertura: 'c9_1',
+    obiettivo: 'Decidere cosa siete adesso che vi guardano.',
+    luoghi: [
+      { id: 'hina', nome: 'Campo di tiro con l\'arco', icona: '🏹', scena: 'c9_hina', se: function (S) { return !S.luoghiFatti.hina; } },
+      { id: 'zero', nome: 'Gabbiotto del custode', icona: '🧤', scena: 'c9_zero', se: function (S) { return !S.luoghiFatti.zero; } },
+      { id: 'partita', nome: '⚽ Nagano Higashi', icona: '🏙️', scena: 'c9_partita',
+        se: function (S) { return S.luoghiFatti.hina && S.luoghiFatti.zero; },
+        bloccoTxt: 'Prima si parla con Hina e con Zero.', principale: true }
+    ] },
+
+  { n: 10, titolo: 'Raimon', periodo: 'Fine novembre',
     apertura: 'c6_1',
     obiettivo: 'Una partita che non conta per nessuna classifica.',
     luoghi: [] }
@@ -1787,7 +2862,7 @@ IE.allenamenti = [
   { id: 'sacchi', nome: 'Sacchi di segatura', icona: '🪵', desc: 'Li presta il padre di Gorō. Pesano come sembrano.',
     su: ['fis'], q: 5, fat: 28, tutti: true },
   { id: 'partitella', nome: 'Partitella', icona: '⚽', desc: 'Sette contro sette. Serve a ricordarsi perché.',
-    su: ['gri', 'ctr'], q: 2, fat: 16, tutti: true, spirito: 3, exp: 220 }
+    su: ['gri', 'ctr'], q: 2, fat: 16, tutti: true, spirito: 3, exp: 145 }
 ];
 
 /* Tecniche comuni che si possono imparare allenandosi. */

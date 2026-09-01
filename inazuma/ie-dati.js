@@ -228,6 +228,50 @@ IE.origini = [
     bonus: { gri: 10, ctr: 4 }, profilo: 'tuttofare' }
 ];
 
+
+/* ============================================================
+   CARATTERE DEL CAPITANO
+   Non cambia le statistiche in modo determinante: cambia quello
+   che dici, e quindi come ti rispondono.
+   ============================================================ */
+IE.caratteri = {
+  fuoco: { nome: 'Fuoco addosso', icona: '🔥',
+    desc: 'Parli prima di pensare, e trascini gli altri anche quando non sai dove stai andando. Non riesci a stare zitto quando una cosa non va.',
+    come: 'Quello che urla per primo.', bonus: { gri: 7 } },
+  calmo: { nome: 'Testa fredda', icona: '🧊',
+    desc: 'Ascolti tutti, misuri, e poi parli una volta sola. Gli altri ti chiedono cosa fare perché sembri saperlo.',
+    come: 'Quello a cui si chiede.', bonus: { ctr: 7 } },
+  ironico: { nome: 'Battuta pronta', icona: '🙃',
+    desc: 'Sdrammatizzi anche quando non si dovrebbe. È il tuo modo di tenere insieme le persone senza dover dire le cose serie.',
+    come: 'Quello che fa ridere cinque minuti prima di una punizione.', bonus: { vel: 7 } },
+  chiuso: { nome: 'Poche parole', icona: '🤐',
+    desc: 'Parli il minimo. Non per timidezza: perché la maggior parte delle cose non ha bisogno di essere detta. Quando parli, si girano tutti.',
+    come: 'Quello che se apre bocca vuol dire che è importante.', bonus: { dif: 7 } },
+  ostinato: { nome: 'Testardo', icona: '🪨',
+    desc: 'Non ti sposti. Non è coraggio ed è inutile chiamarlo così: è che non ti viene proprio in mente di mollare.',
+    come: 'Quello che ci riprova.', bonus: { res: 7 } }
+};
+IE.listaCaratteri = ['fuoco', 'calmo', 'ironico', 'chiuso', 'ostinato'];
+
+/* I tre tratti che crescono con quello che scegli di dire. */
+IE.tratti = {
+  cuore:   { nome: 'Cuore',   icona: '❤️', col: '#ff5468',
+             desc: 'Quanto metti le persone prima del risultato.',
+             basso: 'Guardi il tabellone prima della panchina.',
+             medio: 'Cominci a chiedere agli altri come stanno prima di dire cosa fare.',
+             alto: 'Guardi la panchina prima del tabellone, e lo sanno tutti.' },
+  testa:   { nome: 'Testa',   icona: '🧠', col: '#4aa8ff',
+             desc: 'Quanto ragioni prima di muoverti.',
+             basso: 'Vai a sentimento, e ogni tanto va bene.',
+             medio: 'Prima di parlare ti fermi. Non sempre, ma ti fermi.',
+             alto: 'Arrivi con un piano, e di solito regge.' },
+  schiena: { nome: 'Schiena', icona: '🦴', col: '#ffd23f',
+             desc: 'Quanto sei disposto a startene lì quando conviene andarsene.',
+             basso: 'Scegli le battaglie.',
+             medio: 'Certe volte resti anche quando nessuno te lo chiede.',
+             alto: 'Non le scegli, le battaglie: le finisci.' }
+};
+
 /* ============================================================
    PERSONAGGI DI AMANOME
    ============================================================ */
@@ -324,6 +368,18 @@ IE.personaggi = {
   tonda:  P({ id: 'tonda', nome: 'Gen Tonda', corto: 'Tonda', col: '#e0d06f', png: true,
     bio: 'Capitano del club di baseball di Amanome. Nove giocatori, sette mazze, zero vittorie.' }),
   preside:P({ id: 'preside', nome: 'Preside Uchimura', corto: 'Preside', col: '#9aa7bd', png: true, bio: 'Preside della scuola media di Amanome.' }),
+  anzai:  P({ id: 'anzai', nome: 'Tsuru Anzai', corto: 'Anzai', col: '#c8a8b8', png: true,
+    bio: 'Ottantun anni, una Singer a pedale del 1961. Ha cucito le maglie del 1985 e ha ancora il cartamodello.' }),
+  ishizuka: P({ id: 'ishizuka', nome: 'Tetsuo Ishizuka', corto: 'Ishizuka', col: '#a08050', png: true,
+    bio: 'Padre di Gorō. Tiene in piedi la segheria da solo da nove anni.' }),
+  kurihara: P({ id: 'kurihara', nome: 'Signora Kurihara', corto: 'Kurihara', col: '#b8a8c8', png: true,
+    bio: 'Ottantasei anni, via del tempio. Suo marito era terzino sinistro nel 1985.' }),
+  okubo:  P({ id: 'okubo', nome: 'Mitsuru Ōkubo', corto: 'Ōkubo', col: '#8fa8c8', png: true,
+    bio: 'Capitano della scuola media di Ōkubo: undici studenti in tutto il secondo anno.' }),
+  kuz:    P({ id: 'kuz', nome: 'Jin Shikimi', corto: 'Shikimi', col: '#4f7fd0', png: true,
+    bio: 'Capitano della Kuzuryū. Quattrocento studenti, due campi in erba e un pullman con la scritta.' }),
+  higashi_all: P({ id: 'higashi_all', nome: 'Allenatore Umezawa', corto: 'Umezawa', col: '#3f6fc0', png: true,
+    bio: 'Allenatore della Nagano Higashi. Due anni fa ha lasciato un dodicenne solo in porta per quarantacinque minuti.' }),
   mark:   P({ id: 'mark', nome: 'Mark Evans', corto: 'Mark', col: '#ff7043', png: true, bio: 'Capitano e portiere della Raimon. Nipote del leggendario Dave Evans.' }),
   axel:   P({ id: 'axel', nome: 'Axel Blaze', corto: 'Axel', col: '#ff5468', png: true, bio: 'Attaccante della Raimon. Il fuoco lo tiene tutto dentro.' }),
   jude:   P({ id: 'jude', nome: 'Jude Sharp', corto: 'Jude', col: '#5fa8ff', png: true, bio: 'Stratega. Vede la partita tre passaggi avanti a chiunque.' }),
@@ -439,6 +495,23 @@ IE.squadre = {
     chiave: [
       { id: 'tonda', nome: 'Gen Tonda', ruolo: 'AT', el: 'terra', prof: 'bomber', b: 12, tec: ['bordata'], mod: { tir: 1.5, fis: 1.3 } },
       { id: 'ric', nome: 'Sō Kaneko', ruolo: 'PT', el: 'terra', prof: 'portiere', b: 8, tec: ['presa_sicura'], mod: { par: 1.3 } }
+    ] },
+
+  okubo: { id: 'okubo', nome: 'Scuola Media Ōkubo', sigla: 'OKU', lvCons: 10, col: '#8fa8c8', col2: '#54677f',
+    lv: 10, base: 27, stemma: '🏫',
+    motto: 'Undici studenti in tutto il secondo anno. Giocano in nove più due presi in prestito dal club di pallavolo.',
+    chiave: [
+      { id: 'cap', nome: 'Mitsuru Ōkubo', ruolo: 'CC', el: 'bosco', prof: 'tuttofare', b: 13, tec: ['finta_secca', 'germoglio'], mod: { ctr: 1.3, gri: 1.3 } },
+      { id: 'por', nome: 'Fumi Ōkubo', ruolo: 'PT', el: 'bosco', prof: 'portiere', b: 10, tec: ['presa_sicura'], mod: { par: 1.3 } }
+    ] },
+
+  higashi: { id: 'higashi', nome: 'Nagano Higashi', sigla: 'NGH', lvCons: 27, col: '#3f6fc0', col2: '#22406f',
+    lv: 30, base: 48, stemma: '🏙️',
+    motto: 'Ottocento studenti, tre campi, due allenatori pagati. La scuola in cui Tsukasa Naruse ha preso otto gol in una finale.',
+    chiave: [
+      { id: 'cap', nome: 'Wataru Segawa', ruolo: 'AT', el: 'fuoco', prof: 'bomber', b: 20, tec: ['tiro_teso', 'meteora'], mod: { tir: 1.4, vel: 1.2 } },
+      { id: 'por', nome: 'Kaoru Ijūin', ruolo: 'PT', el: 'aria', prof: 'portiere', b: 17, tec: ['volo_laterale', 'presa_alta'], mod: { par: 1.35 } },
+      { id: 'dif', nome: 'Rin Motoyama', ruolo: 'DF', el: 'terra', prof: 'muro', b: 16, tec: ['scivolata', 'marcatura'], mod: { dif: 1.3, fis: 1.25 } }
     ] },
 
   kuzuryu: { id: 'kuzuryu', nome: 'Scuola Media Kuzuryū', sigla: 'KUZ', lvCons: 7, col: '#4f7fd0', col2: '#2f5090',
@@ -562,7 +635,7 @@ IE.firme = {
   hina:    { tec: 'firma_hina',    dove: 'allenamento', lv: 10, eserc: 'muro',    scena: 'f_hina',
              nota: 'Ai tiri contro il muro della palestra, dopo il duecentesimo.' },
   zero:    { tec: 'firma_zero',    dove: 'partita',     lv: 12, cond: 'subito',   scena: 'f_zero',
-             nota: 'In partita, dopo aver già preso dei gol.' },
+             nota: 'In porta, dopo aver preso gol: due, o anche uno solo se è il secondo tempo.' },
   minoru:  { tec: 'firma_minoru',  dove: 'allenamento', lv: 7,  eserc: 'salita',  scena: 'f_minoru',
              nota: 'In salita, il giorno che smette di avere paura.' },
   kenta:   { tec: 'firma_kenta',   dove: 'allenamento', lv: 9,  eserc: 'cerchio', scena: 'f_kenta',
@@ -579,8 +652,8 @@ IE.firme = {
              nota: 'In partita, quando gli arrivano dentro l\'area.' },
   nao:     { tec: 'firma_nao',     dove: 'partita',     lv: 14, cond: 'entra',    scena: 'f_nao',
              nota: 'In partita, la prima volta che gioca sul serio.' },
-  tu:      { tec: null,            dove: 'partita',     lv: 15, cond: 'sotto',    scena: 'f_tu',
-             nota: 'Quando serve a te, e non c\'è più nessun altro a cui chiederlo.' }
+  tu:      { tec: null,            dove: 'partita',     lv: 15, cond: 'sottoUno', scena: 'f_tu',
+             nota: 'Nel secondo tempo di una partita che state perdendo, quando non c\'è più nessun altro a cui chiederlo.' }
 };
 /* la firma del capitano dipende dal ruolo scelto */
 IE.firmaTua = function (ruolo) { return 'firma_tu_' + (ruolo || 'CC'); };

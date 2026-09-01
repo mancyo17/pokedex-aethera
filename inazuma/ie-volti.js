@@ -237,6 +237,12 @@ IE.volti = {
   tonda:   { pelle:'ambra',   capelli:'nero',      taglio:'corti',     occhi:'decisi',  bocca:'sorrisone', extra:'berretto', extraCol:'#c9b03f', maglia:'#e0d06f' },
   cronista:{ pelle:'chiara',  capelli:'cenere',    taglio:'corti',     occhi:'felici',  bocca:'aperta',    extra:'occhiali', maglia:'#5b6b8c' },
 
+  anzai:   { pelle:'pallida', capelli:'bianco',    taglio:'raccolti',  occhi:'chiusi',  bocca:'sorriso',   extra:'occhiali', maglia:'#8f7f95' },
+  ishizuka:{ pelle:'ambra',   capelli:'nero',      taglio:'rasati',    occhi:'severi',  bocca:'seria',     extra:'bandana',  extraCol:'#7a5a3a', maglia:'#6b5540' },
+  kurihara:{ pelle:'pallida', capelli:'bianco',    taglio:'raccolti',  occhi:'felici',  bocca:'sorriso',   extra:'niente',   maglia:'#9a8aa8' },
+  okubo:   { pelle:'media',   capelli:'castano',   taglio:'caschetto', occhi:'grandi',  bocca:'sorriso',   extra:'niente',   maglia:'#8fa8c8' },
+  kuz:     { pelle:'chiara',  capelli:'corvino',   taglio:'punte',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#4f7fd0' },
+  higashi_all:{ pelle:'ambra',capelli:'cenere',    taglio:'corti',     occhi:'stanchi', bocca:'seria',     extra:'niente',   maglia:'#3f6fc0' },
   mark:    { pelle:'media',   capelli:'castano',   taglio:'punte',     occhi:'felici',  bocca:'sorrisone', extra:'fascia',   extraCol:'#e8703a', maglia:'#e8703a' },
   axel:    { pelle:'media',   capelli:'bianco',    taglio:'punte',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#e8703a' },
   jude:    { pelle:'chiara',  capelli:'corvino',   taglio:'treccine',  occhi:'severi',  bocca:'seria',     extra:'visiera',  maglia:'#e8703a' },

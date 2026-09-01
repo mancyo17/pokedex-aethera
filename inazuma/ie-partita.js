@@ -444,7 +444,8 @@ Pt.chiudi = function () {
 IE.condizioneFirma = function (P, g, cond) {
   var mio = P.mia;
   if (cond === 'sotto') return P.tempo >= 2 && mio.gol <= P.avv.gol - 2;
-  if (cond === 'subito') return P.avv.gol >= 2 && g.ruolo === 'PT';
+  if (cond === 'sottoUno') return P.tempo >= 2 && mio.gol < P.avv.gol;
+  if (cond === 'subito') return g.ruolo === 'PT' && (P.avv.gol >= 2 || (P.tempo >= 2 && P.avv.gol >= 1));
   if (cond === 'pubblico') return P.tempo >= 2 && !P.amichevole;
   if (cond === 'area') return P.possesso === P.avv && P.zona >= 4;
   if (cond === 'entra') return P.tempo >= 2 && P.mia.rosa.indexOf(g) >= 0;

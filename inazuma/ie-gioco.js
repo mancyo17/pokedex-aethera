@@ -155,6 +155,10 @@ function applica(effs) {
     if (e.momento && S.io) { S.io.momenti = S.io.momenti || []; if (S.io.momenti.indexOf(e.momento) < 0) S.io.momenti.push(e.momento); }
     if (e.versione) { S.versione = e.versione; preparaCaravan(); }
     if (typeof e.arrivi === 'number') arrivanoInCarovana(e.arrivi);
+    if (typeof e.ferite === 'number') feritiInCarovana(e.ferite);
+    if (e.resetTec) azzeraTecniche();
+    if (typeof e.imparoAtto2 === 'number') imparoAtto2(e.imparoAtto2);
+    if (e.caravanTec) insegnaAlCaravan(e.caravanTec.chi, e.caravanTec.tec);
   });
 }
 function reclutaGiocatore(id) {
@@ -804,7 +808,20 @@ function vistaHub() {
   if (vis.length) {
     var box = el('<div class="pannello"><div class="etichetta">Dove vai</div></div>');
     vis.forEach(function (l) {
-      box.appendChild(bt(l.icona + '  ' + l.nome, l.principale ? 'Fa avanzare la storia.' : null, function () {
+      var nota = l.principale ? 'Fa avanzare la storia.' : null;
+      var sqL = l.avvNota && IE.squadre[l.avvNota];
+      if (!sqL && l.scena) {
+        var scL = IE.storia.scene[l.scena];
+        var avvL = scL && scL.poi && scL.poi.partita && scL.poi.partita.avv;
+        if (avvL === 'versione') avvL = squadraVersione();
+        if (avvL) sqL = IE.squadre[avvL];
+      }
+      if (sqL) {
+        var mioLv = (c.atto === 2 && S.gioc('tu')) ? S.gioc('tu').lv : mediaLv();
+        nota = 'Livello consigliato ' + (sqL.lvCons || sqL.lv) + ' · ' +
+          (c.atto === 2 ? 'tu sei al ' : 'la squadra è al ') + mioLv + '.';
+      }
+      box.appendChild(bt(l.icona + '  ' + l.nome, nota, function () {
         S.luoghiFatti[l.id] = true;
         applica(l.eff);
         apriScena(l.scena);
@@ -828,7 +845,16 @@ function vistaHub() {
     att.appendChild(el('<div class="picc tenue" style="margin-bottom:8px">Qui non alleni nessuno e non scegli la formazione: ' +
       'sei uno degli undici e la panchina la fa Coach Hillman.</div>'));
     att.appendChild(bt('🪪  La tua scheda', 'Come ti stai comportando.', function () { G.vai('carattere'); }));
+    var io2 = S.gioc('tu');
+    att.appendChild(bt('✋  Le tue tecniche',
+      io2 ? (io2.tec.length + ' imparate · ' + ((io2.eq && io2.eq.length) || 0) + ' in campo su 4') : null,
+      function () { S.selez = 'tu'; G.vai('giocatore'); }));
     att.appendChild(bt('👥  Chi c\'è sul pullman', (S.caravan ? S.caravan.rosa.length : 11) + ' giocatori.', function () { G.vai('caravan'); }));
+    var fer = (S.caravan && S.caravan.feriti) || [];
+    if (fer.length) {
+      var nomiF = fer.map(function (id) { var p = IE.personaggi[id]; return p ? p.nome : id; });
+      att.appendChild(el('<div class="picc tenue" style="margin-top:6px">🩹 Fuori per infortunio: ' + esc(nomiF.join(', ')) + '.</div>'));
+    }
     att.appendChild(bt('⚙️  Salvataggio e opzioni', null, function () { G.vai('opzioni'); }, 'piatta'));
     schermo.appendChild(att);
     schermo = schermoVero;
@@ -1762,8 +1788,64 @@ function arrivanoInCarovana(nGioco) {
   nuovi.forEach(function (id) {
     if (S.caravan.rosa.indexOf(id) < 0) S.caravan.rosa.push(id);
     if (S.caravan.arrivati.indexOf(id) < 0) S.caravan.arrivati.push(id);
+    /* chi rientra dall'infortunio smette di essere un infortunato */
+    var f = S.caravan.feriti || [], k = f.indexOf(id);
+    if (k >= 0) f.splice(k, 1);
   });
 }
+/* Chi si fa male non sale più in campo: nel gioco è la prima cosa
+   che fa Alius Academy, e qui succede uguale. */
+function feritiInCarovana(nGioco) {
+  preparaCaravan();
+  S.caravan.feriti = S.caravan.feriti || [];
+  (IE.caravanFerite[nGioco] || []).forEach(function (id) {
+    var k = S.caravan.rosa.indexOf(id);
+    if (k >= 0) S.caravan.rosa.splice(k, 1);
+    if (S.caravan.feriti.indexOf(id) < 0) S.caravan.feriti.push(id);
+  });
+}
+
+/* Le tecniche che un ragazzo della carovana impara strada facendo. */
+function insegnaAlCaravan(chi, tec) {
+  preparaCaravan();
+  S.caravan.tec = S.caravan.tec || {};
+  var l = S.caravan.tec[chi] = S.caravan.tec[chi] || [];
+  if (l.indexOf(tec) < 0) l.push(tec);
+}
+
+/* Atto secondo: le tecniche del capitano si azzerano. Quelle di prima
+   restano scritte da qualche parte, perché ad Amanome torneranno utili. */
+function azzeraTecniche() {
+  var io = S.gioc('tu');
+  if (!io) return;
+  S.tecPrima = (io.tec || []).slice();
+  var base = (IE.atto2 && IE.atto2.base[io.ruolo]) || ['tiro_dritto'];
+  io.tec = base.slice();
+  io.eq = null;
+  equipaggiaAuto(io);
+}
+
+/* E poi se ne impara una per capitolo, come fanno tutti gli altri. */
+function imparoAtto2(nGioco) {
+  var io = S.gioc('tu');
+  if (!io || !IE.atto2 || !IE.atto2.impara[nGioco]) return;
+  var t = IE.atto2.impara[nGioco][io.ruolo];
+  if (!t || io.tec.indexOf(t) >= 0) return;
+  io.tec.push(t);
+  S.imparate = S.imparate || [];
+  S.imparate.push(t);
+  if (!io.eq || io.eq.length < SLOT) { equipaggiaAuto(io); return; }
+  /* se la nuova è più forte della più debole dello stesso tipo, entra lei */
+  var nuova = IE.tec(t); if (!nuova) return;
+  var peggio = null;
+  io.eq.forEach(function (id) {
+    var x = IE.tec(id);
+    if (!x || x.tipo !== nuova.tipo) return;
+    if (!peggio || x.pot < peggio.pot) peggio = x;
+  });
+  if (peggio && peggio.pot < nuova.pot) io.eq[io.eq.indexOf(peggio.id)] = t;
+}
+
 function giocatoreRaimon(id) {
   var r = IE.squadraDi('raimon');
   var rosa = r._rosa || IE.rosaSquadra(r);
@@ -1777,15 +1859,55 @@ function squadraVersione() {
 
 
 
+/* undici si devono essere: chi manca lo mette la scuola */
+function riserveRaimon(quanti) {
+  var sq = IE.squadraDi('raimon'), fuori = [];
+  var base = Math.max(12, (sq.base || 43) - 12);
+  for (var i = 0; i < quanti; i++) {
+    var m = IE.caravanRiserve[i % IE.caravanRiserve.length];
+    var g = {
+      id: 'riserva_' + i, nome: m.nome, corto: m.nome.split(' ')[1] || m.nome,
+      ruolo: m.ruolo, el: m.el, col: '#b0785a', prof: m.ruolo === 'PT' ? 'portiere' : 'terzino',
+      pot: 0, base: {}, allen: {}, lv: sq.lv, exp: 0, numero: 20 + i,
+      tec: [{ PT: 'presa_sicura', DF: 'contrasto', CC: 'doppio_passo', AT: 'tiro_dritto' }[m.ruolo]]
+    };
+    IE.ordineStat.forEach(function (k) { g.base[k] = base; });
+    if (m.ruolo !== 'PT') g.base.par = Math.round(base * 0.35);
+    g.tp = IE.tpMax(g); g.fp = IE.fpMax(g);
+    fuori.push(g);
+  }
+  return fuori;
+}
+
+function conTecCaravan(g) {
+  var mappa = (S.caravan && S.caravan.tec) || {};
+  var corto = String(g.id).replace(/^raimon_/, '');
+  /* le combinazioni cercano i compagni per nome breve: Bufera del
+     Viverna vuole «kevin» e «shawn», non «raimon_kevin». */
+  g.baseId = corto;
+  var extra = mappa[corto] || [];
+  if (!extra.length) return g;
+  extra.forEach(function (t) { if (g.tec.indexOf(t) < 0) g.tec.push(t); });
+  g.eq = null;
+  var ordine = { PT: ['parata', 'blocco', 'drib', 'tiro'], DF: ['blocco', 'drib', 'tiro', 'parata'],
+                 CC: ['drib', 'blocco', 'tiro', 'parata'], AT: ['tiro', 'drib', 'blocco', 'parata'] }[g.ruolo];
+  var pool = g.tec.map(IE.tec).filter(Boolean).filter(function (t) { return !t.soloDi || t.soloDi === corto; });
+  pool.sort(function (a, b) {
+    var pa = ordine.indexOf(a.tipo), pb = ordine.indexOf(b.tipo);
+    if (pa !== pb) return pa - pb;
+    return b.pot - a.pot;
+  });
+  g.eq = pool.slice(0, 4).map(function (t) { return t.id; });
+  return g;
+}
+
 function rosaCaravan() {
   preparaCaravan();
   var disponibili = S.caravan.rosa.map(giocatoreRaimon).filter(Boolean);
-  if (disponibili.length < 11) {
-    var r0 = IE.squadraDi('raimon');
-    (r0._rosa || []).forEach(function (g) {
-      if (disponibili.length < 11 && disponibili.indexOf(g) < 0) disponibili.push(g);
-    });
-  }
+  /* Se manca gente si riempie con le riserve della scuola, non con
+     chi deve ancora arrivare: nel gioco Axel Blaze al primo capitolo
+     non c'è, e non deve comparire perché siamo in otto. */
+  if (disponibili.length < 11) disponibili = disponibili.concat(riserveRaimon(11 - disponibili.length));
   /* gli undici: il portiere, poi i migliori per ruolo */
   var ordine = { PT: 0, DF: 1, CC: 2, AT: 3 };
   var ord = disponibili.slice().sort(function (a, b) {
@@ -1798,9 +1920,13 @@ function rosaCaravan() {
   ord.forEach(function (g) {
     if (conta[g.ruolo] < voluti[g.ruolo]) { scelti.push(g); conta[g.ruolo]++; } else resto.push(g);
   });
-  while (scelti.length < 11 && resto.length) scelti.push(resto.shift());
-  var undici = scelti.slice(0, 11).map(clona);
-  var panchina = resto.concat(scelti.slice(11)).map(clona);
+  while (scelti.length < 11 && resto.length) {
+    var r1 = resto.shift();
+    if (r1.ruolo === 'PT' && conta.PT >= 1) continue;   /* un portiere basta */
+    scelti.push(r1);
+  }
+  var undici = scelti.slice(0, 11).map(clona).map(conTecCaravan);
+  var panchina = resto.concat(scelti.slice(11)).map(clona).map(conTecCaravan);
   var io = clona(S.gioc('tu'));
   /* qui non sei il capitano e il tuo numero ce l'ha già qualcuno */
   io.capitano = false;

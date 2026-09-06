@@ -259,7 +259,36 @@ IE.volti = {
   mark:    { pelle:'media',   capelli:'castano',   taglio:'punte',     occhi:'felici',  bocca:'sorrisone', extra:'fascia',   extraCol:'#e8703a', maglia:'#e8703a' },
   axel:    { pelle:'media',   capelli:'bianco',    taglio:'punte',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#e8703a' },
   jude:    { pelle:'chiara',  capelli:'corvino',   taglio:'treccine',  occhi:'severi',  bocca:'seria',     extra:'visiera',  maglia:'#e8703a' },
-  nelly:   { pelle:'chiara',  capelli:'rame',      taglio:'lunghi',    occhi:'decisi',  bocca:'sorriso',   extra:'niente',   maglia:'#e8a0b0' }
+  nelly:   { pelle:'chiara',  capelli:'rame',      taglio:'lunghi',    occhi:'decisi',  bocca:'sorriso',   extra:'niente',   maglia:'#e8a0b0' },
+
+  /* --- Inazuma Eleven 2: chi sale sulla carovana --- */
+  nathan:  { pelle:'chiara',  capelli:'blu',       taglio:'coda',      occhi:'normali', bocca:'sorriso',   extra:'niente',   maglia:'#e8703a' },
+  kevin:   { pelle:'media',   capelli:'rosa',      taglio:'punte',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#e8703a' },
+  jack:    { pelle:'chiara',  capelli:'verde',     taglio:'rasati',    occhi:'chiusi',  bocca:'aperta',    extra:'niente',   maglia:'#e8703a' },
+  todd:    { pelle:'chiara',  capelli:'castano',   taglio:'ciuffo',    occhi:'grandi',  bocca:'piccola',   extra:'niente',   maglia:'#e8703a' },
+  steve:   { pelle:'media',   capelli:'nero',      taglio:'corti',     occhi:'normali', bocca:'sorriso',   extra:'niente',   maglia:'#e8703a' },
+  timmy:   { pelle:'chiara',  capelli:'nero',      taglio:'rasati',    occhi:'felici',  bocca:'sorrisone', extra:'niente',   maglia:'#e8703a' },
+  sam:     { pelle:'ambra',   capelli:'cioccolato',taglio:'punte',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#e8703a' },
+  max:     { pelle:'chiara',  capelli:'verde',     taglio:'ciuffo',    occhi:'felici',  bocca:'sorriso',   extra:'niente',   maglia:'#e8703a' },
+  bobby:   { pelle:'media',   capelli:'castano',   taglio:'corti',     occhi:'normali', bocca:'sorriso',   extra:'niente',   maglia:'#e8703a' },
+  william: { pelle:'chiara',  capelli:'nero',      taglio:'caschetto', occhi:'normali', bocca:'piccola',   extra:'occhiali', maglia:'#e8703a' },
+  darren:  { pelle:'chiara',  capelli:'cenere',    taglio:'mossi',     occhi:'grandi',  bocca:'piccola',   extra:'niente',   maglia:'#7fb8e8' },
+  victoria:{ pelle:'media',   capelli:'rosa',      taglio:'coda',      occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#ff9ac8' },
+  suzette: { pelle:'chiara',  capelli:'viola',     taglio:'lunghi',    occhi:'felici',  bocca:'sorrisone', extra:'niente',   maglia:'#e88fd0' },
+  erik:    { pelle:'media',   capelli:'castano',   taglio:'punte',     occhi:'felici',  bocca:'sorriso',   extra:'niente',   maglia:'#ffd07f' },
+  aiden:   { pelle:'pallida', capelli:'rosa',      taglio:'punte',     occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#7a5f8f' },
+  celia:   { pelle:'chiara',  capelli:'blu',       taglio:'caschetto', occhi:'normali', bocca:'sorriso',   extra:'niente',   maglia:'#9ac8ff' },
+  silvia:  { pelle:'chiara',  capelli:'castano',   taglio:'coda',      occhi:'felici',  bocca:'sorriso',   extra:'niente',   maglia:'#8fd0a8' },
+  ulvida:  { pelle:'pallida', capelli:'blu',       taglio:'lunghi',    occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#6f5fa8' },
+  zaizen:  { pelle:'media',   capelli:'cenere',    taglio:'radi',      occhi:'stanchi', bocca:'seria',     extra:'occhiali', maglia:'#3a4550' },
+  kasa:    { pelle:'media',   capelli:'castano',   taglio:'corti',     occhi:'stanchi', bocca:'seria',     extra:'cerotto',  maglia:'#c8b07f' },
+  cloi:    { pelle:'ambra',   capelli:'nero',      taglio:'rasati',    occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#c88f5f' },
+  metron:  { pelle:'chiara',  capelli:'verde',     taglio:'ciuffo',    occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#2f7a6a' },
+  nepper:  { pelle:'media',   capelli:'rosso',     taglio:'mossi',     occhi:'decisi',  bocca:'seria',     extra:'niente',   maglia:'#a83f1f' },
+  frost:   { pelle:'pallida', capelli:'bianco',    taglio:'corti',     occhi:'normali', bocca:'seria',     extra:'niente',   maglia:'#5f8fb0' },
+  diam:    { pelle:'chiara',  capelli:'viola',     taglio:'punte',     occhi:'severi',  bocca:'seria',     extra:'niente',   maglia:'#4a3f8f' },
+  reo:     { pelle:'ambra',   capelli:'viola',     taglio:'lunghi',    occhi:'stanchi', bocca:'seria',     extra:'niente',   maglia:'#4a3f8f' },
+  wheeze:  { pelle:'pallida', capelli:'cenere',    taglio:'ricci',     occhi:'chiusi',  bocca:'piccola',   extra:'niente',   maglia:'#6f5fa8' }
 };
 
 /* volti delle squadre avversarie: generati stabilmente dal nome */

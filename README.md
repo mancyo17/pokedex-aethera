@@ -195,23 +195,33 @@ decidere da solo e fartelo dire dai tuoi, uno per uno.
 Se parti, Amagai ti dà il quaderno del 1985: «non è un regalo, è un prestito e
 lo rivoglio».
 
-## Atto secondo — Il viaggio
+## Atto secondo — Inazuma Eleven 2
 
-Da qui il gioco segue la struttura vera di **Inazuma Eleven 2: Tempesta di
-Fuoco** e **Bufera di Neve**, e ci si entra dove ci entrerebbe un giocatore
-nuovo: **al terzo capitolo**, quando la carovana sale verso Hokkaido. I primi
-due te li racconta Jude Sharp sul pullman.
+Da qui il gioco segue **tutti e dieci** i capitoli di *Inazuma Eleven 2:
+Tempesta di Fuoco* e *Bufera di Neve*, dal primo all'ultimo. Lo schema è quello
+del gioco: Alius Academy arriva in una città, **la scuola di quella città
+scende in campo per prima e perde**, e solo dopo tocca alla Raimon.
 
 | | capitolo del gioco | cosa succede |
 |---|---|---|
-| II-3 | *A Northern Star* | Hokkaido, la tormenta, il ragazzo che ferma un pullman. **Shawn Froste** si unisce |
-| II-4 | *A Date With Divinity* | Byron Love porta una notizia, Epsilon scende in campo. **Scotty Banyan** si unisce |
-| II-5 | *Grudge Match – Hillman vs. Dark* | Epsilon torna con **Ray Dark** in panchina, e Coach Hillman racconta trent'anni |
-| II-6 | *All The Fun Of The Fair* | Il 23 dicembre al luna park. Non doveva essere una giornata di calcio |
-| II-7 | *The Secret Scrapbook Revealed* | Il **secondo taccuino di Dave Evans**, sotto le macerie della Raimon |
+| II-1 | *Raimon In Ruins* | La Raimon è a pezzi. A Kasamino, Gemini Storm vi batte **20-0** e cinque compagni finiscono all'ospedale |
+| II-2 | *The Black Ball Conspiracy* | Il pallone nero che nessuno riesce a calciare. Nara, il rapimento del primo ministro, e il secondo **32-0**. **Victoria Vanguard** si unisce |
+| II-3 | *A Northern Star* | Hokkaido. Hakuren, **Shawn Froste** e suo fratello. Poi la rivincita con Gemini Storm, e la prima vittoria |
+| II-4 | *A Date With Divinity* | Kyoto. Epsilon ha già distrutto la **Cloister**. **Scotty Banyan** si unisce: non aveva giocato la partita della sua scuola |
+| II-5 | *Grudge Match – Hillman vs. Dark* | Yokato. Epsilon torna con **Ray Dark** in panchina. **Darren LaChance** si unisce |
+| II-6 | *All The Fun Of The Fair* | Il 23 dicembre al luna park. **Byron Love** entra in campo a partita in corso |
+| II-7 | *The Secret Scrapbook Revealed* | Il **secondo taccuino di Dave Evans** sotto le macerie. **Erik Eagle** e **Suzette Heartland** arrivano, Nathan e Todd rientrano |
 | II-8 | *Blazing Back* | Okinawa. **Axel Blaze** torna, **Hurley Kane** si unisce |
-| II-9 | *The Genesis Menace* | L'isola, e la verità: Alius Academy è un istituto per orfani |
-| II-10 | *Inazuma Eleven Forever* | L'ultima partita. Una normale |
+| II-9 | *The Genesis Menace* | L'isola, e la verità: Alius Academy è l'**Istituto Sole**, un orfanotrofio |
+| II-10 | *Inazuma Eleven Forever* | L'ultima partita, e il nome della squadra lo scegli tu |
+
+**Chi si fa male.** Nel gioco la prima ondata di Alius Academy toglie di mezzo
+mezza squadra, e qui succede uguale: dopo il 20-0 di Kasamino escono **Steve
+Grim, Sam Kincaid, Max Carson, Jim Wraith e Timmy Sanders**; dopo il 32-0 di
+Nara escono **Nathan Swift** (colpito mentre andava a vedere come stava Mark) e
+**Todd Ironside**. Non è un dettaglio di racconto: quei nomi spariscono
+davvero dalla rosa, e nei capitoli in cui siete in otto in campo ci vanno le
+riserve della scuola. Nathan e Todd rientrano al settimo.
 
 **Le due versioni.** All'inizio del viaggio scegli la strada, come si sceglieva
 la cartuccia: **Tempesta di Fuoco** ti fa incontrare **Prominence** e segue Axel
@@ -220,25 +230,65 @@ Blaze, **Bufera di Neve** ti fa incontrare **Diamond Dust** e segue Shawn Froste
 comunicazione le due cartucce dopo aver battuto entrambe: qui funziona uguale, e
 compare nel menù della carovana quando le hai battute tutte e due.
 
-**La rosa cambia capitolo per capitolo.** Quando sali sul pullman **Axel Blaze
-non c'è**: se n'è andato dopo il crollo della scuola e torna all'ottavo capitolo,
-esattamente come nel gioco. Shawn Froste arriva al terzo, Scotty Banyan al
-quarto, Hurley Kane all'ottavo. Il tuo personaggio entra negli undici al posto
-del più debole nel tuo ruolo fra quelli disponibili in quel momento: all'inizio
-c'è posto, più avanti te lo devi meritare.
+**Le tue tecniche si azzerano.** Il primo giorno Coach Hillman ti dice una cosa
+sola: quello che sapevi fare funzionava perché conoscevi dieci ragazzi da
+sempre, e quei dieci qui non ci sono. Riparti da **due tecniche di base** e ne
+impari **una per capitolo**, come fanno tutti gli altri. Al nono capitolo arriva
+la firma nuova, quella del viaggio. Le tecniche di Amanome restano scritte nel
+salvataggio e ti tornano quando torni a casa.
 
-La carovana gioca con il **4-3-3**, che è il modo di stare in campo di quella
-Raimon lì: tre davanti. Nei capitoli in cui Axel non c'è il tridente è **Shawn
-Froste, Kevin Dragonfly e tu**; dall'ottavo in poi diventa **Axel, Shawn e tu**,
-e Hurley Kane entra in difesa. Shawn è schierato **attaccante**, come nel gioco,
-dove viene presentato come uno che gioca difensore e attaccante nella stessa
-partita ma ha il ruolo di punta.
+**Anche gli altri imparano, dove le imparano nel gioco.** Mark Evans impara il
+**Pugno di Giustizia** al quinto capitolo e la **Mano del Colosso** all'ottavo.
+Darren LaChance parte con la **Mano di Luce Blu** — la Mano Magica copiata da
+Mark, che gli viene del colore sbagliato — e finisce con la **Mano
+Insuperabile**. Kevin Dragonfly e Shawn Froste inventano insieme la **Bufera del
+Viverna** al terzo. Scotty Banyan la **Lama di Vento**, Victoria e Suzette il
+**Sogno di Farfalla**, e Hurley, Victoria e Scotty la **Torre Perfetta**
+nell'ultima partita. Axel torna con la **Tempesta Rovente** e la **Vite
+Rovente**, imparate contro il muro di un ospedale.
 
-**Quello che non ho verificato lo dico:** i titoli dei dieci capitoli, gli arrivi
-in squadra, le differenze fra le due versioni e il ritorno di Axel all'ottavo
-capitolo sono presi dalle guide del gioco. Gli avversari capitolo per capitolo
-sono invece una mia ricostruzione: le guide dettagliate (GameFAQs, Neoseeker)
-sono bloccate dal proxy di questo ambiente e non ho potuto leggerle.
+**Il tuo ruolo nella storia.** Non sei un dodicesimo uomo muto. Sei tu che
+scavalchi le transenne a Nara con Victoria, che parli a Shawn Froste di quello
+che ha perso, che trovi Scotty dietro il magazzino della Cloister, che dici di
+no a Ray Dark quando ti offre la nazionale, che proponi di andare a prendere i
+tuoi tredici compagni di Amanome, e che fai la formazione dell'ultima partita.
+All'ottavo capitolo Coach Hillman ti dà la **maglia numero 12**, con sopra il
+nome della tua scuola invece di «Raimon».
+
+**Le rose sono quelle vere.** Gemini Storm porta i nomi dei satelliti di Giove
+(Gorureo, Coral, Gigu, Ganymede, Karon, Pandora, Gringo, Io, Riimu, Diam,
+Reize). Epsilon ha Desarm **in porta**, come nel gioco, con Titan, Moll,
+Kayson, Kenvil, Fadora, Cripto, Swarm, Maquia, Metron e Zel. Diamond Dust ha
+Beluga, Clara, Gokka, Valen, Rhionne, IC, IQ, Droll, Blow, Frost e Gazel.
+Prominence ha Grent, Barra, Berkley, Bomber, Saiden, Rean, Satosu, Bonitona,
+Heat, Nepper e Burn. The Genesis ha Nero, Gale, Keeve, Zohan, Houser, Koma,
+Quill, Arc, Wheeze, Ulvida e Gran. Ogni giocatore porta scritto anche il nome
+originale giapponese.
+
+**La carovana gioca 4-3-3**, che è il modo di stare in campo di quella Raimon
+lì. Il tuo personaggio entra negli undici al posto del più debole del tuo ruolo
+fra quelli disponibili in quel momento: nei primi capitoli c'è posto perché
+mancano cinque persone, più avanti te lo devi meritare.
+
+**Difficoltà** (su 200 partite simulate per avversario, con un capitano
+attaccante): i due Gemini Storm dei primi due capitoli si perdono sempre, ed è
+così che deve andare. Poi Hakuren 71%, la rivincita con Gemini 60%, Epsilon
+49%, Epsilon Migliorata 29%, Diamond Dust 49% e Prominence 34% al sesto,
+Royal Academy 83% (è un allenamento), la rivincita all'ottavo 56% e 47%, e
+**The Genesis intorno al 33%**. Chaos, nel postgame, sta sotto il 20%.
+
+**Quello che non ho verificato lo dico.** Sono verificati: i titoli dei dieci
+capitoli, i due risultati contro Gemini Storm, chi si fa male, chi si unisce e
+in quale capitolo, i nomi ufficiali di tutti i personaggi (Victoria Vanguard =
+Zaizen Touko, Suzette Heartland = Urabe Rika, Darren LaChance = Tachimukai
+Yuuki, Erik Eagle = Ichinose Kazuya, Aiden Froste = Fubuki Atsuya, Desarm =
+Saginuma Osamu, Reize = Midorikawa Ryuuji, Gran = Kiyama Hiroto, Gazel =
+Suzuno Fuusuke, Burn = Nagumo Haruya), le rose delle squadre di Alius Academy,
+e le tecniche di ciascuno. Sono **una mia ricostruzione**: le rose complete
+delle scuole minori (Kasamino, Cloister, Yokato, le riserve di Hakuren), i
+nomi delle riserve in panchina, e i dialoghi, che sono tutti scritti da zero.
+Le guide dettagliate (GameFAQs, Neoseeker, Fandom) sono bloccate dal proxy di
+questo ambiente: la ricerca è stata fatta solo per parole chiave.
 
 ### Dopo il viaggio
 

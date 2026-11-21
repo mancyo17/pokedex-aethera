@@ -132,6 +132,7 @@ input[type=number]{width:76px}
 .sheethead .x{margin-left:auto;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:18px;line-height:1;flex:none}
 .sheetbody{padding:16px;display:grid;gap:16px}
 .cols{display:grid;grid-template-columns:200px 1fr;gap:18px}
+.cols.two{grid-template-columns:1fr 1fr}
 .cols>*{min-width:0}
 .idbox{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:13px;text-align:left;width:100%}
@@ -366,6 +367,21 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   box-shadow:0 0 0 4px rgba(24,36,72,.95),0 14px 34px rgba(0,0,0,.55)}
 .evo-box p{margin:0 0 10px;font-family:var(--f-display);font-size:clamp(16px,4.4vw,20px);line-height:1.3;min-height:2.6em}
 .evo-btns{display:flex;gap:8px;align-items:center}
+.tsheet>summary{cursor:pointer;display:flex;gap:8px;align-items:center;flex-wrap:wrap;list-style:none}
+.tsheet>summary::-webkit-details-marker{display:none}
+.tsheet>summary::before{content:'▸';color:var(--muted);transition:transform .2s}
+.tsheet[open]>summary::before{transform:rotate(90deg)}
+.rankup{display:flex;align-items:center;justify-content:center;gap:16px;padding:14px 0 4px}
+.rankup .rank{font-size:15px;padding:6px 12px}
+.ru-to{animation:ruPop .8s cubic-bezier(.2,1.6,.4,1) both;filter:drop-shadow(0 0 10px rgba(255,203,5,.7))}
+.ru-arrow{color:var(--gold);font-size:22px;animation:ruFade .6s ease both}
+@keyframes ruPop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1.15);opacity:1}}
+@keyframes ruFade{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.goals{list-style:none;margin:6px 0 10px;padding:0;display:grid;gap:6px}
+.goals li{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--panel2)}
+.goals li label{display:flex;gap:10px;align-items:center;flex:1;cursor:pointer}
+.goals li input{width:18px;height:18px;accent-color:var(--gold)}
+.goals li.done span{color:var(--muted);text-decoration:line-through}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:760px){
   nav.tabs{display:none}
@@ -375,7 +391,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   .bottomnav button span{font-family:var(--f-display);font-size:15px;line-height:1}
   .bottomnav button[aria-current="page"]{color:var(--gold)}
   main{padding-bottom:96px}
-  .cols{grid-template-columns:1fr}
+  .cols,.cols.two{grid-template-columns:1fr}
   .sprite.big{width:120px;height:120px}
   .mvgroup{grid-template-columns:1fr}
   .battles{grid-template-columns:1fr}
@@ -514,7 +530,7 @@ const SKILLS=['Brawl','Channel','Clash','Evasion','Alert','Athletic','Nature','S
 // nomi italiani di attributi e competenze (le chiavi inglesi restano dentro le schede salvate)
 const ATTR_IT={Strength:'Forza',Dexterity:'Destrezza',Vitality:'Vitalità',Special:'Speciale',Insight:'Intuito'};
 const SOCIAL_IT={Tough:'Grinta',Cool:'Classe',Beauty:'Bellezza',Clever:'Acume',Cute:'Grazia'};
-const SKILL_IT={Brawl:'Rissa',Channel:'Incanalare',Clash:'Contrasto',Evasion:'Schivata',Alert:'Allerta',Athletic:'Atletica',Nature:'Natura',Stealth:'Furtività',Charm:'Fascino',Etiquette:'Galateo',Intimidate:'Intimidazione',Perform:'Esibizione',Throw:'Lancio',Empathy:'Empatia'};
+const SKILL_IT={Brawl:'Rissa',Channel:'Incanalare',Clash:'Contrasto',Evasion:'Schivata',Alert:'Allerta',Athletic:'Atletica',Nature:'Natura',Stealth:'Furtività',Charm:'Fascino',Etiquette:'Galateo',Intimidate:'Intimidazione',Perform:'Esibizione',Throw:'Lancio',Empathy:'Empatia',Crafts:'Artigianato',Lore:'Cultura Pokémon',Medicine:'Medicina',Science:'Scienza'};
 const TERM_IT={...ATTR_IT,...SOCIAL_IT,...SKILL_IT,Will:'Volontà',Happiness:'Felicità',Loyalty:'Lealtà',MissingBeautyPoints:'Bellezza mancante',SameAsCopiedMove:'come la mossa copiata','SameAsCopiedMove+1':'come la mossa copiata +1',Varies:'varia',SetDamage:'danno fisso',"Target'sStrength":'Forza del bersaglio'};
 const TR=s=>String(s||'').split('/').map(x=>TERM_IT[x.trim()]||x.trim()).join('/');
 const TYPES=['Normal','Fire','Water','Grass','Electric','Ice','Fighting','Poison','Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'];
@@ -528,6 +544,33 @@ const SPEED_IT={Fast:'veloce',Medium:'medio',Slow:'lento'};
 const TP_EVO={Fast:10,Medium:30,Slow:50};
 const TP_RANK={Starter:5,Rookie:15,Standard:25,Advanced:30,Expert:35,Ace:40,Master:50};
 const RANK_PTS={Starter:[0,0,5],Rookie:[2,2,10],Standard:[4,4,14],Advanced:[6,6,17],Expert:[8,8,19],Ace:[10,10,20],Master:[10,10,22]};
+/* scheda dell'allenatore (Pokérole 3.0): attributi umani da 1 a 5, punti dal rango e dall'età, PS = 4 + Vitalità, rango con i traguardi */
+const T_RANKS=[...RANKS,'Champion'];
+const T_RANK_PTS={...RANK_PTS,Champion:[14,14,25]};
+const T_ATTR=['Strength','Dexterity','Vitality','Insight'];
+const T_SKILL_GROUPS=[['Lotta',['Brawl','Channel','Clash','Evasion','Throw']],['Sopravvivenza',['Alert','Athletic','Nature','Stealth']],['Sociali',['Empathy','Etiquette','Intimidate','Perform']],['Conoscenza',['Crafts','Lore','Medicine','Science']]];
+const T_SKILLS=T_SKILL_GROUPS.flatMap(g=>g[1]);
+const AGES={Child:['Bambino',0,0],Teen:['Adolescente',2,2],Adult:['Adulto',4,4],Senior:['Anziano',3,6]};
+const tri=r=>T_RANKS.indexOf(r);
+const tMaster=t=>tri(t.rank)>=tri('Master')?3:0;
+const tHpMax=t=>4+((t.attrs&&t.attrs.Vitality)||1)+tMaster(t);
+const tWillMax=t=>((t.attrs&&t.attrs.Insight)||1)+(S.house.willBonus??3)+tMaster(t);
+const tAttrMax=t=>t.rank==='Champion'?7:5;
+const tSkillCap=t=>t.rank==='Champion'?5:(S.house.skillCap[t.rank]??5);
+const tPts=t=>{const r=T_RANK_PTS[t.rank]||[0,0,0],a=AGES[t.age]||AGES.Teen;return [r[0]+a[1],r[1]+a[2],r[2]]};
+function ensureT(t){
+  if(!t)return t;
+  if(!T_RANKS.includes(t.rank))t.rank='Rookie';
+  if(!AGES[t.age])t.age='Teen';
+  t.attrs=Object.assign({Strength:1,Dexterity:1,Vitality:1,Insight:1},t.attrs||{});
+  t.social=Object.assign({Tough:1,Cool:1,Beauty:1,Clever:1,Cute:1},t.social||{});
+  t.skills=Object.assign(Object.fromEntries(T_SKILLS.map(s=>[s,0])),t.skills||{});
+  if(!Array.isArray(t.goals))t.goals=[];
+  if(typeof t.hp!=='number')t.hp=tHpMax(t);
+  if(typeof t.will!=='number')t.will=tWillMax(t);
+  return t;
+}
+const monOverRank=(m,t)=>!!(t&&m&&tri(m.rank)>tri(ensureT(t).rank));
 const CATCH_REQ={Starter:3,Rookie:4,Standard:6,Advanced:8,Expert:9,Ace:10};
 const AILMENTS=['Scottatura','Avvelenamento','Iperavvelenamento','Paralisi','Congelamento','Sonno'];
 const BALLS=[['Poké Ball',4],['Mega Ball',6],['Ultra Ball',8]];
@@ -971,7 +1014,7 @@ function renderTrainers(){
       <p class="lead">Una scheda per ogni giocatore, con squadra da 6 e Box. Apri una scheda per gestire i Pokémon, gli attributi, le mosse e i tiri.</p>
       ${L.length?'':`<div class="empty" style="margin-bottom:12px"><b>Ancora nessun allenatore</b>Crea la prima scheda, poi aggiungi Pokémon dal Pokédex o da qui.</div>`}
       <div class="profiles">${L.map(t=>{const team=(t.mons||[]).filter(m=>!m.box);const box=(t.mons||[]).filter(m=>m.box);
-        return `<button class="profile" data-trainer="${t.id}"><span class="pn">${esc(t.name||'Senza nome')}</span>
+        return `<button class="profile" data-trainer="${t.id}"><span class="pn">${esc(t.name||'Senza nome')} ${rankTag(ensureT(t).rank)}</span>
           <span class="small muted">${t.player?'Giocatore: '+esc(t.player)+' · ':''}<span class="mono">₽ ${Number(t.money||0).toLocaleString('it-IT')}</span></span>
           <span class="team6">${team.map(m=>sprite(SP[m.species],'sm')).join('')||'<span class="small muted">Squadra vuota</span>'}</span>
           <span class="small muted">${team.length}/6 in squadra · ${box.length} nel Box</span></button>`}).join('')}
@@ -988,17 +1031,18 @@ function renderTrainers(){
       <button class="btn ghost sm" data-act="export-trainer">Esporta scheda</button>
       <button class="btn danger sm" data-act="ask-del-trainer">Elimina</button></div>
     <div id="t-confirm"></div>
+    ${trainerSheetHTML(T)}
     <div class="sec"><h3>Squadra</h3><span class="counter">${team.length}/6</span></div>
-    <div class="slots">${team.map(monCard).join('')}${team.length<6?`<button class="slot-empty" data-act="pick-species" data-box="0">+ Aggiungi Pokémon</button>`:''}</div>
+    <div class="slots">${team.map(m=>monCard(m,T)).join('')}${team.length<6?`<button class="slot-empty" data-act="pick-species" data-box="0">+ Aggiungi Pokémon</button>`:''}</div>
     <div class="sec"><h3>Box</h3><span class="counter">${box.length}</span></div>
-    <div class="slots">${box.map(monCard).join('')}<button class="slot-empty" data-act="pick-species" data-box="1">+ Aggiungi al Box</button></div>
+    <div class="slots">${box.map(m=>monCard(m,T)).join('')}<button class="slot-empty" data-act="pick-species" data-box="1">+ Aggiungi al Box</button></div>
     <div class="sec"><h3>Note</h3></div>
     <textarea id="t-notes" placeholder="Medaglie, obiettivi, oggetti chiave…">${esc(T.notes||'')}</textarea>`;
 }
-function monCard(m){
-  const sp=SP[m.species];if(!sp)return '';const hm=hpMax(m),wm=willMax(m);
+function monCard(m,T){
+  const sp=SP[m.species];if(!sp)return '';const hm=hpMax(m),wm=willMax(m),ov=monOverRank(m,T);
   return `<button class="mon" data-mon="${m.id}" style="--c:${TC[sp.Type1]}">${sprite(sp,'sm')}<span class="info">
-    <span class="row" style="gap:6px"><span class="nm">${esc(m.nick||sp.Name)}</span>${m.nick?`<span class="small muted">${esc(sp.Name)}</span>`:''}${rankTag(m.rank)}</span>
+    <span class="row" style="gap:6px"><span class="nm">${esc(m.nick||sp.Name)}</span>${m.nick?`<span class="small muted">${esc(sp.Name)}</span>`:''}${rankTag(m.rank)}${ov?'<span class="small" style="color:var(--danger)" title="Rango più alto del suo allenatore">oltre il rango</span>':''}</span>
     <span class="row" style="gap:4px">${typesOf(sp).map(chip).join('')}${m.status.length?`<span class="small" style="color:var(--danger)">${esc(m.status.join(', '))}</span>`:''}</span>
     <span class="row small mono" style="gap:6px"><span style="width:68px;white-space:nowrap">PS ${m.hp}/${hm}</span><span class="bar grow"><i style="width:${hm?clamp(m.hp/hm*100,0,100):0}%"></i></span></span>
     <span class="row small mono" style="gap:6px"><span style="width:68px;white-space:nowrap">Vol ${m.will}/${wm}</span><span class="bar will grow"><i style="width:${wm?clamp(m.will/wm*100,0,100):0}%"></i></span></span>
@@ -1027,6 +1071,70 @@ function settingsHTML(){
     </div>${Store.mode==='db'&&Store.stash?`<div class="confirm" style="border-color:var(--gold);background:var(--gold-dim);margin-top:10px">Su questo dispositivo ci sono ${Object.keys(Store.stash.trainers).length} allenatori salvati prima del salvataggio condiviso. <button class="btn sm" data-act="migrate">Copiali nel salvataggio condiviso</button></div>`:''}<div id="import-msg"></div></div>`;
 }
 
+/* ---------- scheda dell'allenatore ---------- */
+function trainerSheetHTML(T){
+  ensureT(T);
+  const P=tPts(T),hm=tHpMax(T),wm=tWillMax(T),cap=tSkillCap(T),amax=tAttrMax(T),mb=tMaster(T);
+  const spent=T_ATTR.reduce((s,a)=>s+T.attrs[a]-1,0),sspent=SOCIAL.reduce((s,a)=>s+T.social[a]-1,0),kspent=T_SKILLS.reduce((s,a)=>s+T.skills[a],0);
+  const over=(x,y)=>x>y?' style="color:var(--danger)"':'';
+  const step=(act,a,v,min,max)=>`<span class="stepper"><button data-act="${act}" data-a="${a}" data-d="-1" ${v<=min?'disabled':''} aria-label="meno">−</button><b>${v}</b><button data-act="${act}" data-a="${a}" data-d="1" ${v>=max?'disabled':''} aria-label="più">+</button></span>`;
+  const n=T.goals.length,done=T.goals.filter(g=>g.done).length,ready=n>0&&done===n,next=T_RANKS[tri(T.rank)+1];
+  const ag=AGES[T.age];
+  return `<details class="panel tsheet" id="tsheet" ${UI.tsOpen===false?'':'open'}>
+    <summary><b>Scheda dell'allenatore</b> ${rankTag(T.rank)} <span class="small muted">PS ${T.hp}/${hm} · Volontà ${T.will}/${wm}${n?` · traguardi ${done}/${n}`:''}</span></summary>
+    <div class="row" style="margin-top:12px">
+      <label class="small muted">Rango <select id="t-rank">${T_RANKS.map(r=>`<option ${r===T.rank?'selected':''}>${r}</option>`).join('')}</select></label>
+      <label class="small muted">Età <select id="t-age">${Object.entries(AGES).map(([k,v])=>`<option value="${k}" ${k===T.age?'selected':''}>${v[0]}</option>`).join('')}</select></label>
+      <span class="small muted">Punti dal rango ${esc(T.rank)}${ag[1]||ag[2]?` più l'età (${ag[1]} attributi, ${ag[2]} sociali)`:''}.</span>
+    </div>
+    <div class="trackers">
+      <div class="track"><div class="top"><span class="small muted">PS</span><b>${T.hp}/${hm}</b><span class="btns"><button class="btn ghost sm" data-act="t-hp" data-d="-1">−1</button><button class="btn ghost sm" data-act="t-hp" data-d="1">+1</button><button class="btn ghost sm" data-act="t-hp" data-d="full">Pieni</button></span></div><div class="bar"><i style="width:${hm?clamp(T.hp/hm*100,0,100):0}%"></i></div></div>
+      <div class="track"><div class="top"><span class="small muted">Volontà</span><b>${T.will}/${wm}</b><span class="btns"><button class="btn ghost sm" data-act="t-will" data-d="-1">−1</button><button class="btn ghost sm" data-act="t-will" data-d="1">+1</button><button class="btn ghost sm" data-act="t-will" data-d="full">Piena</button></span></div><div class="bar will"><i style="width:${wm?clamp(T.will/wm*100,0,100):0}%"></i></div></div>
+    </div>
+    <div class="cols two">
+      <div><div class="lbl"${over(spent,P[0])}>Attributi · ${spent}/${P[0]} punti</div><div class="attrs">${T_ATTR.map(a=>`<div class="attr"><span>${ATTR_IT[a]}</span>${dotsHTML(1,amax,T.attrs[a],'#ffcb05')}${step('t-attr',a,T.attrs[a],1,amax)}</div>`).join('')}</div>
+        <div class="lbl" style="margin-top:12px;${sspent>P[1]?'color:var(--danger)':''}">Attributi sociali · ${sspent}/${P[1]} punti</div><div class="attrs">${SOCIAL.map(a=>`<div class="attr"><span>${SOCIAL_IT[a]}</span>${dotsHTML(T.social[a],5,null,'#c9a7ff')}${step('t-soc',a,T.social[a],1,5)}</div>`).join('')}</div></div>
+      <div><div class="lbl"${over(kspent,P[2])}>Competenze · ${kspent}/${P[2]} punti · limite ${cap} al rango ${esc(T.rank)}</div>
+        ${T_SKILL_GROUPS.map(([g,L])=>`<div class="small muted" style="margin:8px 0 2px">${g}</div><div class="attrs">${L.map(s=>`<div class="attr"><span>${SKILL_IT[s]}</span>${dotsHTML(T.skills[s],5,null,'#7fe3b6')}${step('t-skill',s,T.skills[s],0,cap)}</div>`).join('')}</div>`).join('')}</div>
+    </div>
+    <div class="statgrid">
+      <div class="stat"><span class="t">Difesa</span><span class="v">${T.attrs.Vitality+mb}</span><span class="f">Vitalità${mb?' + 3':''}</span></div>
+      <div class="stat"><span class="t">Dif. Speciale</span><span class="v">${spdefOf(T.attrs)+mb}</span><span class="f">${S.house.defOpt===1?'Vitalità':'Intuito'}${mb?' + 3':''}</span></div>
+      <div class="stat"><span class="t">Iniziativa</span><span class="v">${T.attrs.Dexterity+T.skills.Alert+mb}</span><span class="f">1d6 + Destrezza + Allerta${mb?' + 3':''}</span></div>
+      <div class="stat"><span class="t">Schivata</span><span class="v">${T.attrs.Dexterity+T.skills.Evasion}</span><span class="f">Destrezza + Schivata</span></div>
+      <div class="stat"><span class="t">Lancio</span><span class="v">${Math.max(T.attrs.Dexterity,T.attrs.Strength)+T.skills.Throw}</span><span class="f">Destrezza o Forza + Lancio (per le Ball)</span></div>
+    </div>
+    ${mb?`<div class="note">Rango ${esc(T.rank)}: 2 dadi in più a ogni tiro con una competenza; PS, Volontà, Iniziativa e difese +3 (già contati qui).${T.rank==='Champion'?' Gli attributi possono superare di 2 il limite, fino a 7.':''}</div>`:''}
+    <div class="sec" style="margin-top:16px"><h3>Traguardi per salire di rango</h3>${n?`<span class="counter">${done}/${n}</span>`:''}</div>
+    ${n?`<ul class="goals">${T.goals.map(g=>`<li class="${g.done?'done':''}"><label><input type="checkbox" data-goal="${esc(g.id)}" ${g.done?'checked':''}><span>${esc(g.text)}</span></label><button class="btn ghost sm" data-act="goal-del" data-g="${esc(g.id)}" aria-label="Elimina traguardo">✕</button></li>`).join('')}</ul>`
+      :`<p class="small muted" style="margin:4px 0 8px">Scrivi qui i traguardi che ti dà il GM per arrivare al rango ${next?esc(next):'successivo'}. Quando li hai spuntati tutti si accende «Sali di rango».</p>`}
+    <form id="goal-form" class="row" autocomplete="off"><input id="goal-new" placeholder="Nuovo traguardo, per esempio «Vinci la prima medaglia»" aria-label="Nuovo traguardo" style="flex:1 1 240px"><button class="btn ghost sm" type="submit">Aggiungi</button></form>
+    <div class="row" style="margin-top:10px">${next?`<button class="btn" data-act="rank-up" ${ready?'':'disabled'}>Sali di rango → ${esc(next)}</button>${ready?'':`<span class="small muted">${n?'Si accende quando tutti i traguardi sono fatti.':'Prima servono i traguardi del GM.'}</span>`}`:'<span class="small muted">Rango massimo raggiunto.</span>'}</div>
+  </details>`;
+}
+
+function setTrainerRank(T,r,byGoals){
+  ensureT(T);const from=T.rank,hb=tHpMax(T),wb=tWillMax(T);
+  T.rank=r;
+  if(byGoals){T.ranked=(T.ranked||[]).concat({from,to:r,at:Date.now(),goals:T.goals.map(g=>g.text)});T.goals=[]}
+  T.hp=clamp(T.hp+(tHpMax(T)-hb),0,tHpMax(T));T.will=clamp(T.will+(tWillMax(T)-wb),0,tWillMax(T));
+  saveTrainer(T);renderTrainers();
+  if(!byGoals){toast(`Rango impostato: ${r}.`);return}
+  const P=tPts(T),O=tPts({rank:from,age:T.age});
+  openOv(()=>{$('#sheet2').innerHTML=head('Rango salito!','#b8860b')+`<div class="sheetbody"><div class="rankup">
+    <div class="ru-from">${rankTag(from)}</div><div class="ru-arrow" aria-hidden="true">→</div><div class="ru-to">${rankTag(r)}</div></div>
+    <p style="text-align:center;margin:0"><b>${esc(T.name||'Il tuo allenatore')}</b> ora è di rango <b>${esc(r)}</b>.</p>
+    <ul class="small" style="margin:0">
+      <li>Attributi: ${P[0]-O[0]>0?`<b>+${P[0]-O[0]}</b> punti da distribuire`:'nessun punto nuovo'}</li>
+      <li>Attributi sociali: ${P[1]-O[1]>0?`<b>+${P[1]-O[1]}</b> punti`:'nessun punto nuovo'}</li>
+      <li>Competenze: ${P[2]-O[2]>0?`<b>+${P[2]-O[2]}</b> punti`:'nessun punto nuovo'}, limite ${tSkillCap(T)} per competenza</li>
+      <li>I tuoi Pokémon ora possono essere allenati fino al rango ${esc(r==='Champion'?'Master':r)}.</li>
+      ${tri(r)===tri('Master')?'<li>Rango Master: 2 dadi in più a ogni tiro con una competenza; PS, Volontà, Iniziativa e difese +3.</li>':''}
+      ${r==='Champion'?'<li>Rango Champion: gli attributi possono superare di 2 il limite, fino a 7.</li>':''}
+    </ul>
+    <p class="small muted" style="margin:0">Chiedi al GM i traguardi per il prossimo rango e scrivili nella scheda.</p></div>`},2);
+}
+
 /* ---------- scheda del Pokémon dell'allenatore ---------- */
 function findMon(id){for(const t of Object.values(S.trainers)){const m=(t.mons||[]).find(x=>x.id===id);if(m)return[t,m]}return[null,null]}
 function openMon(id){openOv(()=>{
@@ -1048,13 +1156,14 @@ function openMon(id){openOv(()=>{
     </div>
     <div class="row small muted">${typesOf(sp).map(chip).join('')}<span>${esc(sp.Name)}${isPlayerView()?'':` · rango consigliato ${esc(sp.RecommendedRank)}`}</span>
       <button class="btn ghost sm" data-sp="${esc(sp.Key)}">Scheda della specie</button></div>
+    ${monOverRank(m,T)?`<div class="note" style="border-left-color:var(--danger);color:#ffc2c2">Rango più alto del suo allenatore (${esc(T.rank)}): secondo il manuale un Pokémon non si allena oltre il rango di chi lo allena.</div>`:''}
     ${m.ability?`<div class="note">${esc((DATA.Abilities[m.ability]||{}).EffectIT||(DATA.Abilities[m.ability]||{}).Effect||'')}</div>`:''}
     <div class="trackers">
       <div class="track"><div class="top"><span class="small muted">PS</span><b>${m.hp}/${hm}</b><span class="btns"><button class="btn ghost sm" data-act="hp" data-d="-1">−1</button><button class="btn ghost sm" data-act="hp" data-d="1">+1</button><button class="btn ghost sm" data-act="hp" data-d="full">Pieni</button></span></div><div class="bar"><i style="width:${hm?clamp(m.hp/hm*100,0,100):0}%"></i></div></div>
       <div class="track"><div class="top"><span class="small muted">Volontà</span><b>${m.will}/${wm}</b><span class="btns"><button class="btn ghost sm" data-act="will" data-d="-1">−1</button><button class="btn ghost sm" data-act="will" data-d="1">+1</button><button class="btn ghost sm" data-act="will" data-d="full">Piena</button></span></div><div class="bar will"><i style="width:${wm?clamp(m.will/wm*100,0,100):0}%"></i></div></div>
     </div>
     <div><div class="lbl">Stati</div><div class="status">${STATUS.map(s=>`<button class="st" data-act="status" data-s="${s}" aria-pressed="${m.status.includes(s)}">${s}</button>`).join('')}</div></div>
-    <div class="cols" style="grid-template-columns:1fr 1fr">
+    <div class="cols two">
       <div><div class="lbl"${over(spent,RP[0])}>Attributi · ${spent}/${RP[0]} punti del rango</div><div class="attrs">${ATTR.map(a=>`<div class="attr"><span>${ATTR_IT[a]}</span>${dotsHTML(sp[a],sp['Max'+a],m.attrs[a],col)}
         <span class="stepper"><button data-act="attr" data-a="${a}" data-d="-1" ${m.attrs[a]<=sp[a]?'disabled':''} aria-label="meno">−</button><b>${m.attrs[a]}</b><button data-act="attr" data-a="${a}" data-d="1" ${m.attrs[a]>=sp['Max'+a]?'disabled':''} aria-label="più">+</button></span></div>`).join('')}</div>
         <div class="lbl" style="margin-top:12px;${sspent>RP[1]?'color:var(--danger)':''}">Attributi sociali · ${sspent}/${RP[1]} punti del rango</div><div class="attrs">${SOCIAL.map(a=>`<div class="attr"><span>${SOCIAL_IT[a]}</span>${dotsHTML(m.social[a],5,null,'#c9a7ff')}
@@ -1269,6 +1378,14 @@ document.addEventListener('click',e=>{
     case 'add-mon':{const id=$('#add-to').value;if(addMon(id,el.dataset.sp)){UI.trainer=id}break}
     case 'new-trainer':{const t={id:uid(),name:'Nuovo allenatore',player:'',money:3000,notes:'',mons:[],created:Date.now()};saveTrainer(t);UI.trainer=t.id;renderTrainers();setTimeout(()=>{const i=$('#t-name');i&&(i.focus(),i.select())},0);break}
     case 'back':UI.trainer=null;renderTrainers();break;
+    case 't-hp':case 't-will':{if(!T)break;ensureT(T);const k=act==='t-hp'?'hp':'will',mx=act==='t-hp'?tHpMax(T):tWillMax(T);T[k]=el.dataset.d==='full'?mx:clamp(T[k]+ +el.dataset.d,0,mx);saveTrainer(T);renderTrainers();break}
+    case 't-attr':case 't-soc':case 't-skill':{if(!T)break;ensureT(T);const a=el.dataset.a,d=+el.dataset.d;
+      if(act==='t-attr'){const hb=tHpMax(T),wb=tWillMax(T);T.attrs[a]=clamp(T.attrs[a]+d,1,tAttrMax(T));T.hp=clamp(T.hp+(tHpMax(T)-hb),0,tHpMax(T));T.will=clamp(T.will+(tWillMax(T)-wb),0,tWillMax(T))}
+      else if(act==='t-soc')T.social[a]=clamp(T.social[a]+d,1,5);else T.skills[a]=clamp(T.skills[a]+d,0,tSkillCap(T));
+      saveTrainer(T);renderTrainers();break}
+    case 'goal-del':{if(!T)break;ensureT(T);T.goals=T.goals.filter(g=>g.id!==el.dataset.g);saveTrainer(T);renderTrainers();break}
+    case 'rank-up':{if(!T)break;ensureT(T);const next=T_RANKS[tri(T.rank)+1];if(!next||!T.goals.length||!T.goals.every(g=>g.done))break;setTrainerRank(T,next,true);break}
+    case 't-rank-ok':{if(!T)break;setTrainerRank(T,el.dataset.r,false);break}
     case 'ask-del-trainer':$('#t-confirm').innerHTML=`<div class="confirm">Eliminare ${esc(T.name)} con tutti i suoi Pokémon? Non si può annullare. <button class="btn danger sm" data-act="del-trainer">Elimina</button><button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`;break;
     case 'del-trainer':delete S.trainers[T.id];Store.del('trainers',T.id);UI.trainer=null;renderTrainers();toast('Allenatore eliminato.');break;
     case 'cancel-confirm':el.closest('.confirm').remove();break;
@@ -1343,6 +1460,7 @@ document.addEventListener('change',e=>{
   if(t.dataset.act==='b-swap'&&t.value){const b=S.battles[t.closest('[data-battle]').dataset.battle];if(!b)return;b.moves=[...(b.moves||[])];if(b.moves.length>=4)b.moves.shift();b.moves.push(t.value);saveBattle(b);renderBattles();return}
   if(t.dataset.ball){UI.ball=UI.ball||{};UI.ball[t.dataset.ball]=parseInt(t.value)||4;return}
   if(t.dataset.tdef){setTdef(t);return}
+  if(t.dataset.goal){const T0=S.trainers[UI.trainer];if(T0){ensureT(T0);const g=T0.goals.find(x=>x.id===t.dataset.goal);if(g){g.done=t.checked;saveTrainer(T0);renderTrainers()}}return}
   if(t.dataset.cap){S.house.skillCap[t.dataset.cap]=clamp(parseInt(t.value)||0,0,5);saveHouse();return}
   if(t.dataset.wild){S.house.wildSkill[t.dataset.wild]=clamp(parseInt(t.value)||0,0,5);saveHouse();return}
   const T=S.trainers[UI.trainer];
@@ -1355,6 +1473,10 @@ document.addEventListener('change',e=>{
     case 'h-def':S.house.defOpt=parseInt(t.value)===1?1:2;saveHouse();renderCurrent();break;
     case 'h-stab':S.house.stab=clamp(parseInt(t.value)||0,0,3);saveHouse();break;
     case 't-money':if(T){T.money=parseInt(t.value)||0;saveTrainer(T)}break;
+    case 't-age':if(T){ensureT(T);T.age=AGES[t.value]?t.value:'Teen';saveTrainer(T);renderTrainers()}break;
+    case 't-rank':if(T){ensureT(T);const r=t.value;if(!T_RANKS.includes(r)||r===T.rank)break;
+      if(!isPlayerView()){setTrainerRank(T,r,false);break}
+      t.value=T.rank;$('#t-confirm').innerHTML=`<div class="confirm">Il rango si sale completando i traguardi. Cambialo a mano solo per il rango di partenza o con l'ok del GM. <button class="btn sm" data-act="t-rank-ok" data-r="${esc(r)}">Passa a ${esc(r)}</button><button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`}break;
     case 'import-file':{const f=t.files&&t.files[0];if(f){const r=new FileReader();r.onload=()=>handleImport(String(r.result));r.readAsText(f)}t.value='';break}
   }
   if(OV.monId&&['m-rank','m-ability','m-gender'].includes(t.id)){const [Tm,m]=findMon(OV.monId);if(!m)return;
@@ -1363,8 +1485,10 @@ document.addEventListener('change',e=>{
     saveTrainer(Tm);OV.render();renderCurrent();}
 });
 let typingT=null;
+document.addEventListener('toggle',e=>{if(e.target&&e.target.id==='tsheet')UI.tsOpen=e.target.open},true);
 // segnare un Pokémon visto con il numero del Pokédex detto dal GM
 document.addEventListener('submit',e=>{
+  if(e.target.id==='goal-form'){e.preventDefault();const T0=S.trainers[UI.trainer],i=$('#goal-new'),txt=(i.value||'').trim();if(!T0||!txt)return;ensureT(T0);T0.goals.push({id:uid(),text:txt.slice(0,160),done:false});saveTrainer(T0);renderTrainers();setTimeout(()=>{const j=$('#goal-new');if(j)j.focus()},0);return}
   if(e.target.id==='gm-form'){e.preventDefault();const i=$('#gm-code');unlockGM(i.value).then(ok=>{if(ok){closeOv(2);renderCurrent()}else{$('#gm-msg').textContent='Codice sbagliato.';i.select()}});return}
   if(e.target.id!=='qmark')return;e.preventDefault();
   const i=$('#qm-n'),n=parseInt(i.value);
@@ -1475,7 +1599,7 @@ const GUIDE=[
  {ch:'app',t:'Il Pokédex',h:()=>(isPlayerView()?li(['I Pokémon che non avete ancora incontrato sono <b>ombre</b> con «???».','Quando il GM vi dice il numero di un Pokémon, scrivetelo nel riquadro giallo in alto e premete <b>Visto!</b> (oppure toccate la sua ombra).'+(STANDALONE?' Ognuno lo segna sul proprio telefono.':' Basta che lo faccia uno di voi: si svela per tutto il gruppo.'),'Un Pokémon visto mostra immagine, nome, tipi e testo. Quando lo catturate e lo aggiungete a una squadra si sblocca la scheda completa (segnata con la Poké Ball).','Segnato per sbaglio? Nella sua scheda c\'è il tasto per rimetterlo nell\'ombra.'])
    :li(['Tu vedi tutto. Accanto al numero di ogni specie c\'è cosa sanno i giocatori: anello verde visto, Poké Ball catturato, cerchio tratteggiato ancora nascosto.',(STANDALONE?'Qui il segno è il tuo promemoria di cosa ha visto il gruppo: una specie diventa <b>vista</b> quando apri uno scontro con lei e <b>catturata</b> quando entra in una squadra. I giocatori segnano i loro sul proprio telefono quando dici il numero.':'Una specie diventa <b>vista</b> quando apri uno scontro con lei o quando un giocatore la segna con il numero del Pokédex; diventa <b>catturata</b> quando entra nella squadra di un allenatore. Dalla scheda della specie puoi cambiarlo a mano, anche annullando un segno dei giocatori.'),'Con <b>Vista: GM</b> in alto passi alla vista dei giocatori e controlli cosa vedono.','Tocca una specie per la scheda completa: tipi, PS base, attributi, abilità, evoluzioni e mosse.']))+
   `<div class="visual"><span class="small">Forza</span>${dotsHTML(2,5,null,'#82cf55')}<span class="mono small muted">2/5 · parte da 2, può arrivare a 5</span></div>`},
- {ch:'app',t:'La scheda dell\'allenatore',h:()=>li(['Nella sezione <b>Allenatori</b> crea la scheda del tuo allenatore: nome, giocatore e soldi.','Aggiungi Pokémon dal Pokédex (in fondo alla scheda della specie) oppure con <b>+ Aggiungi Pokémon</b>.','In squadra stanno 6 Pokémon; gli altri vanno nel <b>Box</b>.','Tocca un Pokémon per aprire la sua scheda.'])},
+ {ch:'app',t:'La scheda dell\'allenatore',h:()=>li(['Nella sezione <b>Allenatori</b> crea la scheda del tuo allenatore: nome, giocatore e soldi. Sotto c\'è la <b>scheda dell\'allenatore</b>: rango, età, attributi, competenze, PS e Volontà.','Il GM ti dà i <b>traguardi</b> per il prossimo rango: scrivili nella scheda e spuntali man mano. Quando sono tutti fatti si accende <b>Sali di rango</b>.','Aggiungi Pokémon dal Pokédex (in fondo alla scheda della specie) oppure con <b>+ Aggiungi Pokémon</b>.','In squadra stanno 6 Pokémon; gli altri vanno nel <b>Box</b>.','Tocca un Pokémon per aprire la sua scheda.'])},
  {ch:'app',t:'La scheda del Pokémon',h:()=>li(['Scegli il <b>rango</b>: decide quali mosse può imparare e il limite delle competenze.','Alza gli attributi con + e − fino al limite della specie, e assegna le competenze: sopra ogni gruppo vedi quanti punti hai usato su quelli che il rango concede.','Segna i <b>punti allenamento</b>: la scheda ti dice quanti ne servono per il rango successivo e per evolvere.','PS, Volontà e stati si segnano con i tasti, anche in mezzo a una lotta.','Le mosse conosciute mostrano già i dadi di Precisione e Danno: premi <b>Tira</b> e l\'app conta i successi. Se scrivi la Difesa del bersaglio, la toglie da sola dal Danno.','Quando è il momento, il tasto <b>Evolvi</b> porta il Pokémon alla forma successiva.'])},
  {ch:'app',gm:true,t:'Il tavolo del GM',h:()=>li(['Nella sezione <b>Lotte</b> il GM apre uno scontro per ogni Pokémon selvatico: specie, rango e, se vuole, l\'allenatore che lo affronta.','Ogni carta tiene PS, Volontà, stati, round e quattro mosse già pronte da tirare.','Il riquadro <b>Cattura</b> calcola i successi richiesti dal rango e i bonus (PS bassi, stati) e tira il sigillo della Ball scelta.','In fondo c\'è il lancio libero: dadi normali oppure Dadi Probabilità.'])},
  {ch:'app',t:'Consultazione e salvataggi',h:()=>li(['<b>Mosse</b>, <b>Abilità</b> e <b>Tipi</b> servono da consultazione veloce durante la partita. I testi sono in italiano; l\'originale è sotto «Testo originale».','Le abilità segnate «nuova» sono state create apposta per la regione.',(STANDALONE?'I dati restano <b>su questo dispositivo</b>: esporta ogni tanto una copia, così non li perdi se cambi telefono o svuoti il browser.':'In alto a destra vedi dove finiscono i dati: <b>Salvataggio condiviso</b> (li vede chi ha accesso alla pagina) oppure <b>Solo su questo dispositivo</b>.'),isPlayerView()?(STANDALONE?'Con <b>Esporta scheda</b> ti salvi una copia della tua scheda o la passi al GM; con <b>Importa</b> (in fondo alla lista degli allenatori) la ricarichi.':'Con <b>Esporta scheda</b> ti salvi una copia della tua scheda o la passi al GM.'):'Con <b>Esporta scheda</b> ti salvi una copia o la passi al GM; con <b>Importa</b> (in fondo alla lista degli allenatori) la ricarichi.'])},
@@ -1487,7 +1611,7 @@ const GUIDE=[
  {ch:'rules',t:'Il danno',h:()=>`<div class="visual formula"><span>Forza 3</span>+<span>Potenza 2</span>+<span>STAB 1</span>−<span>Difesa 2</span>=<b>4 dadi</b></div>`+li(['Si tirano l\'attributo di danno della mossa (Forza per le fisiche, Speciale per le speciali) più la sua <b>Potenza</b>, +1 dado se la mossa è dello stesso tipo del Pokémon (<b>STAB</b>), meno la Difesa o la Difesa Speciale del bersaglio. Si tira sempre almeno 1 dado.','Ogni successo è 1 danno; anche con 0 successi il colpo fa 1 danno.','<b>Superefficace</b>: +1 danno (+2 se sono deboli entrambi i tipi), solo con almeno 1 successo. <b>Poco efficace</b>: −1 danno (−2). <b>Immune</b>: nessun danno.','<b>Critico</b>: 3 successi in più di quelli richiesti alla Precisione (2 per le mosse con Critico alto) danno +2 dadi al Danno.'])},
  {ch:'rules',t:'Schivata e Contrasto',h:()=>li(['Sono due manovre a <b>Reazione 6</b>: devi pareggiare o superare i successi di Precisione dell\'attaccante. Non seguono la tabella delle azioni multiple, ma consumano comunque un\'azione.','<b>Schivata</b>: Destrezza + Schivata. Se riesce non subisci né danno né effetti.','<b>Contrasto</b>: Forza o Speciale + Contrasto, usando una tua mossa fisica o speciale. Se riesce, entrambi subite 1 danno (contano i tipi) e quella mossa risulta usata per il round.','Non si schivano le mosse con «Non manca mai», quelle che usano un attributo sociale e quelle sul campo. Non si contrastano le mosse di supporto, sociali o a danno fisso.'])},
  {ch:'rules',t:'Stati e Dadi Probabilità',h:()=>`<div class="visual">${diceHTML([2,6,4],'chance')}<span>→ c'è un 6: <b>l'effetto scatta</b></span></div>`+li(['<b>Dadi Probabilità</b>: se una mossa dice «tira 3 Dadi Probabilità», basta un 6 perché l\'effetto scatti.','<b>Scottatura</b> 1°/2°/3° grado: 1, 2 o 3 danni a fine round (dal 2° Letali); ci si spegne accumulando con Destrezza + Atletica 4, 6 o 8 successi. <b>Avvelenamento</b>: 2 danni a fine round. <b>Iperavvelenamento</b>: 2 danni Letali che crescono di 2 ogni round.','<b>Paralisi</b>: −2 Destrezza per 12 ore. <b>Congelamento</b>: chiuso in un blocco di ghiaccio (5 PS, Difese 2). <b>Sonno</b>: a inizio turno tira Intuito, ti svegli quando hai accumulato 5 successi.','<b>Confusione</b>: toglie 1 successo (2 da Advanced ad Ace, 3 da Master) e fa 1 danno se l\'azione fallisce; con 2 successi in Intuito a inizio round agisci normalmente. <b>Infatuazione</b>: contro chi ama fa metà danno, niente effetti né critici. <b>Tentennamento</b>: perde il prossimo turno e non può reagire fino ad allora.'])},
- {ch:'rules',t:'Allenare e far crescere',h:()=>li(['Il Pokémon guadagna <b>punti allenamento</b> con le sessioni di allenamento e con le lotte (di più se l\'avversario è di rango più alto, se vince, se gli avversari sono più d\'uno).','<b>Salire di rango</b> costa 5 punti (a Rookie), 15 (Standard), 25 (Advanced), 30 (Expert), 35 (Ace), 40 (Master). Un Pokémon non può superare il rango del suo allenatore.','<b>Evolvere</b> costa 10 punti per i Pokémon a tempo veloce, 30 a tempo medio, 50 a tempo lento, oltre al metodo della specie (pietra, scambio…).','<b>Mosse conosciute</b>: al massimo Intuito + 3, scelte tra quelle del suo rango o inferiori. <b>Felicità</b> e <b>Lealtà</b> vanno da 0 a 5 e crescono solo giocando di ruolo.'])},
+ {ch:'rules',t:'Allenare e far crescere',h:()=>li(['Il Pokémon guadagna <b>punti allenamento</b> con le sessioni di allenamento e con le lotte (di più se l\'avversario è di rango più alto, se vince, se gli avversari sono più d\'uno).','<b>Salire di rango</b> costa 5 punti (a Rookie), 15 (Standard), 25 (Advanced), 30 (Expert), 35 (Ace), 40 (Master). Un Pokémon non può superare il rango del suo allenatore.','L\'<b>allenatore</b> invece sale di rango completando i <b>traguardi</b> decisi dal GM. Ogni rango gli dà punti per attributi, sociali e competenze (più quelli dell\'età) e alza il limite delle competenze. PS = 4 + Vitalità, Volontà = Intuito + 3.','<b>Evolvere</b> costa 10 punti per i Pokémon a tempo veloce, 30 a tempo medio, 50 a tempo lento, oltre al metodo della specie (pietra, scambio…).','<b>Mosse conosciute</b>: al massimo Intuito + 3, scelte tra quelle del suo rango o inferiori. <b>Felicità</b> e <b>Lealtà</b> vanno da 0 a 5 e crescono solo giocando di ruolo.'])},
  {ch:'rules',t:'Catturare',h:()=>`<div class="visual small"><span>Starter <b class="mono">3</b></span><span>Rookie <b class="mono">4</b></span><span>Standard <b class="mono">6</b></span><span>Advanced <b class="mono">8</b></span><span>Expert <b class="mono">9</b></span><span>Ace <b class="mono">10</b></span><span class="muted">successi richiesti</span></div>`+li(['L\'allenatore usa un\'azione per lanciare la Ball: Destrezza o Forza + Lancio.','Poi si tira il <b>sigillo</b> della Ball: Poké Ball 4 dadi, Mega Ball 6, Ultra Ball 8.','<b>Bonus</b>: +1 successo se il selvatico è a metà PS, +2 se è a 1 PS, +1 per ogni problema di stato. Contro un Pokémon esausto i bonus si perdono.','Con abbastanza successi è catturato (Felicità 2, Lealtà 1; se era esausto, Felicità 0 e Lealtà 0). Con 3 in meno del necessario si libera e la Ball è da buttare; altrimenti scappa e la Ball si recupera a fine scena.'])},
  {ch:'rules',t:'Pronti a partire',h:()=>`<p>Questo è il riassunto delle regole base del manuale di Pokérole 3.0. Per tutto il resto (trappole, tempo atmosferico, oggetti, casi particolari) vale il manuale, e il GM può sempre adattare le regole al vostro tavolo.</p>
   <p>Puoi riaprire la guida in qualsiasi momento dal tasto <b>Guida</b> in alto.</p>`},

@@ -1,0 +1,1538 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aethera Pokérole</title>
+<meta name="description" content="Pokédex della nuova regione convertito in Pokérole 3.0: schede delle specie, allenatori, squadre e tavolo del GM.">
+<meta name="theme-color" content="#9e1424">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pokérole">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+/* Layout: dispositivo Pokédex scuro (come l'app di Aethera) — testata rossa a sfera, schermo verde notte, griglie che scendono a una colonna su telefono */
+:root{
+  color-scheme:dark;
+  --bg:#0b1322; --panel:#141e36; --panel2:#101830; --raise:#1b2747;
+  --text:#edf1fa; --muted:#97a8c8; --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
+  --ball:#e8283a; --ball-dark:#9e1424; --gold:#ffcb05; --gold-dim:rgba(255,203,5,.14);
+  --screen:#0a1d17; --screen2:#0e2b22; --lcd:#7fe3b6;
+  --ok:#3fd98a; --warn:#ffa62b; --danger:#ff5d5d; --info:#5aa2ff;
+  --f-display:"Chakra Petch",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:14px; --shadow:0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{
+  font-family:var(--f-body); color:var(--text); line-height:1.5; font-size:14px;
+  background:
+    radial-gradient(1000px 420px at 50% -160px, rgba(232,40,58,.20), transparent 70%),
+    radial-gradient(800px 380px at 105% 20%, rgba(90,162,255,.12), transparent 66%),
+    var(--bg);
+  background-attachment:fixed;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:#3a1220}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- testata ---------- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:linear-gradient(180deg,rgba(232,40,58,.45),rgba(11,19,34,.97));border-bottom:2px solid rgba(255,203,5,.35);backdrop-filter:blur(8px)}
+header.top .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:10px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.ballicon{width:34px;height:34px;border-radius:50%;flex:none;position:relative;
+  background:linear-gradient(180deg,var(--ball) 0 47%,#111 47% 53%,#eee 53% 100%);border:2px solid #111;box-shadow:0 2px 10px rgba(232,40,58,.45)}
+.ballicon::after{content:"";position:absolute;inset:0;margin:auto;width:11px;height:11px;border-radius:50%;background:#fff;border:2.5px solid #111}
+.brand b{font-family:var(--f-display);font-size:19px;letter-spacing:.3px;display:block;line-height:1.1}
+.brand small{color:var(--muted);font-size:12px;display:block}
+nav.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-left:auto}
+nav.tabs button{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;font-size:13.5px;transition:background .15s,border-color .15s}
+nav.tabs button:hover{border-color:var(--line2)}
+nav.tabs button[aria-current="page"]{background:linear-gradient(180deg,rgba(232,40,58,.32),rgba(232,40,58,.12));border-color:var(--ball);color:#ffe2e5}
+.savepill{font-size:11.5px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.savepill.db{color:var(--ok);border-color:rgba(63,217,138,.4)}
+.bottomnav{display:none}
+
+main{padding-block:18px 40px}
+section.view[hidden]{display:none!important}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+h2{font-size:22px}
+h3{font-size:16px}
+.lead{color:var(--muted);margin:4px 0 14px;max-width:70ch}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow)}
+.panel+.panel{margin-top:12px}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+input,select,textarea{font:inherit;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);outline:none}
+select option{background:var(--panel)}
+textarea{width:100%;min-height:70px;resize:vertical}
+input[type=number]{width:76px}
+.btn{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold);border-radius:10px;padding:7px 12px;cursor:pointer;font-size:13.5px;white-space:nowrap}
+.btn:hover{filter:brightness(1.15)}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;border-color:var(--line2);color:var(--text)}
+.btn.red{background:rgba(232,40,58,.16);border-color:var(--ball);color:#ffd6db}
+.btn.danger{background:rgba(255,93,93,.1);border-color:var(--danger);color:var(--danger)}
+.btn.sm{padding:4px 9px;font-size:12.5px;border-radius:8px}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.chip{display:inline-flex;align-items:center;padding:1px 9px;border-radius:999px;font-size:11.5px;font-weight:700;color:#0b1322;letter-spacing:.2px;white-space:nowrap}
+.rank{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:7px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.rank[data-r="Ace"],.rank[data-r="Master"]{color:var(--gold);border-color:rgba(255,203,5,.5)}
+.rank[data-r="Expert"]{color:#ff9db0;border-color:rgba(255,157,176,.45)}
+.rank[data-r="Advanced"]{color:#9cc6ff;border-color:rgba(156,198,255,.45)}
+.badge-new{font-size:10.5px;font-weight:700;color:var(--warn);border:1px solid rgba(255,166,43,.5);border-radius:6px;padding:0 6px}
+.empty{border:1px dashed var(--line2);border-radius:var(--r);padding:26px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--text);font-family:var(--f-display);font-size:17px;margin-bottom:4px}
+
+/* ---------- Pokédex ---------- */
+.device{border:1px solid rgba(232,40,58,.45);border-radius:20px;padding:14px;background:linear-gradient(180deg,rgba(232,40,58,.18),rgba(255,255,255,.02) 120px);box-shadow:var(--shadow);margin-bottom:14px}
+.lights{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.lens{width:42px;height:42px;border-radius:50%;flex:none;background:radial-gradient(circle at 32% 30%,#c4ebff,#2f7fd0 55%,#124a86);border:3px solid #e9e9e9;box-shadow:0 0 14px rgba(58,167,255,.5)}
+.led{width:11px;height:11px;border-radius:50%}
+.led.r{background:#ff5f5f;box-shadow:0 0 8px #ff5f5f}.led.y{background:var(--gold);box-shadow:0 0 8px var(--gold)}.led.g{background:#5ee08a;box-shadow:0 0 8px #5ee08a}
+.screen{border-radius:14px;padding:12px;background:linear-gradient(180deg,var(--screen),var(--screen2));border:1px solid var(--line);box-shadow:inset 0 2px 16px rgba(0,0,0,.55)}
+.lcd{font-family:var(--f-mono);font-size:12px;color:var(--lcd);letter-spacing:.5px;margin-bottom:8px}
+.dexgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.dexcard{display:flex;gap:10px;align-items:center;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:9px 10px;cursor:pointer;transition:transform .12s,border-color .12s;min-width:0}
+.dexcard:hover{transform:translateY(-2px);border-color:rgba(232,40,58,.55)}
+.dexcard .info{min-width:0;display:flex;flex-direction:column;gap:3px}
+.dexcard .num{font-family:var(--f-mono);font-size:11.5px;color:var(--gold);font-weight:700}
+.dexcard .nm{font-weight:600;font-size:14px;line-height:1.2;overflow-wrap:anywhere}
+.dexcard .tl{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.sprite{width:58px;height:58px;flex:none;object-fit:contain;border-radius:12px;background:radial-gradient(circle at 50% 60%,rgba(255,255,255,.08),transparent 68%);filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+.sprite.ph{position:relative;background:linear-gradient(180deg,rgba(232,40,58,.3) 0 47%,rgba(255,255,255,.08) 53% 100%);border:1px solid var(--line);opacity:.6;filter:none;border-radius:50%}
+.sprite.big{width:150px;height:150px}
+.sprite.sm{width:40px;height:40px}
+.sprite.xs{width:30px;height:30px}
+
+/* ---------- overlay schede ---------- */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(3,6,14,.72);display:flex;align-items:flex-start;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 18px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 18px) max(12px,env(safe-area-inset-left,0px));overflow-y:auto}
+.ov[hidden]{display:none!important}
+.sheet{width:100%;max-width:880px;background:var(--panel);border:1px solid var(--line2);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.6);overflow:hidden}
+.sheet.narrow{max-width:560px}
+.sheethead{display:flex;align-items:center;gap:12px;padding:12px 16px;color:#fff}
+.sheethead h2{font-size:21px}
+.sheethead .x{margin-left:auto;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:18px;line-height:1;flex:none}
+.sheetbody{padding:16px;display:grid;gap:16px}
+.cols{display:grid;grid-template-columns:200px 1fr;gap:18px}
+.cols>*{min-width:0}
+.idbox{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:13px;text-align:left;width:100%}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;margin-bottom:6px}
+.attrs{display:grid;gap:6px}
+.attr{display:grid;grid-template-columns:86px 1fr auto;align-items:center;gap:10px}
+.attr span{font-size:13px}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--c,#999)}
+.dot.on{background:var(--c,#999)}
+.dot.extra{background:repeating-linear-gradient(45deg,var(--c,#999) 0 2px,transparent 2px 4px)}
+.ab{border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
+.ab:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.ab b{font-size:14px}
+.ab p{margin:3px 0 0;color:#cdd6ea;font-size:13px}
+.ab .en{color:var(--muted);font-size:12px;font-style:italic}
+.flavor{font-style:italic;color:#cdd6ea;margin:0}
+.evo{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.evo .node{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:12px;padding:4px 10px 4px 4px;background:rgba(255,255,255,.03);cursor:pointer}
+.evo .node.cur{border-color:var(--gold)}
+.evo .node.off{cursor:default;opacity:.7;padding-left:10px}
+.evo .arr{color:var(--muted);font-size:12px;max-width:260px}
+.mvgroup{display:grid;grid-template-columns:90px 1fr;gap:6px 10px;align-items:start;padding:6px 0;border-top:1px solid var(--line)}
+.mvgroup:first-child{border-top:0}
+.mvgroup .rk{font-size:12px;color:var(--muted);padding-top:3px}
+.mvlist{display:flex;gap:5px;flex-wrap:wrap}
+.mv{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:3px 9px 3px 4px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer}
+.mv:hover{border-color:var(--line2)}
+.mv i{width:8px;height:16px;border-radius:3px;flex:none}
+.mv.new{border-color:rgba(255,166,43,.5)}
+.movecard{border:1px solid var(--line2);border-radius:12px;padding:12px;background:var(--panel2)}
+.movecard h3{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pools{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pool{border:1px solid var(--line);border-radius:9px;padding:4px 9px;font-size:12.5px}
+.pool b{font-family:var(--f-mono);color:var(--gold)}
+.note{font-size:12px;color:var(--muted);border-left:3px solid var(--line2);padding-left:10px}
+
+/* ---------- allenatori ---------- */
+.profiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.profile{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;text-align:left;cursor:pointer;transition:transform .12s,border-color .12s}
+.profile:hover{transform:translateY(-2px);border-color:rgba(90,162,255,.5)}
+.profile .pn{font-family:var(--f-display);font-size:19px;font-weight:700}
+.team6{display:flex;gap:4px;flex-wrap:wrap}
+.newcard{border:1px dashed var(--line2);border-radius:16px;background:transparent;color:var(--muted);cursor:pointer;min-height:130px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.newcard:hover{border-color:var(--gold);color:var(--gold)}
+.tr-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.tr-head input.name{font-family:var(--f-display);font-size:20px;font-weight:700;background:transparent;border:1px dashed transparent;padding:2px 6px;width:min(260px,100%)}
+.tr-head input.name:hover,.tr-head input.name:focus{border-color:var(--line2)}
+.wallet{display:flex;align-items:center;gap:6px;border:1px solid rgba(255,203,5,.4);background:var(--gold-dim);border-radius:12px;padding:4px 10px}
+.wallet input{width:96px;background:transparent;border:0;color:var(--gold);font-family:var(--f-mono);font-weight:700;padding:2px}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.mon{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;gap:10px;align-items:center;cursor:pointer;text-align:left;min-width:0;position:relative;overflow:hidden}
+.mon::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#666)}
+.mon:hover{border-color:var(--line2)}
+.mon .info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.mon .nm{font-weight:700;overflow-wrap:anywhere}
+.bar{height:8px;border-radius:99px;background:#060b14;border:1px solid rgba(0,0,0,.5);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .3s}
+.bar.will i{background:var(--info)}
+.slot-empty{border:1px dashed var(--line2);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--muted);min-height:78px;cursor:pointer;background:transparent}
+.slot-empty:hover{border-color:var(--gold);color:var(--gold)}
+.sec{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 10px}
+.counter{font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.stepper button{background:rgba(255,255,255,.05);border:0;width:28px;height:28px;cursor:pointer;font-size:15px}
+.stepper button:disabled{opacity:.3;cursor:not-allowed}
+.stepper b{font-family:var(--f-mono);min-width:30px;text-align:center;font-size:13.5px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.stat{border:1px solid var(--line);border-radius:11px;padding:7px 9px;display:flex;flex-direction:column;gap:3px;background:rgba(255,255,255,.02)}
+.stat .t{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.stat .v{font-family:var(--f-mono);font-size:19px;font-weight:700}
+.stat .f{font-size:11px;color:var(--muted)}
+.trackers{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.track{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:6px}
+.track .top{display:flex;align-items:center;gap:8px}
+.track .top b{font-family:var(--f-mono);font-size:18px}
+.track .top .btns{margin-left:auto;display:flex;gap:4px}
+.status{display:flex;gap:5px;flex-wrap:wrap}
+.st{font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);cursor:pointer;background:rgba(255,255,255,.02)}
+.st[aria-pressed="true"]{color:#ffd0d0;border-color:var(--danger);background:rgba(255,93,93,.14);font-weight:600}
+.known{display:grid;gap:8px}
+.kmove{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:rgba(255,255,255,.02);display:grid;gap:6px;position:relative}
+.kmove::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:3px;background:var(--c,#777)}
+.kmove .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kmove .top b{font-size:14px}
+.kmove .eff{font-size:12.5px;color:#cdd6ea}
+.dice{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.die{width:24px;height:24px;border-radius:6px;display:grid;place-items:center;font-family:var(--f-mono);font-size:12.5px;font-weight:700;background:#0a1120;border:1px solid var(--line2);color:var(--muted)}
+.die.ok{background:rgba(63,217,138,.18);border-color:var(--ok);color:var(--ok)}
+.die.six{background:rgba(255,203,5,.2);border-color:var(--gold);color:var(--gold)}
+.result{font-size:13px;border:1px dashed var(--line2);border-radius:10px;padding:6px 9px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.result b{font-family:var(--f-mono);font-size:16px;color:var(--gold)}
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px;max-height:46vh;overflow-y:auto;padding:2px}
+.pick{border:1px solid var(--line);border-radius:10px;padding:6px 9px;background:rgba(255,255,255,.02);cursor:pointer;text-align:left;font-size:13px;display:flex;gap:7px;align-items:center}
+.pick:hover{border-color:var(--gold)}
+.pick[disabled]{opacity:.4;cursor:not-allowed}
+.confirm{border:1px solid var(--danger);background:rgba(255,93,93,.08);border-radius:10px;padding:8px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}
+
+/* ---------- lotte ---------- */
+.battles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.battle{background:var(--panel);border:1px solid rgba(255,166,43,.35);border-radius:16px;padding:12px;display:grid;gap:10px;min-width:0}
+.battle .bh{display:flex;gap:10px;align-items:center}
+.battle .bh .info{flex:1;min-width:0}
+.battle .bh b{font-family:var(--f-display);font-size:17px}
+.round{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.wmove{display:grid;gap:4px;border-top:1px solid var(--line);padding-top:7px}
+.wmove .top{display:flex;gap:7px;align-items:center;flex-wrap:wrap;font-size:13px}
+.roller{display:grid;gap:8px}
+
+/* ---------- liste ---------- */
+.list{display:grid;gap:8px}
+.lrow{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:5px;position:relative;overflow:hidden}
+.lrow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,transparent)}
+.lrow .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lrow .top b{font-size:14.5px}
+.lrow p{margin:0;font-size:13px;color:#cdd6ea}
+.who{display:flex;gap:4px;flex-wrap:wrap}
+.who button{font-size:11.5px;padding:1px 8px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer}
+.who button:hover{border-color:var(--gold)}
+.typegrid{display:flex;gap:6px;flex-wrap:wrap}
+.tsel{cursor:pointer;opacity:.45;border:2px solid transparent;font-size:12.5px;padding:3px 11px}
+.tsel[aria-pressed="true"]{opacity:1;border-color:#fff}
+.effrow{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.effrow:first-child{border-top:0}
+.effrow .m{font-family:var(--f-mono);font-weight:700;font-size:15px}
+details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:70;background:#0f1729;border:1.5px solid var(--gold);border-radius:999px;padding:9px 16px;font-size:13px;max-width:88vw;text-align:center;transition:opacity .2s,transform .2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.loading{display:grid;place-items:center;gap:10px;padding:60px 0;color:var(--muted)}
+.spin{width:46px;height:46px;border-radius:50%;background:linear-gradient(180deg,var(--ball) 0 47%,#111 47% 53%,#eee 53% 100%);border:3px solid #111;animation:spin 1.1s cubic-bezier(.5,0,.5,1) infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- guida ---------- */
+.guide{max-width:640px}
+.guide .ghead{display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(90deg,var(--ball-dark),#3a1220);color:#fff}
+.guide .ghead .ch{font-size:11px;letter-spacing:.7px;text-transform:uppercase;font-weight:700;opacity:.85}
+.guide .ghead .n{font-family:var(--f-mono);font-size:12px;opacity:.8;margin-left:auto}
+.guide .ghead .x{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);border-radius:10px;width:34px;height:34px;cursor:pointer;font-size:17px;flex:none}
+.guide .gbody{padding:18px 18px 8px;display:grid;gap:12px;min-height:300px;align-content:start}
+.guide h2{font-size:22px}
+.guide p{margin:0;color:#d8dfee;line-height:1.55}
+.guide ul{margin:0;padding-left:18px;display:grid;gap:6px;color:#d8dfee}
+.guide li b,.guide p b{color:var(--text)}
+.guide .visual{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.formula{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px}
+.formula span{border:1px solid var(--line2);border-radius:8px;padding:3px 8px;background:rgba(255,255,255,.03)}
+.formula b{font-family:var(--f-mono);color:var(--gold);font-size:15px}
+.guide .gfoot{display:flex;align-items:center;gap:8px;padding:12px 16px 16px;flex-wrap:wrap}
+.gdots{display:flex;gap:5px;flex-wrap:wrap}
+.gdots i{width:8px;height:8px;border-radius:50%;background:var(--line2)}
+.gdots i.rules{background:rgba(127,227,182,.35)}
+.gdots i.on{background:var(--gold)}
+.guide .note{margin-top:2px}
+
+/* ---------- Pokédex dei giocatori: ombre, visti, catturati ---------- */
+.sprite.sil{filter:brightness(0) drop-shadow(0 0 1px rgba(200,225,255,.6)) drop-shadow(0 0 7px rgba(127,227,182,.22));background:radial-gradient(circle at 50% 58%,rgba(127,227,182,.16),transparent 70%)}
+.dexcard.unseen{cursor:default;background:linear-gradient(180deg,rgba(10,29,23,.55),var(--panel2));border-style:dashed}
+.dexcard.unseen:hover{transform:none;border-color:var(--line)}
+.dexcard.unseen .nm{color:var(--muted);letter-spacing:3px;font-family:var(--f-mono)}
+.minib{width:13px;height:13px;border-radius:50%;flex:none;display:inline-block;vertical-align:-2px;background:linear-gradient(180deg,var(--ball) 0 44%,#111 44% 56%,#eee 56%);border:1.5px solid #111}
+.seenmk{width:12px;height:12px;border-radius:50%;flex:none;display:inline-block;vertical-align:-2px;border:2px solid var(--lcd);box-shadow:0 0 6px rgba(127,227,182,.4)}
+.nomk{width:12px;height:12px;border-radius:50%;flex:none;display:inline-block;vertical-align:-2px;border:1.5px dashed var(--line2)}
+.dexcard .num{display:flex;align-items:center;gap:6px}
+.evo .node.unk{padding-left:4px;opacity:.9}
+.node.unk>span:last-child{letter-spacing:2px;color:var(--muted)}
+.seg{display:inline-flex;gap:4px;flex-wrap:wrap}
+.lockbox{border:1px dashed var(--line2);border-radius:12px;padding:12px 14px;color:var(--muted);font-size:13px;display:flex;gap:10px;align-items:center}
+.rolebtn[aria-pressed="true"]{border-color:var(--lcd);color:var(--lcd);background:rgba(127,227,182,.1)}
+.rolebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1px solid rgba(127,227,182,.45);background:rgba(127,227,182,.08);color:#cfeee0;border-radius:12px;padding:8px 12px;margin-bottom:14px;font-size:13px}
+.rolebar[hidden]{display:none}
+#dex-q{flex:1 1 240px}
+.qmark{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border-radius:14px;background:rgba(255,203,5,.08);border:1px solid rgba(255,203,5,.45)}
+.qmark[hidden],.qm-note[hidden]{display:none}
+.qmark label{font-weight:600;font-size:13.5px;flex:1 1 210px}
+.qm-in{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);color:var(--gold);font-weight:700}
+.qm-in input{width:88px;font-family:var(--f-mono);font-size:17px;text-align:center;padding:7px 8px}
+.qm-note{flex-basis:100%}
+.revealbox{display:grid;justify-items:center;gap:10px;text-align:center;padding:6px 0 4px}
+.revimg{position:relative;width:180px;height:180px;display:grid;place-items:center}
+.revimg::before{content:"";position:absolute;inset:-6%;border-radius:50%;background:radial-gradient(circle,rgba(255,240,180,0),transparent 70%);transition:background .9s}
+.revimg .sprite{width:164px;height:164px;transition:filter 1.1s ease,transform .7s cubic-bezier(.2,1.5,.4,1)}
+.revealbox.go .revimg .sprite{filter:brightness(1) drop-shadow(0 0 1px rgba(200,225,255,0)) drop-shadow(0 0 7px rgba(127,227,182,0));transform:scale(1.07)}
+.revealbox.go .revimg::before{background:radial-gradient(circle,rgba(255,240,180,.38),transparent 70%)}
+.revname{font-family:var(--f-display);font-size:22px;min-height:1.3em}
+.formpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;width:100%}
+.formpick button{border:1px dashed var(--line2);border-radius:12px;background:var(--panel2);padding:8px;display:grid;justify-items:center;gap:4px;cursor:pointer;font-size:12.5px;color:var(--muted)}
+.formpick button:hover{border-color:var(--gold)}
+#dex-rank[hidden],#dex-sort[hidden],#dex-hint[hidden]{display:none}
+.dexcard.unseen{cursor:pointer}
+.dexcard.unseen:hover{border-color:rgba(255,203,5,.5)}
+
+/* ---------- animazione dell'evoluzione ---------- */
+.evo-ov{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,3vh,26px);
+  padding:max(20px,env(safe-area-inset-top,0px)) 16px calc(20px + env(safe-area-inset-bottom,0px));overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,#1c2b58 0,#0a1124 55%,#03060d 100%);opacity:0;transition:opacity .45s}
+.evo-ov[hidden]{display:none}
+.evo-ov.in{opacity:1}
+.evo-rays{position:absolute;inset:-60%;pointer-events:none;opacity:0;transition:opacity .9s;
+  background:repeating-conic-gradient(from 0deg,rgba(160,210,255,.07) 0 6deg,transparent 6deg 18deg);animation:evspin 26s linear infinite}
+.evo-ov.charge .evo-rays{opacity:.7;animation-duration:7s}
+.evo-ov.done .evo-rays{opacity:.6;background:repeating-conic-gradient(from 0deg,rgba(255,203,5,.13) 0 5deg,transparent 5deg 15deg);animation-duration:34s}
+@keyframes evspin{to{transform:rotate(360deg)}}
+.evo-stage{position:relative;width:min(70vw,300px,46vh);aspect-ratio:1;display:grid;place-items:center}
+.evo-glow{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,rgba(127,227,255,.38),transparent 66%);opacity:.25;transition:opacity .6s}
+.evo-ov.charge .evo-glow{opacity:1;animation:evpulse .9s ease-in-out infinite}
+.evo-ov.done .evo-glow{opacity:.85;background:radial-gradient(circle,rgba(255,203,5,.34),transparent 66%)}
+@keyframes evpulse{50%{transform:scale(1.14)}}
+.evo-sp{position:absolute;inset:0;display:grid;place-items:center;opacity:0}
+.evo-sp.show{opacity:1}
+.evo-sp img,.evo-sp .sprite{width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(0,0,0,.55));transition:filter .9s ease}
+.evo-sp .sprite.ph{border-radius:50%}
+.evo-sp.white img,.evo-sp.white .sprite{filter:brightness(0) invert(1) drop-shadow(0 0 12px #fff) drop-shadow(0 0 34px rgba(140,220,255,.95))}
+.evo-ov.charge .evo-sp.show{animation:evbreath .45s ease-in-out infinite alternate}
+@keyframes evbreath{to{transform:scale(1.07)}}
+.evo-ov.done .evo-sp.show{animation:evpop .8s cubic-bezier(.2,1.5,.4,1)}
+@keyframes evpop{0%{transform:scale(.55)}100%{transform:scale(1)}}
+.evo-sparks{position:absolute;inset:0;pointer-events:none}
+.evo-sparks i{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff,0 0 16px rgba(140,220,255,.9);opacity:0}
+.evo-ov.charge .evo-sparks i{animation:evin 1.15s ease-in infinite;animation-delay:var(--d)}
+@keyframes evin{0%{opacity:0;transform:rotate(var(--a)) translateX(var(--r)) scale(1.2)}25%{opacity:1}100%{opacity:0;transform:rotate(var(--a)) translateX(0) scale(.3)}}
+.evo-ov.done .evo-sparks i{background:var(--gold);box-shadow:0 0 8px var(--gold),0 0 16px rgba(255,203,5,.7);animation:evout 1.5s ease-out forwards;animation-delay:calc(var(--d) * .25)}
+@keyframes evout{0%{opacity:1;transform:rotate(var(--a)) translateX(0) scale(1)}100%{opacity:0;transform:rotate(var(--a)) translateX(calc(var(--r) * 1.3)) scale(.5)}}
+.evo-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.evo-ov.flash .evo-flash{animation:evflash 1.2s ease-out forwards}
+@keyframes evflash{0%{opacity:0}32%{opacity:1}100%{opacity:0}}
+.evo-box{position:relative;width:min(560px,100%);background:rgba(7,12,26,.9);border:2px solid rgba(255,255,255,.8);border-radius:16px;padding:14px 16px 12px;
+  box-shadow:0 0 0 4px rgba(24,36,72,.95),0 14px 34px rgba(0,0,0,.55)}
+.evo-box p{margin:0 0 10px;font-family:var(--f-display);font-size:clamp(16px,4.4vw,20px);line-height:1.3;min-height:2.6em}
+.evo-btns{display:flex;gap:8px;align-items:center}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:760px){
+  nav.tabs{display:none}
+  .bottomnav{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(58px,1fr);position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(11,19,34,.97);backdrop-filter:blur(10px);border-top:1px solid rgba(255,203,5,.3);
+    padding:6px max(4px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(4px,env(safe-area-inset-left,0px));overflow-x:auto}
+  .bottomnav button{background:none;border:0;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;padding:4px 2px;cursor:pointer}
+  .bottomnav button span{font-family:var(--f-display);font-size:15px;line-height:1}
+  .bottomnav button[aria-current="page"]{color:var(--gold)}
+  main{padding-bottom:96px}
+  .cols{grid-template-columns:1fr}
+  .sprite.big{width:120px;height:120px}
+  .mvgroup{grid-template-columns:1fr}
+  .battles{grid-template-columns:1fr}
+  .attr{grid-template-columns:76px 1fr auto}
+  .savepill{display:none}
+  .guidebtn{margin-left:auto}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span class="ballicon" aria-hidden="true"></span>
+      <div><b>Aethera Pokérole</b><small>Nuova regione · Pokérole 3.0</small></div></div>
+    <nav class="tabs" id="tabs" aria-label="Sezioni"></nav>
+    <span class="savepill" id="savepill" title="Dove vengono salvati allenatori e lotte">Solo su questo dispositivo</span>
+    <button class="btn ghost sm guidebtn" data-act="guide" aria-label="Apri la guida">Guida</button>
+    <button class="btn ghost sm rolebtn" id="rolebtn" data-act="as-player" aria-pressed="false" hidden>Vista: GM</button>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="rolebar" id="rolebar" hidden><span>Stai vedendo l'app come un giocatore: niente Tavolo del GM, Pokédex con le ombre.</span><span class="grow"></span><button class="btn sm" data-act="as-player">Torna alla vista GM</button></div>
+  <div class="loading" id="loading"><div class="spin"></div><span>Carico il Pokédex…</span></div>
+
+  <section class="view" id="v-pokedex" hidden>
+    <div class="device">
+      <div class="lights"><span class="lens"></span><span class="led r"></span><span class="led y"></span><span class="led g"></span>
+        <span class="small muted" id="dex-hint" style="margin-left:auto">Tocca una specie per aprire la scheda</span></div>
+      <form class="qmark" id="qmark" hidden autocomplete="off">
+        <label for="qm-n">Il GM vi mostra un Pokémon? Segnate il suo numero:</label>
+        <span class="qm-in"><span aria-hidden="true">N°</span><input id="qm-n" type="number" inputmode="numeric" min="1" max="999" placeholder="12" aria-label="Numero del Pokédex"></span>
+        <button class="btn" type="submit" id="qm-go">Visto!</button>
+        <span class="small muted qm-note" id="qm-note" hidden>Per segnare serve l'accesso in modifica: chiedilo al GM.</span>
+      </form>
+      <div class="screen">
+        <div class="lcd" id="dex-lcd"></div>
+        <div class="row">
+          <input id="dex-q" class="grow" placeholder="Cerca per nome, numero o abilità…" aria-label="Cerca">
+          <select id="dex-type" aria-label="Tipo"></select>
+          <select id="dex-rank" aria-label="Rango"></select>
+          <select id="dex-state" aria-label="Visti e catturati"></select>
+          <select id="dex-sort" aria-label="Ordine"><option value="num">Ordine del Pokédex</option><option value="name">Nome A–Z</option><option value="rank">Rango</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="dexgrid" id="dex-grid"></div>
+  </section>
+
+  <section class="view" id="v-allenatori" hidden></section>
+
+  <section class="view" id="v-lotte" hidden>
+    <h2>Tavolo del GM</h2>
+    <p class="lead" id="lotte-lead">Uno scontro per ogni incontro: ogni carta tiene i suoi PS, la Volontà, gli stati e i tiri. I valori del selvatico partono dagli attributi iniziali della specie e si possono alzare fino al limite. Aprire uno scontro fa comparire la specie nel Pokédex dei giocatori; se stai solo preparando l'incontro, nascondila dalla carta.</p>
+    <div class="panel">
+      <div class="lbl">Nuovo scontro</div>
+      <div class="row">
+        <select id="nb-trainer" aria-label="Allenatore"></select>
+        <input id="nb-species" list="species-list" placeholder="Specie selvatica" aria-label="Specie" style="width:200px">
+        <select id="nb-rank" aria-label="Rango"></select>
+        <button class="btn" data-act="new-battle">Apri scontro</button>
+      </div>
+    </div>
+    <div class="sec"><h3>Scontri aperti</h3><span class="counter" id="battle-count">0</span></div>
+    <div class="battles" id="battle-list"></div>
+    <div class="sec"><h3>Lancio dadi</h3></div>
+    <div class="panel roller">
+      <div class="row">
+        <label class="small muted" for="dr-n">Dadi</label><input type="number" id="dr-n" min="1" max="40" value="4">
+        <button class="btn" data-act="roll-free" data-mode="succ">Tira (successi su 4–6)</button>
+        <button class="btn ghost" data-act="roll-free" data-mode="chance">Dadi Probabilità (contano i 6)</button>
+      </div>
+      <div id="dr-out"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-mosse" hidden>
+    <h2>Mosse</h2>
+    <p class="lead">Tutte le mosse che i Pokémon della regione possono imparare, con le riserve di dadi di Pokérole. Le mosse nuove hanno l'effetto in italiano; le altre riportano il testo del manuale.</p>
+    <div class="panel row" style="margin-bottom:12px">
+      <input id="mv-q" class="grow" placeholder="Cerca mossa o effetto…" aria-label="Cerca mossa">
+      <select id="mv-type" aria-label="Tipo"></select>
+      <select id="mv-cat" aria-label="Categoria"><option value="">Tutte le categorie</option><option value="Physical">Fisiche</option><option value="Special">Speciali</option><option value="Support">Supporto</option></select>
+    </div>
+    <p class="small muted" id="mv-count"></p>
+    <div class="list" id="mv-list"></div>
+  </section>
+
+  <section class="view" id="v-abilita" hidden>
+    <h2>Abilità</h2>
+    <p class="lead">Ogni abilità presente nella regione con l'effetto in italiano. Quelle segnate «nuova» non esistono nel manuale e sono proposte da approvare.</p>
+    <div class="panel row" style="margin-bottom:12px">
+      <input id="ab-q" class="grow" placeholder="Cerca abilità…" aria-label="Cerca abilità">
+      <label class="small row" style="gap:6px"><input type="checkbox" id="ab-new"> solo nuove</label>
+    </div>
+    <div class="list" id="ab-list"></div>
+  </section>
+
+  <section class="view" id="v-tipi" hidden>
+    <h2>Tipi</h2>
+    <p class="lead">Scegli uno o due tipi per vedere debolezze, resistenze e immunità in difesa, e quali Pokémon della regione li hanno. In Pokérole una debolezza aggiunge 1 danno all'attacco (2 se sono deboli entrambi i tipi), una resistenza ne toglie 1 e l'immunità annulla il danno.</p>
+    <div class="panel"><div class="typegrid" id="type-pick"></div></div>
+    <div class="panel" id="type-out"></div>
+  </section>
+
+  <section class="view" id="v-strumenti" hidden>
+    <h2>Strumenti evolutivi</h2>
+    <p class="lead">Gli strumenti nuovi della regione e gli strumenti canon usati in modo nuovo, con chi fanno evolvere.</p>
+    <div class="list" id="it-list"></div>
+  </section>
+</main>
+
+<nav class="bottomnav" id="bottomnav" aria-label="Sezioni"></nav>
+<datalist id="species-list"></datalist>
+<div class="ov" id="ov" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="ov" id="ov2" hidden><div class="sheet narrow" id="sheet2" role="dialog" aria-modal="true"></div></div>
+<div class="ov" id="ov-guide" hidden><div class="sheet guide" id="guide" role="dialog" aria-modal="true" aria-labelledby="guide-title"></div></div>
+<div class="evo-ov" id="ov-evo" hidden role="dialog" aria-modal="true" aria-label="Evoluzione">
+  <div class="evo-rays"></div>
+  <div class="evo-stage"><div class="evo-glow"></div><div class="evo-sp" id="evo-a"></div><div class="evo-sp" id="evo-b"></div><div class="evo-sparks" id="evo-sparks"></div></div>
+  <div class="evo-flash"></div>
+  <div class="evo-box"><p id="evo-text" aria-hidden="true"></p><span class="vh" id="evo-live" aria-live="polite"></span>
+    <div class="evo-btns"><button class="btn ghost sm" data-evo="sound" id="evo-sound" aria-pressed="true">Suono: sì</button><span class="grow"></span>
+      <button class="btn ghost sm" data-evo="skip" id="evo-skip">Salta</button><button class="btn" data-evo="close" id="evo-close" hidden>Continua</button></div></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<input type="file" id="import-file" accept=".json,application/json" hidden>
+
+<script>
+"use strict";
+/* ======================= costanti ======================= */
+const RANKS=['Starter','Rookie','Standard','Advanced','Expert','Ace','Master'];
+const ATTR=['Strength','Dexterity','Vitality','Special','Insight'];
+const SOCIAL=['Tough','Cool','Beauty','Clever','Cute'];
+const SKILLS=['Brawl','Channel','Clash','Evasion','Alert','Athletic','Nature','Stealth','Charm','Etiquette','Intimidate','Perform'];
+const TYPES=['Normal','Fire','Water','Grass','Electric','Ice','Fighting','Poison','Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'];
+const T_IT={Normal:'Normale',Fire:'Fuoco',Water:'Acqua',Grass:'Erba',Electric:'Elettro',Ice:'Ghiaccio',Fighting:'Lotta',Poison:'Veleno',Ground:'Terra',Flying:'Volante',Psychic:'Psico',Bug:'Coleottero',Rock:'Roccia',Ghost:'Spettro',Dragon:'Drago',Dark:'Buio',Steel:'Acciaio',Fairy:'Folletto'};
+const TC={Normal:'#b4b38a',Fire:'#f08a3e',Water:'#6f9cf4',Grass:'#82cf55',Electric:'#f2cd2c',Ice:'#82d6d6',Fighting:'#d4554f',Poison:'#b462b2',Ground:'#d8b46a',Flying:'#a594ee',Psychic:'#fa6d97',Bug:'#b2c530',Rock:'#c2ad55',Ghost:'#8a70b0',Dragon:'#8160ff',Dark:'#8c7466',Steel:'#a9a9c4',Fairy:'#e79ac0'};
+const CAT_IT={Physical:'Fisica',Special:'Speciale',Support:'Supporto'};
+const TARGET_IT={'Foe':'Un avversario','Self':'Se stesso','All Foes':'Tutti gli avversari','Area':'Area','Battlefield':'Campo','All Allies':'Tutti gli alleati','Ally':'Un alleato',"Ally's Battlefield":'Campo alleato','Random Foe':'Avversario a caso',"Foe's Battlefield":'Campo avversario'};
+const TAG_IT={SoundMove:'sonora',FistMove:'pugno',BiteMove:'morso',CutterMove:'tagliente',WindMove:'vento',ProjectileMove:'proiettile',Recoil:'contraccolpo',HighCritical:'critico alto',Priority:'priorità',NeverMiss:'non manca',Charge:'carica',MustRecharge:'ricarica',ShieldMove:'scudo',SwitcherMove:'cambio',Rampage:'furia'};
+const STATUS=['Scottatura','Avvelenamento','Iperavvelenamento','Paralisi','Congelamento','Sonno','Confusione','Infatuazione','Tentennamento'];
+const SPEED_IT={Fast:'veloce',Medium:'medio',Slow:'lento'};
+const TP_EVO={Fast:10,Medium:30,Slow:50};
+const TP_RANK={Starter:5,Rookie:15,Standard:25,Advanced:30,Expert:35,Ace:40,Master:50};
+const RANK_PTS={Starter:[0,0,5],Rookie:[2,2,10],Standard:[4,4,14],Advanced:[6,6,17],Expert:[8,8,19],Ace:[10,10,20],Master:[10,10,22]};
+const CATCH_REQ={Starter:3,Rookie:4,Standard:6,Advanced:8,Expert:9,Ace:10};
+const AILMENTS=['Scottatura','Avvelenamento','Iperavvelenamento','Paralisi','Congelamento','Sonno'];
+const BALLS=[['Poké Ball',4],['Mega Ball',6],['Ultra Ball',8]];
+function normHouse(h){const H=Object.assign(JSON.parse(JSON.stringify(HOUSE_DEFAULT)),h||{});if(!(H.v>=3)){H.willBonus=3;H.movesBonus=3;H.v=3}return H}
+const spdefOf=a=>S.house.defOpt===1?a.Vitality:a.Insight;
+// tabella dei tipi (attacco -> difesa)
+const CHART={Normal:{s:[],w:['Rock','Steel'],i:['Ghost']},Fire:{s:['Grass','Ice','Bug','Steel'],w:['Fire','Water','Rock','Dragon'],i:[]},Water:{s:['Fire','Ground','Rock'],w:['Water','Grass','Dragon'],i:[]},
+ Electric:{s:['Water','Flying'],w:['Electric','Grass','Dragon'],i:['Ground']},Grass:{s:['Water','Ground','Rock'],w:['Fire','Grass','Poison','Flying','Bug','Dragon','Steel'],i:[]},
+ Ice:{s:['Grass','Ground','Flying','Dragon'],w:['Fire','Water','Ice','Steel'],i:[]},Fighting:{s:['Normal','Ice','Rock','Dark','Steel'],w:['Poison','Flying','Psychic','Bug','Fairy'],i:['Ghost']},
+ Poison:{s:['Grass','Fairy'],w:['Poison','Ground','Rock','Ghost'],i:['Steel']},Ground:{s:['Fire','Electric','Poison','Rock','Steel'],w:['Grass','Bug'],i:['Flying']},
+ Flying:{s:['Grass','Fighting','Bug'],w:['Electric','Rock','Steel'],i:[]},Psychic:{s:['Fighting','Poison'],w:['Psychic','Steel'],i:['Dark']},
+ Bug:{s:['Grass','Psychic','Dark'],w:['Fire','Fighting','Poison','Flying','Ghost','Steel','Fairy'],i:[]},Rock:{s:['Fire','Ice','Flying','Bug'],w:['Fighting','Ground','Steel'],i:[]},
+ Ghost:{s:['Psychic','Ghost'],w:['Dark'],i:['Normal']},Dragon:{s:['Dragon'],w:['Steel'],i:['Fairy']},Dark:{s:['Psychic','Ghost'],w:['Fighting','Dark','Fairy'],i:[]},
+ Steel:{s:['Ice','Rock','Fairy'],w:['Fire','Water','Electric','Steel'],i:[]},Fairy:{s:['Fighting','Dragon','Dark'],w:['Fire','Poison','Steel'],i:[]}};
+const HOUSE_DEFAULT={v:3,willBonus:3,movesBonus:3,defOpt:2,skillCap:{Starter:1,Rookie:2,Standard:3,Advanced:4,Expert:5,Ace:5,Master:5},wildSkill:{Starter:1,Rookie:1,Standard:2,Advanced:2,Expert:3,Ace:4,Master:5},stab:1};
+const TABS=[['pokedex','Pokédex','◉'],['allenatori','Allenatori','♟'],['lotte','Lotte','⚔'],['mosse','Mosse','✦'],['abilita','Abilità','✧'],['tipi','Tipi','◆'],['strumenti','Strumenti','◇']];
+
+/* ======================= stato ======================= */
+let DATA=null, SP={}, BYNAME={}, LEARNERS={}, HOLDERS={};
+const S={trainers:{},battles:{},house:JSON.parse(JSON.stringify(HOUSE_DEFAULT)),dex:{seen:{},caught:{}},pseen:{}};
+const UI={tab:'pokedex',trainer:null,typePick:[],abEn:false,rolls:{}};
+const $=s=>document.querySelector(s);
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+
+/* ---------- ruoli: il proprietario della pagina è il GM e vede tutto; gli altri sono giocatori ---------- */
+const ROLE_KEY='aethera-pokerole-role',ASP_KEY='aethera-pokerole-asplayer';
+// STANDALONE = aperta fuori da claude.ai (per esempio da GitHub): niente salvataggio condiviso, il GM si sblocca con un codice
+let STANDALONE=false;
+const GM_KEY='aethera-pokerole-gm',GM_HASH='8adb271716a606c7b732be5ae9c7f880b1ae9cda47915d0f0dcac2b9a62c9397';
+async function sha256hex(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function unlockGM(code){let h='';try{h=await sha256hex('aethera-pokerole:'+String(code||'').trim())}catch(e){toast('Questo browser non riesce a controllare il codice.');return false}
+  if(h!==GM_HASH)return false;lsSet(GM_KEY,h);Role.asPlayer=false;lsSet(ASP_KEY,'0');setRole(true);toast('Vista GM sbloccata su questo dispositivo.');return true}
+function lockGM(){lsSet(GM_KEY,'');setRole(false);toast('Vista GM bloccata: ora questo dispositivo vede l\'app come un giocatore.')}
+const Role={gm:lsGet(ROLE_KEY)==='gm',known:false,asPlayer:lsGet(ASP_KEY)==='1'};
+const isPlayerView=()=>!Role.gm||Role.asPlayer;
+function renderRoleUI(){
+  const b=$('#rolebtn');b.hidden=!Role.gm;b.setAttribute('aria-pressed',String(Role.asPlayer));b.textContent=Role.asPlayer?'Vista: giocatore':'Vista: GM';
+  b.title=Role.asPlayer?'Torna a vedere tutto':'Guarda l\'app come la vedono i giocatori';
+  $('#rolebar').hidden=!(Role.gm&&Role.asPlayer);
+}
+function fillSpeciesList(){const dl=$('#species-list');if(!dl||!DATA)return;dl.innerHTML=Role.gm?DATA.Pokedex.map(p=>`<option value="${esc(p.Name)}">`).join(''):''}
+function setRole(gm){
+  const changed=gm!==Role.gm||!Role.known;Role.gm=gm;Role.known=true;lsSet(ROLE_KEY,gm?'gm':'player');
+  renderRoleUI();fillSpeciesList();
+  if(!changed||!DATA)return;
+  if(isPlayerView()&&UI.tab==='lotte')go('pokedex');else{renderTabs();renderCurrent()}
+}
+function toggleAsPlayer(){
+  Role.asPlayer=!Role.asPlayer;lsSet(ASP_KEY,Role.asPlayer?'1':'0');renderRoleUI();
+  if(!$('#ov').hidden)closeOv(1);if(!$('#ov2').hidden)closeOv(2);
+  if(isPlayerView()&&UI.tab==='lotte')go('pokedex');else{renderTabs();renderCurrent()}
+  toast(Role.asPlayer?'Ora vedi l\'app come un giocatore.':'Di nuovo nella vista GM.');
+}
+
+/* ---------- Pokédex dei giocatori: 0 non visto · 1 visto · 2 catturato ---------- */
+function normDex(d){const o={seen:{},caught:{}};if(d&&typeof d==='object'){['seen','caught'].forEach(f=>{const src=d[f];if(src&&typeof src==='object')Object.keys(src).forEach(k=>{if(src[k])o[f][k]=src[k]})})}return o}
+function teamSpecies(){const s=new Set();Object.values(S.trainers).forEach(t=>(t.mons||[]).forEach(m=>{if(m&&m.species)s.add(m.species)}));return s}
+// i giocatori segnano "visto" in una raccolta loro (seen/<id>); il GM la vede e può annullarla
+const pid=k=>'s-'+slug(k);
+function dexMap(){const t=teamSpecies();return k=>(S.dex.caught[k]||t.has(k))?2:((S.dex.seen[k]||S.pseen[pid(k)])?1:0)}
+function visMap(){if(!isPlayerView())return()=>2;return dexMap()}
+const canMark=()=>!(Store.mode==='db'&&Store.readonly);
+function markSeen(key){
+  if(!SP[key])return false;
+  if(Role.gm){dexSet(key,1);return true}
+  if(!canMark()){toast('Per segnare serve l\'accesso in modifica: chiedilo al GM.');return false}
+  const id=pid(key);S.pseen[id]={k:key,at:Date.now()};Store.put('seen',id,S.pseen[id]);return true;
+}
+function unmarkSeen(key){const id=pid(key);if(!S.pseen[id])return;delete S.pseen[id];Store.del('seen',id)}
+const markedByPlayersOnly=k=>!!S.pseen[pid(k)]&&!S.dex.seen[k]&&dexMap()(k)===1;
+function dexSet(key,state){
+  if(!Role.gm||!SP[key])return;
+  if(state===0&&S.pseen[pid(key)])unmarkSeen(key);
+  if(Store.mode==='db'&&!Store.dexReady){Store.dexOps.push([key,state]);}
+  const now=Date.now();
+  if(state>=1){S.dex.seen[key]=S.dex.seen[key]||now}else delete S.dex.seen[key];
+  if(state>=2){S.dex.caught[key]=S.dex.caught[key]||now}else delete S.dex.caught[key];
+  saveDex();
+}
+function saveDex(){
+  if(!Role.gm)return;
+  teamSpecies().forEach(k=>{if(!S.dex.caught[k])S.dex.caught[k]=Date.now();if(!S.dex.seen[k])S.dex.seen[k]=Date.now()});
+  if(Store.mode==='db'&&!Store.dexReady){Store.saveLocal();return}
+  Store.put('config','dex',S.dex);
+}
+const dexMark=st=>st===2?'<span class="minib" title="Catturato" aria-label="catturato"></span>':st===1?'<span class="seenmk" title="Visto" aria-label="visto"></span>':'<span class="nomk" title="Non ancora visto dai giocatori" aria-label="non visto"></span>';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ri=r=>RANKS.indexOf(r);
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),2600)}
+const chip=t=>`<span class="chip" style="background:${TC[t]||'#888'}">${esc(T_IT[t]||t)}</span>`;
+const rankTag=r=>`<span class="rank" data-r="${esc(r)}">${esc(r)}</span>`;
+const sprite=(sp,cls='')=>sp&&sp.Image?`<img class="sprite ${cls}" src="${esc(sp.Image)}" alt="${esc(sp.Name)}" loading="lazy">`:`<span class="sprite ph ${cls}" role="img" aria-label="Pokémon canon, immagine non inclusa"></span>`;
+// nomi italiani da mostrare; dentro l'app (e nei salvataggi) restano le chiavi inglesi
+const MN=n=>{const m=DATA&&DATA.Moves[n];return (m&&m.NameIT)||n};
+const AN=n=>{const a=DATA&&DATA.Abilities[n];return (a&&a.NameIT)||n};
+const IN=n=>(DATA&&DATA.ItemNamesIT&&DATA.ItemNamesIT[n])||n;
+const silSprite=(sp,cls='')=>sp&&sp.Image?`<img class="sprite sil ${cls}" src="${esc(sp.Image)}" alt="Pokémon non ancora visto" loading="lazy" draggable="false">`:`<span class="sprite ph ${cls}" role="img" aria-label="Pokémon non ancora visto"></span>`;
+const typesOf=sp=>[sp.Type1,sp.Type2].filter(Boolean);
+const slug=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+/* ======================= salvataggio ======================= */
+const LS_KEY='aethera-pokerole-v1', LS_SHARED='aethera-pokerole-shared-cache';
+const Store={mode:'local',db:null,readonly:false,timers:{},stash:null,dexReady:true,dexOps:[],
+  read(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}},
+  apply(j){S.trainers=(j&&j.trainers)||{};S.battles=(j&&j.battles)||{};S.house=normHouse(j&&j.house);S.dex=normDex(j&&j.dex);S.pseen=(j&&j.pseen&&typeof j.pseen==='object')?j.pseen:{};Object.values(S.trainers).forEach(t=>t.mons=t.mons||[])},
+  loadLocal(){Store.apply(Store.read(LS_KEY))},
+  saveLocal(){try{localStorage.setItem(Store.mode==='db'?LS_SHARED:LS_KEY,JSON.stringify({trainers:S.trainers,battles:Role.gm?S.battles:{},house:S.house,dex:S.dex,pseen:S.pseen}))}catch(e){}},
+  async init(){
+    const C=window.claude;
+    if(!C||!C.use){STANDALONE=true;setRole(lsGet(GM_KEY)===GM_HASH);standaloneTexts();registerSW();return}
+    let db=null,user=null;
+    [db,user]=await Promise.all([C.use('db').catch(()=>null),C.use('user').catch(()=>null)]);
+    let gm=false;try{gm=user?!!(await user.isOwner()):false}catch(e){}
+    if(!db){setRole(gm);return}
+    let can=null;try{can=user&&user.can?await user.can('data.write'):null}catch(e){}
+    Store.db=db;Store.mode='db';Store.readonly=can===false;Store.dexReady=false;
+    const local=Store.read(LS_KEY);Store.stash=!Store.readonly&&local&&local.trainers&&Object.keys(local.trainers).length?local:null;
+    Store.apply(Store.read(LS_SHARED));setRole(gm);renderSavePill();scheduleRender();
+    const watch=(coll,key)=>{
+      let first=true;const timer=setTimeout(()=>{if(first)toast('Il salvataggio condiviso non risponde ancora: i dati potrebbero non essere aggiornati.')},10000);
+      db.collection(coll).onSnapshot(snap=>{
+        if(!snap.metadata.fromCache){first=false;clearTimeout(timer)}
+        const next={};snap.docs.forEach(d=>{const v=d.data();if(v){next[d.id]=JSON.parse(JSON.stringify(v));if(key==='trainers')next[d.id].mons=next[d.id].mons||[]}});
+        for(const id in Store.timers){const[c,i]=id.split('/');if(c===coll&&S[key][i])next[i]=S[key][i]}
+        S[key]=next;Store.saveLocal();scheduleRender();
+      },err=>{clearTimeout(timer);if(err&&err.code==='revoked'){Store.mode='local';renderSavePill()}});
+    };
+    watch('trainers','trainers');watch('seen','pseen');if(gm)watch('battles','battles');else S.battles={};
+    db.doc('config/house').onSnapshot(d=>{if(d.exists){S.house=normHouse(JSON.parse(JSON.stringify(d.data())));scheduleRender()}},()=>{});
+    db.doc('config/dex').onSnapshot(d=>{
+      if(d.metadata&&d.metadata.fromCache&&!Store.dexReady){if(d.exists)S.dex=normDex(JSON.parse(JSON.stringify(d.data())));scheduleRender();return}
+      if(Store.timers['config/dex'])return; // una nostra scrittura è in arrivo
+      S.dex=d.exists?normDex(JSON.parse(JSON.stringify(d.data()))):{seen:{},caught:{}};
+      if(!Store.dexReady){Store.dexReady=true;const ops=Store.dexOps.splice(0);ops.forEach(([k,s])=>dexSet(k,s))}
+      Store.saveLocal();scheduleRender();
+    },()=>{Store.dexReady=true});
+  },
+  put(coll,id,doc){ // coll: trainers | battles | config
+    Store.saveLocal();
+    if(Store.mode==='db'&&Store.readonly){if(!Store.roToast){Store.roToast=true;toast('Puoi guardare ma non salvare: chiedi al GM di darti accesso in modifica.')}return}
+    if(Store.mode!=='db') return;
+    const key=coll+'/'+id;clearTimeout(Store.timers[key]);
+    Store.timers[key]=setTimeout(async()=>{
+      try{await Store.db.collection(coll).doc(id).set(JSON.parse(JSON.stringify(doc)))}
+      catch(e){if(e&&e.code==='invalid_argument'){Store.readonly=true;toast('Non hai il permesso di salvare nel salvataggio condiviso: le modifiche restano su questo dispositivo.')}
+        else if(e&&e.code==='quota_exceeded'){toast('Spazio del salvataggio condiviso esaurito: elimina vecchi scontri.')}
+        else{toast('Salvataggio non riuscito, riprovo al prossimo cambiamento.')}}
+      finally{delete Store.timers[key]}
+    },500);
+  },
+  async del(coll,id){
+    Store.saveLocal();
+    if(Store.mode!=='db'||Store.readonly) return;
+    try{await Store.db.collection(coll).doc(id).delete()}catch(e){toast('Eliminazione non riuscita nel salvataggio condiviso.')}
+  }
+};
+function saveTrainer(t){t.updated=Date.now();S.trainers[t.id]=t;Store.put('trainers',t.id,t);
+  if(Role.gm&&(t.mons||[]).some(m=>!S.dex.caught[m.species]))saveDex()}
+function saveBattle(b){S.battles[b.id]=b;Store.put('battles',b.id,b)}
+function saveHouse(){Store.put('config','house',S.house)}
+function renderSavePill(){const p=$('#savepill');if(Store.mode==='db'&&Store.readonly){p.textContent='Sola lettura';p.classList.remove('db');p.title='Vedi i dati condivisi ma non puoi salvarli: chiedi al GM l\'accesso in modifica'}else if(Store.mode==='db'){p.textContent='Salvataggio condiviso';p.classList.add('db');p.title='Allenatori e Pokédex sono condivisi con chi apre questa pagina'}else{p.textContent='Solo su questo dispositivo';p.classList.remove('db');p.title='I dati restano in questo browser: usa Esporta per farne una copia'}}
+
+let renderQueued=false,ptrDown=false;
+function scheduleRender(){
+  const a=document.activeElement;
+  // non ridisegnare mentre si scrive o mentre un dito/mouse è premuto: il tasto sotto il dito sparirebbe e il clic andrebbe perso
+  if(ptrDown||(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA')&&a.type!=='checkbox')){renderQueued=true;return}
+  renderQueued=false;renderCurrent();
+}
+document.addEventListener('focusout',()=>{if(renderQueued)setTimeout(scheduleRender,0)});
+document.addEventListener('pointerdown',()=>{ptrDown=true},true);
+['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,()=>{ptrDown=false;if(renderQueued)setTimeout(scheduleRender,60)},true));
+
+/* ======================= dati ======================= */
+async function loadData(){
+  const r=await fetch('data.json');if(!r.ok)throw new Error('data.json '+r.status);
+  DATA=await r.json();
+  DATA.Pokedex.forEach(p=>{SP[p.Key]=p;BYNAME[p.Name]=p.Key;
+    p.Moves.forEach(m=>{(LEARNERS[m.Name]=LEARNERS[m.Name]||[]).push(p.Key)});
+    [p.Ability1,p.Ability2,p.HiddenAbility].filter(Boolean).forEach(a=>{(HOLDERS[a]=HOLDERS[a]||new Set()).add(p.Key)});
+  });
+}
+const spByName=n=>SP[BYNAME[n]]||null;
+function stab(sp,mv){return mv&&typesOf(sp).includes(mv.Type)}
+
+/* ======================= navigazione ======================= */
+const visTabs=()=>TABS.filter(t=>t[0]!=='lotte'||!isPlayerView());
+function renderTabs(){
+  const T=visTabs();
+  $('#tabs').innerHTML=T.map(([k,l])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}>${l}</button>`).join('');
+  $('#bottomnav').innerHTML=T.map(([k,l,i])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}><span aria-hidden="true">${i}</span>${l}</button>`).join('');
+}
+function go(tab){if(!visTabs().some(t=>t[0]===tab))tab='pokedex';UI.tab=tab;document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+tab);renderTabs();renderCurrent();
+  try{if(location.hash!=='#'+tab&&!location.hash.startsWith('#s-'))history.replaceState(null,'','#'+tab)}catch(e){}window.scrollTo(0,0)}
+function renderCurrent(){if(!DATA)return;({pokedex:renderDex,allenatori:renderTrainers,lotte:renderBattles,mosse:renderMoves,abilita:renderAbilities,tipi:renderTypes,strumenti:renderItems})[UI.tab]();
+  if(!$('#ov').hidden&&OV.render)OV.render();if(!$('#ov2').hidden&&OV2.render)OV2.render()}
+
+/* ======================= Pokédex ======================= */
+function renderDex(){
+  const pv=isPlayerView(),ds=dexMap();
+  // filtri che dipendono dalla vista: i giocatori non vedono il rango consigliato
+  const stSel=$('#dex-state'),stOpts=pv?[['','Tutto il Pokédex'],['seen','Solo visti'],['caught','Solo catturati']]:[['','Tutte le specie'],['unseen','Non visti dai giocatori'],['seen','Visti dai giocatori'],['caught','Catturati dai giocatori']];
+  const curSt=stSel.value;stSel.innerHTML=stOpts.map(([v,l])=>`<option value="${v}" ${v===curSt?'selected':''}>${l}</option>`).join('');
+  // vista giocatore più semplice: niente rango né ordinamento, e il riquadro per segnare i Pokémon visti
+  $('#dex-rank').hidden=pv;$('#dex-sort').hidden=pv;if(pv)$('#dex-sort').value='num';
+  $('#qmark').hidden=!pv;$('#dex-hint').hidden=pv;
+  if(pv){const can=canMark();$('#qm-n').disabled=!can;$('#qm-go').disabled=!can;$('#qm-note').hidden=can}
+  $('#dex-q').placeholder=pv?'Cerca per nome o numero…':'Cerca per nome, numero o abilità…';
+  const q=$('#dex-q').value.trim().toLowerCase(),ty=$('#dex-type').value,rk=pv?'':$('#dex-rank').value,so=$('#dex-sort').value,st=stSel.value;
+  let L=DATA.Pokedex.filter(p=>{
+    const s=ds(p.Key),known=pv?s:2;
+    if(st==='unseen'&&s!==0)return false;if(st==='seen'&&s<1)return false;if(st==='caught'&&s<2)return false;
+    if(ty&&(known<1||!typesOf(p).includes(ty)))return false;
+    if(rk&&p.RecommendedRank!==rk)return false;
+    if(q){const num=String(p.Number).padStart(3,'0');
+      const hay=known===0?num:[p.Name,num,p.DexCategory,T_IT[p.Type1],T_IT[p.Type2],...(known>=2?[p.Ability1,p.Ability2,p.HiddenAbility].filter(Boolean).flatMap(a=>[a,AN(a)]):[])].join(' ').toLowerCase();if(!hay.includes(q))return false}
+    return true});
+  if(so==='name')L=[...L].sort((a,b)=>{const ka=pv&&ds(a.Key)===0,kb=pv&&ds(b.Key)===0;return (ka-kb)||a.Name.localeCompare(b.Name,'it')});
+  if(so==='rank')L=[...L].sort((a,b)=>ri(a.RecommendedRank)-ri(b.RecommendedRank)||a.Number-b.Number);
+  const all=DATA.Pokedex.map(p=>ds(p.Key)),nSeen=all.filter(s=>s>=1).length,nCaught=all.filter(s=>s===2).length;
+  if(pv)$('#dex-lcd').textContent=`VISTI ${nSeen} · CATTURATI ${nCaught} · SU ${DATA.Pokedex.length} SCHEDE`;
+  else{const nSpecies=new Set(DATA.Pokedex.map(p=>p.Number)).size;$('#dex-lcd').textContent=`${nSpecies} SPECIE · ${DATA.Pokedex.length} SCHEDE · ${L.length} MOSTRATE · GIOCATORI: ${nSeen} VISTI, ${nCaught} CATTURATI`}
+  const num=p=>`#${String(p.Number).padStart(3,'0')}`;
+  $('#dex-grid').innerHTML=L.length?L.map(p=>{const s=ds(p.Key);
+    if(pv&&s===0)return `<button class="dexcard unseen" data-act="ask-seen" data-sp="${esc(p.Key)}" aria-label="Numero ${p.Number}: da scoprire">${silSprite(p)}
+      <span class="info"><span class="num">${num(p)}</span><span class="nm">???</span><span class="tl"><span class="small muted">da scoprire</span></span></span></button>`;
+    return `<button class="dexcard" data-sp="${esc(p.Key)}">${sprite(p)}
+    <span class="info"><span class="num">${num(p)}${p.Legendary&&(!pv||s===2)?' ★':''}${pv?(s===2?' '+dexMark(2):''):' '+dexMark(s)}</span><span class="nm">${esc(p.Name)}</span>
+    <span class="tl">${typesOf(p).map(chip).join('')}${pv?'':rankTag(p.RecommendedRank)}</span></span></button>`}).join('')
+    :`<div class="empty" style="grid-column:1/-1"><b>${pv&&st?'Ancora niente qui':'Nessuna specie trovata'}</b>${pv&&st?'Il Pokédex si riempie man mano che incontrate e catturate Pokémon.':'Prova a togliere un filtro o a cercare un altro nome.'}</div>`;
+}
+
+/* ---------- scheda della specie ---------- */
+const OV={render:null},OV2={render:null};
+function openOv(fn,which=1){const o=which===1?OV:OV2;o.render=fn;$(which===1?'#ov':'#ov2').hidden=false;fn();document.body.style.overflow='hidden'}
+function closeOv(which=1){const o=which===1?OV:OV2;o.render=null;$(which===1?'#ov':'#ov2').hidden=true;if($('#ov').hidden&&$('#ov2').hidden)document.body.style.overflow='';
+  try{if(which===1&&location.hash.startsWith('#s-'))history.replaceState(null,'','#'+UI.tab)}catch(e){}}
+function head(title,color,extra=''){return `<div class="sheethead" style="background:linear-gradient(90deg,${color},${color}cc)">${extra}<h2>${title}</h2><button class="x" data-act="close" aria-label="Chiudi">✕</button></div>`}
+function dotsHTML(start,max,cur,color){let h='';for(let k=0;k<Math.max(max,1);k++){const cls=k<start?'on':(cur!=null&&k<cur?'on extra':'');h+=`<span class="dot ${cls}" style="--c:${color}"></span>`}return `<span class="dots">${h}</span>`}
+function abilityHTML(name,hidden){
+  const a=DATA.Abilities[name]||{};
+  return `<div class="ab"><div class="row" style="gap:6px"><b>${esc(AN(name))}</b>${hidden?'<span class="small muted">(nascosta)</span>':''}${a.New?'<span class="badge-new">nuova</span>':''}</div>
+    <p>${esc(a.EffectIT||a.Effect||'Effetto da definire.')}</p>${UI.abEn&&a.Effect?`<p class="en">${esc(a.Effect)}</p>`:''}</div>`;
+}
+function evoHTML(sp){
+  const prev=sp.Evolutions.filter(e=>e.From),next=sp.Evolutions.filter(e=>e.To);
+  const pv=isPlayerView(),vm=visMap();
+  const node=(name,cur)=>{const p=spByName(name);if(p&&!cur&&vm(p.Key)===0)return `<span class="node off unk">${silSprite(p,'xs')}<span>???</span></span>`;
+    return p?`<button class="node ${cur?'cur':''}" data-sp="${esc(p.Key)}">${sprite(p,'xs')}<span>${esc(p.Name)}</span></button>`:`<span class="node off">${esc(name)}</span>`};
+  const how=e=>{const k=e.Kind;let s='';
+    if(k==='Level')s=`livello${e.GameLevel?' '+e.GameLevel:''}, tempo ${SPEED_IT[e.Speed]||e.Speed}${TP_EVO[e.Speed]?` (${TP_EVO[e.Speed]} punti allenamento)`:''}`+(e.Item?`, tenendo ${IN(e.Item)}`:'')+(e.Special?`, ${e.Special}`:'');
+    else if(k==='Stone')s=`strumento ${IN(e.Item)}`;else if(k==='Trade')s='scambio'+(e.Item?` tenendo ${IN(e.Item)}`:'');
+    else if(k==='Stat')s={Happiness:'Felicità',Loyalty:'Lealtà',Beauty:'Bellezza'}[e.Stat]+' '+e.Value;
+    else if(k==='Item')s=`${IN(e.Item)}${e.Special?', '+e.Special:''}`;else if(k==='Special')s=(e.Item?IN(e.Item)+', ':'')+(e.Special||'');else if(k==='Form')s=e.Special||'cambio di forma';
+    const src=pv||e.Source==='card'?'':(e.Source==='canon'?' (canon)':' (proposta)');return esc(s+src)};
+  if(!prev.length&&!next.length)return '<p class="muted small" style="margin:0">Non si evolve.</p>';
+  let h='';
+  prev.forEach(e=>{h+=`<div class="evo">${node(e.From)}<span class="arr">→ ${how(e)} →</span>${node(sp.Name,true)}</div>`});
+  if(next.length)h+=`<div class="evo">${prev.length?'':node(sp.Name,true)}${next.map(e=>`<span class="arr">→ ${how(e)}</span>${node(e.To)}`).join('')}</div>`;
+  return `<div style="display:grid;gap:8px">${h}</div>`;
+}
+function movepoolHTML(sp){
+  const g={};sp.Moves.forEach(m=>{(g[m.Learned]=g[m.Learned]||[]).push(m.Name)});
+  return RANKS.filter(r=>g[r]).map(r=>`<div class="mvgroup"><span class="rk">${r}</span><span class="mvlist">${g[r].map(n=>{const m=DATA.Moves[n]||{};return `<button class="mv ${m.New?'new':''}" data-move="${esc(n)}"><i style="background:${TC[m.Type]||'#777'}"></i>${esc(MN(n))}</button>`}).join('')}</span></div>`).join('');
+}
+function openSpecies(key){
+  const sp=SP[key];if(!sp)return;
+  if(isPlayerView()&&dexMap()(key)===0){toast('Non l\'avete ancora incontrato.');return}
+  try{history.replaceState(null,'','#s-'+String(sp.Number).padStart(3,'0')+'-'+slug(sp.Name))}catch(e){}
+  openOv(()=>{
+    const col=TC[sp.Type1]||'#777';
+    const trainers=Object.values(S.trainers).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+    const pv=isPlayerView(),st=dexMap()(key);
+    if(pv&&st===0){closeOv(1);return}
+    const addPanel=`<div class="panel" style="box-shadow:none;background:var(--panel2)"><div class="row">
+        <span class="small muted">${pv&&st<2?'Catturato? Aggiungilo a':'Aggiungi a'}</span>
+        ${trainers.length?`<select id="add-to" aria-label="Allenatore">${trainers.map(t=>`<option value="${t.id}" ${t.id===UI.trainer?'selected':''}>${esc(t.name||'Senza nome')}</option>`).join('')}</select>
+        <button class="btn" data-act="add-mon" data-sp="${esc(sp.Key)}">Aggiungi alla squadra</button>`:`<span class="small muted">— crea prima un allenatore nella sezione Allenatori.</span>`}
+      </div></div>`;
+    const dexKV=`${sp.DexCategory?`<dt>Categoria</dt><dd>${esc(sp.DexCategory)}</dd>`:''}
+            ${sp.Height?`<dt>Altezza</dt><dd>${String(sp.Height.Meters).replace('.',',')} m</dd>`:''}
+            ${sp.Weight?`<dt>Peso</dt><dd>${String(sp.Weight.Kilograms).replace('.',',')} kg</dd>`:''}
+            ${sp.Gender?`<dt>Sesso</dt><dd>${esc(sp.Gender)}</dd>`:''}`;
+    const flavor=`<p class="flavor">${esc(sp.DescIT||'Testo del Pokédex non disponibile.')}</p>`;
+    if(pv&&st===1){ // visto ma non catturato: come nei giochi, solo la voce del Pokédex
+      $('#sheet').innerHTML=head(`#${String(sp.Number).padStart(3,'0')} ${esc(sp.Name)}`,col)+`
+      <div class="sheetbody">
+        <div class="cols">
+          <div class="idbox">${sprite(sp,'big')}
+            <div class="row" style="justify-content:center">${typesOf(sp).map(chip).join('')}</div>
+            <dl class="kv">${dexKV}</dl></div>
+          <div style="display:grid;gap:14px;align-content:start">${flavor}
+            <div class="lockbox"><span class="minib" style="filter:grayscale(1);opacity:.6"></span><span>Catturatelo per vedere attributi, abilità, evoluzioni e mosse.</span></div>
+            ${markedByPlayersOnly(key)?`<div><button class="btn ghost sm" data-act="unmark-seen" data-sp="${esc(key)}">Segnato per sbaglio? Rimettilo nell'ombra</button></div>`:''}</div>
+        </div>${addPanel}
+      </div>`;return}
+    const inTeam=teamSpecies().has(key);
+    const gmCtl=pv?'':`<div class="panel" style="box-shadow:none;background:var(--panel2)"><div class="row">
+        <span class="small muted">Pokédex dei giocatori</span>
+        <span class="seg">${[[0,'Non visto'],[1,'Visto'],[2,'Catturato']].map(([v,l])=>`<button class="btn sm ${st===v?'':'ghost'}" data-act="dex-set" data-sp="${esc(key)}" data-v="${v}" aria-pressed="${st===v}" ${inTeam&&v<2?'disabled':''}>${l}</button>`).join('')}</span>
+        <span class="small muted">${inTeam?'È nella squadra di un allenatore, quindi resta catturato.':markedByPlayersOnly(key)?'L\'hanno segnato i giocatori: «Non visto» lo rimette nell\'ombra.':STANDALONE?'Diventa visto quando apri uno scontro con questa specie.':'Diventa visto quando apri uno scontro con questa specie o quando un giocatore lo segna.'}</span>
+      </div></div>`;
+    $('#sheet').innerHTML=head(`#${String(sp.Number).padStart(3,'0')} ${esc(sp.Name)}${sp.Legendary?' ★':''}`,col)+`
+    <div class="sheetbody">${gmCtl}
+      <div class="cols">
+        <div class="idbox">${sprite(sp,'big')}
+          <div class="row" style="justify-content:center">${typesOf(sp).map(chip).join('')}</div>
+          <dl class="kv">
+            ${pv?`<dt>Stato</dt><dd><span class="minib"></span> catturato</dd>`:`<dt>Rango</dt><dd>${rankTag(sp.RecommendedRank)}</dd>`}
+            <dt>Base HP</dt><dd class="mono">${sp.BaseHP}</dd>
+            ${sp.DexCategory?`<dt>Categoria</dt><dd>${esc(sp.DexCategory)}</dd>`:''}
+            ${sp.Height?`<dt>Altezza</dt><dd>${String(sp.Height.Meters).replace('.',',')} m</dd>`:''}
+            ${sp.Weight?`<dt>Peso</dt><dd>${String(sp.Weight.Kilograms).replace('.',',')} kg</dd>`:''}
+            ${sp.Gender?`<dt>Sesso</dt><dd>${esc(sp.Gender)}</dd>`:''}
+          </dl>
+        </div>
+        <div style="display:grid;gap:14px;align-content:start">
+          <div><p class="flavor">${esc(sp.DescIT||'Testo del Pokédex non disponibile.')}</p>
+            ${sp.DexDescription?`<details style="margin-top:4px"><summary>Testo originale</summary><p class="small muted" style="margin:4px 0 0">${esc(sp.DexDescription)}</p></details>`:''}</div>
+          <div><div class="lbl">Attributi · iniziale / limite</div><div class="attrs">${ATTR.map(a=>`<div class="attr"><span>${a}</span>${dotsHTML(sp[a],sp['Max'+a],null,col)}<span class="mono small">${sp[a]}/${sp['Max'+a]}</span></div>`).join('')}</div></div>
+          <div><div class="row"><div class="lbl" style="margin:0">Abilità</div><label class="small muted row" style="gap:4px;margin-left:auto"><input type="checkbox" data-act="ab-en" ${UI.abEn?'checked':''}> testo originale</label></div>
+            <div style="margin-top:6px">${[sp.Ability1,sp.Ability2].filter(Boolean).map(a=>abilityHTML(a,false)).join('')}${sp.HiddenAbility?abilityHTML(sp.HiddenAbility,true):''}</div></div>
+        </div>
+      </div>
+      <div><div class="lbl">Evoluzione</div>${evoHTML(sp)}</div>
+      <div><div class="lbl">Mosse · rango a cui si imparano (tocca per i dettagli)</div><div>${movepoolHTML(sp)}</div></div>
+      ${pv?'':`<div class="note">${sp.Model?`Modello per i numeri mancanti: ${esc(sp.Model)}. `:''}Attributi: ${sp.AttrSrc==='card'?'dalle statistiche della scheda':(sp.AttrSrc==='canon'?'canon':'dal modello')}. Abilità: ${esc(sp.AbilSrc||'')}.${(sp.Notes||[]).map(n=>' '+esc(n)+'.').join('')}</div>`}
+      ${addPanel}
+    </div>`;
+  });
+}
+
+/* ---------- modalità autonoma (GitHub) ---------- */
+function playerToolsHTML(){return `<div class="panel" style="margin-top:18px"><h3>I tuoi dati</h3>
+  <p class="small muted">Schede e Pokédex restano su questo dispositivo. Esporta ogni tanto una copia della tua scheda (tasto <b>Esporta scheda</b>) e passala al GM quando serve.</p>
+  <div class="row"><button class="btn ghost sm" data-act="import">Importa una scheda</button><span class="grow"></span><button class="btn ghost sm" data-act="gm-unlock">Sei il GM? Sblocca</button></div><div id="import-msg"></div></div>`}
+function openGMUnlock(){openOv(()=>{$('#sheet2').innerHTML=head('Vista GM','#9e1424')+`<div class="sheetbody">
+  <p style="margin:0">Scrivi il codice del GM per vedere tutto su questo dispositivo.</p>
+  <form id="gm-form" class="row" autocomplete="off"><input id="gm-code" type="password" inputmode="numeric" placeholder="Codice" aria-label="Codice del GM" style="width:160px"><button class="btn" type="submit">Sblocca</button></form>
+  <p class="small" id="gm-msg" style="margin:0;color:var(--danger)" aria-live="polite"></p></div>`;setTimeout(()=>{const i=$('#gm-code');if(i)i.focus()},60)},2)}
+function standaloneTexts(){const l=$('#lotte-lead');if(l)l.textContent='Uno scontro per ogni incontro: ogni carta tiene i suoi PS, la Volontà, gli stati e i tiri. I valori del selvatico partono dagli attributi iniziali della specie e si possono alzare fino al limite. Aprire uno scontro segna la specie come vista nel tuo Pokédex; i giocatori la segnano sul loro telefono quando dici il numero.'}
+function registerSW(){if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;navigator.serviceWorker.register('sw-pokerole.js',{scope:'./'}).catch(()=>{})}
+
+/* ---------- giocatori: "l'abbiamo visto!" con il Pokémon che esce dall'ombra ---------- */
+function openReveal(keys,auto){
+  keys=keys.filter(k=>SP[k]);if(!keys.length)return;
+  const ds=dexMap(),todo=keys.filter(k=>ds(k)===0);
+  if(!todo.length){const p=SP[keys[0]];toast(`#${String(p.Number).padStart(3,'0')} ${p.Name} è già nel Pokédex.`);openSpecies(keys[0]);return}
+  const p0=SP[todo[0]],num=`#${String(p0.Number).padStart(3,'0')}`;
+  OV.pick=todo.length>1?null:todo[0];OV.rev=null; // OV.rev: {key, named} mentre il Pokémon esce dall'ombra
+  openOv(()=>{
+    if(!OV.pick){ // più forme con lo stesso numero
+      $('#sheet').innerHTML=head(`${num} ???`,'#33415e')+`<div class="sheetbody"><div class="revealbox">
+        <p style="margin:0">Il numero ${p0.Number} ha più forme: quale avete visto?</p>
+        <div class="formpick">${todo.map(k=>`<button data-act="reveal-pick" data-sp="${esc(k)}">${silSprite(SP[k],'big')}<span>tocca questa</span></button>`).join('')}</div></div></div>`;
+      return}
+    const k=OV.pick,p=SP[k],r=OV.rev&&OV.rev.key===k?OV.rev:null;
+    $('#sheet').innerHTML=head(`${num} ${r&&r.named?esc(p.Name):'???'}`,'#33415e')+`<div class="sheetbody"><div class="revealbox ${r?'go':''}" id="revealbox">
+      <div class="revimg">${r?sprite(p,'big'):silSprite(p,'big')}</div>
+      <div class="revname" id="revname">${r&&r.named?esc(p.Name):'???'}</div>
+      <div class="row" id="revtypes" style="justify-content:center;min-height:22px">${r&&r.named?typesOf(p).map(chip).join(''):''}</div>
+      ${r?`<button class="btn" disabled>Eccolo!</button>`:canMark()?`<button class="btn" data-act="reveal-go" data-sp="${esc(k)}" id="reveal-go">L'abbiamo visto!</button>
+      <p class="small muted" style="margin:0;max-width:44ch">Premilo quando questo Pokémon compare davvero in gioco: ${STANDALONE?'si svela nel tuo Pokédex.':'si svela per tutto il gruppo.'}</p>`
+      :`<p class="small muted" style="margin:0">Per segnarlo serve l'accesso in modifica: chiedilo al GM.</p>`}
+    </div></div>`;
+  });
+  if(auto&&OV.pick)revealGo(OV.pick);
+}
+function revealGo(key){
+  const p=SP[key];if(!p||(OV.rev&&OV.rev.key===key)||!markSeen(key))return;
+  OV.rev={key,named:false};
+  const box=$('#revealbox'),btn=$('#reveal-go');if(btn){btn.disabled=true;btn.textContent='Eccolo!'}
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(box){requestAnimationFrame(()=>requestAnimationFrame(()=>box.classList.add('go')));const img=box.querySelector('img');if(img)img.alt=p.Name}
+  setTimeout(()=>{if(!OV.rev||OV.rev.key!==key)return;OV.rev.named=true;const n=$('#revname');if(n)n.textContent=p.Name;const t=$('#revtypes');if(t)t.innerHTML=typesOf(p).map(chip).join('');const h=$('#sheet .sheethead h2');if(h)h.textContent=`#${String(p.Number).padStart(3,'0')} ${p.Name}`},reduce?0:700);
+  if(UI.tab==='pokedex')renderDex();
+  setTimeout(()=>{if(!$('#ov').hidden&&OV.rev&&OV.rev.key===key){OV.rev=null;openSpecies(key)}},reduce?600:2000);
+}
+
+/* ---------- dettaglio mossa (con valori del Pokémon se c'è) ---------- */
+function attrVal(mon,name){
+  if(!mon)return null;const sp=SP[mon.species];
+  const vals=String(name).split('/').map(n=>{n=n.trim();if(ATTR.includes(n))return mon.attrs[n];if(SOCIAL.includes(n))return mon.social[n];if(n==='Will')return willMax(mon);return null}).filter(v=>v!=null);
+  return vals.length?Math.max(...vals):null;
+}
+function skillVal(mon,name){if(!mon)return null;const vals=String(name).split('/').map(n=>mon.skills[n.trim()]).filter(v=>v!=null);return vals.length?Math.max(...vals):null}
+function pools(mon,mvName){
+  const m=DATA.Moves[mvName];if(!m)return null;
+  const sp=mon?SP[mon.species]:null;
+  const a1=m.Accuracy1,a2=m.Accuracy2;
+  const av=attrVal(mon,a1),sv=a2?skillVal(mon,a2):0;
+  const acc=(av!=null&&sv!=null)?av+sv:null;
+  let dmg=null,dmgTxt='';
+  const pw=Number.isFinite(m.Power)?m.Power:0;
+  if(m.Category!=='Support'&&pw>0&&m.Damage1){
+    const dv=attrVal(mon,m.Damage1);const st=sp&&stab(sp,m)?S.house.stab:0;
+    dmg=dv!=null?dv+pw+st:null;
+    dmgTxt=`${m.Damage1} + Potenza ${pw}${st?` + ${st} STAB`:(sp?'':' (+1 STAB se dello stesso tipo)')}`;
+  }
+  return {m,accTxt:`${a1||'—'}${a2?' + '+a2:''}`,acc,dmg,dmgTxt,low:m.LowAcc||0};
+}
+function moveCardHTML(mvName,mon){
+  const P=pools(mon,mvName);if(!P)return `<p>${esc(mvName)}: mossa non trovata.</p>`;const m=P.m;
+  const vm=visMap(),allWho=(LEARNERS[mvName]||[]),who=allWho.filter(k=>vm(k)>=2).map(k=>SP[k]),hiddenWho=allWho.length-who.length;
+  return `<div class="movecard" style="--c:${TC[m.Type]}">
+    <h3>${esc(MN(mvName))} ${chip(m.Type)}<span class="small muted">${CAT_IT[m.Category]||m.Category}${m.Power?` · Potenza ${m.Power}`:''}</span>${m.New?'<span class="badge-new">nuova</span>':''}</h3>
+    <div class="pools"><span class="pool">Precisione: ${esc(P.accTxt)}${P.acc!=null?` = <b>${P.acc}</b> dadi`:''}${P.low?` · Precisione ridotta ${P.low}`:''}</span>
+      ${P.dmgTxt?`<span class="pool">Danno: ${esc(P.dmgTxt)}${P.dmg!=null?` = <b>${P.dmg}</b> dadi`:''}</span>`:''}
+      <span class="pool">Bersaglio: ${esc(TARGET_IT[m.Target]||m.Target||'—')}</span>
+      ${(m.Tags||[]).map(t=>`<span class="pool">${TAG_IT[t]||t}</span>`).join('')}${m.Reaction?`<span class="pool">Reazione ${esc(m.Reaction)}</span>`:''}</div>
+    <p style="margin:0">${esc(m.EffectIT||m.Effect||'')}</p>
+    ${m.DescIT?`<p class="small muted" style="margin:6px 0 0;font-style:italic">${esc(m.DescIT)}</p>`:''}
+    ${m.Effect||m.Description?`<details style="margin-top:6px"><summary>Testo originale</summary><p class="small muted" style="margin:4px 0 0">${esc(m.Effect||'')}</p>${m.Description?`<p class="small muted" style="margin:4px 0 0;font-style:italic">${esc(m.Description)}</p>`:''}</details>`:''}
+    ${who.length?`<div class="small muted" style="margin-top:8px">La imparano (${who.length}):</div><div class="who" style="margin-top:4px">${who.slice(0,40).map(p=>`<button data-sp="${esc(p.Key)}">${esc(p.Name)}</button>`).join('')}${who.length>40?`<span class="small muted">e altri ${who.length-40}</span>`:''}</div>`:''}
+    ${hiddenWho>0?`<div class="small muted" style="margin-top:6px">${who.length?'E altri':'La imparano'} ${hiddenWho} Pokémon che non avete ancora catturato.</div>`:''}
+  </div>`;
+}
+function openMove(name,mon){openOv(()=>{$('#sheet2').innerHTML=head(esc(MN(name)),TC[(DATA.Moves[name]||{}).Type]||'#777')+`<div class="sheetbody">${moveCardHTML(name,mon)}</div>`},2)}
+
+/* ======================= allenatori ======================= */
+function newMon(key,rank){
+  const sp=SP[key];const attrs={};ATTR.forEach(a=>attrs[a]=sp[a]);
+  const social={};SOCIAL.forEach(s=>social[s]=1);const skills={};SKILLS.forEach(s=>skills[s]=0);
+  const r=rank||'Starter';
+  const learn=sp.Moves.filter(m=>ri(m.Learned)<=ri(r)).map(m=>m.Name);
+  const mon={id:uid(),species:key,nick:'',rank:r,gender:'',ability:sp.Ability1||'',item:'',happiness:2,loyalty:2,attrs,social,skills,moves:learn.slice(0,2),status:[],notes:'',box:false,hp:0,will:0};
+  mon.hp=hpMax(mon);mon.will=willMax(mon);return mon;
+}
+const hpMax=mon=>(SP[mon.species]?.BaseHP||0)+(mon.attrs.Vitality||0);
+const willMax=mon=>(mon.attrs.Insight||0)+(S.house.willBonus??3);
+const movesMax=mon=>(mon.attrs.Insight||0)+(S.house.movesBonus??3);
+function trainerList(){return Object.values(S.trainers).sort((a,b)=>(a.created||0)-(b.created||0))}
+function renderTrainers(){
+  const v=$('#v-allenatori');const T=S.trainers[UI.trainer];
+  if(!T){UI.trainer=null;
+    const L=trainerList();
+    v.innerHTML=`<h2>Schede degli allenatori</h2>
+      <p class="lead">Una scheda per ogni giocatore, con squadra da 6 e Box. Apri una scheda per gestire i Pokémon, gli attributi, le mosse e i tiri.</p>
+      ${L.length?'':`<div class="empty" style="margin-bottom:12px"><b>Ancora nessun allenatore</b>Crea la prima scheda, poi aggiungi Pokémon dal Pokédex o da qui.</div>`}
+      <div class="profiles">${L.map(t=>{const team=(t.mons||[]).filter(m=>!m.box);const box=(t.mons||[]).filter(m=>m.box);
+        return `<button class="profile" data-trainer="${t.id}"><span class="pn">${esc(t.name||'Senza nome')}</span>
+          <span class="small muted">${t.player?'Giocatore: '+esc(t.player)+' · ':''}<span class="mono">₽ ${Number(t.money||0).toLocaleString('it-IT')}</span></span>
+          <span class="team6">${team.map(m=>sprite(SP[m.species],'sm')).join('')||'<span class="small muted">Squadra vuota</span>'}</span>
+          <span class="small muted">${team.length}/6 in squadra · ${box.length} nel Box</span></button>`}).join('')}
+        <button class="newcard" data-act="new-trainer">+ Nuovo allenatore</button></div>
+      ${isPlayerView()?(STANDALONE?playerToolsHTML():''):settingsHTML()}`;
+    return;
+  }
+  const team=T.mons.filter(m=>!m.box),box=T.mons.filter(m=>m.box);
+  v.innerHTML=`<div class="tr-head"><button class="btn ghost sm" data-act="back">← Tutti</button>
+      <input class="name" id="t-name" value="${esc(T.name)}" aria-label="Nome dell'allenatore" placeholder="Nome">
+      <input id="t-player" value="${esc(T.player||'')}" placeholder="Giocatore" aria-label="Giocatore" style="width:150px">
+      <span class="wallet"><span class="small" style="color:var(--gold)">₽</span><input type="number" id="t-money" value="${Number(T.money||0)}" aria-label="Soldi"></span>
+      <span class="grow"></span>
+      <button class="btn ghost sm" data-act="export-trainer">Esporta scheda</button>
+      <button class="btn danger sm" data-act="ask-del-trainer">Elimina</button></div>
+    <div id="t-confirm"></div>
+    <div class="sec"><h3>Squadra</h3><span class="counter">${team.length}/6</span></div>
+    <div class="slots">${team.map(monCard).join('')}${team.length<6?`<button class="slot-empty" data-act="pick-species" data-box="0">+ Aggiungi Pokémon</button>`:''}</div>
+    <div class="sec"><h3>Box</h3><span class="counter">${box.length}</span></div>
+    <div class="slots">${box.map(monCard).join('')}<button class="slot-empty" data-act="pick-species" data-box="1">+ Aggiungi al Box</button></div>
+    <div class="sec"><h3>Note</h3></div>
+    <textarea id="t-notes" placeholder="Medaglie, obiettivi, oggetti chiave…">${esc(T.notes||'')}</textarea>`;
+}
+function monCard(m){
+  const sp=SP[m.species];if(!sp)return '';const hm=hpMax(m),wm=willMax(m);
+  return `<button class="mon" data-mon="${m.id}" style="--c:${TC[sp.Type1]}">${sprite(sp,'sm')}<span class="info">
+    <span class="row" style="gap:6px"><span class="nm">${esc(m.nick||sp.Name)}</span>${m.nick?`<span class="small muted">${esc(sp.Name)}</span>`:''}${rankTag(m.rank)}</span>
+    <span class="row" style="gap:4px">${typesOf(sp).map(chip).join('')}${m.status.length?`<span class="small" style="color:var(--danger)">${esc(m.status.join(', '))}</span>`:''}</span>
+    <span class="row small mono" style="gap:6px"><span style="width:68px;white-space:nowrap">PS ${m.hp}/${hm}</span><span class="bar grow"><i style="width:${hm?clamp(m.hp/hm*100,0,100):0}%"></i></span></span>
+    <span class="row small mono" style="gap:6px"><span style="width:68px;white-space:nowrap">Vol ${m.will}/${wm}</span><span class="bar will grow"><i style="width:${wm?clamp(m.will/wm*100,0,100):0}%"></i></span></span>
+  </span></button>`;
+}
+function settingsHTML(){
+  const H=S.house;
+  return `<div class="panel" style="margin-top:18px"><h3>Regole della casa e salvataggi</h3>
+    <p class="small muted">Valori predefiniti presi da Pokérole; controllali sul tuo manuale e cambiali qui se serve. Valgono per tutte le schede.</p>
+    <div class="row" style="gap:14px;margin:8px 0">
+      <label class="small">Volontà = Insight + <input type="number" id="h-will" min="0" max="10" value="${H.willBonus}"></label>
+      <label class="small">Difesa Speciale = <select id="h-def"><option value="2" ${H.defOpt!==1?'selected':''}>Insight (opzione 2)</option><option value="1" ${H.defOpt===1?'selected':''}>Vitality (opzione 1)</option></select></label>
+      <label class="small">Mosse conosciute = Insight + <input type="number" id="h-moves" min="0" max="10" value="${H.movesBonus}"></label>
+      <label class="small">STAB al Danno: + <input type="number" id="h-stab" min="0" max="3" value="${H.stab}"></label>
+    </div>
+    <div class="small muted">PS massimi = Base HP + Vitality. Difesa = Vitality. Il manuale 3.0 lascia scegliere al GM se la Difesa Speciale usa Insight (opzione 2, come nei videogiochi) o Vitality (opzione 1): la scelta vale per tutta la campagna.</div>
+    <div class="lbl" style="margin-top:10px">Limite delle abilità (skill) per rango</div>
+    <div class="row">${RANKS.map(r=>`<label class="small">${r} <input type="number" min="0" max="5" data-cap="${r}" value="${H.skillCap[r]}" style="width:56px"></label>`).join('')}</div>
+    <div class="lbl" style="margin-top:10px">Valore delle skill dei selvatici per rango</div>
+    <div class="row">${RANKS.map(r=>`<label class="small">${r} <input type="number" min="0" max="5" data-wild="${r}" value="${H.wildSkill[r]}" style="width:56px"></label>`).join('')}</div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn ghost sm" data-act="export-all">Esporta tutto</button>
+      <button class="btn ghost sm" data-act="import">Importa</button>
+      <span class="small muted">${Store.mode==='db'?'I dati sono condivisi con chi apre questa pagina.':'I dati restano in questo browser: esporta ogni tanto una copia.'}</span>
+      ${STANDALONE?'<span class="grow"></span><button class="btn ghost sm" data-act="gm-lock">Blocca la vista GM su questo dispositivo</button>':''}
+    </div>${Store.mode==='db'&&Store.stash?`<div class="confirm" style="border-color:var(--gold);background:var(--gold-dim);margin-top:10px">Su questo dispositivo ci sono ${Object.keys(Store.stash.trainers).length} allenatori salvati prima del salvataggio condiviso. <button class="btn sm" data-act="migrate">Copiali nel salvataggio condiviso</button></div>`:''}<div id="import-msg"></div></div>`;
+}
+
+/* ---------- scheda del Pokémon dell'allenatore ---------- */
+function findMon(id){for(const t of Object.values(S.trainers)){const m=(t.mons||[]).find(x=>x.id===id);if(m)return[t,m]}return[null,null]}
+function openMon(id){openOv(()=>{
+  const [T,m]=findMon(id);if(!m){closeOv();return}
+  const sp=SP[m.species];const col=TC[sp.Type1];const hm=hpMax(m),wm=willMax(m),mm=movesMax(m),cap=S.house.skillCap[m.rank]??5;
+  const nexts=sp.Evolutions.filter(e=>e.To&&spByName(e.To));
+  const learn=sp.Moves.filter(x=>ri(x.Learned)<=ri(m.rank));
+  const ab=[sp.Ability1,sp.Ability2,sp.HiddenAbility].filter(Boolean);
+  const spent=ATTR.reduce((s,a)=>s+(m.attrs[a]-sp[a]),0),sspent=SOCIAL.reduce((s,a)=>s+(m.social[a]-1),0),kspent=SKILLS.reduce((s,a)=>s+m.skills[a],0);
+  const RP=RANK_PTS[m.rank]||[0,0,0];const over=(x,y)=>x>y?' style="color:var(--danger)"':'';
+  const roll=UI.rolls[m.id]||{};
+  $('#sheet').innerHTML=head(`${esc(m.nick||sp.Name)}`,col,sprite(sp,'sm'))+`<div class="sheetbody">
+    <div class="row">
+      <label class="small muted">Soprannome <input id="m-nick" value="${esc(m.nick)}" placeholder="${esc(sp.Name)}" style="width:150px"></label>
+      <label class="small muted">Rango <select id="m-rank">${RANKS.map(r=>`<option ${r===m.rank?'selected':''}>${r}</option>`).join('')}</select></label>
+      <label class="small muted">Abilità <select id="m-ability">${ab.map(a=>`<option value="${esc(a)}" ${a===m.ability?'selected':''}>${esc(AN(a))}${a===sp.HiddenAbility?' (nascosta)':''}</option>`).join('')}</select></label>
+      <label class="small muted">Strumento <input id="m-item" value="${esc(m.item)}" placeholder="nessuno" style="width:130px"></label>
+      <label class="small muted">Sesso <select id="m-gender">${['','♂','♀','—'].map(g=>`<option ${g===m.gender?'selected':''}>${g}</option>`).join('')}</select></label>
+    </div>
+    <div class="row small muted">${typesOf(sp).map(chip).join('')}<span>${esc(sp.Name)}${isPlayerView()?'':` · rango consigliato ${esc(sp.RecommendedRank)}`}</span>
+      <button class="btn ghost sm" data-sp="${esc(sp.Key)}">Scheda della specie</button></div>
+    ${m.ability?`<div class="note">${esc((DATA.Abilities[m.ability]||{}).EffectIT||(DATA.Abilities[m.ability]||{}).Effect||'')}</div>`:''}
+    <div class="trackers">
+      <div class="track"><div class="top"><span class="small muted">PS</span><b>${m.hp}/${hm}</b><span class="btns"><button class="btn ghost sm" data-act="hp" data-d="-1">−1</button><button class="btn ghost sm" data-act="hp" data-d="1">+1</button><button class="btn ghost sm" data-act="hp" data-d="full">Pieni</button></span></div><div class="bar"><i style="width:${hm?clamp(m.hp/hm*100,0,100):0}%"></i></div></div>
+      <div class="track"><div class="top"><span class="small muted">Volontà</span><b>${m.will}/${wm}</b><span class="btns"><button class="btn ghost sm" data-act="will" data-d="-1">−1</button><button class="btn ghost sm" data-act="will" data-d="1">+1</button><button class="btn ghost sm" data-act="will" data-d="full">Piena</button></span></div><div class="bar will"><i style="width:${wm?clamp(m.will/wm*100,0,100):0}%"></i></div></div>
+    </div>
+    <div><div class="lbl">Stati</div><div class="status">${STATUS.map(s=>`<button class="st" data-act="status" data-s="${s}" aria-pressed="${m.status.includes(s)}">${s}</button>`).join('')}</div></div>
+    <div class="cols" style="grid-template-columns:1fr 1fr">
+      <div><div class="lbl"${over(spent,RP[0])}>Attributi · ${spent}/${RP[0]} punti del rango</div><div class="attrs">${ATTR.map(a=>`<div class="attr"><span>${a}</span>${dotsHTML(sp[a],sp['Max'+a],m.attrs[a],col)}
+        <span class="stepper"><button data-act="attr" data-a="${a}" data-d="-1" ${m.attrs[a]<=sp[a]?'disabled':''} aria-label="meno">−</button><b>${m.attrs[a]}</b><button data-act="attr" data-a="${a}" data-d="1" ${m.attrs[a]>=sp['Max'+a]?'disabled':''} aria-label="più">+</button></span></div>`).join('')}</div>
+        <div class="lbl" style="margin-top:12px;${sspent>RP[1]?'color:var(--danger)':''}">Attributi sociali · ${sspent}/${RP[1]} punti del rango</div><div class="attrs">${SOCIAL.map(a=>`<div class="attr"><span>${a}</span>${dotsHTML(m.social[a],5,null,'#c9a7ff')}
+        <span class="stepper"><button data-act="social" data-a="${a}" data-d="-1" ${m.social[a]<=1?'disabled':''} aria-label="meno">−</button><b>${m.social[a]}</b><button data-act="social" data-a="${a}" data-d="1" ${m.social[a]>=5?'disabled':''} aria-label="più">+</button></span></div>`).join('')}</div></div>
+      <div><div class="lbl"${over(kspent,RP[2])}>Skill · ${kspent}/${RP[2]} punti · limite ${cap} al rango ${m.rank}</div><div class="attrs">${SKILLS.map(s=>`<div class="attr"><span>${s}</span>${dotsHTML(m.skills[s],5,null,'#7fe3b6')}
+        <span class="stepper"><button data-act="skill" data-a="${s}" data-d="-1" ${m.skills[s]<=0?'disabled':''} aria-label="meno">−</button><b>${m.skills[s]}</b><button data-act="skill" data-a="${s}" data-d="1" ${m.skills[s]>=cap?'disabled':''} aria-label="più">+</button></span></div>`).join('')}</div></div>
+    </div>
+    <div class="statgrid">
+      <div class="stat"><span class="t">Difesa</span><span class="v">${m.attrs.Vitality}</span><span class="f">Vitality</span></div>
+      <div class="stat"><span class="t">Dif. Speciale</span><span class="v">${spdefOf(m.attrs)}</span><span class="f">${S.house.defOpt===1?'Vitality':'Insight'}</span></div>
+      <div class="stat"><span class="t">Iniziativa</span><span class="v">${m.attrs.Dexterity+m.skills.Alert}</span><span class="f">1d6 + Dexterity + Alert</span></div>
+      <div class="stat"><span class="t">Schivata</span><span class="v">${m.attrs.Dexterity+m.skills.Evasion}</span><span class="f">Dexterity + Evasion</span></div>
+      <div class="stat"><span class="t">Contrasto</span><span class="v">${Math.max(m.attrs.Strength,m.attrs.Special)+m.skills.Clash}</span><span class="f">Strength o Special + Clash</span></div>
+      <div class="stat"><span class="t">Felicità</span><span class="stepper"><button data-act="happy" data-k="happiness" data-d="-1" aria-label="meno">−</button><b>${m.happiness}</b><button data-act="happy" data-k="happiness" data-d="1" aria-label="più">+</button></span></div>
+      <div class="stat"><span class="t">Lealtà</span><span class="stepper"><button data-act="happy" data-k="loyalty" data-d="-1" aria-label="meno">−</button><b>${m.loyalty}</b><button data-act="happy" data-k="loyalty" data-d="1" aria-label="più">+</button></span></div>
+      <div class="stat"><span class="t">Punti allenamento</span><span class="stepper"><button data-act="tp" data-d="-1" aria-label="meno">−</button><b>${m.tp||0}</b><button data-act="tp" data-d="1" aria-label="più">+</button></span><span class="f">${TP_RANK[m.rank]?`rango successivo: ${TP_RANK[m.rank]}`:'rango massimo'}${(()=>{const e=sp.Evolutions.find(x=>x.To&&TP_EVO[x.Speed]);return e?` · evolvere: ${TP_EVO[e.Speed]}`:''})()}</span></div>
+    </div>
+    <div><div class="sec" style="margin:0 0 8px"><h3>Mosse conosciute</h3><span class="counter ${m.moves.length>mm?'':''}" style="${m.moves.length>mm?'color:var(--danger);border-color:var(--danger)':''}">${m.moves.length}/${mm}</span>
+      <button class="btn sm" data-act="learn">+ Impara mossa</button>
+      <label class="small muted row" style="gap:6px;margin-left:auto" for="td-${m.id}">Difesa del bersaglio <input type="number" id="td-${m.id}" data-tdef="${m.id}" min="0" max="15" value="${tdef(m.id)}" style="width:62px"></label></div>
+      <div class="known">${m.moves.map(n=>knownMoveHTML(m,n,roll[n])).join('')||'<p class="small muted">Nessuna mossa: aggiungine una tra quelle del suo rango.</p>'}</div></div>
+    <div><div class="lbl">Note</div><textarea id="m-notes" placeholder="Natura, ricordi, allenamento…">${esc(m.notes)}</textarea></div>
+    <div class="row">
+      ${(()=>{const vm=visMap();return nexts.map(e=>`<button class="btn red" data-act="ask-evolve" data-to="${esc(BYNAME[e.To])}">Evolvi in ${vm(BYNAME[e.To])===0?'???':esc(e.To)}</button>`).join('')})()}
+      <button class="btn ghost" data-act="to-box">${m.box?'Porta in squadra':'Metti nel Box'}</button>
+      <span class="grow"></span><button class="btn danger" data-act="ask-release">Libera</button></div>
+    <div id="m-confirm"></div>
+  </div>`;
+})}
+function knownMoveHTML(mon,n,r){
+  const P=pools(mon,n);if(!P)return '';const m=P.m;
+  return `<div class="kmove" style="--c:${TC[m.Type]}"><div class="top"><b>${esc(MN(n))}</b>${chip(m.Type)}<span class="small muted">${CAT_IT[m.Category]}${m.Power?' · Potenza '+m.Power:''}</span>
+    <span class="grow"></span><button class="btn ghost sm" data-move="${esc(n)}" data-monid="${mon.id}">Dettagli</button><button class="btn ghost sm" data-act="forget" data-n="${esc(n)}" aria-label="Dimentica ${esc(MN(n))}">✕</button></div>
+    <div class="pools" style="margin:0"><span class="pool">Precisione ${esc(P.accTxt)} = <b>${P.acc??'?'}</b>${P.low?` · ridotta ${P.low}`:''}</span>${P.dmg!=null?`<span class="pool">Danno ${esc(P.dmgTxt)} = <b>${P.dmg}</b></span>`:''}</div>
+    <div class="eff">${esc(m.EffectIT||m.Effect||'')}</div>
+    <div class="row"><button class="btn sm" data-act="roll" data-n="${esc(n)}" data-k="acc">Tira Precisione</button>${P.dmg!=null?`<button class="btn sm" data-act="roll" data-n="${esc(n)}" data-k="dmg">Tira Danno${tdef(mon.id)?` (−${tdef(mon.id)} Dif)`:''}</button>`:''}</div>
+    ${r?resultHTML(r,P):''}
+  </div>`;
+}
+function rollDice(n){const d=[];for(let i=0;i<n;i++)d.push(1+Math.floor(Math.random()*6));return d}
+function tdef(id){return (UI.tdef&&UI.tdef[id])||0}
+function resultHTML(r,P){
+  if(r.k==='acc'){const cm=(P.m.Tags||[]).includes('HighCritical')?2:3,net=Math.max(0,r.s-P.low),upto=Math.min(5,net),crit=Math.min(5,net-cm);
+    return `<div class="result">Precisione: ${diceHTML(r.d)}<span><b>${r.s}</b> successi${P.low?` − ${P.low} (precisione ridotta) = <b>${net}</b>`:''} → ${upto>=1?`<b style="color:var(--ok)">va a segno</b> se è la ${upto===1?'1ª':'1ª–'+upto+'ª'} azione del round`:'<b style="color:var(--danger)">manca</b>'}${crit>=1?` · <b>critico</b> (+2 dadi al Danno) se è la ${crit===1?'1ª':'1ª–'+crit+'ª'} azione`:''}</span></div>`}
+  return `<div class="result">Danno: ${diceHTML(r.d)}<span><b>${r.s}</b> successi → <b>${Math.max(1,r.s)}</b> ${Math.max(1,r.s)===1?'danno':'danni'}${r.s<1?' (un colpo a segno fa sempre almeno 1 danno)':''}; poi +1 se superefficace (solo con almeno 1 successo), −1 se poco efficace</span></div>`;
+}
+function diceHTML(d,mode='succ'){return `<span class="dice">${d.map(x=>`<span class="die ${mode==='chance'?(x===6?'six':''):(x>=4?'ok':'')}">${x}</span>`).join('')}</span>`}
+function openLearn(id){openOv(()=>{
+  const [T,m]=findMon(id);if(!m){closeOv(2);return}const sp=SP[m.species];
+  const L=sp.Moves.filter(x=>ri(x.Learned)<=ri(m.rank));const full=m.moves.length>=movesMax(m);
+  $('#sheet2').innerHTML=head('Impara una mossa',TC[sp.Type1])+`<div class="sheetbody">
+    <p class="small muted" style="margin:0">Mosse di ${esc(sp.Name)} fino al rango ${m.rank}.${full?' Ha già il numero massimo di mosse: puoi aggiungerne comunque, il contatore diventa rosso.':''}</p>
+    <div class="picker">${L.map(x=>{const mv=DATA.Moves[x.Name]||{};const has=m.moves.includes(x.Name);return `<button class="pick" data-act="learn-pick" data-n="${esc(x.Name)}" ${has?'disabled':''}><i style="width:8px;height:18px;border-radius:3px;background:${TC[mv.Type]};flex:none"></i><span class="grow">${esc(MN(x.Name))}<br><span class="small muted">${x.Learned} · ${CAT_IT[mv.Category]||''}${mv.Power?' · P'+mv.Power:''}</span></span></button>`}).join('')}</div>
+  </div>`;
+},2)}
+function openPickSpecies(box){openOv(()=>{
+  const q=(OV2.q||'').toLowerCase(),vm=visMap(),pv=isPlayerView();
+  const L=DATA.Pokedex.filter(p=>vm(p.Key)>=1&&(!q||p.Name.toLowerCase().includes(q)||String(p.Number).padStart(3,'0').includes(q)));
+  $('#sheet2').innerHTML=head(box?'Aggiungi al Box':'Aggiungi alla squadra','#9e1424')+`<div class="sheetbody">
+    ${pv?'<p class="small muted" style="margin:0">Qui ci sono solo i Pokémon che avete già visto.</p>':''}
+    <input id="pick-q" placeholder="Cerca specie…" value="${esc(OV2.q||'')}" aria-label="Cerca specie">
+    <div class="picker">${L.map(p=>`<button class="pick" data-act="pick-add" data-sp="${esc(p.Key)}" data-box="${box?1:0}">${sprite(p,'xs')}<span class="grow">${esc(p.Name)}<br><span class="small muted">#${String(p.Number).padStart(3,'0')} · ${typesOf(p).map(t=>T_IT[t]).join('/')}</span></span></button>`).join('')||`<div class="empty" style="grid-column:1/-1"><b>${q?'Nessuna specie trovata':'Ancora nessun Pokémon visto'}</b>${q?'Prova un altro nome.':'Il GM li sblocca quando li incontrate in una lotta.'}</div>`}</div>
+  </div>`;
+  const i=$('#pick-q');i.oninput=()=>{OV2.q=i.value;const pos=i.selectionStart;OV2.render();const j=$('#pick-q');j.focus();j.setSelectionRange(pos,pos)};
+},2)}
+function addMon(trainerId,key,box){
+  const T=S.trainers[trainerId];if(!T)return;const team=T.mons.filter(m=>!m.box).length;
+  const mon=newMon(key,'Starter');mon.box=box||team>=6;T.mons.push(mon);saveTrainer(T);
+  toast(`${SP[key].Name} ${mon.box?'è nel Box':'si unisce alla squadra'} di ${T.name||'allenatore'}.`);return mon;
+}
+function evolve(mon,toKey){
+  const a=SP[mon.species],b=SP[toKey];if(!b)return;
+  const slot=[a.Ability1,a.Ability2,a.HiddenAbility].indexOf(mon.ability);
+  const oldHm=hpMax(mon);
+  ATTR.forEach(k=>{mon.attrs[k]=clamp(Math.max(mon.attrs[k],b[k]),b[k],b['Max'+k])});
+  mon.species=toKey;const nb=[b.Ability1,b.Ability2,b.HiddenAbility];mon.ability=(slot>=0&&nb[slot])||b.Ability1||'';
+  const hm=hpMax(mon);mon.hp=clamp(mon.hp+(hm-oldHm),0,hm);mon.will=clamp(mon.will,0,willMax(mon));
+}
+
+/* ======================= lotte ======================= */
+function wildMoves(sp,rank){
+  const L=sp.Moves.filter(m=>ri(m.Learned)<=ri(rank)).map(m=>m.Name).filter(n=>DATA.Moves[n]);
+  const dmg=n=>DATA.Moves[n].Category!=='Support'&&DATA.Moves[n].Power>0;
+  const st=L.filter(n=>dmg(n)&&typesOf(sp).includes(DATA.Moves[n].Type)).reverse();
+  const other=L.filter(n=>dmg(n)&&!st.includes(n)).reverse();const sup=L.filter(n=>!dmg(n)).reverse();
+  const out=[];[st[0],st[1],other[0],sup[0],st[2],other[1],sup[1]].forEach(n=>{if(n&&!out.includes(n)&&out.length<4)out.push(n)});
+  return out;
+}
+function catchHTML(b,hm){
+  const req=CATCH_REQ[b.rank];const ko=b.hp<=0;
+  const hpB=ko?0:(b.hp===1?2:(b.hp<=Math.floor(hm/2)?1:0));const stB=ko?0:(b.status||[]).filter(x=>AILMENTS.includes(x)).length;const bonus=hpB+stB;
+  const ball=(UI.ball&&UI.ball[b.id])||4;const r=UI.catchRoll&&UI.catchRoll[b.id];
+  let out='';
+  if(r){const tot=r.s+r.bonus;out=`<div class="result">${diceHTML(r.d)}<span><b>${r.s}</b> + ${r.bonus} bonus = <b>${tot}</b> su ${r.req} → ${tot>=r.req?(r.ko?'<b style="color:var(--ok)">catturato!</b> (era esausto: Felicità 0, Lealtà 0)':'<b style="color:var(--ok)">catturato!</b> (Felicità 2, Lealtà 1)'):(tot<=r.req-3?'<b style="color:var(--danger)">si libera</b>: la Ball è inutilizzabile':'<b style="color:var(--warn)">scappa dalla Ball</b>: si recupera a fine scena')}</span></div>`}
+  return `<div class="track"><div class="top" style="flex-wrap:wrap"><span class="small muted">Cattura</span>
+    <span class="small">${req?`servono <b class="mono">${req}</b> successi`:'il manuale non dà un valore per questo rango'} · bonus <b class="mono">+${bonus}</b>${ko?' (esausto: nessun bonus)':''}</span>
+    <span class="btns"><select data-ball="${b.id}" aria-label="Ball">${BALLS.map(([n,d])=>`<option value="${d}" ${d===ball?'selected':''}>${n} (${d} dadi)</option>`).join('')}</select>${req?`<button class="btn sm" data-act="b-catch">Tira il sigillo</button>`:''}</span></div>
+    <span class="small muted">Prima l'allenatore colpisce con Dexterity o Strength + Throw. Bonus: +1 a metà PS, +2 a 1 PS, +1 per ogni problema di stato.</span>${out}</div>`;
+}
+function wildMon(b){const sp=SP[b.species];const sk={};SKILLS.forEach(s=>sk[s]=S.house.wildSkill[b.rank]??1);const so={};SOCIAL.forEach(s=>so[s]=1);return {id:b.id,species:b.species,attrs:b.attrs,skills:sk,social:so,rank:b.rank}}
+function renderBattles(){
+  const tl=trainerList();
+  $('#nb-trainer').innerHTML=`<option value="">Senza allenatore</option>`+tl.map(t=>`<option value="${t.id}">${esc(t.name||'Senza nome')}</option>`).join('');
+  if(!$('#nb-rank').options.length)$('#nb-rank').innerHTML=RANKS.map(r=>`<option>${r}</option>`).join('');
+  const B=Object.values(S.battles).sort((a,b)=>(b.created||0)-(a.created||0));
+  $('#battle-count').textContent=B.length;
+  $('#battle-list').innerHTML=B.length?B.map(battleHTML).join(''):`<div class="empty" style="grid-column:1/-1"><b>Nessuno scontro aperto</b>Scegli una specie e un rango qui sopra per aprire il primo.</div>`;
+}
+function battleHTML(b){
+  const sp=SP[b.species];if(!sp)return '';const w=wildMon(b);const hm=sp.BaseHP+b.attrs.Vitality,wm=b.attrs.Insight+(S.house.willBonus??3);
+  const T=S.trainers[b.trainer];const r=UI.rolls[b.id]||{};
+  return `<div class="battle" data-battle="${b.id}">
+    <div class="bh">${sprite(sp,'sm')}<div class="info"><b>${esc(sp.Name)}</b> ${rankTag(b.rank)}<div class="small muted">${T?'contro '+esc(T.name):'selvatico'} · ${typesOf(sp).map(t=>T_IT[t]).join('/')}</div>
+      ${(()=>{const st=dexMap()(b.species);return st===2?`<span class="small muted row" style="gap:5px;margin-top:3px">${dexMark(2)} catturato dai giocatori</span>`:`<button class="btn ghost sm" data-act="b-seen" style="margin-top:4px" aria-pressed="${st===1}" title="${STANDALONE?'Il tuo promemoria di cosa ha visto il gruppo':'Decide se i giocatori lo vedono nel Pokédex'}">${dexMark(st)} ${STANDALONE?(st===1?'Segnato come visto':'Non ancora visto'):(st===1?'Visto dai giocatori':'Nascosto ai giocatori')}</button>`})()}</div>
+      <div class="round">Round <span class="stepper"><button data-act="b-round" data-d="-1" aria-label="round precedente">−</button><b>${b.round||1}</b><button data-act="b-round" data-d="1" aria-label="round successivo">+</button></span></div></div>
+    <div class="trackers">
+      <div class="track"><div class="top"><span class="small muted">PS</span><b>${b.hp}/${hm}</b><span class="btns"><button class="btn ghost sm" data-act="b-hp" data-d="-1">−1</button><button class="btn ghost sm" data-act="b-hp" data-d="-3">−3</button><button class="btn ghost sm" data-act="b-hp" data-d="1">+1</button></span></div><div class="bar"><i style="width:${clamp(b.hp/hm*100,0,100)}%;${b.hp<=hm/4?'background:var(--danger)':b.hp<=hm/2?'background:var(--warn)':''}"></i></div></div>
+      <div class="track"><div class="top"><span class="small muted">Volontà</span><b>${b.will}/${wm}</b><span class="btns"><button class="btn ghost sm" data-act="b-will" data-d="-1">−1</button><button class="btn ghost sm" data-act="b-will" data-d="1">+1</button></span></div><div class="bar will"><i style="width:${clamp(b.will/wm*100,0,100)}%"></i></div></div>
+    </div>
+    <div class="status">${STATUS.map(s=>`<button class="st" data-act="b-status" data-s="${s}" aria-pressed="${(b.status||[]).includes(s)}">${s}</button>`).join('')}</div>
+    ${catchHTML(b,hm)}
+    <details><summary>Attributi (${ATTR.map(a=>b.attrs[a]).join('/')}) · Dif ${b.attrs.Vitality} · Dif Sp ${spdefOf(b.attrs)} · skill ${S.house.wildSkill[b.rank]}</summary>
+      <div class="attrs" style="margin-top:6px">${ATTR.map(a=>`<div class="attr"><span>${a}</span>${dotsHTML(sp[a],sp['Max'+a],b.attrs[a],TC[sp.Type1])}<span class="stepper"><button data-act="b-attr" data-a="${a}" data-d="-1" ${b.attrs[a]<=sp[a]?'disabled':''} aria-label="meno">−</button><b>${b.attrs[a]}</b><button data-act="b-attr" data-a="${a}" data-d="1" ${b.attrs[a]>=sp['Max'+a]?'disabled':''} aria-label="più">+</button></span></div>`).join('')}</div>
+      <div class="small muted" style="margin-top:6px">Abilità: ${[sp.Ability1,sp.Ability2,sp.HiddenAbility].filter(Boolean).map(a=>esc(AN(a))).join(', ')}</div></details>
+    <div>${(b.moves||[]).map(n=>{const P=pools(w,n);if(!P)return '';const rr=r[n];
+      return `<div class="wmove"><div class="top"><button class="mv" data-move="${esc(n)}" data-bid="${b.id}"><i style="background:${TC[P.m.Type]}"></i>${esc(MN(n))}</button>
+        <span class="small muted">Prec <b class="mono">${P.acc??'?'}</b>${P.low?` (−${P.low})`:''}${P.dmg!=null?` · Danno <b class="mono">${P.dmg}</b>`:''}</span><span class="grow"></span>
+        <button class="btn sm" data-act="b-roll" data-n="${esc(n)}" data-k="acc">Prec</button>${P.dmg!=null?`<button class="btn sm" data-act="b-roll" data-n="${esc(n)}" data-k="dmg">Danno</button>`:''}</div>
+        ${rr?resultHTML(rr,P):''}</div>`}).join('')}</div>
+    <div class="row small muted"><label for="td-${b.id}">Difesa del bersaglio</label><input type="number" id="td-${b.id}" data-tdef="${b.id}" min="0" max="15" value="${tdef(b.id)}" style="width:62px"><span>si toglie dai dadi del Danno</span></div>
+    <div class="row"><select data-act="b-swap" aria-label="Cambia mossa"><option value="">Cambia una mossa…</option>${sp.Moves.filter(m=>ri(m.Learned)<=ri(b.rank)&&!(b.moves||[]).includes(m.Name)).map(m=>`<option>${esc(m.Name)}</option>`).join('')}</select>
+      <span class="grow"></span><button class="btn ghost sm" data-sp="${esc(sp.Key)}">Scheda</button><button class="btn danger sm" data-act="b-close">Chiudi scontro</button></div>
+  </div>`;
+}
+
+/* ======================= mosse, abilità, tipi, strumenti ======================= */
+function renderMoves(){
+  const q=$('#mv-q').value.trim().toLowerCase(),ty=$('#mv-type').value,ca=$('#mv-cat').value;
+  const L=Object.entries(DATA.Moves).filter(([n,m])=>(!ty||m.Type===ty)&&(!ca||m.Category===ca)&&(!q||n.toLowerCase().includes(q)||(m.NameIT||'').toLowerCase().includes(q)||(m.Effect||'').toLowerCase().includes(q)||(m.EffectIT||'').toLowerCase().includes(q)||(m.DescIT||'').toLowerCase().includes(q))).sort((a,b)=>MN(a[0]).localeCompare(MN(b[0]),'it'));
+  $('#mv-count').textContent=`${L.length} mosse`;
+  const show=L.slice(0,UI.mvShow||80);
+  $('#mv-list').innerHTML=show.map(([n,m])=>`<div class="lrow" style="--c:${TC[m.Type]}"><div class="top"><b>${esc(MN(n))}</b>${MN(n)!==n?`<span class="small muted">${esc(n)}</span>`:''}${chip(m.Type)}<span class="small muted">${CAT_IT[m.Category]}${m.Power?' · Potenza '+m.Power:''} · ${esc(m.Accuracy1||'')}${m.Accuracy2?' + '+esc(m.Accuracy2):''}${m.Damage1&&m.Power?' · Danno '+esc(m.Damage1)+' + '+m.Power:''}</span>${m.New?'<span class="badge-new">nuova</span>':''}
+    <span class="grow"></span><button class="btn ghost sm" data-move="${esc(n)}">Dettagli</button></div><p>${esc(m.EffectIT||m.Effect||'')}</p></div>`).join('')+
+    (L.length>show.length?`<button class="btn ghost" data-act="mv-more">Mostra altre ${Math.min(80,L.length-show.length)}</button>`:'');
+}
+function renderAbilities(){
+  const q=$('#ab-q').value.trim().toLowerCase(),onlyNew=$('#ab-new').checked;
+  const L=Object.entries(DATA.Abilities).filter(([n,a])=>(!onlyNew||a.New)&&(!q||n.toLowerCase().includes(q)||(a.NameIT||'').toLowerCase().includes(q)||(a.EffectIT||'').toLowerCase().includes(q))).sort((a,b)=>(b[1].New?1:0)-(a[1].New?1:0)||AN(a[0]).localeCompare(AN(b[0]),'it'));
+  const vm=visMap();
+  $('#ab-list').innerHTML=L.map(([n,a])=>{const h=[...(HOLDERS[n]||[])].filter(k=>vm(k)>=2).map(k=>SP[k]);
+    return `<div class="lrow" style="--c:${a.New?'var(--warn)':'transparent'}"><div class="top"><b>${esc(AN(n))}</b>${AN(n)!==n?`<span class="small muted">${esc(n)}</span>`:''}${a.New?`<span class="badge-new">nuova${a.Origin==='card'?' · dalla scheda':''}</span>`:''}</div>
+      <p>${esc(a.EffectIT||a.Effect)}</p><details><summary>Testo originale</summary><p class="small muted" style="margin:4px 0 0">${esc(a.Effect||'')}</p></details>
+      <div class="who">${h.map(p=>`<button data-sp="${esc(p.Key)}">${esc(p.Name)}</button>`).join('')}</div></div>`}).join('')||'<div class="empty"><b>Nessuna abilità trovata</b></div>';
+}
+function defMult(def,atk){let m=1;def.forEach(d=>{const c=CHART[atk];if(c.i.includes(d))m*=0;else if(c.s.includes(d))m*=2;else if(c.w.includes(d))m*=.5});return m}
+function renderTypes(){
+  $('#type-pick').innerHTML=TYPES.map(t=>`<button class="chip tsel" data-act="tpick" data-t="${t}" aria-pressed="${UI.typePick.includes(t)}" style="background:${TC[t]}">${T_IT[t]}</button>`).join('');
+  const d=UI.typePick;
+  if(!d.length){$('#type-out').innerHTML='<p class="muted" style="margin:0">Nessun tipo scelto.</p>';return}
+  const g={};TYPES.forEach(a=>{const m=defMult(d,a);(g[m]=g[m]||[]).push(a)});
+  const lab={4:'+2 danni',2:'+1 danno',0.5:'−1 danno',0.25:'−2 danni',0:'immune'};
+  const vm=visMap(),pv=isPlayerView();
+  const mons=DATA.Pokedex.filter(p=>vm(p.Key)>=1&&d.every(t=>typesOf(p).includes(t)));
+  $('#type-out').innerHTML=`<div class="lbl">In difesa: ${d.map(t=>T_IT[t]).join(' / ')}</div>`+[4,2,0.5,0.25,0].filter(k=>g[k]).map(k=>`<div class="effrow"><span class="m" style="color:${k>1?'var(--danger)':k===0?'var(--info)':'var(--ok)'}">${lab[k]}</span><span class="row" style="gap:4px">${g[k].map(chip).join('')}</span></div>`).join('')+
+    `<div class="lbl" style="margin-top:14px">${pv?'Pokémon visti':'Pokémon della regione'} (${mons.length})</div><div class="who">${mons.map(p=>`<button data-sp="${esc(p.Key)}">${esc(p.Name)}</button>`).join('')||'<span class="small muted">Nessuno.</span>'}</div>`;
+}
+function renderItems(){
+  const vm=visMap();
+  const used={};DATA.Pokedex.forEach(p=>p.Evolutions.forEach(e=>{if(e.To&&e.Item&&e.Source!=='canon'&&vm(p.Key)>=2)(used[e.Item]=used[e.Item]||[]).push([p,e])}));
+  const IT_DESC={};(DATA.Items||[]).forEach(i=>IT_DESC[i.Name]=i);
+  const names=[...new Set([...(DATA.Items||[]).map(i=>i.Name),...Object.keys(used)])];
+  $('#it-list').innerHTML=names.map(n=>{const i=IT_DESC[n]||{};const u=used[n]||[];
+    return `<div class="lrow" style="--c:${i.Name?'var(--gold)':'var(--line2)'}"><div class="top"><b>${esc(IN(n))}</b>${IN(n)!==n?`<span class="small muted">${esc(n)}</span>`:''}${i.Name?'<span class="badge-new">nuovo</span>':'<span class="small muted">strumento canon</span>'}</div>
+      ${i.DescriptionIT||i.Description?`<p>${esc(i.DescriptionIT||i.Description)}</p>`:''}
+      <div class="who">${u.map(([p,e])=>{const tk=BYNAME[e.To];return tk&&vm(tk)===0?`<button data-sp="${esc(p.Key)}">${esc(p.Name)} → ???</button>`:`<button data-sp="${esc(tk||p.Key)}">${esc(p.Name)} → ${esc(e.To)}</button>`}).join('')||`<span class="small muted">${isPlayerView()?'Nessuna evoluzione nota per ora.':'Nessuna evoluzione registrata.'}</span>`}</div></div>`}).join('');
+}
+
+/* ======================= esporta / importa ======================= */
+async function offerFile(name,obj){
+  const text=JSON.stringify(obj,null,1);let dl=null;
+  try{dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null}catch(e){}
+  if(dl){try{await dl.save({filename:name,data:text});toast('File salvato.');return}catch(e){if(e&&e.code==='declined')return}}
+  if(STANDALONE){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('File scaricato.');return}catch(e){}}
+  try{await navigator.clipboard.writeText(text);toast('Non posso scaricare il file qui: ho copiato i dati negli appunti.')}catch(e){toast('Esportazione non disponibile in questa vista.')}
+}
+function handleImport(text){
+  let j;try{j=JSON.parse(text)}catch(e){return showImportMsg('Il file non è un JSON valido.')}
+  let n=0;
+  const addT=t=>{if(!t||!t.id||!Array.isArray(t.mons))return;S.trainers[t.id]=t;saveTrainer(t);n++};
+  if(j.kind==='aethera-pokerole-trainer')addT(j.trainer);
+  else if(j.kind==='aethera-pokerole-all'){Object.values(j.trainers||{}).forEach(addT);Object.values(j.battles||{}).forEach(b=>{if(b&&b.id){saveBattle(b)}});if(j.house){S.house=normHouse(j.house);saveHouse()}if(j.dex&&Role.gm){const d=normDex(j.dex);Object.assign(S.dex.seen,d.seen);Object.assign(S.dex.caught,d.caught);saveDex()}}
+  else return showImportMsg('Questo file non viene da Aethera Pokérole.');
+  showImportMsg(`Importati ${n} allenatori.`,true);renderCurrent();
+}
+function showImportMsg(t,ok){const el=$('#import-msg');if(el)el.innerHTML=`<p class="small" style="color:${ok?'var(--ok)':'var(--danger)'}">${esc(t)}</p>`;else toast(t)}
+
+/* ======================= eventi ======================= */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-tab],[data-act],[data-sp],[data-move],[data-trainer],[data-mon]');
+  if(!el){if(e.target.id==='ov')closeOv(1);if(e.target.id==='ov2')closeOv(2);return}
+  if(el.dataset.tab){go(el.dataset.tab);return}
+  const act=el.dataset.act;
+  if(act==='close'){closeOv(el.closest('#ov2')?2:1);return}
+  if(!act&&el.dataset.sp){if(!$('#ov2').hidden)closeOv(2);openSpecies(el.dataset.sp);return}
+  if(!act&&el.dataset.move){let mon=null;if(el.dataset.monid)mon=findMon(el.dataset.monid)[1];if(el.dataset.bid&&S.battles[el.dataset.bid])mon=wildMon(S.battles[el.dataset.bid]);openMove(el.dataset.move,mon);return}
+  if(!act&&el.dataset.trainer){UI.trainer=el.dataset.trainer;renderTrainers();window.scrollTo(0,0);return}
+  if(!act&&el.dataset.mon){openMon(el.dataset.mon);return}
+  const T=S.trainers[UI.trainer];
+  const monSheet=el.closest('#sheet')&&OV.render&&OV.monId;
+  switch(act){
+    case 'ab-en':UI.abEn=el.checked;OV.render&&OV.render();break;
+    case 'add-mon':{const id=$('#add-to').value;if(addMon(id,el.dataset.sp)){UI.trainer=id}break}
+    case 'new-trainer':{const t={id:uid(),name:'Nuovo allenatore',player:'',money:3000,notes:'',mons:[],created:Date.now()};saveTrainer(t);UI.trainer=t.id;renderTrainers();setTimeout(()=>{const i=$('#t-name');i&&(i.focus(),i.select())},0);break}
+    case 'back':UI.trainer=null;renderTrainers();break;
+    case 'ask-del-trainer':$('#t-confirm').innerHTML=`<div class="confirm">Eliminare ${esc(T.name)} con tutti i suoi Pokémon? Non si può annullare. <button class="btn danger sm" data-act="del-trainer">Elimina</button><button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`;break;
+    case 'del-trainer':delete S.trainers[T.id];Store.del('trainers',T.id);UI.trainer=null;renderTrainers();toast('Allenatore eliminato.');break;
+    case 'cancel-confirm':el.closest('.confirm').remove();break;
+    case 'export-trainer':offerFile(`allenatore-${slug(T.name||'senza-nome')}.json`,{kind:'aethera-pokerole-trainer',version:1,trainer:T});break;
+    case 'export-all':offerFile('aethera-pokerole.json',{kind:'aethera-pokerole-all',version:1,trainers:S.trainers,battles:S.battles,house:S.house,dex:S.dex});break;
+    case 'dex-set':{const k=el.dataset.sp,v=+el.dataset.v;dexSet(k,v);OV.render&&OV.render();renderCurrent();toast(['Nascosto ai giocatori.','Visto: i giocatori vedono immagine, nome e testo.','Catturato: i giocatori vedono la scheda completa.'][v]);break}
+    case 'as-player':toggleAsPlayer();break;
+    case 'gm-unlock':openGMUnlock();break;
+    case 'gm-lock':lockGM();break;
+    case 'ask-seen':openReveal([el.dataset.sp],false);break;
+    case 'reveal-pick':OV.pick=el.dataset.sp;OV.render&&OV.render();break;
+    case 'reveal-go':revealGo(el.dataset.sp);break;
+    case 'unmark-seen':{const k=el.dataset.sp;unmarkSeen(k);closeOv(1);renderCurrent();toast(`${SP[k].Name} è tornato nell'ombra.`);break}
+    case 'import':$('#import-file').click();break;
+    case 'migrate':{const st=Store.stash;if(!st)break;let n=0;Object.values(st.trainers).forEach(t=>{if(t&&t.id&&!S.trainers[t.id]){t.mons=t.mons||[];saveTrainer(t);n++}});Store.stash=null;renderTrainers();toast(`Copiati ${n} allenatori.`);break}
+    case 'pick-species':OV2.q='';openPickSpecies(el.dataset.box==='1');break;
+    case 'pick-add':{addMon(UI.trainer,el.dataset.sp,el.dataset.box==='1');closeOv(2);renderTrainers();break}
+    case 'new-battle':{const nm=$('#nb-species').value.trim();const key=BYNAME[nm]||Object.keys(SP).find(k=>SP[k].Name.toLowerCase()===nm.toLowerCase());
+      if(!key){toast('Scegli una specie dall\'elenco.');break}const sp=SP[key],rank=$('#nb-rank').value;const attrs={};ATTR.forEach(a=>attrs[a]=sp[a]);
+      const b={id:uid(),trainer:$('#nb-trainer').value,species:key,rank,attrs,status:[],round:1,moves:wildMoves(sp,rank),created:Date.now()};b.hp=sp.BaseHP+attrs.Vitality;b.will=attrs.Insight+(S.house.willBonus??3);
+      saveBattle(b);if(dexMap()(key)===0)dexSet(key,1);$('#nb-species').value='';renderBattles();break}
+    case 'roll-free':{const n=clamp(parseInt($('#dr-n').value)||1,1,40);const d=rollDice(n);const mode=el.dataset.mode;const s=mode==='chance'?d.filter(x=>x===6).length:d.filter(x=>x>=4).length;
+      $('#dr-out').innerHTML=`<div class="result">${diceHTML(d,mode)}<span><b>${s}</b> ${mode==='chance'?(s?'effetto attivato':'nessun effetto'):'successi'}</span></div>`;break}
+    case 'mv-more':UI.mvShow=(UI.mvShow||80)+80;renderMoves();break;
+    case 'tpick':{const t=el.dataset.t;const i=UI.typePick.indexOf(t);if(i>=0)UI.typePick.splice(i,1);else{UI.typePick.push(t);if(UI.typePick.length>2)UI.typePick.shift()}renderTypes();break}
+  }
+  // scheda del Pokémon
+  if(OV.monId&&el.closest('#sheet,#sheet2')){
+    const [Tm,m]=findMon(OV.monId);if(!m)return;const sp=SP[m.species];let changed=true;
+    switch(act){
+      case 'hp':m.hp=el.dataset.d==='full'?hpMax(m):clamp(m.hp+ +el.dataset.d,0,hpMax(m));break;
+      case 'will':m.will=el.dataset.d==='full'?willMax(m):clamp(m.will+ +el.dataset.d,0,willMax(m));break;
+      case 'status':{const s=el.dataset.s;m.status=m.status.includes(s)?m.status.filter(x=>x!==s):[...m.status,s];break}
+      case 'attr':{const a=el.dataset.a;m.attrs[a]=clamp(m.attrs[a]+ +el.dataset.d,sp[a],sp['Max'+a]);m.hp=Math.min(m.hp,hpMax(m));m.will=Math.min(m.will,willMax(m));if(a==='Vitality'&&+el.dataset.d>0)m.hp++;if(a==='Insight'&&+el.dataset.d>0)m.will++;break}
+      case 'social':{const a=el.dataset.a;m.social[a]=clamp(m.social[a]+ +el.dataset.d,1,5);break}
+      case 'skill':{const a=el.dataset.a;m.skills[a]=clamp(m.skills[a]+ +el.dataset.d,0,S.house.skillCap[m.rank]??5);break}
+      case 'happy':{const k=el.dataset.k;m[k]=clamp(m[k]+ +el.dataset.d,0,5);break}
+      case 'tp':m.tp=clamp((m.tp||0)+ +el.dataset.d,0,999);break;
+      case 'forget':m.moves=m.moves.filter(x=>x!==el.dataset.n);break;
+      case 'learn':changed=false;openLearn(m.id);break;
+      case 'learn-pick':if(!m.moves.includes(el.dataset.n))m.moves.push(el.dataset.n);closeOv(2);break;
+      case 'roll':{changed=false;const P=pools(m,el.dataset.n);const n=el.dataset.k==='acc'?Math.max(0,P.acc||0):Math.max(1,(P.dmg||0)-tdef(m.id));const d=rollDice(n);UI.rolls[m.id]=Object.assign(UI.rolls[m.id]||{},{[el.dataset.n]:{k:el.dataset.k,d,s:d.filter(x=>x>=4).length}});OV.render();break}
+      case 'to-box':{const team=Tm.mons.filter(x=>!x.box).length;if(m.box&&team>=6){changed=false;toast('La squadra è già piena (6).');break}m.box=!m.box;break}
+      case 'ask-evolve':changed=false;$('#m-confirm').innerHTML=`<div class="confirm" style="border-color:var(--ball);background:rgba(232,40,58,.08)">Far evolvere ${esc(m.nick||sp.Name)} in ${visMap()(el.dataset.to)===0?'???':esc(SP[el.dataset.to].Name)}? Gli attributi salgono ai nuovi valori iniziali. <button class="btn red sm" data-act="evolve" data-to="${esc(el.dataset.to)}">Evolvi</button><button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`;break;
+      case 'evolve':{const from=m.species,who=m.nick||SP[from].Name;evolve(m,el.dataset.to);playEvolution(from,el.dataset.to,who);break}
+      case 'ask-release':changed=false;$('#m-confirm').innerHTML=`<div class="confirm">Liberare ${esc(m.nick||sp.Name)}? Sparisce dalla scheda. <button class="btn danger sm" data-act="release">Libera</button><button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`;break;
+      case 'release':Tm.mons=Tm.mons.filter(x=>x.id!==m.id);saveTrainer(Tm);closeOv(1);renderTrainers();toast('Pokémon liberato.');return;
+      default:changed=false;
+    }
+    if(changed){saveTrainer(Tm);OV.render&&OV.render();if(UI.tab==='allenatori')renderTrainers()}
+  }
+  // scontri
+  const bel=el.closest('[data-battle]');
+  if(bel&&act&&act.startsWith('b-')){const b=S.battles[bel.dataset.battle];if(!b)return;const sp=SP[b.species];const hm=sp.BaseHP+b.attrs.Vitality,wm=b.attrs.Insight+(S.house.willBonus??3);
+    switch(act){
+      case 'b-hp':b.hp=clamp(b.hp+ +el.dataset.d,0,hm);break;
+      case 'b-will':b.will=clamp(b.will+ +el.dataset.d,0,wm);break;
+      case 'b-round':b.round=Math.max(1,(b.round||1)+ +el.dataset.d);break;
+      case 'b-status':{const s=el.dataset.s;b.status=(b.status||[]).includes(s)?b.status.filter(x=>x!==s):[...(b.status||[]),s];break}
+      case 'b-attr':{const a=el.dataset.a;b.attrs[a]=clamp(b.attrs[a]+ +el.dataset.d,sp[a],sp['Max'+a]);b.hp=Math.min(b.hp,sp.BaseHP+b.attrs.Vitality);break}
+      case 'b-roll':{const P=pools(wildMon(b),el.dataset.n);const n=el.dataset.k==='acc'?Math.max(0,P.acc||0):Math.max(1,(P.dmg||0)-tdef(b.id));const d=rollDice(n);UI.rolls[b.id]=Object.assign(UI.rolls[b.id]||{},{[el.dataset.n]:{k:el.dataset.k,d,s:d.filter(x=>x>=4).length}});renderBattles();return}
+      case 'b-catch':{const req=CATCH_REQ[b.rank];if(!req)return;const ko=b.hp<=0;const hpB=ko?0:(b.hp===1?2:(b.hp<=Math.floor(hm/2)?1:0));const stB=ko?0:(b.status||[]).filter(x=>AILMENTS.includes(x)).length;const d=rollDice((UI.ball&&UI.ball[b.id])||4);UI.catchRoll=UI.catchRoll||{};UI.catchRoll[b.id]={d,s:d.filter(x=>x>=4).length,bonus:hpB+stB,req,ko};renderBattles();return}
+      case 'b-seen':{const st=dexMap()(b.species);if(st===2)return;dexSet(b.species,st===1?0:1);renderBattles();toast(STANDALONE?(st===1?'Tolto dai visti.':'Segnato come visto.'):(st===1?'Nascosto ai giocatori.':'Ora i giocatori lo vedono nel Pokédex.'));return}
+      case 'b-close':delete S.battles[b.id];Store.del('battles',b.id);renderBattles();toast('Scontro chiuso.');return;
+      default:return;
+    }
+    saveBattle(b);renderBattles();
+  }
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.act==='b-swap'&&t.value){const b=S.battles[t.closest('[data-battle]').dataset.battle];if(!b)return;b.moves=[...(b.moves||[])];if(b.moves.length>=4)b.moves.shift();b.moves.push(t.value);saveBattle(b);renderBattles();return}
+  if(t.dataset.ball){UI.ball=UI.ball||{};UI.ball[t.dataset.ball]=parseInt(t.value)||4;return}
+  if(t.dataset.tdef){setTdef(t);return}
+  if(t.dataset.cap){S.house.skillCap[t.dataset.cap]=clamp(parseInt(t.value)||0,0,5);saveHouse();return}
+  if(t.dataset.wild){S.house.wildSkill[t.dataset.wild]=clamp(parseInt(t.value)||0,0,5);saveHouse();return}
+  const T=S.trainers[UI.trainer];
+  switch(t.id){
+    case 'dex-type':case 'dex-rank':case 'dex-sort':case 'dex-state':renderDex();break;
+    case 'mv-type':case 'mv-cat':UI.mvShow=80;renderMoves();break;
+    case 'ab-new':renderAbilities();break;
+    case 'h-will':S.house.willBonus=clamp(parseInt(t.value)||0,0,10);saveHouse();break;
+    case 'h-moves':S.house.movesBonus=clamp(parseInt(t.value)||0,0,10);saveHouse();break;
+    case 'h-def':S.house.defOpt=parseInt(t.value)===1?1:2;saveHouse();renderCurrent();break;
+    case 'h-stab':S.house.stab=clamp(parseInt(t.value)||0,0,3);saveHouse();break;
+    case 't-money':if(T){T.money=parseInt(t.value)||0;saveTrainer(T)}break;
+    case 'import-file':{const f=t.files&&t.files[0];if(f){const r=new FileReader();r.onload=()=>handleImport(String(r.result));r.readAsText(f)}t.value='';break}
+  }
+  if(OV.monId&&['m-rank','m-ability','m-gender'].includes(t.id)){const [Tm,m]=findMon(OV.monId);if(!m)return;
+    if(t.id==='m-rank'){m.rank=t.value;const cap=S.house.skillCap[m.rank]??5;SKILLS.forEach(s=>m.skills[s]=Math.min(m.skills[s],cap))}
+    if(t.id==='m-ability')m.ability=t.value;if(t.id==='m-gender')m.gender=t.value;
+    saveTrainer(Tm);OV.render();renderCurrent();}
+});
+let typingT=null;
+// segnare un Pokémon visto con il numero del Pokédex detto dal GM
+document.addEventListener('submit',e=>{
+  if(e.target.id==='gm-form'){e.preventDefault();const i=$('#gm-code');unlockGM(i.value).then(ok=>{if(ok){closeOv(2);renderCurrent()}else{$('#gm-msg').textContent='Codice sbagliato.';i.select()}});return}
+  if(e.target.id!=='qmark')return;e.preventDefault();
+  const i=$('#qm-n'),n=parseInt(i.value);
+  if(!n){toast('Scrivi il numero del Pokédex che ha detto il GM.');i.focus();return}
+  const keys=DATA.Pokedex.filter(p=>p.Number===n).map(p=>p.Key);
+  if(!keys.length){toast(`Nel Pokédex della regione non c'è il numero ${n}.`);return}
+  i.value='';i.blur();openReveal(keys,true);
+});
+// Difesa del bersaglio: si salva mentre si scrive e si aggiorna solo l'etichetta, senza ridisegnare la carta (così il clic successivo non va perso)
+function setTdef(t){
+  const id=t.dataset.tdef;UI.tdef=UI.tdef||{};UI.tdef[id]=clamp(parseInt(t.value)||0,0,15);
+  if(OV.monId===id)document.querySelectorAll('#sheet [data-act="roll"][data-k="dmg"]').forEach(b=>{b.textContent='Tira Danno'+(tdef(id)?` (−${tdef(id)} Dif)`:'')});
+}
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.tdef){setTdef(t);return}
+  if(t.id==='dex-q'){renderDex();return}
+  if(t.id==='mv-q'){UI.mvShow=80;renderMoves();return}
+  if(t.id==='ab-q'){renderAbilities();return}
+  const T=S.trainers[UI.trainer];
+  if(T&&['t-name','t-player','t-notes'].includes(t.id)){const k={'t-name':'name','t-player':'player','t-notes':'notes'}[t.id];T[k]=t.value;saveTrainer(T);return}
+  if(OV.monId&&['m-nick','m-item','m-notes'].includes(t.id)){const [Tm,m]=findMon(OV.monId);if(!m)return;const k={'m-nick':'nick','m-item':'item','m-notes':'notes'}[t.id];m[k]=t.value;saveTrainer(Tm)}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#ov2').hidden)closeOv(2);else if(!$('#ov').hidden)closeOv(1)}});
+// apertura della scheda del Pokémon: ricorda l'id per gli eventi
+const _openMon=openMon;openMon=function(id){OV.monId=id;_openMon(id)};
+const _openSpecies=openSpecies;openSpecies=function(k){OV.monId=null;_openSpecies(k)};
+const _closeOv=closeOv;closeOv=function(w=1){if(w===1)OV.monId=null;_closeOv(w)};
+window.addEventListener('hashchange',routeHash);
+function routeHash(){const h=location.hash.slice(1);
+  if(h.startsWith('s-')){const num=parseInt(h.slice(2));const sl=h.slice(6);const p=DATA.Pokedex.find(x=>x.Number===num&&slug(x.Name)===sl)||DATA.Pokedex.find(x=>x.Number===num);if(p){if(UI.tab!=='pokedex')go('pokedex');openSpecies(p.Key)}return}
+  if(TABS.some(t=>t[0]===h)&&h!==UI.tab)go(h)}
+
+/* ======================= animazione dell'evoluzione ======================= */
+const EVO={run:0,done:true,sound:lsGet('aethera-evo-sound')!=='0',ac:null,to:null,name:''};
+const evoImg=sp=>sp&&sp.Image?`<img src="${esc(sp.Image)}" alt="" draggable="false">`:`<span class="sprite ph" aria-hidden="true"></span>`;
+function evoAudio(){if(!EVO.sound)return null;try{EVO.ac=EVO.ac||new (window.AudioContext||window.webkitAudioContext)();if(EVO.ac.state==='suspended')EVO.ac.resume();return EVO.ac}catch(e){return null}}
+function beep(f,t0,dur,type,vol){const ac=evoAudio();if(!ac)return;const t=ac.currentTime+t0,o=ac.createOscillator(),g=ac.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||.05,t+.015);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+dur+.05)}
+function whoosh(){const ac=evoAudio();if(!ac)return;const n=ac.sampleRate*1.1,buf=ac.createBuffer(1,n,ac.sampleRate),ch=buf.getChannelData(0);for(let i=0;i<n;i++)ch[i]=(Math.random()*2-1)*(1-i/n);
+  const src=ac.createBufferSource(),bp=ac.createBiquadFilter(),g=ac.createGain(),t=ac.currentTime;src.buffer=buf;bp.type='bandpass';bp.Q.value=1.2;bp.frequency.setValueAtTime(400,t);bp.frequency.exponentialRampToValueAtTime(4200,t+.9);
+  g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+1.05);src.connect(bp);bp.connect(g);g.connect(ac.destination);src.start(t)}
+function evoTone(kind,k){
+  if(kind==='charge')[0,.09,.18,.27].forEach((t,i)=>beep(196*Math.pow(1.26,i),t,.6,'triangle',.035));
+  else if(kind==='blip')beep(300*Math.pow(2,k/13),0,.08,'sine',.04);
+  else if(kind==='whoosh')whoosh();
+  else if(kind==='reveal'){[[523.25,0],[659.25,.13],[783.99,.26],[1046.5,.39]].forEach(([f,t])=>beep(f,t,.55,'triangle',.05));beep(1318.5,.55,1.3,'sine',.03)}
+}
+function evoSay(txt){const p=$('#evo-text');$('#evo-live').textContent=txt;clearInterval(EVO.tw);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){p.textContent=txt;return}
+  let i=0;p.textContent='';EVO.tw=setInterval(()=>{i+=2;p.textContent=txt.slice(0,i);if(i>=txt.length)clearInterval(EVO.tw)},28)}
+function evoSoundBtn(){const b=$('#evo-sound');b.textContent=EVO.sound?'Suono: sì':'Suono: no';b.setAttribute('aria-pressed',String(EVO.sound))}
+async function playEvolution(fromKey,toKey,name){
+  const A=SP[fromKey],B=SP[toKey];if(!A||!B)return;
+  const id=++EVO.run,alive=()=>EVO.run===id&&!EVO.done;EVO.done=false;EVO.to=B;EVO.name=name;
+  evoAudio(); // va creato dentro il clic, altrimenti il browser lo blocca
+  const ov=$('#ov-evo');ov.className='evo-ov';ov.hidden=false;document.body.style.overflow='hidden';
+  $('#evo-a').innerHTML=evoImg(A);$('#evo-b').innerHTML=evoImg(B);$('#evo-a').className='evo-sp show';$('#evo-b').className='evo-sp';
+  const R=($('.evo-stage').getBoundingClientRect().width||240)/2;
+  $('#evo-sparks').innerHTML=Array.from({length:22},(_,i)=>`<i style="--a:${Math.round(i*360/22+Math.random()*12)}deg;--r:${Math.round(R*(.8+Math.random()*.3))}px;--d:${(Math.random()*1.1).toFixed(2)}s"></i>`).join('');
+  $('#evo-close').hidden=true;$('#evo-skip').hidden=false;evoSoundBtn();
+  evoSay(`Cosa? ${name} si sta evolvendo!`);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ov.classList.add('in')));
+  $('#evo-skip').focus({preventScroll:true});
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    await wait(1600);if(!alive())return;
+    ov.classList.add('charge');$('#evo-a').classList.add('white');$('#evo-b').classList.add('white');evoTone('charge');
+    await wait(1200);if(!alive())return;
+    const iv=[560,470,400,340,290,245,205,172,145,122,104,90,78,68,60,53,47,42,38,35,32,30,30,30];
+    for(let k=0;k<iv.length;k++){const b=k%2===0;$('#evo-a').classList.toggle('show',!b);$('#evo-b').classList.toggle('show',b);evoTone('blip',k);await wait(iv[k]);if(!alive())return}
+    $('#evo-a').classList.remove('show');$('#evo-b').classList.add('show');
+    ov.classList.add('flash');evoTone('whoosh');
+    await wait(400);if(!alive())return;
+  }else{await wait(1400);if(!alive())return}
+  evoReveal(false);
+}
+function evoReveal(skipped){
+  if(EVO.done&&skipped!==undefined&&$('#ov-evo').classList.contains('done'))return;
+  EVO.done=true;const ov=$('#ov-evo');
+  ov.classList.remove('charge');if(skipped)ov.classList.remove('flash');ov.classList.add('done');
+  $('#evo-a').className='evo-sp';$('#evo-b').className='evo-sp show';
+  evoSay(`Congratulazioni! ${EVO.name} si è evoluto in ${EVO.to.Name}!`);
+  $('#evo-skip').hidden=true;$('#evo-close').hidden=false;$('#evo-close').focus({preventScroll:true});
+  evoTone('reveal');
+}
+function evoClose(){
+  EVO.run++;EVO.done=true;clearInterval(EVO.tw);const ov=$('#ov-evo');ov.classList.remove('in');
+  setTimeout(()=>{ov.hidden=true;ov.className='evo-ov';if($('#ov').hidden&&$('#ov2').hidden&&$('#ov-guide').hidden)document.body.style.overflow=''},matchMedia('(prefers-reduced-motion: reduce)').matches?0:350);
+}
+document.addEventListener('click',e=>{
+  const ov=$('#ov-evo');if(ov.hidden)return;
+  const b=e.target.closest('[data-evo]');
+  if(b){const a=b.dataset.evo;if(a==='skip')evoReveal(true);else if(a==='close')evoClose();else if(a==='sound'){EVO.sound=!EVO.sound;lsSet('aethera-evo-sound',EVO.sound?'1':'0');evoSoundBtn()}return}
+  if(ov.contains(e.target)&&ov.classList.contains('done'))evoClose();
+},true);
+document.addEventListener('keydown',e=>{
+  const ov=$('#ov-evo');if(ov.hidden)return;
+  if(e.key==='Escape'){e.stopImmediatePropagation();e.preventDefault();if(ov.classList.contains('done'))evoClose();else evoReveal(true)}
+},true);
+
+/* ======================= guida (primo avvio su ogni dispositivo) ======================= */
+const GKEY='aethera-pokerole-guide-v2';
+const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+const GUIDE=[
+ {ch:'app',t:'Benvenuto in Aethera Pokérole',h:()=>`<p>Qui trovi il Pokédex della nuova regione già convertito in Pokérole, le schede dei vostri Pokémon e il tavolo per le lotte.</p>
+  <p>La guida dura un paio di minuti: prima come si usa l'app, poi le regole di Pokérole in breve. Puoi riaprirla quando vuoi dal tasto <b>Guida</b> in alto.</p>`},
+ {ch:'app',t:'Il Pokédex',h:()=>(isPlayerView()?li(['I Pokémon che non avete ancora incontrato sono <b>ombre</b> con «???».','Quando il GM vi dice il numero di un Pokémon, scrivetelo nel riquadro giallo in alto e premete <b>Visto!</b> (oppure toccate la sua ombra).'+(STANDALONE?' Ognuno lo segna sul proprio telefono.':' Basta che lo faccia uno di voi: si svela per tutto il gruppo.'),'Un Pokémon visto mostra immagine, nome, tipi e testo. Quando lo catturate e lo aggiungete a una squadra si sblocca la scheda completa (segnata con la Poké Ball).','Segnato per sbaglio? Nella sua scheda c\'è il tasto per rimetterlo nell\'ombra.'])
+   :li(['Tu vedi tutto. Accanto al numero di ogni specie c\'è cosa sanno i giocatori: anello verde visto, Poké Ball catturato, cerchio tratteggiato ancora nascosto.',(STANDALONE?'Qui il segno è il tuo promemoria di cosa ha visto il gruppo: una specie diventa <b>vista</b> quando apri uno scontro con lei e <b>catturata</b> quando entra in una squadra. I giocatori segnano i loro sul proprio telefono quando dici il numero.':'Una specie diventa <b>vista</b> quando apri uno scontro con lei o quando un giocatore la segna con il numero del Pokédex; diventa <b>catturata</b> quando entra nella squadra di un allenatore. Dalla scheda della specie puoi cambiarlo a mano, anche annullando un segno dei giocatori.'),'Con <b>Vista: GM</b> in alto passi alla vista dei giocatori e controlli cosa vedono.','Tocca una specie per la scheda completa: tipi, Base HP, attributi, abilità, evoluzioni e mosse.']))+
+  `<div class="visual"><span class="small">Strength</span>${dotsHTML(2,5,null,'#82cf55')}<span class="mono small muted">2/5 · parte da 2, può arrivare a 5</span></div>`},
+ {ch:'app',t:'La scheda dell\'allenatore',h:()=>li(['Nella sezione <b>Allenatori</b> crea la scheda del tuo allenatore: nome, giocatore e soldi.','Aggiungi Pokémon dal Pokédex (in fondo alla scheda della specie) oppure con <b>+ Aggiungi Pokémon</b>.','In squadra stanno 6 Pokémon; gli altri vanno nel <b>Box</b>.','Tocca un Pokémon per aprire la sua scheda.'])},
+ {ch:'app',t:'La scheda del Pokémon',h:()=>li(['Scegli il <b>rango</b>: decide quali mosse può imparare e il limite delle skill.','Alza gli attributi con + e − fino al limite della specie, e assegna le skill: sopra ogni gruppo vedi quanti punti hai usato su quelli che il rango concede.','Segna i <b>punti allenamento</b>: la scheda ti dice quanti ne servono per il rango successivo e per evolvere.','PS, Volontà e stati si segnano con i tasti, anche in mezzo a una lotta.','Le mosse conosciute mostrano già i dadi di Precisione e Danno: premi <b>Tira</b> e l\'app conta i successi. Se scrivi la Difesa del bersaglio, la toglie da sola dal Danno.','Quando è il momento, il tasto <b>Evolvi</b> porta il Pokémon alla forma successiva.'])},
+ {ch:'app',gm:true,t:'Il tavolo del GM',h:()=>li(['Nella sezione <b>Lotte</b> il GM apre uno scontro per ogni Pokémon selvatico: specie, rango e, se vuole, l\'allenatore che lo affronta.','Ogni carta tiene PS, Volontà, stati, round e quattro mosse già pronte da tirare.','Il riquadro <b>Cattura</b> calcola i successi richiesti dal rango e i bonus (PS bassi, stati) e tira il sigillo della Ball scelta.','In fondo c\'è il lancio libero: dadi normali oppure Dadi Probabilità.'])},
+ {ch:'app',t:'Consultazione e salvataggi',h:()=>li(['<b>Mosse</b>, <b>Abilità</b> e <b>Tipi</b> servono da consultazione veloce durante la partita. I testi sono in italiano; l\'originale è sotto «Testo originale».','Le abilità segnate «nuova» sono state create apposta per la regione.',(STANDALONE?'I dati restano <b>su questo dispositivo</b>: esporta ogni tanto una copia, così non li perdi se cambi telefono o svuoti il browser.':'In alto a destra vedi dove finiscono i dati: <b>Salvataggio condiviso</b> (li vede chi ha accesso alla pagina) oppure <b>Solo su questo dispositivo</b>.'),isPlayerView()?(STANDALONE?'Con <b>Esporta scheda</b> ti salvi una copia della tua scheda o la passi al GM; con <b>Importa</b> (in fondo alla lista degli allenatori) la ricarichi.':'Con <b>Esporta scheda</b> ti salvi una copia della tua scheda o la passi al GM.'):'Con <b>Esporta scheda</b> ti salvi una copia o la passi al GM; con <b>Importa</b> (in fondo alla lista degli allenatori) la ricarichi.'])},
+ {ch:'rules',t:'I dadi',h:()=>`<p>Pokérole usa solo dadi a sei facce. Ogni tiro è un gruppo di dadi pari a un <b>attributo</b> più una <b>skill</b>, per esempio Insight + Nature per seguire una traccia.</p>
+  <div class="visual">${diceHTML([5,2,6,3,4])}<span>→ <b>3 successi</b></span></div>`+li(['Ogni dado che fa <b>4, 5 o 6</b> è un successo.','Il GM dice quanti successi servono: 1 è fastidioso, 2 impegnativo, 3 difficile, 4 molto difficile, 5 o più quasi impossibile.','Se fai 3 successi in meno di quelli richiesti è un <b>fallimento critico</b>: oltre a non riuscire, succede qualcosa di brutto (danni, un alleato colpito, uno stato…).'])},
+ {ch:'rules',t:'Le caratteristiche',h:()=>li(['<b>Attributi</b>: Strength, Dexterity, Vitality, Special, Insight. Ogni specie ha un valore iniziale e un limite.','<b>Attributi sociali</b>: Tough, Cool, Beauty, Cute, Clever. Partono da 1 e arrivano al massimo a 5.','<b>Skill</b>: Brawl (corpo a corpo), Channel (attacchi a distanza), Clash, Evasion, Alert, Athletic, Nature, Stealth, Charm, Etiquette, Intimidate, Perform. Una skill non si tira mai da sola, sempre con un attributo.','<b>Il rango dà i punti</b> da distribuire: per esempio a Rookie 2 punti negli attributi, 2 in quelli sociali e 10 nelle skill, con al massimo 2 punti per skill. La scheda del Pokémon nell\'app tiene il conto.'])},
+ {ch:'rules',t:'PS, Volontà e dolore',h:()=>li(['<b>PS</b> = Base HP della specie + Vitality. A 0 PS il Pokémon sviene. Si recupera 1 PS ogni 8 ore di riposo.','<b>Difesa</b> = Vitality. La <b>Difesa Speciale</b> è Insight oppure Vitality: lo sceglie il GM per tutta la campagna (nell\'app è nelle regole della casa).','<b>Penalità da dolore</b>: a metà PS togli 1 successo, a 1 PS ne togli 2, da Precisione, Danno e quasi tutti i tiri. Non vale per i tiri di Vitality e Volontà.','<b>Volontà</b> = Insight + 3. Un punto si spende per: ignorare 1 penalità da dolore per la scena (fino a 3); ritirare 1 dado fallito in tutti i tiri del round; ottenere 1 successo automatico in un tiro (non al Danno né ai Dadi Probabilità). Chi spende tutta la Volontà sviene a fine scena.'])},
+ {ch:'rules',t:'Il round di lotta',h:()=>li(['<b>Iniziativa</b>: Dexterity + Alert + 1 dado. Si va dal più alto al più basso, e l\'ordine resta per tutta la lotta.','In un round ogni Pokémon può fare <b>fino a 5 azioni</b>, una per turno: quando tutti hanno agito, si ricomincia il giro. Ogni mossa si può usare <b>una sola volta per round</b>.','La <b>Precisione</b> (attributo + skill scritti sulla mossa) deve fare 1 successo alla 1ª azione, 2 alla 2ª, 3 alla 3ª, fino a 5. Precisione Ridotta, dolore e certi effetti tolgono successi.','Le <b>Reazioni</b> si usano nel turno di un altro, ma consumano una delle 5 azioni; se ne fa una per turno, e a una Reazione può rispondere solo una con numero più alto.'])},
+ {ch:'rules',t:'Il danno',h:()=>`<div class="visual formula"><span>Strength 3</span>+<span>Potenza 2</span>+<span>STAB 1</span>−<span>Difesa 2</span>=<b>4 dadi</b></div>`+li(['Si tirano l\'attributo di danno della mossa (Strength per le fisiche, Special per le speciali) più la sua <b>Potenza</b>, +1 dado se la mossa è dello stesso tipo del Pokémon (<b>STAB</b>), meno la Difesa o la Difesa Speciale del bersaglio. Si tira sempre almeno 1 dado.','Ogni successo è 1 danno; anche con 0 successi il colpo fa 1 danno.','<b>Superefficace</b>: +1 danno (+2 se sono deboli entrambi i tipi), solo con almeno 1 successo. <b>Poco efficace</b>: −1 danno (−2). <b>Immune</b>: nessun danno.','<b>Critico</b>: 3 successi in più di quelli richiesti alla Precisione (2 per le mosse con Critico alto) danno +2 dadi al Danno.'])},
+ {ch:'rules',t:'Schivata e Contrasto',h:()=>li(['Sono due manovre a <b>Reazione 6</b>: devi pareggiare o superare i successi di Precisione dell\'attaccante. Non seguono la tabella delle azioni multiple, ma consumano comunque un\'azione.','<b>Schivata</b>: Dexterity + Evasion. Se riesce non subisci né danno né effetti.','<b>Contrasto</b>: Strength o Special + Clash, usando una tua mossa fisica o speciale. Se riesce, entrambi subite 1 danno (contano i tipi) e quella mossa risulta usata per il round.','Non si schivano le mosse con «Non manca mai», quelle che usano un attributo sociale e quelle sul campo. Non si contrastano le mosse di supporto, sociali o a danno fisso.'])},
+ {ch:'rules',t:'Stati e Dadi Probabilità',h:()=>`<div class="visual">${diceHTML([2,6,4],'chance')}<span>→ c'è un 6: <b>l'effetto scatta</b></span></div>`+li(['<b>Dadi Probabilità</b>: se una mossa dice «tira 3 Dadi Probabilità», basta un 6 perché l\'effetto scatti.','<b>Scottatura</b> 1°/2°/3° grado: 1, 2 o 3 danni a fine round (dal 2° Letali); ci si spegne accumulando con Dexterity + Athletic 4, 6 o 8 successi. <b>Avvelenamento</b>: 2 danni a fine round. <b>Iperavvelenamento</b>: 2 danni Letali che crescono di 2 ogni round.','<b>Paralisi</b>: −2 Dexterity per 12 ore. <b>Congelamento</b>: chiuso in un blocco di ghiaccio (5 PS, Difese 2). <b>Sonno</b>: a inizio turno tira Insight, ti svegli quando hai accumulato 5 successi.','<b>Confusione</b>: toglie 1 successo (2 da Advanced ad Ace, 3 da Master) e fa 1 danno se l\'azione fallisce; con 2 successi a Insight a inizio round agisci normalmente. <b>Infatuazione</b>: contro chi ama fa metà danno, niente effetti né critici. <b>Tentennamento</b>: perde il prossimo turno e non può reagire fino ad allora.'])},
+ {ch:'rules',t:'Allenare e far crescere',h:()=>li(['Il Pokémon guadagna <b>punti allenamento</b> con le sessioni di allenamento e con le lotte (di più se l\'avversario è di rango più alto, se vince, se gli avversari sono più d\'uno).','<b>Salire di rango</b> costa 5 punti (a Rookie), 15 (Standard), 25 (Advanced), 30 (Expert), 35 (Ace), 40 (Master). Un Pokémon non può superare il rango del suo allenatore.','<b>Evolvere</b> costa 10 punti per i Pokémon a tempo veloce, 30 a tempo medio, 50 a tempo lento, oltre al metodo della specie (pietra, scambio…).','<b>Mosse conosciute</b>: al massimo Insight + 3, scelte tra quelle del suo rango o inferiori. <b>Felicità</b> e <b>Lealtà</b> vanno da 0 a 5 e crescono solo giocando di ruolo.'])},
+ {ch:'rules',t:'Catturare',h:()=>`<div class="visual small"><span>Starter <b class="mono">3</b></span><span>Rookie <b class="mono">4</b></span><span>Standard <b class="mono">6</b></span><span>Advanced <b class="mono">8</b></span><span>Expert <b class="mono">9</b></span><span>Ace <b class="mono">10</b></span><span class="muted">successi richiesti</span></div>`+li(['L\'allenatore usa un\'azione per lanciare la Ball: Dexterity o Strength + Throw.','Poi si tira il <b>sigillo</b> della Ball: Poké Ball 4 dadi, Mega Ball 6, Ultra Ball 8.','<b>Bonus</b>: +1 successo se il selvatico è a metà PS, +2 se è a 1 PS, +1 per ogni problema di stato. Contro un Pokémon esausto i bonus si perdono.','Con abbastanza successi è catturato (Felicità 2, Lealtà 1; se era esausto, Felicità 0 e Lealtà 0). Con 3 in meno del necessario si libera e la Ball è da buttare; altrimenti scappa e la Ball si recupera a fine scena.'])},
+ {ch:'rules',t:'Pronti a partire',h:()=>`<p>Questo è il riassunto delle regole base del manuale di Pokérole 3.0. Per tutto il resto (trappole, tempo atmosferico, oggetti, casi particolari) vale il manuale, e il GM può sempre adattare le regole al vostro tavolo.</p>
+  <p>Puoi riaprire la guida in qualsiasi momento dal tasto <b>Guida</b> in alto.</p>`},
+];
+const G={i:0};
+const GL=()=>GUIDE.filter(x=>!x.gm||!isPlayerView());
+function guideSeen(){try{return localStorage.getItem(GKEY)==='1'}catch(e){return !!window.__guideSeen}}
+function markGuide(){window.__guideSeen=true;try{localStorage.setItem(GKEY,'1')}catch(e){}}
+function openGuide(i){G.i=i||0;$('#ov-guide').hidden=false;document.body.style.overflow='hidden';renderGuide()}
+function closeGuide(){markGuide();$('#ov-guide').hidden=true;if($('#ov').hidden&&$('#ov2').hidden)document.body.style.overflow=''}
+function renderGuide(){
+  const L=GL();G.i=clamp(G.i,0,L.length-1);
+  const st=L[G.i],first=G.i===0,last=G.i===L.length-1,rs=L.findIndex(x=>x.ch==='rules');
+  $('#guide').innerHTML=`<div class="ghead"><span class="ch">${st.ch==='app'?'Come si usa l\'app':'Regole di Pokérole 3.0'}</span><span class="n">${G.i+1}/${L.length}</span><button class="x" data-act="guide-close" aria-label="Chiudi la guida">✕</button></div>
+    <div class="gbody"><h2 id="guide-title">${st.t}</h2>${st.h()}</div>
+    <div class="gfoot"><span class="gdots" aria-hidden="true">${L.map((x,k)=>`<i class="${x.ch==='rules'?'rules':''}${k===G.i?' on':''}"></i>`).join('')}</span><span class="grow"></span>
+      ${last?'':`<button class="btn ghost sm" data-act="guide-close">Salta</button>`}
+      ${first?`<button class="btn ghost" data-act="guide-go" data-i="${rs}">Vai alle regole</button>`:`<button class="btn ghost" data-act="guide-prev">Indietro</button>`}
+      ${last?`<button class="btn" data-act="guide-close">Chiudi la guida</button>`:`<button class="btn" data-act="guide-next">${first?'Inizia':'Avanti'}</button>`}</div>`;
+  const b=$('#guide [data-act="guide-next"],#guide [data-act="guide-close"].btn:not(.ghost)');b&&b.focus({preventScroll:true});
+}
+document.addEventListener('click',e=>{
+  if(e.target.id==='ov-guide'){closeGuide();return}
+  const el=e.target.closest('[data-act^="guide"]');if(!el)return;
+  const a=el.dataset.act;
+  if(a==='guide')openGuide(0);else if(a==='guide-close')closeGuide();
+  else if(a==='guide-next'){G.i=Math.min(GUIDE.length-1,G.i+1);renderGuide()}
+  else if(a==='guide-prev'){G.i=Math.max(0,G.i-1);renderGuide()}
+  else if(a==='guide-go'){G.i=+el.dataset.i;renderGuide()}
+},true);
+document.addEventListener('keydown',e=>{
+  if($('#ov-guide').hidden)return;
+  if(e.key==='Escape'){closeGuide();e.stopImmediatePropagation()}
+  else if(e.key==='ArrowRight'){G.i=Math.min(GUIDE.length-1,G.i+1);renderGuide()}
+  else if(e.key==='ArrowLeft'){G.i=Math.max(0,G.i-1);renderGuide()}
+},true);
+
+/* ======================= avvio ======================= */
+(async function boot(){
+  Store.loadLocal();renderSavePill();renderRoleUI();
+  try{await loadData()}catch(e){$('#loading').innerHTML='<b>Non riesco a caricare il Pokédex.</b><span class="small">Ricarica la pagina: se il problema resta, i dati non sono stati pubblicati insieme alla pagina.</span>';return}
+  $('#loading').remove();
+  $('#dex-type').innerHTML='<option value="">Tutti i tipi</option>'+TYPES.map(t=>`<option value="${t}">${T_IT[t]}</option>`).join('');
+  $('#mv-type').innerHTML=$('#dex-type').innerHTML;
+  $('#dex-rank').innerHTML='<option value="">Tutti i ranghi</option>'+RANKS.map(r=>`<option>${r}</option>`).join('');
+  fillSpeciesList();
+  const h=location.hash.slice(1);go(TABS.some(t=>t[0]===h)?h:'pokedex');
+  if(h.startsWith('s-'))routeHash();
+  const ready=Store.init().catch(()=>setRole(false));
+  // la guida aspetta di sapere se sei il GM o un giocatore (al massimo un paio di secondi)
+  await Promise.race([ready,new Promise(r=>setTimeout(r,2500))]);
+  if(!guideSeen())openGuide(0);
+})();
+</script>
+
+</body>
+</html>

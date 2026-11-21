@@ -401,6 +401,18 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:600px){.mvfilters{flex-wrap:wrap}.mvfilters #mv-q{flex:1 1 100%;min-width:0}.mvfilters select{flex:1 1 0;min-width:0}}
+.updbar{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);z-index:65;display:flex;align-items:center;gap:12px;max-width:620px;margin:0 auto;background:#0f1729;border:1.5px solid var(--gold);border-radius:14px;padding:10px 12px;box-shadow:0 10px 30px #0008;color:#f2f4f8}
+.updbar span{flex:1;font-size:13.5px;line-height:1.35}
+.updbar button{flex:none;background:var(--gold);color:#1a1205;border:0;border-radius:10px;padding:9px 16px;font-weight:700;font-size:14px;cursor:pointer}
+@media (min-width:900px){.updbar{bottom:20px}}
+.updbar[hidden]{display:none}
+body.upd .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 150px)}
+.trainbox{border:1px solid var(--line2);border-radius:12px;padding:10px 12px;background:var(--panel2)}
+.tref h3{margin:18px 0 6px;font-family:var(--f-display);scroll-margin-top:8px}.tref h4{margin:12px 0 4px;font-size:14px}.tref p{margin:6px 0;line-height:1.5}
+.tnav{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.ttab{overflow-x:auto;margin:6px 0}.ttab table{width:100%;border-collapse:collapse;font-size:13px}.ttab th,.ttab td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}.ttab th{color:var(--muted);font-weight:600;font-size:12px}
+.steps{margin:6px 0;padding-left:20px;line-height:1.5}.steps li{margin:4px 0}
+.tstep{border-left:3px solid var(--line2);padding:4px 0 4px 10px;margin:4px 0}
 </style>
 
 <header class="top">
@@ -519,6 +531,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
       <button class="btn ghost sm" data-evo="skip" id="evo-skip">Salta</button><button class="btn" data-evo="close" id="evo-close" hidden>Continua</button></div></div>
 </div>
 <div class="toast" id="toast" role="status"></div>
+<div class="updbar" id="updbar" role="status" hidden><span>✨ C'è una versione nuova dell'app. I tuoi dati restano dove sono.</span><button type="button" data-act="app-update">Aggiorna</button></div>
 <input type="file" id="import-file" accept=".json,application/json" hidden>
 
 <script>
@@ -828,11 +841,11 @@ function evoHTML(sp){
   const node=(name,cur)=>{const p=spByName(name);if(p&&!cur&&vm(p.Key)===0)return `<span class="node off unk">${silSprite(p,'xs')}<span>???</span></span>`;
     return p?`<button class="node ${cur?'cur':''}" data-sp="${esc(p.Key)}">${sprite(p,'xs')}<span>${esc(p.Name)}</span></button>`:`<span class="node off">${esc(name)}</span>`};
   const how=e=>{const k=e.Kind;let s='';
-    if(k==='Level')s=`livello${e.GameLevel?' '+e.GameLevel:''}, tempo ${SPEED_IT[e.Speed]||e.Speed}${TP_EVO[e.Speed]?` (${TP_EVO[e.Speed]} punti allenamento)`:''}`+(e.Item?`, tenendo ${IN(e.Item)}`:'')+(e.Special?`, ${e.Special}`:'');
-    else if(k==='Stone')s=`strumento ${IN(e.Item)}`;else if(k==='Trade')s='scambio'+(e.Item?` tenendo ${IN(e.Item)}`:'');
+    if(k==='Level')s=`livello${e.GameLevel?' '+e.GameLevel:''}${e.Speed?`, tempo ${SPEED_IT[e.Speed]||e.Speed}`:''}${TP_EVO[e.Speed]?` (${TP_EVO[e.Speed]} punti allenamento)`:''}`+(e.Item?`, tenendo ${IN(e.Item)}`:'')+(e.Special?`, ${e.Special}`:'');
+    else if(k==='Stone')s=`strumento ${IN(e.Item)}`+(e.Special?`, ${e.Special}`:'');else if(k==='Trade')s='scambio'+(e.Item?` tenendo ${IN(e.Item)}`:'');
     else if(k==='Stat')s={Happiness:'Felicità',Loyalty:'Lealtà',Beauty:'Bellezza'}[e.Stat]+' '+e.Value;
     else if(k==='Item')s=`${IN(e.Item)}${e.Special?', '+e.Special:''}`;else if(k==='Special')s=(e.Item?IN(e.Item)+', ':'')+(e.Special||'');else if(k==='Form')s=e.Special||'cambio di forma';
-    const src=pv||e.Source==='card'?'':(e.Source==='canon'?' (canon)':' (proposta)');return esc(s+src)};
+    return esc(s)};
   if(!prev.length&&!next.length)return '<p class="muted small" style="margin:0">Non si evolve.</p>';
   let h='';
   prev.forEach(e=>{h+=`<div class="evo">${node(e.From)}<span class="arr">→ ${how(e)} →</span>${node(sp.Name,true)}</div>`});
@@ -902,9 +915,8 @@ function openSpecies(key){
             <div style="margin-top:6px">${[sp.Ability1,sp.Ability2].filter(Boolean).map(a=>abilityHTML(a,false)).join('')}${sp.HiddenAbility?abilityHTML(sp.HiddenAbility,true):''}</div></div>
         </div>
       </div>
-      <div><div class="lbl">Evoluzione</div>${evoHTML(sp)}</div>
+      <div><div class="lbl">Evoluzione</div>${evoHTML(sp)}<button class="btn ghost sm" style="margin-top:8px" data-act="train-ref" data-sec="evo">Come si evolve e si allena un Pokémon?</button></div>
       <div><div class="lbl">Mosse · rango a cui si imparano (tocca per i dettagli)</div><div>${movepoolHTML(sp)}</div></div>
-      ${pv?'':`<div class="note">${sp.Model?`Modello per i numeri mancanti: ${esc(sp.Model)}. `:''}Attributi: ${sp.AttrSrc==='card'?'dalle statistiche della scheda':(sp.AttrSrc==='canon'?'canon':'dal modello')}. Abilità: ${esc(sp.AbilSrc||'')}.${(sp.Notes||[]).map(n=>' '+esc(n)+'.').join('')}</div>`}
       ${addPanel}
     </div>`;
   });
@@ -913,13 +925,46 @@ function openSpecies(key){
 /* ---------- modalità autonoma (GitHub) ---------- */
 function playerToolsHTML(){return `<div class="panel" style="margin-top:18px"><h3>I tuoi dati</h3>
   <p class="small muted">Schede e Pokédex restano su questo dispositivo. Esporta ogni tanto una copia della tua scheda (tasto <b>Esporta scheda</b>) e passala al GM quando serve.</p>
-  <div class="row"><button class="btn ghost sm" data-act="import">Importa una scheda</button><span class="grow"></span><button class="btn ghost sm" data-act="gm-unlock">Sei il GM? Sblocca</button></div><div id="import-msg"></div></div>`}
+  <div class="row"><button class="btn ghost sm" data-act="import">Importa una scheda</button><button class="btn ghost sm" data-act="check-update">Cerca aggiornamenti</button><span class="grow"></span><button class="btn ghost sm" data-act="gm-unlock">Sei il GM? Sblocca</button></div><div id="import-msg"></div></div>`}
 function openGMUnlock(){openOv(()=>{$('#sheet2').innerHTML=head('Vista GM','#9e1424')+`<div class="sheetbody">
   <p style="margin:0">Scrivi il codice del GM per vedere tutto su questo dispositivo.</p>
   <form id="gm-form" class="row" autocomplete="off"><input id="gm-code" type="password" inputmode="numeric" placeholder="Codice" aria-label="Codice del GM" style="width:160px"><button class="btn" type="submit">Sblocca</button></form>
   <p class="small" id="gm-msg" style="margin:0;color:var(--danger)" aria-live="polite"></p></div>`;setTimeout(()=>{const i=$('#gm-code');if(i)i.focus()},60)},2)}
 function standaloneTexts(){const l=$('#lotte-lead');if(l)l.textContent='Uno scontro per ogni incontro: ogni carta tiene i suoi PS, la Volontà, gli stati e i tiri. I valori del selvatico partono dagli attributi iniziali della specie e si possono alzare fino al limite. Aprire uno scontro segna la specie come vista nel tuo Pokédex; i giocatori la segnano sul loro telefono quando dici il numero.'}
-function registerSW(){if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;navigator.serviceWorker.register('sw-pokerole.js',{scope:'./'}).catch(()=>{})}
+/* ---------- aggiornamenti (solo versione GitHub): come nel Pokédex di Aethera ----------
+   La versione nuova si scarica da sola in sottofondo; parte solo quando il giocatore tocca «Aggiorna»,
+   così nessuno si ritrova la pagina ricaricata a metà lotta. I salvataggi non vengono toccati. */
+const APP_BUILD='6';
+const UPD={reg:null,waiting:null,going:false,reloaded:false};
+function updReload(){if(UPD.reloaded)return;UPD.reloaded=true;location.reload()}
+function showUpdBar(w){UPD.waiting=w;const b=$('#updbar');if(b)b.hidden=false;document.body.classList.add('upd')}
+function swVersion(w){return new Promise(res=>{try{const ch=new MessageChannel();const t=setTimeout(()=>res(null),1500);ch.port1.onmessage=e=>{clearTimeout(t);res(e.data&&e.data.version)};w.postMessage({type:'GET_VERSION'},[ch.port2])}catch(e){res(null)}})}
+async function onWaiting(w){
+  // pagina già nuova (presa dalla rete) e lavoratore della stessa versione: lo si attiva in silenzio
+  if(String(await swVersion(w))===APP_BUILD){w.postMessage({type:'SKIP_WAITING'});return}
+  showUpdBar(w);
+}
+function applyUpdate(){const b=$('#updbar');if(b)b.hidden=true;UPD.going=true;
+  if(UPD.waiting){UPD.waiting.postMessage({type:'SKIP_WAITING'});setTimeout(updReload,1500)}else updReload()}
+function checkUpdate(manual){
+  if(!UPD.reg){if(manual)toast('Gli aggiornamenti funzionano solo dall\'app installata dal link, non da un file scaricato.');return}
+  if(UPD.waiting){showUpdBar(UPD.waiting);return}
+  if(manual)toast('Controllo aggiornamenti…');
+  UPD.reg.update().then(()=>{if(manual)setTimeout(()=>{if(!UPD.waiting&&!(UPD.reg&&UPD.reg.installing))toast('Hai già la versione più recente.')},2500)}).catch(()=>{if(manual)toast('Senza internet non posso controllare.')});
+}
+function registerSW(){
+  if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;
+  navigator.serviceWorker.register('sw-pokerole.js',{scope:'./'}).then(reg=>{
+    UPD.reg=reg;
+    if(reg.waiting&&navigator.serviceWorker.controller)onWaiting(reg.waiting);
+    reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(!nw)return;
+      nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller)onWaiting(nw)})});
+    // a ogni riapertura (anche quando il telefono riprende l'app dallo sfondo) e ogni mezz'ora
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')reg.update().catch(()=>{})});
+    setInterval(()=>{if(document.visibilityState==='visible')reg.update().catch(()=>{})},30*60*1000);
+  }).catch(()=>{});
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(UPD.going)updReload()});
+}
 
 /* ---------- giocatori: "l'abbiamo visto!" con il Pokémon che esce dall'ombra ---------- */
 function openReveal(keys,auto){
@@ -1185,6 +1230,7 @@ function openMon(id){openOv(()=>{
       <div class="stat"><span class="t">Lealtà</span><span class="stepper"><button data-act="happy" data-k="loyalty" data-d="-1" aria-label="meno">−</button><b>${m.loyalty}</b><button data-act="happy" data-k="loyalty" data-d="1" aria-label="più">+</button></span></div>
       <div class="stat"><span class="t">Punti allenamento</span><span class="stepper"><button data-act="tp" data-d="-1" aria-label="meno">−</button><b>${m.tp||0}</b><button data-act="tp" data-d="1" aria-label="più">+</button></span><span class="f">${TP_RANK[m.rank]?`rango successivo: ${TP_RANK[m.rank]}`:'rango massimo'}${(()=>{const e=sp.Evolutions.find(x=>x.To&&TP_EVO[x.Speed]);return e?` · evolvere: ${TP_EVO[e.Speed]}`:''})()}</span></div>
     </div>
+    ${trainBoxHTML(m,T,sp)}
     <div><div class="sec" style="margin:0 0 8px"><h3>Mosse conosciute</h3><span class="counter ${m.moves.length>mm?'':''}" style="${m.moves.length>mm?'color:var(--danger);border-color:var(--danger)':''}">${m.moves.length}/${mm}</span>
       <button class="btn sm" data-act="learn">+ Impara mossa</button>
       <label class="small muted row" style="gap:6px;margin-left:auto" for="td-${m.id}">Difesa del bersaglio <input type="number" id="td-${m.id}" data-tdef="${m.id}" min="0" max="15" value="${tdef(m.id)}" style="width:62px"></label></div>
@@ -1222,7 +1268,7 @@ function openLearn(id){openOv(()=>{
   const pick=(n,sub)=>{const mv=DATA.Moves[n]||{};const has=m.moves.includes(n);return `<button class="pick" data-act="learn-pick" data-n="${esc(n)}" ${has?'disabled':''}><i style="width:8px;height:18px;border-radius:3px;background:${TC[mv.Type]||'#888'};flex:none"></i><span class="grow">${esc(MN(n))}<br><span class="small muted">${sub?esc(sub)+' · ':''}${esc(CATL(mv))}${mv.Power?' · P'+esc(PWR(mv.Power)):''}</span></span></button>`};
   const O=q?Object.entries(DATA.Moves).filter(([n,mv])=>!own.has(n)&&!mv.Kind&&(n.toLowerCase().includes(q)||(mv.NameIT||'').toLowerCase().includes(q))).sort((a,b)=>MN(a[0]).localeCompare(MN(b[0]),'it')):[];
   $('#sheet2').innerHTML=head('Impara una mossa',TC[sp.Type1])+`<div class="sheetbody">
-    <p class="small muted" style="margin:0">Mosse di ${esc(sp.Name)} fino al rango ${m.rank}.${full?' Ha già il numero massimo di mosse: puoi aggiungerne comunque, il contatore diventa rosso.':''}</p>
+    <p class="small muted" style="margin:0">Mosse di ${esc(sp.Name)} fino al rango ${m.rank}.${full?` Ha già il numero massimo di mosse (Intuito + 3): per impararne una nuova ne dimentica una e spende punti allenamento: <b>${TP_MOVE[stageOf(sp)][0]}</b> per una mossa del rango ${m.rank}, <b>${TP_MOVE[stageOf(sp)][1]}</b> per una di un rango precedente, <b>${TP_TM}</b> con una MT. Toglili dal contatore dei punti.`:' Ha ancora posto: salendo di rango le mosse nuove si imparano gratis.'}</p>
     <div class="picker">${L.map(x=>pick(x.Name,x.Learned)).join('')}</div>
     <h4 style="margin:14px 0 4px">Altra mossa (MT o insegnante)</h4>
     <p class="small muted" style="margin:0 0 6px">Solo se il GM è d'accordo. Cerca per nome, in italiano o in inglese.</p>
@@ -1231,6 +1277,175 @@ function openLearn(id){openOv(()=>{
   </div>`;
   const i=$('#learn-q');i.oninput=()=>{OV2.q=i.value;const pos=i.selectionStart;OV2.render();const j=$('#learn-q');j.focus();j.setSelectionRange(pos,pos)};
 },2)}
+/* ---------- allenamento ed evoluzione (manuale di Pokérole 3.0, capitolo «Training Pokémon») ---------- */
+const STAGE_IT=['primo stadio','secondo stadio','stadio finale'];
+function stageOf(sp){const prev=sp.Evolutions.some(e=>e.From),next=sp.Evolutions.some(e=>e.To);return !next?2:(prev?1:0)}
+const TP_MOVE=[[2,1],[4,2],[6,3]];          // cambiare una mossa quando è già al massimo: del rango attuale / di un rango precedente
+const TP_PREEVO=[null,5,10];                // mossa che imparava solo la pre-evoluzione
+const TP_OVER=[5,15,20];                    // Over-Rank, per ogni rango sopra il suo
+const TP_TM=5;                              // MT o DT, uguale per tutti
+const TP_RETRAIN={Starter:1,Rookie:10,Standard:20,Advanced:25,Expert:30,Ace:35,Master:40,Champion:45};
+const TP_BATTLE_RANK=[1,2,3];               // rango uguale / uno sotto / due o più sotto l'avversario più forte (sopra: 0)
+const DIFF_IT=['','fastidioso','impegnativo','difficile','molto difficile','quasi impossibile'];
+const SKILL_CAP_RANK={Starter:1,Rookie:2,Standard:3,Advanced:4,Expert:5,Ace:5,Master:5};
+const TARGETS_RANK={Starter:1,Rookie:2,Standard:3,Advanced:4,Expert:5,Ace:6,Master:8};
+const nextRank=r=>RANKS[RANKS.indexOf(r)+1]||null;
+const tbl=(head,rows)=>`<div class="ttab"><table>${head?`<thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead>`:''}<tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+function obeyLevel(m,T){if(!T)return 0;const d=tri(m.rank)-tri(ensureT(T).rank);return d<=0?0:(d===1?1:2)}
+function evoNeed(sp){ // la prima evoluzione «a tempo» della specie
+  const e=sp.Evolutions.find(x=>x.To&&x.Kind==='Level'&&TP_EVO[x.Speed]);return e?{e,tp:TP_EVO[e.Speed]}:null}
+
+function trainRefHTML(){
+  const ranks=RANKS.slice(0,-1);
+  return `<div class="tref">
+  <p class="lead" style="margin:0">Tutto quello che serve per far crescere un Pokémon: come guadagna i <b>punti allenamento</b>, come li spende (rango, evoluzione, mosse) e come contano <b>Felicità</b> e <b>Lealtà</b>. Le regole sono quelle del manuale di Pokérole 3.0; il GM può sempre adattarle al tavolo.</p>
+  <nav class="tnav">${[['gain','Guadagnare punti'],['obey','Ubbidienza'],['rank','Salire di rango'],['evo','Evoluzione'],['moves','Mosse'],['over','Over-Rank e ri-allenamento'],['bond','Felicità e Lealtà']].map(([k,t])=>`<button class="btn ghost sm" data-act="tref-go" data-sec="${k}">${t}</button>`).join('')}</nav>
+
+  <h3 id="tref-gain">1 · Come si guadagnano i punti allenamento</h3>
+  <p>Ogni Pokémon ha un contatore di <b>punti allenamento</b> (nella sua scheda, sotto le statistiche). Si guadagnano in quattro modi:</p>
+  ${li(['<b>Lotte</b>: alla fine di ogni lotta, in base a come è andata (tabella qui sotto).','<b>Sessioni di allenamento</b>: il modo migliore e più costante, una al giorno.','<b>Gioco di ruolo e storia</b>: il GM può dare punti per una bella interpretazione o in un momento importante della storia.','<b>Pensione Pokémon</b>: a pagamento, fino a 6 punti al giorno.'])}
+  <h4>Dopo una lotta</h4>
+  ${tbl(['Com\'è andata','Punti'],[['Il Pokémon ha un rango <b>più alto</b> dell\'avversario più forte','0'],['Ha lo <b>stesso rango</b> dell\'avversario più forte','1'],['È <b>un rango sotto</b> l\'avversario più forte','2'],['È <b>due o più ranghi sotto</b>','3'],['La lotta è finita con una <b>vittoria</b>','+2'],['La lotta è finita con una <b>sconfitta</b>','+1'],['<b>Vittoria</b>, ma il Pokémon è svenuto o è stato richiamato prima della fine','+1'],['Gli avversari erano <b>più di uno</b> contemporaneamente','+2']])}
+  <p class="small muted">Si sommano le righe che valgono e si danno i punti a fine lotta. Prende punti solo chi ha lottato <b>almeno un round intero</b>. Esempio: un Pokémon Rookie batte un selvatico Standard (2) e vince (+2): 4 punti. Nella scheda del Pokémon il tasto <b>Punti da una lotta</b> fa il conto da solo.</p>
+  <h4>La sessione di allenamento</h4>
+  <p>Dura circa <b>2 ore</b> nel gioco e si può fare <b>una volta al giorno</b>. Se tra una serata e l'altra i giorni passano senza allenarsi, il GM può dedicare un'intera serata di gioco all'allenamento per recuperare. Oltre ai punti, serve a rafforzare il legame (Felicità e Lealtà si alzano giocando di ruolo) e fa recuperare Volontà.</p>
+  <ol class="steps">
+    <li><b>Scegli un compito</b> per il tuo Pokémon: un gioco, un indovinello, una corsa, raccogliere oggetti, sollevare pesi… Più è creativo meglio è. Decidi tu la difficoltà, da 1 a 5 successi: 1 ${DIFF_IT[1]}, 2 ${DIFF_IT[2]}, 3 ${DIFF_IT[3]}, 4 ${DIFF_IT[4]}, 5 ${DIFF_IT[5]}.</li>
+    <li><b>Il Pokémon tira</b> l'attributo (o attributo sociale) + la competenza adatti al compito. Se non arriva alla difficoltà ha <b>una seconda possibilità</b>; se sbaglia anche quella, la sessione finisce lì, senza punti.</li>
+    <li><b>Se ci riesce, tiri tu</b> (l'allenatore): attributo o attributo sociale + competenza legati a come lo stai allenando, e aggiungi <b>la difficoltà del compito come successi bonus</b>.</li>
+    <li><b>Il Pokémon guadagna tanti punti allenamento quanti sono i tuoi successi totali.</b></li>
+    <li><b>Riposo</b>: l'allenatore e tutti i Pokémon che hanno completato la sessione recuperano <b>2 punti Volontà</b>.</li>
+  </ol>
+  <p class="small muted">Esempio: il tuo Pokémon deve spostare dei massi da un torrente. Forza + Atletica, difficoltà 3: fa 3 successi, ce la fa. Tu lo incoraggi e lo guidi: Classe + Atletica, 2 successi, più 3 di bonus = <b>5 punti allenamento</b>. Nella scheda del Pokémon il tasto <b>Sessione di allenamento</b> ti accompagna passo per passo e tira i dadi.</p>
+  <h4>La pensione Pokémon</h4>
+  <p>Si paga ogni giorno di permanenza. Il Pokémon viene nutrito, curato e allenato: guadagna <b>fino a 6 punti al giorno</b> e la sua <b>Felicità</b> sale, ma il rapporto con te no: perde <b>1 punto di Lealtà ogni 5 giorni</b> che resta lì, soprattutto se non vai mai a trovarlo. È ideale per un Pokémon appena catturato che deve ambientarsi, o per una vacanza senza saltare l'allenamento.</p>
+
+  <h3 id="tref-obey">2 · Ubbidienza: quando il Pokémon è più forte di te</h3>
+  <p>Un Pokémon di rango più alto del suo allenatore può non riconoscerlo come guida.</p>
+  ${tbl(['Rango del Pokémon','Cosa succede'],[['Uguale o più basso del tuo','Nessuna disubbidienza: ascolta e obbedisce.'],['<b>Un rango sopra</b>','Disubbidienza bassa. In lotta, a inizio round tira la sua <b>Lealtà</b>: con 3 o più successi obbedisce per tutto il round, altrimenti agisce di testa sua (secondo natura e specie). In allenamento prende solo <b>metà</b> dei punti, arrotondando per difetto.'],['<b>Due o più ranghi sopra</b>','Disubbidienza alta. In lotta non segue nessun ordine e in allenamento <b>si rifiuta</b>: niente punti.']])}
+  <p class="small muted">Per risolvere: alza il tuo rango di allenatore completando i traguardi, oppure guadagnati il suo rispetto con la storia (con fermezza o con gentilezza, scegli tu). Nei tornei ufficiali chi non controlla i propri Pokémon viene squalificato.</p>
+
+  <h3 id="tref-rank">3 · Salire di rango</h3>
+  <p>Il primo Pokémon parte dallo stesso rango dell'allenatore; dopo, ogni Pokémon va allenato per salire. <b>Non può superare il rango del suo allenatore.</b> L'allenatore invece sale completando i traguardi decisi dal GM.</p>
+  ${tbl(['Da','A','Punti allenamento'],ranks.map(r=>[r,nextRank(r),`<b>${TP_RANK[r]}</b>`]))}
+  <p>Ogni rango dà al Pokémon dei punti da distribuire (è il totale per quel rango, come nella scheda del Pokémon):</p>
+  ${tbl(['Rango','Attributi','Sociali','Competenze','Limite per competenza','Bersagli massimi'],RANKS.map(r=>[r,RANK_PTS[r][0],RANK_PTS[r][1],RANK_PTS[r][2],SKILL_CAP_RANK[r],TARGETS_RANK[r]]))}
+  <p class="small muted">Gli attributi non superano il limite della specie. A Master il Pokémon tira anche 2 dadi in più in tutti i tiri con una competenza, e PS, Volontà, Iniziativa e Difese salgono di 3. Salendo di rango si sbloccano anche le mosse di quel rango (vedi Mosse).</p>
+
+  <h3 id="tref-evo">4 · Evoluzione</h3>
+  <p>Un Pokémon passa per <b>tre stadi</b>: <b>primo stadio</b> (la forma con cui nasce, di solito giovane), <b>secondo stadio</b> (una specie di adolescenza: più forte, ma non ha finito di crescere; alcune specie lo saltano) e <b>stadio finale</b> (adulto, il massimo del suo potenziale; anche le specie che non si evolvono sono a questo stadio).</p>
+  <h4>Evolvere con l'allenamento</h4>
+  <p>Il modo più comune è l'esperienza: lotte e allenamento. Ogni specie ha un <b>tempo di evoluzione</b>, scritto nella sua scheda del Pokédex:</p>
+  ${tbl(['Tempo','Punti','Per chi'],[['Veloce','<b>10</b>','Si evolve presto, senza bisogno di molta esperienza. Ideale per chi è alle prime armi.'],['Medio','<b>30</b>','Serve una quantità normale di esperienza in lotta. Adatto ad allenatori capaci.'],['Lento','<b>50</b>','Deve vivere e lottare a lungo prima di essere pronto. Per veterani.']])}
+  <p><b>I punti si spendono</b>: una volta spesi il Pokémon è pronto, ma non sempre si illumina subito, a volte serve un po' di tempo o una spinta. L'evoluzione non si può forzare: certi Pokémon non vogliono evolversi per tutta la vita. Il GM può farlo evolvere prima (o chiedere più o meno punti) per un momento importante della storia: rendetelo memorabile.</p>
+  <p class="small muted">Esempio: tre Pokémon iniziano ad allenarsi lo stesso giorno, uno veloce, uno medio e uno lento. Quando ognuno ha 10 punti, il veloce si evolve spendendoli. Col tempo il medio arriva a 30 e si evolve anche lui. Al lento ne servono 50: deve avere pazienza.</p>
+  <h4>Gli altri modi di evolversi</h4>
+  ${li(['<b>Da fuori</b>: le pietre evolutive, le radiazioni delle macchine per gli scambi (evoluzione con lo scambio), l\'energia di un luogo o di uno strumento particolare.','<b>Da dentro</b>: Felicità e/o Lealtà alte, imparare una certa mossa, attributi sociali alti.','<b>Casi straordinari</b>: stress e pericolo estremi, esperimenti scientifici… o troppe frittelle.'])}
+  <p>Come si evolve ogni specie è scritto nel riquadro <b>Evoluzione</b> della sua scheda nel Pokédex. Molti di questi metodi si ottengono solo giocando: trovando lo strumento giusto, qualcuno con cui scambiare o con la storia.</p>
+  <h4>Nell'app</h4>
+  ${li(['Nella scheda del Pokémon, la riga <b>Evoluzione</b> dice cosa serve e quanti punti ha.','Il tasto <b>Evolvi</b> chiede conferma: se l\'evoluzione è a tempo e ha i punti, li toglie da solo; se no puoi farlo evolvere lo stesso (per esempio quando il GM lo decide per la storia).','Evolvendo, gli attributi salgono ai valori iniziali della nuova specie (quelli già più alti restano), l\'abilità resta nella stessa posizione e i PS crescono di conseguenza. Rango, competenze, mosse, Felicità e Lealtà restano.'])}
+
+  <h3 id="tref-moves">5 · Mosse</h3>
+  ${li(['Un Pokémon conosce al massimo <b>Intuito + 3</b> mosse, scelte tra quelle del suo rango o più basse.','Quando sale di rango e non ha ancora il numero massimo, impara le nuove mosse <b>gratis</b>.','Se le ha già tutte e vuoi cambiarne una, spendi punti allenamento e ne dimentica una. Più è evoluto, più gli costa:'])}
+  ${tbl(['Stadio','Mossa del rango attuale','Mossa di un rango precedente','Mossa che imparava solo la pre-evoluzione'],[['Primo stadio',TP_MOVE[0][0],TP_MOVE[0][1],'—'],['Secondo stadio',TP_MOVE[1][0],TP_MOVE[1][1],TP_PREEVO[1]],['Stadio finale',TP_MOVE[2][0],TP_MOVE[2][1],TP_PREEVO[2]]])}
+  ${li(['Ricordare una mossa dimenticata costa uguale.','<b>MT e DT</b>: <b>5 punti</b> per qualsiasi Pokémon, qualunque rango o stadio, ma costano soldi (le MT si riusano e costano di più, le DT valgono per una specie e si usano una volta). Il GM decide se esiste la MT o DT e se il Pokémon può impararla. Le mosse imparate con MT o DT, una volta dimenticate, non si ricordano con i punti.','Gli <b>insegnanti di mosse</b> sono persone rare (lottatori ritirati, mistici, saggi di terre lontane) che insegnano mosse che la specie non impara, perfino mosse uniche, dopo una prova. È tutto in mano alla storia.','Consiglio: fai imparare le mosse importanti finché è poco evoluto, gli costano meno, e tienile dopo l\'evoluzione.'])}
+
+  <h3 id="tref-over">6 · Over-Rank e ri-allenamento</h3>
+  <p><b>Over-Rank</b>: il Pokémon impara una mossa del suo elenco di un rango <b>più alto</b> del suo. Servono punti allenamento e <b>Felicità + Lealtà almeno 7</b>. Si può avere una sola mossa così: se ne impari un'altra, la precedente si dimentica.</p>
+  ${tbl(['Stadio','Punti per ogni rango sopra il suo'],[['Primo stadio',TP_OVER[0]],['Secondo stadio',TP_OVER[1]],['Stadio finale',TP_OVER[2]]])}
+  <p class="small muted">Esempio: un Pokémon di primo stadio Rookie che vuole una mossa Expert (3 ranghi sopra) spende 15 punti.</p>
+  <p><b>Ri-allenamento</b>: ridistribuisci da capo tutti i punti di attributi, sociali e competenze dati dal rango, per provare un'altra strategia. Le mosse restano (vanno allenate a parte). Si può fare quante volte vuoi.</p>
+  ${tbl(['Rango','Punti'],Object.entries(TP_RETRAIN).filter(([r])=>RANKS.includes(r)).map(([r,v])=>[r,v]))}
+
+  <h3 id="tref-bond">7 · Felicità e Lealtà</h3>
+  <p>Vanno da 0 a 5 e misurano il vostro rapporto. Un selvatico di solito ha 2 e 2; come lo catturi conta (un Pokémon catturato esausto parte da 0 e 0). <b>Non salgono con il rango</b>: solo giocando di ruolo, in bene o in male. Alte aiutano a ribaltare le lotte, servono per l'Over-Rank e alcune specie si evolvono grazie a loro. Un Pokémon felice non è per forza leale, e viceversa: cerca l'equilibrio.</p>
+  ${tbl(['','Felicità','Lealtà'],[['0','Infelice: arrabbiato o depresso, può provare rancore.','Indifferente: non vuole avere a che fare con te né con la squadra.'],['1','Insoddisfatto: non gli piace vivere con te.','Si sta affezionando, ma non ti difende di sua iniziativa.'],['2','A suo agio: cibo, compagnia, un posto per dormire.','Ti resta accanto nei guai, ma se si mette male sei da solo.'],['3','Soddisfatto: apprezza essere il tuo compagno.','Ti considera un amico: ti aiuta a uscire dal pericolo se può.'],['4','Realizzato: con te ha ottenuto quasi tutto ciò che voleva.','Non c\'è niente che non farebbe per te: siete una famiglia.'],['5','Felicità vera: sa che la sua bella vita è merito tuo.','Un\'amicizia che va oltre una vita: niente lo ferma dal venire a salvarti.']])}
+  </div>`;
+}
+function openTrainRef(sec){
+  if(!$('#ov-guide').hidden)closeGuide();
+  openOv(()=>{$('#sheet2').innerHTML=head('Allenamento ed evoluzione','#3f6fd1')+`<div class="sheetbody">${trainRefHTML()}</div>`;
+    if(sec)setTimeout(()=>{const h=document.getElementById('tref-'+sec);if(h)h.scrollIntoView({block:'start'})},30)},2);
+}
+
+/* riquadro «Allenamento» nella scheda del Pokémon */
+function trainBoxHTML(m,T,sp){
+  const st=stageOf(sp),tp=m.tp||0,nr=nextRank(m.rank),cost=TP_RANK[m.rank],ob=obeyLevel(m,T),en=evoNeed(sp),bond=(m.happiness||0)+(m.loyalty||0);
+  let rk;
+  if(!nr)rk=`È al rango massimo per un Pokémon.`;
+  else if(T&&tri(nr)>tri(ensureT(T).rank))rk=`Prossimo rango <b>${nr}</b>: ${cost} punti. Prima deve salire il suo allenatore (ora ${esc(T.rank)}).`;
+  else rk=`Prossimo rango <b>${nr}</b>: servono <b>${cost}</b> punti${tp>=cost?'.':`, ne mancano ${cost-tp}.`} ${tp>=cost?`<button class="btn sm" data-act="tp-rankup">Sali a ${nr} (−${cost})</button>`:''}`;
+  let ev;const nexts=sp.Evolutions.filter(e=>e.To);
+  if(!nexts.length)ev='Non si evolve oltre: è allo stadio finale.';
+  else if(en)ev=`Evolve con l'allenamento, tempo ${SPEED_IT[en.e.Speed]}: servono <b>${en.tp}</b> punti${tp>=en.tp?' (li ha: può evolvere).':`, ne mancano ${en.tp-tp}.`}${nexts.length>1||en.e.Item||en.e.Special?' Controlla le condizioni nella scheda della specie.':''}`;
+  else ev='Si evolve in un altro modo (pietra, scambio, Felicità…): guarda il riquadro Evoluzione nella scheda della specie.';
+  const rows=[['Cambiare una mossa del rango attuale (se ha già tutte le mosse)',TP_MOVE[st][0]],['Cambiare con una mossa di un rango precedente',TP_MOVE[st][1]],...(st?[['Mossa che imparava solo la pre-evoluzione',TP_PREEVO[st]]]:[]),['Mossa da MT o DT',TP_TM],[`Over-Rank, per ogni rango sopra il suo (Felicità + Lealtà almeno 7: ora ${bond})`,TP_OVER[st]],[`Ri-allenamento al rango ${m.rank}`,TP_RETRAIN[m.rank]]];
+  return `<div class="trainbox">
+    <div class="row" style="gap:8px"><b>Allenamento</b><span class="small muted">${STAGE_IT[st]} · ${tp} punti</span><span class="grow"></span>
+      <button class="btn ghost sm" data-act="tp-battle">Punti da una lotta</button><button class="btn ghost sm" data-act="tp-train">Sessione di allenamento</button><button class="btn ghost sm" data-act="train-ref">Come funziona?</button></div>
+    ${ob?`<div class="note" style="border-left-color:var(--warn);color:#ffd9a0">${ob===1?'Un rango sopra il suo allenatore: disubbidienza bassa (in lotta tira Lealtà a inizio round, in allenamento prende metà punti).':'Due o più ranghi sopra il suo allenatore: disubbidienza alta (non segue gli ordini e non si allena).'}</div>`:''}
+    <p class="small" style="margin:6px 0 0">${rk}</p>
+    <p class="small" style="margin:4px 0 0">${ev}</p>
+    <details style="margin-top:6px"><summary>Quanto costa il resto per ${esc(m.nick||sp.Name)}</summary>${tbl(null,rows.map(r=>[r[0],`<b>${r[1]}</b>`]))}</details>
+  </div>`;
+}
+
+/* conto dei punti dopo una lotta */
+function openBattleTP(id){
+  const [T,m0]=findMon(id);if(!m0)return;OV2.bt=Object.assign({foe:m0.rank,out:'win',multi:false,full:true},OV2.bt||{});
+  openOv(()=>{const [T,m]=findMon(id);if(!m){closeOv(2);return}const sp=SP[m.species],b=OV2.bt;
+    const d=tri(b.foe)-tri(m.rank),pr=d<0?0:TP_BATTLE_RANK[Math.min(d,2)],po={win:2,lose:1,winko:1}[b.out],pm=b.multi?2:0,tot=b.full?pr+po+pm:0;
+    $('#sheet2').innerHTML=head('Punti da una lotta',TC[sp.Type1])+`<div class="sheetbody">
+      <p class="small muted" style="margin:0">${esc(m.nick||sp.Name)} è di rango <b>${m.rank}</b>.</p>
+      <label class="small muted">Rango dell'avversario più forte <select id="bt-foe">${RANKS.map(r=>`<option ${r===b.foe?'selected':''}>${r}</option>`).join('')}</select></label>
+      <label class="small muted">Com'è finita <select id="bt-out"><option value="win" ${b.out==='win'?'selected':''}>Vittoria</option><option value="lose" ${b.out==='lose'?'selected':''}>Sconfitta</option><option value="winko" ${b.out==='winko'?'selected':''}>Vittoria, ma lui è svenuto o è stato richiamato prima</option></select></label>
+      <label class="row small"><input type="checkbox" id="bt-multi" ${b.multi?'checked':''}> Gli avversari erano più di uno contemporaneamente</label>
+      <label class="row small"><input type="checkbox" id="bt-full" ${b.full?'checked':''}> Ha lottato almeno un round intero</label>
+      ${tbl(null,[['Rango rispetto all\'avversario',d<0?'più alto: 0':(d===0?'uguale: 1':(d===1?'uno sotto: 2':'due o più sotto: 3'))],['Risultato',`+${po}`],['Più avversari',`+${pm}`],...(b.full?[]:[['Non ha lottato un round intero','niente punti']]),['<b>Totale</b>',`<b>${tot}</b>`]])}
+      <div class="row"><button class="btn" data-act="bt-add" data-n="${tot}" ${tot?'':'disabled'}>Aggiungi ${tot} punti</button><button class="btn ghost" data-act="close">Annulla</button></div></div>`;
+    const up=()=>{OV2.bt={foe:$('#bt-foe').value,out:$('#bt-out').value,multi:$('#bt-multi').checked,full:$('#bt-full').checked};OV2.render()};
+    ['#bt-foe','#bt-out','#bt-multi','#bt-full'].forEach(s=>{const x=$(s);if(x)x.onchange=up});
+  },2);
+}
+
+/* sessione di allenamento guidata */
+function openTrainSession(id){
+  const [T0,m0]=findMon(id);if(!m0)return;
+  OV2.ts={diff:2,pa:'Strength',ps:'Athletic',tries:[],ta:'Cool',tsk:'Athletic',troll:null,done:false};
+  openOv(()=>{const [T,m]=findMon(id);if(!m){closeOv(2);return}ensureT(T);const sp=SP[m.species],s=OV2.ts,ob=obeyLevel(m,T);
+    const pv=a=>ATTR.includes(a)?m.attrs[a]:m.social[a],tv=a=>T_ATTR.includes(a)?T.attrs[a]:T.social[a];
+    const ppool=(pv(s.pa)||0)+(m.skills[s.ps]||0),tpool=(tv(s.ta)||0)+(T.skills[s.tsk]||0);
+    const ok=s.tries.some(x=>x.s>=s.diff),failed=!ok&&s.tries.length>=2;
+    const raw=s.troll?s.troll.s+s.diff:0,earn=ob===2?0:(ob===1?Math.floor(raw/2):raw);
+    const opt=(list,lab,sel)=>list.map(a=>`<option value="${a}" ${a===sel?'selected':''}>${lab(a)}</option>`).join('');
+    const AL=a=>ATTR_IT[a]||SOCIAL_IT[a]||a;
+    $('#sheet2').innerHTML=head('Sessione di allenamento',TC[sp.Type1])+`<div class="sheetbody">
+      <p class="small muted" style="margin:0">Circa 2 ore nel gioco, una al giorno. ${esc(T.name||'L\'allenatore')} (${esc(T.rank)}) allena ${esc(m.nick||sp.Name)} (${m.rank}).</p>
+      ${ob===2?`<div class="note" style="border-left-color:var(--danger);color:#ffc2c2">È due o più ranghi sopra il suo allenatore: si rifiuta di allenarsi e non guadagna punti. Prima deve salire di rango l'allenatore, o il Pokémon va conquistato con la storia.</div>`:''}
+      ${ob===1?`<div class="note" style="border-left-color:var(--warn);color:#ffd9a0">È un rango sopra il suo allenatore: prenderà solo metà dei punti (per difetto).</div>`:''}
+      <div class="tstep"><b>1 · Il compito</b><p class="small muted" style="margin:2px 0 6px">Inventa un compito (corsa, indovinello, pesi, raccolta…) e scegli quanto è difficile.</p>
+        <label class="small muted">Difficoltà <select id="ts-diff" ${s.tries.length?'disabled':''}>${[1,2,3,4,5].map(n=>`<option value="${n}" ${n===s.diff?'selected':''}>${n} successi · ${DIFF_IT[n]}</option>`).join('')}</select></label></div>
+      <div class="tstep"><b>2 · Tira il Pokémon</b><div class="row" style="margin-top:4px">
+        <select id="ts-pa" aria-label="Attributo del Pokémon" ${s.tries.length?'disabled':''}>${opt([...ATTR,...SOCIAL],a=>`${AL(a)} ${pv(a)}`,s.pa)}</select> +
+        <select id="ts-ps" aria-label="Competenza del Pokémon" ${s.tries.length?'disabled':''}>${opt(SKILLS,a=>`${SKILL_IT[a]} ${m.skills[a]||0}`,s.ps)}</select>
+        <span class="small muted">= ${ppool} dadi</span>
+        ${!ok&&!failed&&ob<2?`<button class="btn sm" data-act="ts-proll">${s.tries.length?'Seconda possibilità':'Tira'}</button>`:''}</div>
+        ${s.tries.map((x,i)=>`<div class="result">${diceHTML(x.d)}<span>${i?'2° tentativo':'1° tentativo'}: <b>${x.s}</b> successi su ${s.diff} ${x.s>=s.diff?'→ <b style="color:var(--ok)">compito riuscito!</b>':'→ non basta'}</span></div>`).join('')}
+        ${failed?'<p class="small" style="color:var(--danger);margin:4px 0 0">Ha fallito due volte: la sessione di oggi finisce qui, senza punti. Domani si riprova (magari con un compito più facile).</p>':''}</div>
+      ${ok?`<div class="tstep"><b>3 · Tira tu, l'allenatore</b><p class="small muted" style="margin:2px 0 6px">Attributo o attributo sociale + competenza legati a come lo alleni. La difficoltà (${s.diff}) si aggiunge come successi bonus.</p><div class="row">
+        <select id="ts-ta" aria-label="Attributo dell'allenatore" ${s.troll?'disabled':''}>${opt([...T_ATTR,...SOCIAL],a=>`${AL(a)} ${tv(a)}`,s.ta)}</select> +
+        <select id="ts-tsk" aria-label="Competenza dell'allenatore" ${s.troll?'disabled':''}>${opt(T_SKILLS,a=>`${SKILL_IT[a]} ${T.skills[a]||0}`,s.tsk)}</select>
+        <span class="small muted">= ${tpool} dadi + ${s.diff} bonus</span>${s.troll?'':'<button class="btn sm" data-act="ts-troll">Tira</button>'}</div>
+        ${s.troll?`<div class="result">${diceHTML(s.troll.d)}<span><b>${s.troll.s}</b> successi + ${s.diff} bonus = <b>${raw}</b>${ob===1?` → metà: <b>${earn}</b>`:''} punti allenamento</span></div>`:''}</div>`:''}
+      ${s.troll&&!s.done?`<div class="tstep"><b>4 e 5 · Punti e riposo</b><p class="small" style="margin:2px 0 6px">${esc(m.nick||sp.Name)} guadagna <b>${earn}</b> punti allenamento. Dopo il riposo, lui e l'allenatore recuperano 2 punti Volontà.</p>
+        <button class="btn" data-act="ts-done" data-n="${earn}">Segna ${earn} punti e +2 Volontà</button></div>`:''}
+      ${s.done?'<p class="small" style="color:var(--ok)">Fatto: punti e Volontà segnati nelle schede.</p>':''}
+    </div>`;
+    const up=()=>{const g=x=>$(x)&&$(x).value;Object.assign(OV2.ts,{diff:+(g('#ts-diff')||s.diff),pa:g('#ts-pa')||s.pa,ps:g('#ts-ps')||s.ps,ta:g('#ts-ta')||s.ta,tsk:g('#ts-tsk')||s.tsk});OV2.render()};
+    ['#ts-diff','#ts-pa','#ts-ps','#ts-ta','#ts-tsk'].forEach(x=>{const e=$(x);if(e)e.onchange=up});
+  },2);
+}
+
 function openPickSpecies(box){openOv(()=>{
   const q=(OV2.q||'').toLowerCase(),vm=visMap(),pv=isPlayerView();
   const L=DATA.Pokedex.filter(p=>vm(p.Key)>=1&&(!q||p.Name.toLowerCase().includes(q)||String(p.Number).padStart(3,'0').includes(q)));
@@ -1344,7 +1559,7 @@ function renderTypes(){
 }
 function renderItems(){
   const vm=visMap();
-  const used={};DATA.Pokedex.forEach(p=>p.Evolutions.forEach(e=>{if(e.To&&e.Item&&e.Source!=='canon'&&vm(p.Key)>=2)(used[e.Item]=used[e.Item]||[]).push([p,e])}));
+  const used={};DATA.Pokedex.forEach(p=>p.Evolutions.forEach(e=>{if(e.To&&e.Item&&vm(p.Key)>=2)(used[e.Item]=used[e.Item]||[]).push([p,e])}));
   const IT_DESC={};(DATA.Items||[]).forEach(i=>IT_DESC[i.Name]=i);
   const names=[...new Set([...(DATA.Items||[]).map(i=>i.Name),...Object.keys(used)])];
   $('#it-list').innerHTML=names.map(n=>{const i=IT_DESC[n]||{};const u=used[n]||[];
@@ -1386,6 +1601,10 @@ document.addEventListener('click',e=>{
   const T=S.trainers[UI.trainer];
   const monSheet=el.closest('#sheet')&&OV.render&&OV.monId;
   switch(act){
+    case 'app-update':applyUpdate();break;
+    case 'train-ref':openTrainRef(el.dataset.sec);break;
+    case 'tref-go':{const h=document.getElementById('tref-'+el.dataset.sec);if(h)h.scrollIntoView({block:'start',behavior:'smooth'});break}
+    case 'check-update':checkUpdate(true);break;
     case 'ab-en':UI.abEn=el.checked;OV.render&&OV.render();break;
     case 'add-mon':{const id=$('#add-to').value;if(addMon(id,el.dataset.sp)){UI.trainer=id}break}
     case 'new-trainer':{const t={id:uid(),name:'Nuovo allenatore',player:'',money:3000,notes:'',mons:[],created:Date.now()};saveTrainer(t);UI.trainer=t.id;renderTrainers();setTimeout(()=>{const i=$('#t-name');i&&(i.focus(),i.select())},0);break}
@@ -1436,13 +1655,25 @@ document.addEventListener('click',e=>{
       case 'skill':{const a=el.dataset.a;m.skills[a]=clamp(m.skills[a]+ +el.dataset.d,0,S.house.skillCap[m.rank]??5);break}
       case 'happy':{const k=el.dataset.k;m[k]=clamp(m[k]+ +el.dataset.d,0,5);break}
       case 'tp':m.tp=clamp((m.tp||0)+ +el.dataset.d,0,999);break;
+      case 'tp-battle':changed=false;OV2.bt=null;openBattleTP(m.id);break;
+      case 'tp-train':changed=false;openTrainSession(m.id);break;
+      case 'bt-add':{const n=+el.dataset.n||0;m.tp=(m.tp||0)+n;closeOv(2);toast(`+${n} punti allenamento.`);break}
+      case 'tp-rankup':{const nr=nextRank(m.rank),c=TP_RANK[m.rank];if(!nr||(m.tp||0)<c||(Tm&&tri(nr)>tri(ensureT(Tm).rank))){changed=false;break}m.tp-=c;m.rank=nr;toast(`${m.nick||sp.Name} ora è ${nr}: distribuisci i nuovi punti e scegli le mosse del rango.`);break}
+      case 'ts-proll':case 'ts-troll':{changed=false;const t=OV2.ts;if(!t)break;ensureT(Tm);
+        const n=act==='ts-proll'?((ATTR.includes(t.pa)?m.attrs[t.pa]:m.social[t.pa])||0)+(m.skills[t.ps]||0):((T_ATTR.includes(t.ta)?Tm.attrs[t.ta]:Tm.social[t.ta])||0)+(Tm.skills[t.tsk]||0);
+        const d=rollDice(n),r={d,s:d.filter(x=>x>=4).length};if(act==='ts-proll')t.tries.push(r);else t.troll=r;OV2.render();break}
+      case 'ts-done':{const n=+el.dataset.n||0;ensureT(Tm);m.tp=(m.tp||0)+n;m.will=Math.min(willMax(m),m.will+2);Tm.will=Math.min(tWillMax(Tm),(Tm.will||0)+2);if(OV2.ts)OV2.ts.done=true;OV2.render&&OV2.render();toast(`+${n} punti allenamento, +2 Volontà.`);break}
       case 'forget':m.moves=m.moves.filter(x=>x!==el.dataset.n);break;
       case 'learn':changed=false;OV2.q='';openLearn(m.id);break;
       case 'learn-pick':if(!m.moves.includes(el.dataset.n))m.moves.push(el.dataset.n);closeOv(2);break;
       case 'roll':{changed=false;const P=pools(m,el.dataset.n);const n=el.dataset.k==='acc'?Math.max(0,P.acc||0):Math.max(1,(P.dmg||0)-tdef(m.id));const d=rollDice(n);UI.rolls[m.id]=Object.assign(UI.rolls[m.id]||{},{[el.dataset.n]:{k:el.dataset.k,d,s:d.filter(x=>x>=4).length}});OV.render();break}
       case 'to-box':{const team=Tm.mons.filter(x=>!x.box).length;if(m.box&&team>=6){changed=false;toast('La squadra è già piena (6).');break}m.box=!m.box;break}
-      case 'ask-evolve':changed=false;$('#m-confirm').innerHTML=`<div class="confirm" style="border-color:var(--ball);background:rgba(232,40,58,.08)">Far evolvere ${esc(m.nick||sp.Name)} in ${visMap()(el.dataset.to)===0?'???':esc(SP[el.dataset.to].Name)}? Gli attributi salgono ai nuovi valori iniziali. <button class="btn red sm" data-act="evolve" data-to="${esc(el.dataset.to)}">Evolvi</button><button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`;break;
-      case 'evolve':{const from=m.species,who=m.nick||SP[from].Name;evolve(m,el.dataset.to);playEvolution(from,el.dataset.to,who);break}
+      case 'ask-evolve':{changed=false;const to=el.dataset.to,e=sp.Evolutions.find(x=>x.To&&BYNAME[x.To]===to),need=e&&e.Kind==='Level'?TP_EVO[e.Speed]:0,tp=m.tp||0,nm=visMap()(to)===0?'???':esc(SP[to].Name);
+        const b=(spend,lab,cls)=>`<button class="btn ${cls} sm" data-act="evolve" data-to="${esc(to)}" ${spend?`data-spend="${spend}"`:''}>${lab}</button>`;
+        $('#m-confirm').innerHTML=`<div class="confirm" style="border-color:var(--ball);background:rgba(232,40,58,.08)"><span>Far evolvere ${esc(m.nick||sp.Name)} in ${nm}? Gli attributi salgono ai nuovi valori iniziali; rango, competenze, mosse, Felicità e Lealtà restano.
+          ${need?(tp>=need?` Evoluzione a tempo ${SPEED_IT[e.Speed]}: costa <b>${need}</b> punti allenamento (ne ha ${tp}).`:` Evoluzione a tempo ${SPEED_IT[e.Speed]}: servono <b>${need}</b> punti allenamento e ne ha ${tp}. Il GM può farlo evolvere prima per un momento di storia.`):' Controlla di avere quello che serve (pietra, scambio, Felicità…): è scritto nel riquadro Evoluzione della specie.'}</span>
+          ${need&&tp>=need?b(need,`Evolvi (−${need} punti)`,'red')+b(0,'Evolvi senza spendere','ghost'):b(0,need?'Evolvi comunque':'Evolvi','red')}<button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`;break}
+      case 'evolve':{const from=m.species,who=m.nick||SP[from].Name;if(el.dataset.spend)m.tp=Math.max(0,(m.tp||0)- +el.dataset.spend);evolve(m,el.dataset.to);playEvolution(from,el.dataset.to,who);break}
       case 'ask-release':changed=false;$('#m-confirm').innerHTML=`<div class="confirm">Liberare ${esc(m.nick||sp.Name)}? Sparisce dalla scheda. <button class="btn danger sm" data-act="release">Libera</button><button class="btn ghost sm" data-act="cancel-confirm">Annulla</button></div>`;break;
       case 'release':Tm.mons=Tm.mons.filter(x=>x.id!==m.id);saveTrainer(Tm);closeOv(1);renderTrainers();toast('Pokémon liberato.');return;
       default:changed=false;
@@ -1623,7 +1854,8 @@ const GUIDE=[
  {ch:'rules',t:'Il danno',h:()=>`<div class="visual formula"><span>Forza 3</span>+<span>Potenza 2</span>+<span>STAB 1</span>−<span>Difesa 2</span>=<b>4 dadi</b></div>`+li(['Si tirano l\'attributo di danno della mossa (Forza per le fisiche, Speciale per le speciali) più la sua <b>Potenza</b>, +1 dado se la mossa è dello stesso tipo del Pokémon (<b>STAB</b>), meno la Difesa o la Difesa Speciale del bersaglio. Si tira sempre almeno 1 dado.','Ogni successo è 1 danno; anche con 0 successi il colpo fa 1 danno.','<b>Superefficace</b>: +1 danno (+2 se sono deboli entrambi i tipi), solo con almeno 1 successo. <b>Poco efficace</b>: −1 danno (−2). <b>Immune</b>: nessun danno.','<b>Critico</b>: 3 successi in più di quelli richiesti alla Precisione (2 per le mosse con Critico alto) danno +2 dadi al Danno.'])},
  {ch:'rules',t:'Schivata e Contrasto',h:()=>li(['Sono due manovre a <b>Reazione 6</b>: devi pareggiare o superare i successi di Precisione dell\'attaccante. Non seguono la tabella delle azioni multiple, ma consumano comunque un\'azione.','<b>Schivata</b>: Destrezza + Schivata. Se riesce non subisci né danno né effetti.','<b>Contrasto</b>: Forza o Speciale + Contrasto, usando una tua mossa fisica o speciale. Se riesce, entrambi subite 1 danno (contano i tipi) e quella mossa risulta usata per il round.','Non si schivano le mosse con «Non manca mai», quelle che usano un attributo sociale e quelle sul campo. Non si contrastano le mosse di supporto, sociali o a danno fisso.'])},
  {ch:'rules',t:'Stati e Dadi Probabilità',h:()=>`<div class="visual">${diceHTML([2,6,4],'chance')}<span>→ c'è un 6: <b>l'effetto scatta</b></span></div>`+li(['<b>Dadi Probabilità</b>: se una mossa dice «tira 3 Dadi Probabilità», basta un 6 perché l\'effetto scatti.','<b>Scottatura</b> 1°/2°/3° grado: 1, 2 o 3 danni a fine round (dal 2° Letali); ci si spegne accumulando con Destrezza + Atletica 4, 6 o 8 successi. <b>Avvelenamento</b>: 2 danni a fine round. <b>Iperavvelenamento</b>: 2 danni Letali che crescono di 2 ogni round.','<b>Paralisi</b>: −2 Destrezza per 12 ore. <b>Congelamento</b>: chiuso in un blocco di ghiaccio (5 PS, Difese 2). <b>Sonno</b>: a inizio turno tira Intuito, ti svegli quando hai accumulato 5 successi.','<b>Confusione</b>: toglie 1 successo (2 da Advanced ad Ace, 3 da Master) e fa 1 danno se l\'azione fallisce; con 2 successi in Intuito a inizio round agisci normalmente. <b>Infatuazione</b>: contro chi ama fa metà danno, niente effetti né critici. <b>Tentennamento</b>: perde il prossimo turno e non può reagire fino ad allora.'])},
- {ch:'rules',t:'Allenare e far crescere',h:()=>li(['Il Pokémon guadagna <b>punti allenamento</b> con le sessioni di allenamento e con le lotte (di più se l\'avversario è di rango più alto, se vince, se gli avversari sono più d\'uno).','<b>Salire di rango</b> costa 5 punti (a Rookie), 15 (Standard), 25 (Advanced), 30 (Expert), 35 (Ace), 40 (Master). Un Pokémon non può superare il rango del suo allenatore.','L\'<b>allenatore</b> invece sale di rango completando i <b>traguardi</b> decisi dal GM. Ogni rango gli dà punti per attributi, sociali e competenze (più quelli dell\'età) e alza il limite delle competenze. PS = 4 + Vitalità, Volontà = Intuito + 3.','<b>Evolvere</b> costa 10 punti per i Pokémon a tempo veloce, 30 a tempo medio, 50 a tempo lento, oltre al metodo della specie (pietra, scambio…).','<b>Mosse conosciute</b>: al massimo Intuito + 3, scelte tra quelle del suo rango o inferiori. <b>Felicità</b> e <b>Lealtà</b> vanno da 0 a 5 e crescono solo giocando di ruolo.'])},
+ {ch:'rules',t:'Guadagnare punti allenamento',h:()=>li(['Ogni Pokémon ha un contatore di <b>punti allenamento</b>: servono per salire di rango, evolversi, cambiare mosse.','<b>Dopo una lotta</b>: 0 se era di rango più alto dell\'avversario più forte, 1 se uguale, 2 se un rango sotto, 3 se due o più sotto; poi +2 per una vittoria, +1 per una sconfitta (o vittoria ma era svenuto), +2 se gli avversari erano più di uno. Conta solo chi ha lottato almeno un round intero.','<b>Sessione di allenamento</b> (2 ore, una al giorno): scegli un compito di difficoltà da 1 a 5; il Pokémon tira attributo + competenza (ha due tentativi); se riesce tiri tu, l\'allenatore, e aggiungi la difficoltà come successi bonus. I tuoi successi sono i punti. Poi entrambi recuperate 2 Volontà.','Il GM può dare punti anche per il gioco di ruolo e i momenti di storia. La <b>pensione</b> dà fino a 6 punti al giorno ma fa calare la Lealtà.','Nella scheda del Pokémon i tasti <b>Punti da una lotta</b> e <b>Sessione di allenamento</b> fanno i conti e tirano i dadi.'])+`<button class="btn ghost sm" data-act="train-ref" data-sec="gain">Leggi tutto su allenamento ed evoluzione</button>`},
+ {ch:'rules',t:'Spendere i punti: rango ed evoluzione',h:()=>li(['<b>Salire di rango</b>: 5 punti per Rookie, 15 per Standard, 25 per Advanced, 30 per Expert, 35 per Ace, 40 per Master. Mai oltre il rango del suo allenatore; ogni rango dà nuovi punti per attributi, sociali e competenze e sblocca le sue mosse.','<b>Evolvere</b>: le specie a tempo veloce spendono 10 punti, a tempo medio 30, a tempo lento 50. Altre si evolvono con pietre, scambi, Felicità o Lealtà alte: è scritto nella scheda della specie. Il GM può anticipare un\'evoluzione per la storia.','<b>Mosse</b>: al massimo Intuito + 3. Salendo di rango le nuove sono gratis se c\'è posto; per cambiarne una quando è pieno si pagano punti (più è evoluto, più costa) e con una MT costa 5.','<b>Felicità e Lealtà</b> (da 0 a 5) non salgono col rango, solo giocando di ruolo. Con Felicità + Lealtà almeno 7 può imparare una mossa di un rango più alto (Over-Rank).','Se il Pokémon è <b>sopra il rango del suo allenatore</b> disubbidisce: un rango sopra prende metà punti, due o più non si allena.','L\'<b>allenatore</b> sale di rango con i traguardi del GM (scheda dell\'allenatore).'])+`<button class="btn ghost sm" data-act="train-ref" data-sec="rank">Tabelle complete</button>`},
  {ch:'rules',t:'Catturare',h:()=>`<div class="visual small"><span>Starter <b class="mono">3</b></span><span>Rookie <b class="mono">4</b></span><span>Standard <b class="mono">6</b></span><span>Advanced <b class="mono">8</b></span><span>Expert <b class="mono">9</b></span><span>Ace <b class="mono">10</b></span><span class="muted">successi richiesti</span></div>`+li(['L\'allenatore usa un\'azione per lanciare la Ball: Destrezza o Forza + Lancio.','Poi si tira il <b>sigillo</b> della Ball: Poké Ball 4 dadi, Mega Ball 6, Ultra Ball 8.','<b>Bonus</b>: +1 successo se il selvatico è a metà PS, +2 se è a 1 PS, +1 per ogni problema di stato. Contro un Pokémon esausto i bonus si perdono.','Con abbastanza successi è catturato (Felicità 2, Lealtà 1; se era esausto, Felicità 0 e Lealtà 0). Con 3 in meno del necessario si libera e la Ball è da buttare; altrimenti scappa e la Ball si recupera a fine scena.'])},
  {ch:'rules',t:'Pronti a partire',h:()=>`<p>Questo è il riassunto delle regole base del manuale di Pokérole 3.0. Per tutto il resto (trappole, tempo atmosferico, oggetti, casi particolari) vale il manuale, e il GM può sempre adattare le regole al vostro tavolo.</p>
   <p>Puoi riaprire la guida in qualsiasi momento dal tasto <b>Guida</b> in alto.</p>`},

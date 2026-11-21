@@ -263,6 +263,9 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:70;background:#0f1729;border:1.5px solid var(--gold);border-radius:999px;padding:9px 16px;font-size:13px;max-width:88vw;text-align:center;transition:opacity .2s,transform .2s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .loading{display:grid;place-items:center;gap:10px;padding:60px 0;color:var(--muted)}
+.loading.loaderr{max-width:560px;margin:0 auto;text-align:center;gap:14px;color:var(--text,#e8eefc);padding:48px 16px}
+.loading.loaderr b{font-size:18px}
+.loading.loaderr a.btn{text-decoration:none}
 .spin{width:46px;height:46px;border-radius:50%;background:linear-gradient(180deg,var(--ball) 0 47%,#111 47% 53%,#eee 53% 100%);border:3px solid #111;animation:spin 1.1s cubic-bezier(.5,0,.5,1) infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -720,7 +723,7 @@ function renderTabs(){
   $('#tabs').innerHTML=T.map(([k,l])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}>${l}</button>`).join('');
   $('#bottomnav').innerHTML=T.map(([k,l,i])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}><span aria-hidden="true">${i}</span>${l}</button>`).join('');
 }
-function go(tab){if(!visTabs().some(t=>t[0]===tab))tab='pokedex';UI.tab=tab;document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+tab);renderTabs();renderCurrent();
+function go(tab){if(!DATA)return;if(!visTabs().some(t=>t[0]===tab))tab='pokedex';UI.tab=tab;document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+tab);renderTabs();renderCurrent();
   try{if(location.hash!=='#'+tab&&!location.hash.startsWith('#s-'))history.replaceState(null,'','#'+tab)}catch(e){}window.scrollTo(0,0)}
 function renderCurrent(){if(!DATA)return;({pokedex:renderDex,allenatori:renderTrainers,lotte:renderBattles,mosse:renderMoves,abilita:renderAbilities,tipi:renderTypes,strumenti:renderItems})[UI.tab]();
   if(!$('#ov').hidden&&OV.render)OV.render();if(!$('#ov2').hidden&&OV2.render)OV2.render()}
@@ -1391,7 +1394,7 @@ const _openMon=openMon;openMon=function(id){OV.monId=id;_openMon(id)};
 const _openSpecies=openSpecies;openSpecies=function(k){OV.monId=null;_openSpecies(k)};
 const _closeOv=closeOv;closeOv=function(w=1){if(w===1)OV.monId=null;_closeOv(w)};
 window.addEventListener('hashchange',routeHash);
-function routeHash(){const h=location.hash.slice(1);
+function routeHash(){if(!DATA)return;const h=location.hash.slice(1);
   if(h.startsWith('s-')){const num=parseInt(h.slice(2));const sl=h.slice(6);const p=DATA.Pokedex.find(x=>x.Number===num&&slug(x.Name)===sl)||DATA.Pokedex.find(x=>x.Number===num);if(p){if(UI.tab!=='pokedex')go('pokedex');openSpecies(p.Key)}return}
   if(TABS.some(t=>t[0]===h)&&h!==UI.tab)go(h)}
 
@@ -1523,9 +1526,23 @@ document.addEventListener('keydown',e=>{
 },true);
 
 /* ======================= avvio ======================= */
+// indirizzo ufficiale dell'app: chi apre una copia scaricata (file sul Desktop) viene mandato qui
+const APP_URL='https://mancyo17.github.io/pokedex-aethera/pokerole/';
+function showLoadError(){
+  const isFile=location.protocol==='file:';
+  let box=document.getElementById('loading');
+  if(!box){box=document.createElement('div');box.id='loading';box.className='loading';document.getElementById('main').prepend(box)}
+  box.classList.add('loaderr');
+  box.innerHTML=isFile
+    ?`<b>Questa è una copia scaricata della pagina: i Pokémon non sono dentro il file.</b><span>L'app va aperta dal suo indirizzo, che funziona anche senza rete dopo la prima volta:</span><a class="btn" href="${APP_URL}">Apri Aethera Pokérole</a><span class="small">Per averla come app sul telefono o sul PC, aprila dal link e scegli «Installa» o «Aggiungi alla schermata Home» nel menu del browser.</span>`
+    :'<b>Non riesco a caricare il Pokédex.</b><span class="small">Controlla la connessione e ricarica la pagina.</span>';
+  document.querySelectorAll('section.view').forEach(s=>s.hidden=true);
+  const t=document.getElementById('tabs'),bn=document.getElementById('bottomnav');if(t)t.innerHTML='';if(bn)bn.innerHTML='';
+  const g=document.getElementById('ov-guide');if(g)g.hidden=true;
+}
 (async function boot(){
   Store.loadLocal();renderSavePill();renderRoleUI();
-  try{await loadData()}catch(e){$('#loading').innerHTML='<b>Non riesco a caricare il Pokédex.</b><span class="small">Ricarica la pagina: se il problema resta, i dati non sono stati pubblicati insieme alla pagina.</span>';return}
+  try{await loadData()}catch(e){showLoadError();return}
   $('#loading').remove();
   $('#dex-type').innerHTML='<option value="">Tutti i tipi</option>'+TYPES.map(t=>`<option value="${t}">${T_IT[t]}</option>`).join('');
   $('#mv-type').innerHTML=$('#dex-type').innerHTML;

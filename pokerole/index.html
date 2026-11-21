@@ -400,6 +400,7 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
   .guidebtn{margin-left:auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:600px){.mvfilters{flex-wrap:wrap}.mvfilters #mv-q{flex:1 1 100%;min-width:0}.mvfilters select{flex:1 1 0;min-width:0}}
 </style>
 
 <header class="top">
@@ -470,11 +471,11 @@ details summary{cursor:pointer;color:var(--muted);font-size:12.5px}
 
   <section class="view" id="v-mosse" hidden>
     <h2>Mosse</h2>
-    <p class="lead">Tutte le mosse che i Pokémon della regione possono imparare, con le riserve di dadi di Pokérole. Le mosse nuove hanno l'effetto in italiano; le altre riportano il testo del manuale.</p>
-    <div class="panel row" style="margin-bottom:12px">
+    <p class="lead">Tutte le mosse di Pokérole 3.0 più quelle della regione, in italiano, con le riserve di dadi. Ci sono anche le mosse Z, le mosse Dynamax e le manovre senza tipo (Fuggire, Imboscata, Contrasto…). Il testo originale del manuale resta sotto «Dettagli».</p>
+    <div class="panel row mvfilters" style="margin-bottom:12px">
       <input id="mv-q" class="grow" placeholder="Cerca mossa o effetto…" aria-label="Cerca mossa">
       <select id="mv-type" aria-label="Tipo"></select>
-      <select id="mv-cat" aria-label="Categoria"><option value="">Tutte le categorie</option><option value="Physical">Fisiche</option><option value="Special">Speciali</option><option value="Support">Supporto</option></select>
+      <select id="mv-cat" aria-label="Categoria"><option value="">Tutte le categorie</option><option value="Physical">Fisiche</option><option value="Special">Speciali</option><option value="Support">Supporto</option><option value="Z">Mosse Z</option><option value="Max">Mosse Dynamax</option></select>
     </div>
     <p class="small muted" id="mv-count"></p>
     <div class="list" id="mv-list"></div>
@@ -531,12 +532,15 @@ const SKILLS=['Brawl','Channel','Clash','Evasion','Alert','Athletic','Nature','S
 const ATTR_IT={Strength:'Forza',Dexterity:'Destrezza',Vitality:'Vitalità',Special:'Speciale',Insight:'Intuito'};
 const SOCIAL_IT={Tough:'Grinta',Cool:'Classe',Beauty:'Bellezza',Clever:'Acume',Cute:'Grazia'};
 const SKILL_IT={Brawl:'Rissa',Channel:'Incanalare',Clash:'Contrasto',Evasion:'Schivata',Alert:'Allerta',Athletic:'Atletica',Nature:'Natura',Stealth:'Furtività',Charm:'Fascino',Etiquette:'Galateo',Intimidate:'Intimidazione',Perform:'Esibizione',Throw:'Lancio',Empathy:'Empatia',Crafts:'Artigianato',Lore:'Cultura Pokémon',Medicine:'Medicina',Science:'Scienza'};
-const TERM_IT={...ATTR_IT,...SOCIAL_IT,...SKILL_IT,Will:'Volontà',Happiness:'Felicità',Loyalty:'Lealtà',MissingBeautyPoints:'Bellezza mancante',SameAsCopiedMove:'come la mossa copiata','SameAsCopiedMove+1':'come la mossa copiata +1',Varies:'varia',SetDamage:'danno fisso',"Target'sStrength":'Forza del bersaglio'};
+const TERM_IT={...ATTR_IT,...SOCIAL_IT,...SKILL_IT,Will:'Volontà',Happiness:'Felicità',Loyalty:'Lealtà',MissingBeautyPoints:'Bellezza mancante',SameAsCopiedMove:'come la mossa copiata','SameAsCopiedMove+1':'come la mossa copiata +1',Varies:'varia',SetDamage:'danno fisso',"Target'sStrength":'Forza del bersaglio',SameAsBasePower:'come la mossa base',SameAsBaseMove:'come la mossa base',"Target'sRemainingHP":'PS rimanenti del bersaglio',MissingCoolPoints:'Classe mancante'};
 const TR=s=>String(s||'').split('/').map(x=>TERM_IT[x.trim()]||x.trim()).join('/');
 const TYPES=['Normal','Fire','Water','Grass','Electric','Ice','Fighting','Poison','Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'];
-const T_IT={Normal:'Normale',Fire:'Fuoco',Water:'Acqua',Grass:'Erba',Electric:'Elettro',Ice:'Ghiaccio',Fighting:'Lotta',Poison:'Veleno',Ground:'Terra',Flying:'Volante',Psychic:'Psico',Bug:'Coleottero',Rock:'Roccia',Ghost:'Spettro',Dragon:'Drago',Dark:'Buio',Steel:'Acciaio',Fairy:'Folletto'};
-const TC={Normal:'#b4b38a',Fire:'#f08a3e',Water:'#6f9cf4',Grass:'#82cf55',Electric:'#f2cd2c',Ice:'#82d6d6',Fighting:'#d4554f',Poison:'#b462b2',Ground:'#d8b46a',Flying:'#a594ee',Psychic:'#fa6d97',Bug:'#b2c530',Rock:'#c2ad55',Ghost:'#8a70b0',Dragon:'#8160ff',Dark:'#8c7466',Steel:'#a9a9c4',Fairy:'#e79ac0'};
-const CAT_IT={Physical:'Fisica',Special:'Speciale',Support:'Supporto'};
+const T_IT={Normal:'Normale',Fire:'Fuoco',Water:'Acqua',Grass:'Erba',Electric:'Elettro',Ice:'Ghiaccio',Fighting:'Lotta',Poison:'Veleno',Ground:'Terra',Flying:'Volante',Psychic:'Psico',Bug:'Coleottero',Rock:'Roccia',Ghost:'Spettro',Dragon:'Drago',Dark:'Buio',Steel:'Acciaio',Fairy:'Folletto',Typeless:'Senza tipo',Varies:'Variabile'};
+const TC={Normal:'#b4b38a',Fire:'#f08a3e',Water:'#6f9cf4',Grass:'#82cf55',Electric:'#f2cd2c',Ice:'#82d6d6',Fighting:'#d4554f',Poison:'#b462b2',Ground:'#d8b46a',Flying:'#a594ee',Psychic:'#fa6d97',Bug:'#b2c530',Rock:'#c2ad55',Ghost:'#8a70b0',Dragon:'#8160ff',Dark:'#8c7466',Steel:'#a9a9c4',Fairy:'#e79ac0',Typeless:'#9a9a9a',Varies:'#7d8aa0'};
+const CAT_IT={Physical:'Fisica',Special:'Speciale',Support:'Supporto','Physical/Special':'Fisica/Speciale','Support/Physical/Special':'Supporto/Fisica/Speciale'};
+const KIND_IT={Z:'Mossa Z',Max:'Mossa Dynamax'};
+const CATL=m=>(m.Kind?KIND_IT[m.Kind]+' · ':'')+(CAT_IT[m.Category]||m.Category||'');
+const PWR=p=>typeof p==='string'?p.split('+').map(x=>TERM_IT[x.trim()]||x.trim()).join(' + '):p;
 const TARGET_IT={'Foe':'Un avversario','Self':'Se stesso','All Foes':'Tutti gli avversari','Area':'Area','Battlefield':'Campo','All Allies':'Tutti gli alleati','Ally':'Un alleato',"Ally's Battlefield":'Campo alleato','Random Foe':'Avversario a caso',"Foe's Battlefield":'Campo avversario'};
 const TAG_IT={SoundMove:'sonora',FistMove:'pugno',BiteMove:'morso',CutterMove:'tagliente',WindMove:'vento',ProjectileMove:'proiettile',Recoil:'contraccolpo',HighCritical:'critico alto',Priority:'priorità',NeverMiss:'non manca',Charge:'carica',MustRecharge:'ricarica',ShieldMove:'scudo',SwitcherMove:'cambio',Rampage:'furia'};
 const STATUS=['Scottatura','Avvelenamento','Iperavvelenamento','Paralisi','Congelamento','Sonno','Confusione','Infatuazione','Tentennamento'];
@@ -979,7 +983,7 @@ function moveCardHTML(mvName,mon){
   const P=pools(mon,mvName);if(!P)return `<p>${esc(mvName)}: mossa non trovata.</p>`;const m=P.m;
   const vm=visMap(),allWho=(LEARNERS[mvName]||[]),who=allWho.filter(k=>vm(k)>=2).map(k=>SP[k]),hiddenWho=allWho.length-who.length;
   return `<div class="movecard" style="--c:${TC[m.Type]}">
-    <h3>${esc(MN(mvName))} ${chip(m.Type)}<span class="small muted">${CAT_IT[m.Category]||m.Category}${m.Power?` · Potenza ${m.Power}`:''}</span>${m.New?'<span class="badge-new">nuova</span>':''}</h3>
+    <h3>${esc(MN(mvName))} ${chip(m.Type)}<span class="small muted">${esc(CATL(m))}${m.Power?` · Potenza ${esc(PWR(m.Power))}`:''}</span>${m.New?'<span class="badge-new">nuova</span>':''}</h3>
     <div class="pools"><span class="pool">Precisione: ${esc(P.accTxt)}${P.acc!=null?` = <b>${P.acc}</b> dadi`:''}${P.low?` · Precisione ridotta ${P.low}`:''}</span>
       ${P.dmgTxt?`<span class="pool">Danno: ${esc(P.dmgTxt)}${P.dmg!=null?` = <b>${P.dmg}</b> dadi`:''}</span>`:''}
       <span class="pool">Bersaglio: ${esc(TARGET_IT[m.Target]||m.Target||'—')}</span>
@@ -1195,7 +1199,7 @@ function openMon(id){openOv(()=>{
 })}
 function knownMoveHTML(mon,n,r){
   const P=pools(mon,n);if(!P)return '';const m=P.m;
-  return `<div class="kmove" style="--c:${TC[m.Type]}"><div class="top"><b>${esc(MN(n))}</b>${chip(m.Type)}<span class="small muted">${CAT_IT[m.Category]}${m.Power?' · Potenza '+m.Power:''}</span>
+  return `<div class="kmove" style="--c:${TC[m.Type]}"><div class="top"><b>${esc(MN(n))}</b>${chip(m.Type)}<span class="small muted">${esc(CATL(m))}${m.Power?' · Potenza '+esc(PWR(m.Power)):''}</span>
     <span class="grow"></span><button class="btn ghost sm" data-move="${esc(n)}" data-monid="${mon.id}">Dettagli</button><button class="btn ghost sm" data-act="forget" data-n="${esc(n)}" aria-label="Dimentica ${esc(MN(n))}">✕</button></div>
     <div class="pools" style="margin:0"><span class="pool">Precisione ${esc(P.accTxt)} = <b>${P.acc??'?'}</b>${P.low?` · ridotta ${P.low}`:''}</span>${P.dmg!=null?`<span class="pool">Danno ${esc(P.dmgTxt)} = <b>${P.dmg}</b></span>`:''}</div>
     <div class="eff">${esc(m.EffectIT||m.Effect||'')}</div>
@@ -1214,10 +1218,18 @@ function diceHTML(d,mode='succ'){return `<span class="dice">${d.map(x=>`<span cl
 function openLearn(id){openOv(()=>{
   const [T,m]=findMon(id);if(!m){closeOv(2);return}const sp=SP[m.species];
   const L=sp.Moves.filter(x=>ri(x.Learned)<=ri(m.rank));const full=m.moves.length>=movesMax(m);
+  const own=new Set(sp.Moves.map(x=>x.Name)),q=(OV2.q||'').trim().toLowerCase();
+  const pick=(n,sub)=>{const mv=DATA.Moves[n]||{};const has=m.moves.includes(n);return `<button class="pick" data-act="learn-pick" data-n="${esc(n)}" ${has?'disabled':''}><i style="width:8px;height:18px;border-radius:3px;background:${TC[mv.Type]||'#888'};flex:none"></i><span class="grow">${esc(MN(n))}<br><span class="small muted">${sub?esc(sub)+' · ':''}${esc(CATL(mv))}${mv.Power?' · P'+esc(PWR(mv.Power)):''}</span></span></button>`};
+  const O=q?Object.entries(DATA.Moves).filter(([n,mv])=>!own.has(n)&&!mv.Kind&&(n.toLowerCase().includes(q)||(mv.NameIT||'').toLowerCase().includes(q))).sort((a,b)=>MN(a[0]).localeCompare(MN(b[0]),'it')):[];
   $('#sheet2').innerHTML=head('Impara una mossa',TC[sp.Type1])+`<div class="sheetbody">
     <p class="small muted" style="margin:0">Mosse di ${esc(sp.Name)} fino al rango ${m.rank}.${full?' Ha già il numero massimo di mosse: puoi aggiungerne comunque, il contatore diventa rosso.':''}</p>
-    <div class="picker">${L.map(x=>{const mv=DATA.Moves[x.Name]||{};const has=m.moves.includes(x.Name);return `<button class="pick" data-act="learn-pick" data-n="${esc(x.Name)}" ${has?'disabled':''}><i style="width:8px;height:18px;border-radius:3px;background:${TC[mv.Type]};flex:none"></i><span class="grow">${esc(MN(x.Name))}<br><span class="small muted">${x.Learned} · ${CAT_IT[mv.Category]||''}${mv.Power?' · P'+mv.Power:''}</span></span></button>`}).join('')}</div>
+    <div class="picker">${L.map(x=>pick(x.Name,x.Learned)).join('')}</div>
+    <h4 style="margin:14px 0 4px">Altra mossa (MT o insegnante)</h4>
+    <p class="small muted" style="margin:0 0 6px">Solo se il GM è d'accordo. Cerca per nome, in italiano o in inglese.</p>
+    <input id="learn-q" placeholder="Cerca mossa…" value="${esc(OV2.q||'')}" aria-label="Cerca un'altra mossa" autocomplete="off">
+    ${q?(O.length?`<div class="picker" style="margin-top:6px">${O.slice(0,40).map(([n])=>pick(n,'')).join('')}</div>${O.length>40?`<p class="small muted">e altre ${O.length-40}: scrivi qualche lettera in più.</p>`:''}`:'<p class="small muted">Nessuna mossa trovata.</p>'):''}
   </div>`;
+  const i=$('#learn-q');i.oninput=()=>{OV2.q=i.value;const pos=i.selectionStart;OV2.render();const j=$('#learn-q');j.focus();j.setSelectionRange(pos,pos)};
 },2)}
 function openPickSpecies(box){openOv(()=>{
   const q=(OV2.q||'').toLowerCase(),vm=visMap(),pv=isPlayerView();
@@ -1302,10 +1314,10 @@ function battleHTML(b){
 /* ======================= mosse, abilità, tipi, strumenti ======================= */
 function renderMoves(){
   const q=$('#mv-q').value.trim().toLowerCase(),ty=$('#mv-type').value,ca=$('#mv-cat').value;
-  const L=Object.entries(DATA.Moves).filter(([n,m])=>(!ty||m.Type===ty)&&(!ca||m.Category===ca)&&(!q||n.toLowerCase().includes(q)||(m.NameIT||'').toLowerCase().includes(q)||(m.Effect||'').toLowerCase().includes(q)||(m.EffectIT||'').toLowerCase().includes(q)||(m.DescIT||'').toLowerCase().includes(q))).sort((a,b)=>MN(a[0]).localeCompare(MN(b[0]),'it'));
+  const L=Object.entries(DATA.Moves).filter(([n,m])=>(!ty||m.Type===ty)&&(!ca||(ca==='Z'||ca==='Max'?m.Kind===ca:String(m.Category).split('/').includes(ca)))&&(!q||n.toLowerCase().includes(q)||(m.NameIT||'').toLowerCase().includes(q)||(m.Effect||'').toLowerCase().includes(q)||(m.EffectIT||'').toLowerCase().includes(q)||(m.DescIT||'').toLowerCase().includes(q))).sort((a,b)=>MN(a[0]).localeCompare(MN(b[0]),'it'));
   $('#mv-count').textContent=`${L.length} mosse`;
   const show=L.slice(0,UI.mvShow||80);
-  $('#mv-list').innerHTML=show.map(([n,m])=>`<div class="lrow" style="--c:${TC[m.Type]}"><div class="top"><b>${esc(MN(n))}</b>${MN(n)!==n?`<span class="small muted">${esc(n)}</span>`:''}${chip(m.Type)}<span class="small muted">${CAT_IT[m.Category]}${m.Power?' · Potenza '+m.Power:''} · ${esc(TR(m.Accuracy1))}${m.Accuracy2?' + '+esc(TR(m.Accuracy2)):''}${m.Damage1&&m.Power?' · Danno '+esc(TR(m.Damage1))+' + '+m.Power:''}</span>${m.New?'<span class="badge-new">nuova</span>':''}
+  $('#mv-list').innerHTML=show.map(([n,m])=>`<div class="lrow" style="--c:${TC[m.Type]}"><div class="top"><b>${esc(MN(n))}</b>${MN(n)!==n?`<span class="small muted">${esc(n)}</span>`:''}${chip(m.Type)}<span class="small muted">${esc(CATL(m))}${m.Power?' · Potenza '+esc(PWR(m.Power)):''}${m.Accuracy1?' · '+esc(TR(m.Accuracy1)):''}${m.Accuracy2?' + '+esc(TR(m.Accuracy2)):''}${m.Damage1&&m.Power?' · Danno '+esc(TR(m.Damage1))+' + '+esc(PWR(m.Power)):''}</span>${m.New?'<span class="badge-new">nuova</span>':''}
     <span class="grow"></span><button class="btn ghost sm" data-move="${esc(n)}">Dettagli</button></div><p>${esc(m.EffectIT||m.Effect||'')}</p></div>`).join('')+
     (L.length>show.length?`<button class="btn ghost" data-act="mv-more">Mostra altre ${Math.min(80,L.length-show.length)}</button>`:'');
 }
@@ -1425,7 +1437,7 @@ document.addEventListener('click',e=>{
       case 'happy':{const k=el.dataset.k;m[k]=clamp(m[k]+ +el.dataset.d,0,5);break}
       case 'tp':m.tp=clamp((m.tp||0)+ +el.dataset.d,0,999);break;
       case 'forget':m.moves=m.moves.filter(x=>x!==el.dataset.n);break;
-      case 'learn':changed=false;openLearn(m.id);break;
+      case 'learn':changed=false;OV2.q='';openLearn(m.id);break;
       case 'learn-pick':if(!m.moves.includes(el.dataset.n))m.moves.push(el.dataset.n);closeOv(2);break;
       case 'roll':{changed=false;const P=pools(m,el.dataset.n);const n=el.dataset.k==='acc'?Math.max(0,P.acc||0):Math.max(1,(P.dmg||0)-tdef(m.id));const d=rollDice(n);UI.rolls[m.id]=Object.assign(UI.rolls[m.id]||{},{[el.dataset.n]:{k:el.dataset.k,d,s:d.filter(x=>x>=4).length}});OV.render();break}
       case 'to-box':{const team=Tm.mons.filter(x=>!x.box).length;if(m.box&&team>=6){changed=false;toast('La squadra è già piena (6).');break}m.box=!m.box;break}
@@ -1669,7 +1681,7 @@ function showLoadError(){
   try{await loadData()}catch(e){showLoadError();return}
   $('#loading').remove();
   $('#dex-type').innerHTML='<option value="">Tutti i tipi</option>'+TYPES.map(t=>`<option value="${t}">${T_IT[t]}</option>`).join('');
-  $('#mv-type').innerHTML=$('#dex-type').innerHTML;
+  $('#mv-type').innerHTML=$('#dex-type').innerHTML+'<option value="Typeless">Senza tipo</option>';
   $('#dex-rank').innerHTML='<option value="">Tutti i ranghi</option>'+RANKS.map(r=>`<option>${r}</option>`).join('');
   fillSpeciesList();
   const h=location.hash.slice(1);go(TABS.some(t=>t[0]===h)?h:'pokedex');
